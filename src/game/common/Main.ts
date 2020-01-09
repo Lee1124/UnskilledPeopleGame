@@ -11,7 +11,15 @@ class Main {
     count: number = 105;
     //关于牌的参数
     pokerParam: any = {
-        alpha: 0.7
+        alpha: 0.7,
+        bgColor1:[
+            0.6, 0.5, 0.5, 0.2, 0, //R
+            0.6, 0.5, 0.5, 0.2, 0, //G
+            0.6, 0.5, 0.5, 0.2, 0, //B
+            1, 1, 1, 1, 1, //A
+        ],
+        color1:'res/img/common/1.png',
+        color2:'res/img/common/2.png'
     }
     tipArr1: any[] = [];
     tipArr2: any[] = [];
@@ -26,6 +34,7 @@ class Main {
         mePlay: 100,//‘我’出牌的速度
         otherPlay: 50,//‘其他’出牌的速度
     }
+
 
     //用户信息
     userInfo: object = {
@@ -47,6 +56,15 @@ class Main {
         this.loadPokerArr.forEach(item => {
             Laya.loader.load(['res/img/poker/chang/' + item + '.png']);
             Laya.loader.load(['res/img/poker/duan/' + item + '.png']);
+        })
+    }
+
+    /**
+     * 改变节点的层级
+     */
+    changeNodeZOrder(jsonArr: any[]) {
+        jsonArr.forEach(item => {
+            item.nodeName.zOrder = item.val;
         })
     }
 

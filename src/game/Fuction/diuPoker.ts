@@ -20,17 +20,17 @@ class DiuPoker {
             diuPokerData.forEach((item2, index2) => {
                 if (item.userId == item2.userId) {
                     item2.data.forEach((item3, index3) => {
-                        if (item.SeatId != 0 && index3 % 5 == 0) {
-                            this.createDiuCell(index3, diuView, 5, item.SeatId);
-                        } else if ((item.SeatId == 0 && index3 % 3 == 0)) {
-                            this.createDiuCell(index3, diuView, 3, item.SeatId);
+                        if (item.SeatId != 0 && index3 % 7 == 0) {
+                            this.createDiuCell(index3, diuView, 7, item.SeatId);
+                        } else if ((item.SeatId == 0 && index3 % 8 == 0)) {
+                            this.createDiuCell(index3, diuView, 8, item.SeatId);
                         }
                         let pokerObj = new Laya.Image();
                         pokerObj.skin = 'res/img/poker/duan/' + item3 + '.png';
-                        if (item.SeatId != 0 && ((index3 + 1) % 5 == 0 || index3 == item2.data.length - 1))
+                        if (item.SeatId != 0 && ((index3 + 1) % 7 == 0 || index3 == item2.data.length - 1))
                             pokerObj.skin = 'res/img/poker/chang/' + item3 + '.png';
-                        else if (item.SeatId == 0 && ((index3 + 1) % 3 == 0 || index3 == item2.data.length - 1))
-                            pokerObj.skin = 'res/img/poker/chang/' + item3 + '.png';
+                        // else if (item.SeatId == 0 && ((index3 + 1) % 3 == 0 || index3 == item2.data.length - 1))
+                        //     pokerObj.skin = 'res/img/poker/chang/' + item3 + '.png';
 
                         pokerObj.top = Main.pokerWidth * this.diuCellIndex - (45 * this.diuCellIndex);
                         // if(item.SeatId==1&&(index3<=9||index3>=5)){
@@ -38,7 +38,7 @@ class DiuPoker {
                         // }
                         pokerObj.zOrder = this.diuCellIndex;
                         pokerObj.name = 'poker' + (index3 + 1);
-                        let chidName = item.SeatId == 0 ? 'cellBox' + parseInt(String(index3 / 3)) : 'cellBox' + parseInt(String(index3 / 5));
+                        let chidName = item.SeatId == 0 ? 'cellBox' + parseInt(String(index3 / 8)) : 'cellBox' + parseInt(String(index3 / 7));
                         let pokerCellViewObj = diuView.getChildByName(chidName);
                         if (pokerCellViewObj.name == chidName) {
                             pokerCellViewObj.addChild(pokerObj);

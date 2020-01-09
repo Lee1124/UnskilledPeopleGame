@@ -14,7 +14,6 @@ export default class GameControl extends Laya.Script {
     //位置索引
     private Index: number = 0;
     //===========摸牌测试===========
-    num1: number = 0;
     num2: number = 0;
     num3: number = 0;
     data1:any[]=[
@@ -66,8 +65,7 @@ export default class GameControl extends Laya.Script {
     }
     /**摸牌 */
     feelPoker() {
-        FeelPoker.feel(this.num1);
-        this.num1++;
+        FeelPoker.feel();
     }
     /**非自己玩家出牌 */
     otherPlay() {

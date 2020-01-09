@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":345,
-    "selecteID":362,
+    "selectedBox":11,
+    "selecteID":348,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/GameCenter/GameUI.ts","height":2208},
     "nodeParent":-1,
-    "maxID":369,
+    "maxID":377,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -157,7 +157,7 @@
                     "x":30,
                     "type":"Image",
                     "searchKey":"Image,deskOther",
-                    "props":{"y":854,"x":221,"width":800,"name":"deskOther","height":500,"centerX":0},
+                    "props":{"y":853,"width":800,"name":"deskOther","height":500,"centerX":0},
                     "nodeParent":6,
                     "label":"deskOther",
                     "isDirectory":false,
@@ -172,7 +172,7 @@
                     "x":30,
                     "type":"Image",
                     "searchKey":"Image,getMePokerSeat,getMePokerSeat",
-                    "props":{"y":1573,"x":602,"width":128,"var":"getMePokerSeat","scaleY":0.3,"scaleX":0.3,"name":"getMePokerSeat","height":450,"centerX":0,"bottom":500},
+                    "props":{"width":128,"var":"getMePokerSeat","scaleY":0.3,"scaleX":0.3,"name":"getMePokerSeat","height":450,"centerX":0,"bottom":600},
                     "nodeParent":6,
                     "label":"getMePokerSeat",
                     "isDirectory":false,
@@ -202,13 +202,14 @@
                             "props":{"width":167,"skin":"images/game/zuoweiBg.png","pivotY":84,"pivotX":84,"name":"empty_seat1","height":167,"centerX":0,"bottom":0},
                             "nodeParent":7,
                             "label":"empty_seat1",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":9,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Script",
                                     "switchAble":true,
                                     "source":"src/game/GameCenter/seat.ts",
@@ -225,6 +226,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,score",
                                     "props":{"wordWrap":true,"width":165,"visible":false,"valign":"middle","top":167,"text":"0","padding":"8,6,6,6","name":"score","fontSize":36,"color":"#FFFFFF","centerX":0,"bgColor":"#232323","align":"center"},
@@ -238,6 +240,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,name",
                                     "props":{"x":0,"wordWrap":false,"width":210,"visible":false,"valign":"middle","padding":"6,6,6,6","overflow":"hidden","name":"name","height":46,"fontSize":34,"color":"#FFFFFF","centerX":0,"bottom":167,"align":"center"},
@@ -251,6 +254,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,head",
                                     "props":{"width":160,"visible":false,"name":"head","height":160,"centerY":0,"centerX":0},
@@ -264,6 +268,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,getOtherPokerSeat",
                                     "props":{"x":0,"width":128,"scaleY":0.3,"scaleX":0.3,"name":"getOtherPokerSeat","height":450,"centerX":0,"bottom":-220},
@@ -277,9 +282,10 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu0",
-                                    "props":{"width":128,"visible":false,"top":-20,"scaleY":0.6,"scaleX":0.6,"right":240,"name":"diu0","height":0},
+                                    "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":240,"name":"diu0","height":0},
                                     "nodeParent":9,
                                     "label":"diu0",
                                     "isOpen":true,
@@ -291,9 +297,10 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu1",
-                                    "props":{"y":0,"width":128,"visible":false,"top":-20,"scaleY":0.6,"scaleX":0.6,"name":"diu1","left":240,"height":0},
+                                    "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"name":"diu1","left":240,"height":0},
                                     "nodeParent":9,
                                     "label":"diu1",
                                     "isOpen":true,
@@ -306,9 +313,10 @@
                                     "$HIDDEN":false
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu2",
-                                    "props":{"y":0,"width":128,"visible":false,"top":-20,"scaleY":0.6,"scaleX":0.6,"right":240,"name":"diu2","height":0},
+                                    "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":240,"name":"diu2","height":0},
                                     "nodeParent":9,
                                     "label":"diu2",
                                     "isOpen":true,
@@ -321,9 +329,10 @@
                                     "$HIDDEN":true
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show0",
-                                    "props":{"width":128,"visible":false,"top":-20,"scaleY":0.6,"scaleX":0.6,"name":"show0","left":240,"height":300},
+                                    "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"name":"show0","left":240,"height":300},
                                     "nodeParent":9,
                                     "label":"show0",
                                     "isOpen":true,
@@ -335,6 +344,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show1",
                                     "props":{"y":0,"x":0,"width":512,"visible":false,"top":300,"scaleY":0.6,"scaleX":0.6,"name":"show1","height":300,"centerX":-10},
@@ -349,6 +359,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show2",
                                     "props":{"y":0,"x":0,"width":512,"visible":false,"top":300,"scaleY":0.6,"scaleX":0.6,"name":"show2","height":300,"centerX":10},
@@ -363,9 +374,10 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,feelView",
-                                    "props":{"width":115,"visible":false,"pivotY":203,"pivotX":58,"name":"feelView","height":405,"centerX":0,"bottom":630},
+                                    "props":{"width":115,"visible":true,"pivotY":203,"pivotX":58,"name":"feelView","height":405,"centerX":0,"bottom":700},
                                     "nodeParent":9,
                                     "label":"feelView",
                                     "isOpen":true,
@@ -375,6 +387,7 @@
                                     "compId":341,
                                     "child":[
                                         {
+                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,feelPoker",
                                             "props":{"width":115,"skin":"images/poker/-1.png","scaleX":0,"pivotY":203,"pivotX":58,"name":"feelPoker","height":405,"centerY":0,"centerX":0},
@@ -479,7 +492,7 @@
                                     "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu0",
-                                    "props":{"y":-20,"x":-130,"width":128,"visible":false,"top":-20,"scaleY":0.6,"scaleX":0.6,"right":220,"name":"diu0","height":0},
+                                    "props":{"x":-130,"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":220,"name":"diu0","height":0},
                                     "nodeParent":10,
                                     "label":"diu0",
                                     "isOpen":true,
@@ -494,7 +507,7 @@
                                     "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu1",
-                                    "props":{"y":0,"width":128,"visible":false,"top":-20,"scaleY":0.6,"scaleX":0.6,"name":"diu1","left":240,"height":0},
+                                    "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"name":"diu1","left":240,"height":0},
                                     "nodeParent":10,
                                     "label":"diu1",
                                     "isOpen":true,
@@ -509,7 +522,7 @@
                                     "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu2",
-                                    "props":{"y":0,"width":128,"visible":false,"top":-20,"scaleY":0.6,"scaleX":0.6,"right":240,"name":"diu2","height":0},
+                                    "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":240,"name":"diu2","height":0},
                                     "nodeParent":10,
                                     "label":"diu2",
                                     "isOpen":true,
@@ -569,7 +582,7 @@
                                     "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,feelView",
-                                    "props":{"width":115,"visible":false,"pivotY":203,"pivotX":58,"name":"feelView","left":150,"height":405,"centerY":0},
+                                    "props":{"width":115,"visible":true,"pivotY":203,"pivotX":58,"name":"feelView","left":150,"height":405,"centerY":0},
                                     "nodeParent":10,
                                     "label":"feelView",
                                     "isOpen":true,
@@ -684,7 +697,7 @@
                                     "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu0",
-                                    "props":{"y":-20,"x":-130,"width":128,"visible":false,"top":-20,"scaleY":0.6,"scaleX":0.6,"right":220,"name":"diu0","height":0},
+                                    "props":{"x":-130,"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":220,"name":"diu0","height":0},
                                     "nodeParent":11,
                                     "label":"diu0",
                                     "isOpen":true,
@@ -699,7 +712,7 @@
                                     "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu1",
-                                    "props":{"y":-20,"width":128,"visible":false,"top":-20,"scaleY":0.6,"scaleX":0.6,"name":"diu1","left":240,"height":0},
+                                    "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"name":"diu1","left":240,"height":0},
                                     "nodeParent":11,
                                     "label":"diu1",
                                     "isOpen":true,
@@ -714,7 +727,7 @@
                                     "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu2",
-                                    "props":{"y":0,"width":128,"visible":false,"top":-20,"scaleY":0.6,"scaleX":0.6,"right":240,"name":"diu2","height":0},
+                                    "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":240,"name":"diu2","height":0},
                                     "nodeParent":11,
                                     "label":"diu2",
                                     "isOpen":true,
@@ -729,7 +742,7 @@
                                     "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show0",
-                                    "props":{"y":0,"width":128,"visible":false,"top":-20,"scaleY":0.6,"scaleX":0.6,"name":"show0","left":240,"height":300},
+                                    "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"name":"show0","left":240,"height":300},
                                     "nodeParent":11,
                                     "label":"show0",
                                     "isOpen":true,
@@ -774,7 +787,7 @@
                                     "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,feelView",
-                                    "props":{"width":115,"visible":false,"right":150,"pivotY":203,"pivotX":58,"name":"feelView","height":405,"centerY":0},
+                                    "props":{"width":115,"visible":true,"right":150,"pivotY":203,"pivotX":58,"name":"feelView","height":405,"centerY":0},
                                     "nodeParent":11,
                                     "label":"feelView",
                                     "isOpen":true,
@@ -909,7 +922,7 @@
                     "x":30,
                     "type":"Image",
                     "searchKey":"Image,mePokerView,mePokerView",
-                    "props":{"y":1738,"x":563,"width":128,"visible":true,"var":"mePokerView","scaleY":0.9,"scaleX":0.9,"pivotY":450,"name":"mePokerView","height":450,"centerX":0,"bottom":470},
+                    "props":{"zOrder":2,"y":1688,"x":563,"width":128,"visible":true,"var":"mePokerView","scaleY":0.9,"scaleX":0.9,"pivotY":450,"name":"mePokerView","height":450,"centerX":0,"bottom":520},
                     "nodeParent":6,
                     "label":"mePokerView",
                     "isOpen":true,
@@ -925,7 +938,7 @@
                     "x":30,
                     "type":"Image",
                     "searchKey":"Image,meDealView,meDealView",
-                    "props":{"y":1738,"x":563,"width":128,"visible":false,"var":"meDealView","scaleY":0.9,"scaleX":0.9,"pivotY":450,"name":"meDealView","height":450,"centerX":0,"bottom":470,"alpha":0},
+                    "props":{"x":563,"width":128,"visible":false,"var":"meDealView","scaleY":0.9,"scaleX":0.9,"pivotY":450,"name":"meDealView","height":450,"centerX":0,"bottom":520,"alpha":0},
                     "nodeParent":6,
                     "label":"meDealView",
                     "isOpen":true,

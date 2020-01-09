@@ -199,6 +199,12 @@ class DealMePoker {
             cellObj.bottom = 0;
             item.poker.forEach((item_inner: any, index_inner: number) => {
                 let pokerObj = new Laya.Image('res/img/poker/duan/' + item_inner + '.png');
+                //创建一个颜色滤镜对象,红色
+                // let redFilter: Laya.ColorFilter = new Laya.ColorFilter(Main.pokerParam['bgColor1']);
+                // pokerObj.filters=[redFilter];
+                if(index==0){
+                    this.changePokerColor(pokerObj,Main.pokerParam['color1'],'noHanldePoker');
+                }
                 pokerObj.name = item_inner;
                 pokerObj.sizeGrid = "85,0,10,0";
                 pokerObj.on(Laya.Event.CLICK, this, this.ClickPoker, [pokerObj]);
@@ -233,12 +239,29 @@ class DealMePoker {
                 this.mePutViewReloadSeat();
             })
         } else {
-            this.mePutViewReloadSeat();
-            let pokerObjH = pokerObj.height + 50;
-            Laya.Tween.to(pokerObj, { height: pokerObjH }, Main.Speed['pokerHeight'], Laya.Ease.backOut, Laya.Handler.create(this, () => {
-                this.adjustCellPokerSeat(pokerObj);
-            }));
+            let noClick=pokerObj.getChildByName('noHanldePoker');
+            if(!noClick){
+                this.mePutViewReloadSeat();
+                this.changePokerColor(pokerObj,Main.pokerParam['color2'],'clickColorImg');
+                let pokerObjH = pokerObj.height + 50;
+                Laya.Tween.to(pokerObj, { height: pokerObjH }, Main.Speed['pokerHeight'], Laya.Ease.backOut, Laya.Handler.create(this, () => {
+                    this.adjustCellPokerSeat(pokerObj);
+                }));
+            }
         }
+    }
+
+    /**
+     * 点击牌时候，使牌加上高亮(颜色层)
+     */
+    changePokerColor(pokerObj: any,colorImgUrl:string,name:string) {
+        let colorImg = new Laya.Image(colorImgUrl);
+        colorImg.name = name;
+        colorImg.left = 0;
+        colorImg.right = 0;
+        colorImg.bottom = 0;
+        colorImg.top = 0;
+        pokerObj.addChild(colorImg);
     }
 
     /**
@@ -253,6 +276,7 @@ class DealMePoker {
         showMePlayPoker.pos(startX, startY);
         showMePlayPoker.skin = 'res/img/poker/chang/' + pokerObj.name + '.png';
         Laya.Tween.to(showMePlayPoker, { alpha: 1, x: showMePlayPoker.width / 2, y: showMePlayPoker.height / 2 }, Main.Speed['mePlay']);
+        console.log(showMePlayPoker)
     }
 
     /**
@@ -321,6 +345,10 @@ class DealMePoker {
             let innerChildren = item._children;
             item.x = Main.pokerWidth * index;
             innerChildren.forEach((item2, index2) => {
+                //清除点击高亮
+                let clickColorImg = item2.getChildByName('clickColorImg');
+                if (clickColorImg)
+                    clickColorImg.removeSelf();
                 item2.height = Main.pokerWidth;
                 if (index2 == innerChildren.length - 1) {
                     item2.bottom = 0;
