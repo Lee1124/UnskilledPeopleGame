@@ -12,13 +12,17 @@ class FeelPoker {
     feelObj: any;
     //摸的牌
     feelPoker: any;
+    /**===测试=== */
+    t1: any;
+    t2: any;
+    /**===测试=== */
     feel(): void {
         this.players = MyCenter.GameControlObj.players;
         this.feelStartSeatXY = MyCenter.GameUIObj.feelPokerSeatXY;
         this.feelObj = MyCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
         this.initParam(true);
         let data = {
-            userId: '12345' + parseInt(String(Math.random()*3)),
+            userId: '12345' + parseInt(String(Math.random() * 3)),
             poker: parseInt(String(Math.random() * 21)) + 1
         }
         this.players.forEach((item, index) => {
@@ -41,7 +45,7 @@ class FeelPoker {
         // let alpha=item.IsMe?0:1;
         let alpha = 1;
         if(item.IsMe){
-            let changeArr = [{ nodeName: item.owner, val: 2 },{ nodeName: MyCenter.GameUIObj.dealSeat, val: 2 }, { nodeName: MyCenter.GameUIObj.mePokerView, val: 1 }, { nodeName: MyCenter.GameUIObj.seatList, val: 2 }];
+            let changeArr = [{ nodeName: item.owner, val: 2 }];
             Main.changeNodeZOrder(changeArr);
         }
         Laya.Tween.to(this.feelObj, { x: moveX, y: moveY, alpha: alpha }, Main.Speed['feelPoker'], null, Laya.Handler.create(this, () => {
@@ -51,9 +55,11 @@ class FeelPoker {
                     this.initParam(false);
                     Laya.Tween.to(this.feelPoker, { scaleX: 1, alpha: 0.7 }, Main.Speed['feelFan']);
                     /**====测试==== */
-                    setTimeout(()=>{
+                    if (this.t1)
+                        clearTimeout(this.t1)
+                    this.t1 = setTimeout(() => {
                         this.clearFeelPoker();
-                    },1000)
+                    }, 1000)
                 }));
                 // this.initParam(true);
                 // Laya.Tween.to(this.feelObj, { scaleX: 0 ,alpha:0.7}, Main.Speed['feelFan'], null, Laya.Handler.create(this, () => {
@@ -65,10 +71,12 @@ class FeelPoker {
                     this.feelPoker.skin = 'res/img/poker/chang/' + data.poker + '.png';
                     this.initParam(false);
                     Laya.Tween.to(this.feelPoker, { scaleX: 1, alpha: 0.7 }, Main.Speed['feelFan'])
-                     /**====测试==== */
-                     setTimeout(()=>{
+                    /**====测试==== */
+                    if (this.t2)
+                        clearTimeout(this.t2)
+                    this.t2 = setTimeout(() => {
                         this.clearFeelPoker();
-                    },1000)
+                    }, 1000)
                 }));
             }
         }));
@@ -78,7 +86,7 @@ class FeelPoker {
     /**
      * 清除摸到的牌(隐藏归原位)
      */
-    clearFeelPoker(){
+    clearFeelPoker() {
         // let ID:number=num==0?0:parseInt(String(Math.random()*2))+1;
         // let userid=userId?userId:`12345${ID}`;
         // let data={
@@ -91,9 +99,8 @@ class FeelPoker {
             // }
             this.initParam2(item);
             if(item.IsMe){
-                let changeArr = [{ nodeName: item.owner, val: 0 },{ nodeName: MyCenter.GameUIObj.dealSeat, val: 0 }, { nodeName: MyCenter.GameUIObj.mePokerView, val: 2 }, { nodeName: MyCenter.GameUIObj.seatList, val: 0 }];
+                let changeArr = [{ nodeName: item.owner, val: 0 }];
                 Main.changeNodeZOrder(changeArr);
-                console.log(item)
             }
         });
     }

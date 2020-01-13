@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":11,
-    "selecteID":348,
+    "selectedBox":6,
+    "selecteID":7,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/GameCenter/GameUI.ts","height":2208},
     "nodeParent":-1,
-    "maxID":377,
+    "maxID":387,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -171,22 +171,8 @@
                 {
                     "x":30,
                     "type":"Image",
-                    "searchKey":"Image,getMePokerSeat,getMePokerSeat",
-                    "props":{"width":128,"var":"getMePokerSeat","scaleY":0.3,"scaleX":0.3,"name":"getMePokerSeat","height":450,"centerX":0,"bottom":600},
-                    "nodeParent":6,
-                    "label":"getMePokerSeat",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":120,
-                    "child":[
-                        ]
-                },
-                {
-                    "x":30,
-                    "type":"Image",
                     "searchKey":"Image,seatList,seatList",
-                    "props":{"var":"seatList","top":506,"right":0,"name":"seatList","left":0,"bottom":260},
+                    "props":{"zOrder":1,"var":"seatList","top":506,"right":0,"name":"seatList","left":0,"bottom":300},
                     "nodeParent":6,
                     "label":"seatList",
                     "isOpen":true,
@@ -264,20 +250,6 @@
                                     "isAniNode":true,
                                     "hasChild":false,
                                     "compId":18,
-                                    "child":[
-                                        ]
-                                },
-                                {
-                                    "x":60,
-                                    "type":"Image",
-                                    "searchKey":"Image,getOtherPokerSeat",
-                                    "props":{"x":0,"width":128,"scaleY":0.3,"scaleX":0.3,"name":"getOtherPokerSeat","height":450,"centerX":0,"bottom":-220},
-                                    "nodeParent":9,
-                                    "label":"getOtherPokerSeat",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":113,
                                     "child":[
                                         ]
                                 },
@@ -376,18 +348,47 @@
                                 {
                                     "x":60,
                                     "type":"Image",
+                                    "searchKey":"Image,getDealPokerSeat",
+                                    "props":{"width":128,"scaleY":0.3,"scaleX":0.3,"name":"getDealPokerSeat","height":450,"centerX":0,"bottom":-220},
+                                    "nodeParent":9,
+                                    "label":"getDealPokerSeat",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":381,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Image",
+                                    "searchKey":"Image,mePokerView",
+                                    "props":{"y":-93,"x":26,"width":128,"visible":false,"scaleY":0.9,"scaleX":0.9,"pivotY":450,"name":"mePokerView","height":450,"centerX":0,"bottom":260},
+                                    "nodeParent":9,
+                                    "label":"mePokerView",
+                                    "isOpen":true,
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":377,
+                                    "child":[
+                                        ],
+                                    "$HIDDEN":false
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Image",
                                     "searchKey":"Image,feelView",
                                     "props":{"width":115,"visible":true,"pivotY":203,"pivotX":58,"name":"feelView","height":405,"centerX":0,"bottom":700},
                                     "nodeParent":9,
                                     "label":"feelView",
-                                    "isOpen":true,
+                                    "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
                                     "compId":341,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,feelPoker",
                                             "props":{"width":115,"skin":"images/poker/-1.png","scaleX":0,"pivotY":203,"pivotX":58,"name":"feelPoker","height":405,"centerY":0,"centerX":0},
@@ -409,14 +410,13 @@
                             "props":{"width":167,"top":0,"skin":"images/game/zuoweiBg.png","pivotY":84,"pivotX":84,"name":"empty_seat2","left":100,"height":167},
                             "nodeParent":7,
                             "label":"empty_seat2",
-                            "isOpen":true,
+                            "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":10,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Script",
                                     "switchAble":true,
                                     "source":"src/game/GameCenter/seat.ts",
@@ -433,7 +433,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,score",
                                     "props":{"y":0,"x":0,"wordWrap":true,"width":165,"visible":false,"valign":"middle","top":167,"text":"0","padding":"6,6,6,6","name":"score","fontSize":36,"color":"#FFFFFF","centerX":0,"bgColor":"#232323","align":"center"},
@@ -447,7 +446,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,name",
                                     "props":{"y":0,"x":0,"wordWrap":false,"width":210,"visible":false,"valign":"middle","padding":"6,6,6,6","overflow":"hidden","name":"name","height":46,"fontSize":34,"color":"#FFFFFF","centerX":0,"bottom":167,"align":"center"},
@@ -461,7 +459,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,head",
                                     "props":{"y":0,"x":0,"width":160,"visible":false,"name":"head","height":160,"centerY":0,"centerX":0},
@@ -475,21 +472,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
-                                    "type":"Image",
-                                    "searchKey":"Image,getOtherPokerSeat",
-                                    "props":{"y":0,"x":0,"width":128,"scaleY":0.3,"scaleX":0.5,"name":"getOtherPokerSeat","height":450,"centerX":0,"bottom":-220},
-                                    "nodeParent":10,
-                                    "label":"getOtherPokerSeat",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":114,
-                                    "child":[
-                                        ]
-                                },
-                                {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu0",
                                     "props":{"x":-130,"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":220,"name":"diu0","height":0},
@@ -504,7 +486,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu1",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"name":"diu1","left":240,"height":0},
@@ -519,7 +500,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu2",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":240,"name":"diu2","height":0},
@@ -534,7 +514,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show0",
                                     "props":{"width":128,"visible":false,"top":-20,"scaleY":0.6,"scaleX":0.6,"name":"show0","left":240,"height":300},
@@ -549,7 +528,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show1",
                                     "props":{"width":512,"visible":false,"top":300,"scaleY":0.6,"scaleX":0.6,"name":"show1","height":300,"centerX":-10},
@@ -564,7 +542,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show2",
                                     "props":{"y":0,"x":0,"width":512,"visible":false,"top":300,"scaleY":0.6,"scaleX":0.6,"name":"show2","height":300,"centerX":10},
@@ -579,20 +556,46 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
+                                    "type":"Image",
+                                    "searchKey":"Image,getDealPokerSeat",
+                                    "props":{"x":64,"width":128,"scaleY":0.3,"scaleX":0.3,"name":"getDealPokerSeat","height":450,"centerX":0,"bottom":-220},
+                                    "nodeParent":10,
+                                    "label":"getDealPokerSeat",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":383,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,mePokerView",
+                                    "props":{"y":26,"x":150,"width":128,"visible":false,"scaleY":0.9,"scaleX":0.9,"pivotY":450,"name":"mePokerView","height":450,"centerX":0,"bottom":260},
+                                    "nodeParent":10,
+                                    "label":"mePokerView",
+                                    "isOpen":true,
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":379,
+                                    "child":[
+                                        ],
+                                    "$HIDDEN":false
+                                },
+                                {
                                     "type":"Image",
                                     "searchKey":"Image,feelView",
                                     "props":{"width":115,"visible":true,"pivotY":203,"pivotX":58,"name":"feelView","left":150,"height":405,"centerY":0},
                                     "nodeParent":10,
                                     "label":"feelView",
-                                    "isOpen":true,
+                                    "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
                                     "compId":345,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,feelPoker",
                                             "props":{"y":0,"x":0,"width":115,"skin":"images/poker/-1.png","scaleX":0,"pivotY":203,"pivotX":58,"name":"feelPoker","height":405,"centerY":0,"centerX":0},
@@ -614,14 +617,13 @@
                             "props":{"y":84,"x":1059,"top":0,"skin":"images/game/zuoweiBg.png","right":100,"pivotY":84,"pivotX":84,"name":"empty_seat3"},
                             "nodeParent":7,
                             "label":"empty_seat3",
-                            "isOpen":true,
+                            "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":11,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Script",
                                     "switchAble":true,
                                     "source":"src/game/GameCenter/seat.ts",
@@ -638,7 +640,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,score",
                                     "props":{"y":0,"x":0,"wordWrap":true,"width":165,"visible":false,"valign":"middle","top":167,"text":"0","padding":"6,6,6,6","name":"score","fontSize":36,"color":"#FFFFFF","centerX":0,"bgColor":"#232323","align":"center"},
@@ -652,7 +653,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,name",
                                     "props":{"y":0,"x":0,"wordWrap":false,"width":210,"visible":false,"valign":"middle","padding":"6,6,6,6","overflow":"hidden","name":"name","height":46,"fontSize":34,"color":"#FFFFFF","centerX":0,"bottom":167,"align":"center"},
@@ -666,7 +666,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,head",
                                     "props":{"y":0,"x":0,"width":160,"visible":false,"name":"head","height":160,"centerY":0,"centerX":0},
@@ -680,21 +679,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
-                                    "type":"Image",
-                                    "searchKey":"Image,getOtherPokerSeat",
-                                    "props":{"y":0,"x":0,"width":128,"scaleY":0.3,"scaleX":0.5,"name":"getOtherPokerSeat","height":450,"centerX":0,"bottom":-220},
-                                    "nodeParent":11,
-                                    "label":"getOtherPokerSeat",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":115,
-                                    "child":[
-                                        ]
-                                },
-                                {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu0",
                                     "props":{"x":-130,"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":220,"name":"diu0","height":0},
@@ -709,7 +693,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu1",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"name":"diu1","left":240,"height":0},
@@ -724,7 +707,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu2",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":240,"name":"diu2","height":0},
@@ -739,7 +721,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show0",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"name":"show0","left":240,"height":300},
@@ -754,7 +735,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show1",
                                     "props":{"y":0,"x":0,"width":512,"visible":false,"top":300,"scaleY":0.6,"scaleX":0.6,"name":"show1","height":300,"centerX":-10},
@@ -769,7 +749,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show2",
                                     "props":{"y":0,"width":512,"visible":false,"top":300,"scaleY":0.6,"scaleX":0.6,"name":"show2","height":300,"centerX":10},
@@ -784,20 +763,33 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
+                                    "type":"Image",
+                                    "searchKey":"Image,mePokerView",
+                                    "props":{"y":-93,"x":26,"width":128,"visible":false,"scaleY":0.9,"scaleX":0.9,"pivotY":450,"name":"mePokerView","height":450,"centerX":0,"bottom":260},
+                                    "nodeParent":11,
+                                    "label":"mePokerView",
+                                    "isOpen":true,
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":380,
+                                    "child":[
+                                        ],
+                                    "$HIDDEN":false
+                                },
+                                {
                                     "type":"Image",
                                     "searchKey":"Image,feelView",
                                     "props":{"width":115,"visible":true,"right":150,"pivotY":203,"pivotX":58,"name":"feelView","height":405,"centerY":0},
                                     "nodeParent":11,
                                     "label":"feelView",
-                                    "isOpen":true,
+                                    "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
                                     "compId":348,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,feelPoker",
                                             "props":{"y":0,"x":0,"width":115,"skin":"images/poker/-1.png","scaleX":0,"pivotY":203,"pivotX":58,"name":"feelPoker","height":405,"centerY":0,"centerX":0},
@@ -810,6 +802,19 @@
                                             "child":[
                                                 ]
                                         }]
+                                },
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,getDealPokerSeat",
+                                    "props":{"y":0,"x":64,"width":128,"scaleY":0.3,"scaleX":0.3,"name":"getDealPokerSeat","height":450,"centerX":0,"bottom":-220},
+                                    "nodeParent":11,
+                                    "label":"getDealPokerSeat",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":385,
+                                    "child":[
+                                        ]
                                 }]
                         }]
                 },
@@ -817,7 +822,7 @@
                     "x":30,
                     "type":"Image",
                     "searchKey":"Image,dealSeat,dealSeat",
-                    "props":{"y":181,"x":589,"width":64,"var":"dealSeat","name":"dealSeat","height":225,"centerX":0},
+                    "props":{"zOrder":2,"y":150,"x":589,"width":64,"var":"dealSeat","name":"dealSeat","height":225,"centerX":0},
                     "nodeParent":6,
                     "label":"dealSeat",
                     "isOpen":false,
@@ -917,38 +922,6 @@
                                         ]
                                 }]
                         }]
-                },
-                {
-                    "x":30,
-                    "type":"Image",
-                    "searchKey":"Image,mePokerView,mePokerView",
-                    "props":{"zOrder":2,"y":1688,"x":563,"width":128,"visible":true,"var":"mePokerView","scaleY":0.9,"scaleX":0.9,"pivotY":450,"name":"mePokerView","height":450,"centerX":0,"bottom":520},
-                    "nodeParent":6,
-                    "label":"mePokerView",
-                    "isOpen":true,
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":64,
-                    "child":[
-                        ],
-                    "$HIDDEN":false
-                },
-                {
-                    "x":30,
-                    "type":"Image",
-                    "searchKey":"Image,meDealView,meDealView",
-                    "props":{"x":563,"width":128,"visible":false,"var":"meDealView","scaleY":0.9,"scaleX":0.9,"pivotY":450,"name":"meDealView","height":450,"centerX":0,"bottom":520,"alpha":0},
-                    "nodeParent":6,
-                    "label":"meDealView",
-                    "isOpen":true,
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":121,
-                    "child":[
-                        ],
-                    "$HIDDEN":false
                 }]
         }],
     "animations":[

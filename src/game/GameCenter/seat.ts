@@ -8,8 +8,8 @@ export default class seat extends Laya.Script {
     SeatId: number;
     //是否是自己
     IsMe: boolean = false;
-    //接受牌的位置
-    getOtherPokerSeat: any;
+    // //接受牌的位置
+    // getOtherPokerSeat: any;
     constructor() {
         super();
         this.Index = 0;
@@ -21,7 +21,7 @@ export default class seat extends Laya.Script {
         //注册事件
         this.RegisterEvent();
 
-        console.log(this)
+        // console.log(this)
     }
 
     onStart() {
@@ -43,7 +43,7 @@ export default class seat extends Laya.Script {
 
     /**点击位置事件 */
     CLICK_SEAT(Event: any) {
-        console.log(Event, this)
+        // console.log(Event, this)
         ChangeSeat.change(Event, this);
     }
 }

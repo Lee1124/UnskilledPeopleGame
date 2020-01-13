@@ -15,7 +15,6 @@ export default class GameControl extends Laya.Script {
     private Index: number = 0;
     //===========摸牌测试===========
     num2: number = 0;
-    num3: number = 0;
     data1:any[]=[
         { userId: 123450, data: [1] },
         { userId: 123451, data: [4] },
@@ -53,10 +52,10 @@ export default class GameControl extends Laya.Script {
     }
     /**丢的牌 */
     diuPoker() {
-        this.num3++;
-        this.data1[0].data.push(this.num3);
-        this.data1[1].data.push(this.num3);
-        this.data1[2].data.push(this.num3);
+        let num=parseInt(String(Math.random()*21))+1;
+        this.data1[0].data.push(num);
+        this.data1[1].data.push(num);
+        this.data1[2].data.push(num);
         DiuPoker.open(this.data1);
     }
     /**操作的牌 */

@@ -25,13 +25,13 @@ class InitGameData {
         let feelPokerSeatXY = feelPokerSeat.parent.localToGlobal(new Laya.Point(feelPokerSeat.x, feelPokerSeat.y));
         conObj.owner.feelPokerSeatXY = { x: feelPokerSeatXY.x, y: feelPokerSeatXY.y };
         //发其他玩家牌效果接受牌的位置
-        let getPokerSeat = seatObj.owner.getChildByName('getOtherPokerSeat');
-        let getPokerSeatXY = getPokerSeat.parent.localToGlobal(new Laya.Point(getPokerSeat.x, getPokerSeat.y));
-        seatObj.getOtherPokerSeat = { x: getPokerSeatXY.x, y: getPokerSeatXY.y };
-        //发玩家自己牌效果接受牌的位置
-        let getMePokerSeat = conObj.owner.getMePokerSeat;
-        let getMePokerSeatXY = getMePokerSeat.parent.localToGlobal(new Laya.Point(getMePokerSeat.x, getMePokerSeat.y));
-        conObj.owner.mePokerGetSeat = { x: getMePokerSeatXY.x, y: getMePokerSeatXY.y };
+        // let getPokerSeat = seatObj.owner.getChildByName('getOtherPokerSeat');
+        // let getPokerSeatXY = getPokerSeat.parent.localToGlobal(new Laya.Point(getPokerSeat.x, getPokerSeat.y));
+        // seatObj.getOtherPokerSeat = { x: getPokerSeatXY.x, y: getPokerSeatXY.y };
+        // //发玩家自己牌效果接受牌的位置
+        // let getMePokerSeat = conObj.owner.getMePokerSeat;
+        // let getMePokerSeatXY = getMePokerSeat.parent.localToGlobal(new Laya.Point(getMePokerSeat.x, getMePokerSeat.y));
+        // conObj.owner.mePokerGetSeat = { x: getMePokerSeatXY.x, y: getMePokerSeatXY.y };
 
         //====================测试=================
         if (conObj.Index == 1 || conObj.Index == 2) {

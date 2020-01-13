@@ -10,8 +10,8 @@ export default class GameUI extends Laya.Scene {
     dealPokerSeatXY:any;
     //摸牌的最初位置
     feelPokerSeatXY:any;
-    //玩家自己牌的接受位置坐标
-    mePokerGetSeat:any;
+    // //玩家自己牌的接受位置坐标
+    // mePokerGetSeat:any;
     //发牌接受牌的位置坐标
     // getPokerSeatXY: any[] = [];
     //控制中心的脚本对象

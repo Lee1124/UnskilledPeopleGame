@@ -7,7 +7,7 @@ class DealMePoker {
     //自己发牌容器
     meDealView: any;
     //玩家自己最终的摆牌容器
-    mePutView: any;
+    // mePutView: any;
     //玩家牌的数据(处理前)
     userPokerData0: any[];
     //玩家牌的数据(处理后)
@@ -33,6 +33,8 @@ class DealMePoker {
         this.pokerIndex = 0;
         this.timerNum = 0;
         this.players = MyCenter.GameControlObj.players;
+        this.init();
+        console.log(this.players)
         this.userPokerData0 = [
             { uid: 123450, data: [{ name: 'p1', poker: [1, 1, 1, 1] }, { name: 'p2', poker: [10, 4] }, { name: 'p3', poker: [4, 8, 2, 7, 21, 6, 2] }, { name: 'p4', poker: [1, 2, 3] }, { name: 'p5', poker: [9, 9, 9, 9] }] },
             { uid: 123451, data: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1] },
@@ -54,24 +56,26 @@ class DealMePoker {
         this.userPokerData.forEach((item, index) => {
             this.pokerNum += item.data.length;
         });
-        this.meDealView = MyCenter.GameUIObj.meDealView;
-        this.meDealView.visible = true;
-        this.meDealView.alpha = 1;
-        Laya.timer.loop(Main.Speed['dealPoker'], this, this.MovePoker);
+        // this.meDealView = MyCenter.GameUIObj.meDealView;
+        // this.meDealView.visible = true;
+        // this.meDealView.alpha = 1;
+        // Laya.timer.loop(Main.Speed['dealPoker'], this, this.MovePoker);
+        this.MovePoker();
     }
+
     /**
-     * 创建发牌处的牌，并排列成一排
+     * 初始化
      */
-    // createShowDeal() {
-    //     this.showDealView = MyCenter.GameUIObj.dealSeat.getChildByName('showDealView');
-    //     for(let i=0;i<Main.count;i++){
-    //         let dealPoker = new Laya.Image();
-    //         dealPoker.scale(0.5,0.5);
-    //         dealPoker.x=i*10;
-    //         dealPoker.skin='res/img/poker/chang/-1.png';
-    //         this.showDealView.addChild(dealPoker);
-    //     }
-    // }
+    init() {
+        //初始化发牌容器的层级
+        MyCenter.GameUIObj.dealSeat.zOrder = 0;
+        //初始化玩家受到发牌的位置
+        this.players.forEach(item => {
+            let getDealPokerSeat = item.owner.getChildByName('getDealPokerSeat');
+            getDealPokerSeat.bottom = item.IsMe ? Main.deal['meBottom'] : Main.deal['otherBottom'];
+            item.owner.zOrder = item.IsMe ? 1 : 0;
+        })
+    }
     /**
      * 开始移动牌
      * @param index 牌索引
@@ -79,7 +83,6 @@ class DealMePoker {
     MovePoker() {
         //该发牌的玩家的牌的json数据
         let dealPlayerData = this.userPokerData[this.userIndex];
-
         //发牌的牌
         let dealSeat: Laya.Sprite = MyCenter.GameUIObj.dealSeat;
         let dealPoker: Laya.Sprite = Laya.Pool.getItemByCreateFun("dealPoker", MyCenter.GameControlObj.dealPoker.create, MyCenter.GameControlObj.dealPoker);
@@ -89,18 +92,15 @@ class DealMePoker {
         dealSeat.addChild(dealPoker);
         this.players.forEach((item, index) => {
             if (item.userId == dealPlayerData.uid) {
-                let x: number;
-                let y: number;
-                if (item.IsMe) {
-                    x = MyCenter.GameUIObj.mePokerGetSeat.x - MyCenter.GameUIObj.dealPokerSeatXY.x;
-                    y = MyCenter.GameUIObj.mePokerGetSeat.y - MyCenter.GameUIObj.dealPokerSeatXY.y;
-                } else {
-                    x = item.getOtherPokerSeat.x - MyCenter.GameUIObj.dealPokerSeatXY.x;
-                    y = item.getOtherPokerSeat.y - MyCenter.GameUIObj.dealPokerSeatXY.y;
-                }
+                let getDealPokerSeat = item.owner.getChildByName('getDealPokerSeat');
+                let getDealPokerSeatXY = getDealPokerSeat.parent.localToGlobal(new Laya.Point(getDealPokerSeat.x, getDealPokerSeat.y));
+                let x: number = getDealPokerSeatXY.x - MyCenter.GameUIObj.dealPokerSeatXY.x;
+                let y: number = getDealPokerSeatXY.y - MyCenter.GameUIObj.dealPokerSeatXY.y;
                 let moveObj = dealSeat.getChildByName(String(this.timerNum));
-                Laya.Tween.to(moveObj, { alpha: 1, x: x, y: y }, Main.Speed['dealPoker'] * 0.8, null, Laya.Handler.create(this, () => {
+                Laya.Tween.to(moveObj, { alpha: 0.4, x: x, y: y }, Main.Speed['dealPoker'] * 0.8, null, Laya.Handler.create(this, () => {
                     if (item.IsMe) {
+                        this.meDealView = item.owner.getChildByName('mePokerView');
+                        this.meDealView.visible = true;
                         if ((this.pokerIndex) % 5 == 0) {
                             this.meCellIndex = 0;
                             let pokerCellView: Laya.Image = new Laya.Image();
@@ -109,7 +109,7 @@ class DealMePoker {
                             pokerCellView.bottom = 0;
                             pokerCellView.x = Main.pokerWidth * parseInt(String((this.pokerIndex / 5)));
                             this.meDealView.width = Main.pokerWidth * (parseInt(String((this.pokerIndex / 5))) + 1);
-                            this.meDealView.addChild(pokerCellView);
+                            let hh = this.meDealView.addChild(pokerCellView);
                         }
                         let mePokerObj: Laya.Image = new Laya.Image();
                         if (this.meCellIndex == 0) {
@@ -135,20 +135,24 @@ class DealMePoker {
                     }
                     Laya.Tween.to(moveObj, { alpha: 0 }, Main.Speed['dealPoker'] * 0.8, null, Laya.Handler.create(this, () => {
                         moveObj.removeSelf();
-                    }))
+                    }));
+                    this.timerNum++;
+                    this.userIndex++;
+                    if (this.userIndex % 3 == 0) {
+                        this.userIndex = 0;
+                        this.pokerIndex++;
+                    }
+                    if (this.timerNum >= 20 * 3) {
+                        Laya.timer.clear(this, this.MovePoker);
+                        MyCenter.GameUIObj.dealSeat.zOrder = 2;
+                        this.dealPokerEnd();
+                    } else {
+                        this.MovePoker();
+                    }
                 }))
             }
         })
-        this.timerNum++;
-        this.userIndex++;
-        if (this.timerNum >= 20 * 3) {
-            Laya.timer.clear(this, this.MovePoker);
-            this.dealPokerEnd();
-        }
-        if (this.userIndex % 3 == 0) {
-            this.userIndex = 0;
-            this.pokerIndex++;
-        }
+
     }
 
     /**
@@ -165,12 +169,9 @@ class DealMePoker {
             //计算
             Laya.Tween.to(childNode, { x: cellMoveX }, Main.Speed['dealPoker2'], null, Laya.Handler.create(this, () => {
                 if (i >= numChildren - 1) {
-                    Laya.Tween.to(this.meDealView, { alpha: 0 }, 100, null, Laya.Handler.create(this, () => {
-                        this.meDealView.visible = false;
-                        this.meDealView.removeChildren();
-                        this.meDealView.width = Main.pokerWidth;
-                        this.showMePokerView();
-                    }))
+                    this.meDealView.removeChildren();
+                    this.meDealView.width = Main.pokerWidth;
+                    this.showMePokerView();
                 }
             }));
         }
@@ -187,62 +188,63 @@ class DealMePoker {
             { name: 'p4', poker: [1, 2, 3] },
             { name: 'p5', poker: [9, 9, 9, 9] },
         ]
-        //摆牌容器
-        this.mePutView = MyCenter.GameUIObj.mePokerView;
-        //设置摆牌容器的总宽度
-        this.mePutView.width = Main.pokerWidth * mePokerData.length;
-        mePokerData.forEach((item: any, index: number) => {
-            let cellObj = new Laya.Image();
-            cellObj.name = item.name;
-            cellObj.size(Main.pokerWidth, 0);
-            cellObj.x = Main.pokerWidth * index;
-            cellObj.bottom = 0;
-            item.poker.forEach((item_inner: any, index_inner: number) => {
-                let pokerObj = new Laya.Image('res/img/poker/duan/' + item_inner + '.png');
-                //创建一个颜色滤镜对象,红色
-                // let redFilter: Laya.ColorFilter = new Laya.ColorFilter(Main.pokerParam['bgColor1']);
-                // pokerObj.filters=[redFilter];
-                if(index==0){
-                    this.changePokerColor(pokerObj,Main.pokerParam['color1'],'noHanldePoker');
-                }
-                pokerObj.name = item_inner;
-                pokerObj.sizeGrid = "85,0,10,0";
-                pokerObj.on(Laya.Event.CLICK, this, this.ClickPoker, [pokerObj]);
-                pokerObj.size(Main.pokerWidth, Main.pokerWidth);
-                pokerObj.x = 0;
-                pokerObj.zOrder = item.poker.length - index_inner;
-                if (index_inner == 0)
-                    pokerObj.bottom = Main.pokerWidth * index_inner;
-                else if (index_inner >= 1)
-                    pokerObj.bottom = Main.pokerWidth * index_inner - (45 * index_inner);
-                cellObj.addChild(pokerObj);
+        let playerMe = this.players.filter(item => item.IsMe);
+        if (playerMe.length > 0) {
+            //摆牌容器
+            // this.mePutView = playerMe[0].owner.getChildByName('mePokerView');
+            //设置摆牌容器的总宽度
+            this.meDealView.width = Main.pokerWidth * mePokerData.length;
+            mePokerData.forEach((item: any, index: number) => {
+                let cellObj = new Laya.Image();
+                cellObj.name = item.name;
+                cellObj.size(Main.pokerWidth, 0);
+                cellObj.x = Main.pokerWidth * index;
+                cellObj.bottom = 0;
+                item.poker.forEach((item_inner: any, index_inner: number) => {
+                    let pokerObj = new Laya.Image('res/img/poker/duan/' + item_inner + '.png');
+                    if (index == 0) {
+                        this.changePokerColor(pokerObj, Main.pokerParam['color1'], 'noHanldePoker');
+                    }
+                    pokerObj.name = item_inner;
+                    pokerObj.sizeGrid = "85,0,10,0";
+                    pokerObj.on(Laya.Event.CLICK, this, this.ClickPoker, [pokerObj]);
+                    pokerObj.size(Main.pokerWidth, Main.pokerWidth);
+                    pokerObj.x = 0;
+                    pokerObj.zOrder = item.poker.length - index_inner;
+                    if (index_inner == 0)
+                        pokerObj.bottom = Main.pokerWidth * index_inner;
+                    else if (index_inner >= 1)
+                        pokerObj.bottom = Main.pokerWidth * index_inner - (45 * index_inner);
+                    cellObj.addChild(pokerObj);
+                })
+                this.meDealView.addChild(cellObj);
             })
-            this.mePutView.addChild(cellObj);
-        })
+        }
     }
     /**
      * 点击牌事件
      * @param pokerObj 点击的牌对象
      *  */
-    ClickPoker(pokerObj: any) {
+    ClickPoker(pokerObj: any, e) {
+        e.stopPropagation();
         if (pokerObj.height > Main.pokerWidth) {
             this.mePlayPoker(pokerObj);
             pokerObj.removeSelf();
             //检测牌并重新排位置
-            let mePutViewChildren = this.mePutView._children;
+            let mePutViewChildren = this.meDealView._children;
             mePutViewChildren.forEach((item, index) => {
                 let innerChildren = item._children;
                 if (innerChildren.length == 0) {//某列全部移除时
                     item.removeSelf();
-                    this.mePutView.width -= Main.pokerWidth;
+                    this.meDealView.width -= Main.pokerWidth;
                 }
                 this.mePutViewReloadSeat();
             })
         } else {
-            let noClick=pokerObj.getChildByName('noHanldePoker');
-            if(!noClick){
+            let noClick = pokerObj.getChildByName('noHanldePoker');
+            if (!noClick) {
                 this.mePutViewReloadSeat();
-                this.changePokerColor(pokerObj,Main.pokerParam['color2'],'clickColorImg');
+                this.changePokerColor(pokerObj, Main.pokerParam['color2'], 'clickColorImg');
                 let pokerObjH = pokerObj.height + 50;
                 Laya.Tween.to(pokerObj, { height: pokerObjH }, Main.Speed['pokerHeight'], Laya.Ease.backOut, Laya.Handler.create(this, () => {
                     this.adjustCellPokerSeat(pokerObj);
@@ -254,7 +256,7 @@ class DealMePoker {
     /**
      * 点击牌时候，使牌加上高亮(颜色层)
      */
-    changePokerColor(pokerObj: any,colorImgUrl:string,name:string) {
+    changePokerColor(pokerObj: any, colorImgUrl: string, name: string) {
         let colorImg = new Laya.Image(colorImgUrl);
         colorImg.name = name;
         colorImg.left = 0;
@@ -265,7 +267,7 @@ class DealMePoker {
     }
 
     /**
-     * 自己出牌的效果
+     * 玩家自己出牌的效果
      */
     mePlayPoker(pokerObj: any): void {
         let pokerObjSeatXY = pokerObj.parent.localToGlobal(new Laya.Point(pokerObj.x, pokerObj.y));
@@ -276,11 +278,11 @@ class DealMePoker {
         showMePlayPoker.pos(startX, startY);
         showMePlayPoker.skin = 'res/img/poker/chang/' + pokerObj.name + '.png';
         Laya.Tween.to(showMePlayPoker, { alpha: 1, x: showMePlayPoker.width / 2, y: showMePlayPoker.height / 2 }, Main.Speed['mePlay']);
-        console.log(showMePlayPoker)
+        // console.log(showMePlayPoker)
     }
 
     /**
-     * 其他玩出牌的效果
+     * 其他玩家出牌的效果
      */
     otherPlay(num: number): void {
         let playData = {
@@ -340,7 +342,7 @@ class DealMePoker {
 
     /**节点重新放置位置 */
     mePutViewReloadSeat() {
-        let mePutViewChildren = this.mePutView._children;
+        let mePutViewChildren = this.meDealView._children;
         mePutViewChildren.forEach((item, index) => {
             let innerChildren = item._children;
             item.x = Main.pokerWidth * index;

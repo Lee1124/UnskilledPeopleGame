@@ -31,6 +31,7 @@ class ChangeSeat {
         NewSeatIndexArr.forEach((item: number, index: number) => {
             this.playerSeatArr[index].IsMe = false;
             this.playerSeatArr[item].SeatId = index;
+            this.playerSeatArr[item].userId = `12345${index}`;
             Laya.Tween.to(this.playerSeatArr[item].owner, { x: this.playerSeatXYArr[index].x, y: this.playerSeatXYArr[index].y }, Main.Speed['changeSeat']);
             this.changeSeatNodeParam(this.playerSeatArr[item].owner, index);
         })
@@ -38,7 +39,6 @@ class ChangeSeat {
     }
 
     setSeatContent(seatObj: any) {
-        seatObj.userId = `123450`;
         seatObj.owner.getChildByName('head').visible = true;
         seatObj.owner.getChildByName('head').skin = 'res/img/common/defaultIcon.png';
         seatObj.owner.getChildByName('name').visible = true;

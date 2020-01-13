@@ -21,12 +21,17 @@ class Main {
         color1:'res/img/common/1.png',
         color2:'res/img/common/2.png'
     }
+    //关于发牌的时候的接受牌的参数
+    deal:object={
+        otherBottom:-220,
+        meBottom:340
+    }
     tipArr1: any[] = [];
     tipArr2: any[] = [];
     //配置速度
     Speed: object = {
         changeSeat: 200,
-        dealPoker: 40,
+        dealPoker: 20,
         dealPoker2: 120,//发牌结束整理牌的速度
         feelPoker: 200,//摸牌的速度
         feelFan: 100,//摸后翻牌的速度
