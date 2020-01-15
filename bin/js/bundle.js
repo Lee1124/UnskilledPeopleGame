@@ -22,6 +22,33 @@
     }
     var MyCenter$1 = new MyCenter();
 
+    class InitGameData {
+        Init(seatObj, conObj) {
+            seatObj.Index = conObj.Index;
+            seatObj.SeatId = conObj.Index;
+            let startSeat = seatObj.owner;
+            conObj.owner.startSeatXY.push({ x: startSeat.x, y: startSeat.y });
+            let feelSeat = seatObj.owner.getChildByName('feelView');
+            conObj.owner.startFeelSeatXY.push({ x: feelSeat.x, y: feelSeat.y });
+            let dealPokerSeat = conObj.owner.dealSeat;
+            let dealPokerSeatXY = dealPokerSeat.parent.localToGlobal(new Laya.Point(dealPokerSeat.x, dealPokerSeat.y));
+            conObj.owner.dealPokerSeatXY = { x: dealPokerSeatXY.x, y: dealPokerSeatXY.y };
+            let feelPokerSeat = conObj.owner.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
+            let feelPokerSeatXY = feelPokerSeat.parent.localToGlobal(new Laya.Point(feelPokerSeat.x, feelPokerSeat.y));
+            conObj.owner.feelPokerSeatXY = { x: feelPokerSeatXY.x, y: feelPokerSeatXY.y };
+            if (conObj.Index == 1 || conObj.Index == 2) {
+                seatObj.userId = `12345${conObj.Index}`;
+                seatObj.owner.getChildByName('head').visible = true;
+                seatObj.owner.getChildByName('head').skin = 'res/img/common/defaultIcon.png';
+                seatObj.owner.getChildByName('name').visible = true;
+                seatObj.owner.getChildByName('name').text = `用户名${(conObj.Index + 1)}`;
+                seatObj.owner.getChildByName('score').visible = true;
+                seatObj.owner.getChildByName('score').text = parseInt(String(Math.random() * 100 + 100));
+            }
+        }
+    }
+    var InitGameData$1 = new InitGameData();
+
     class SuspensionTips extends Laya.Script {
         constructor() {
             super();
@@ -212,98 +239,6 @@
         }
     }
     var Main$1 = new Main();
-
-    class ChangeSeat {
-        constructor() {
-            this.seatIndexArr = [0, 1, 2];
-            this.selectSeatIndex = null;
-            this.selectSeatId = null;
-        }
-        change(CLICKOBJ, thisObj) {
-            this.selectSeatIndex = thisObj.Index;
-            this.selectSeatId = thisObj.SeatId;
-            this.seatIndexArr = [0, 1, 2];
-            this.playerSeatArr = MyCenter$1.GameControlObj.players;
-            this.playerSeatXYArr = MyCenter$1.GameUIObj.startSeatXY;
-            this.playerFeelSeatXYArr = MyCenter$1.GameUIObj.startFeelSeatXY;
-            let NewSeatIndexArr = this.seatIndexArr.splice(this.selectSeatIndex, this.seatIndexArr.length).concat(this.seatIndexArr.splice(0, this.selectSeatIndex + 1));
-            this.setSeatContent(thisObj);
-            NewSeatIndexArr.forEach((item, index) => {
-                this.playerSeatArr[index].IsMe = false;
-                this.playerSeatArr[item].SeatId = index;
-                this.playerSeatArr[item].userId = `12345${index}`;
-                Laya.Tween.to(this.playerSeatArr[item].owner, { x: this.playerSeatXYArr[index].x, y: this.playerSeatXYArr[index].y }, Main$1.Speed['changeSeat']);
-                this.changeSeatNodeParam(this.playerSeatArr[item].owner, index);
-            });
-            thisObj.IsMe = true;
-        }
-        setSeatContent(seatObj) {
-            seatObj.owner.getChildByName('head').visible = true;
-            seatObj.owner.getChildByName('head').skin = 'res/img/common/defaultIcon.png';
-            seatObj.owner.getChildByName('name').visible = true;
-            seatObj.owner.getChildByName('name').text = `用户名-0`;
-            seatObj.owner.getChildByName('score').visible = true;
-            seatObj.owner.getChildByName('score').text = parseInt(String(Math.random() * 100 + 100));
-        }
-        changeSeatNodeParam(seatObj, index) {
-            let feelPokerNode = seatObj.getChildByName('feelView');
-            feelPokerNode.pos(this.playerFeelSeatXYArr[index].x, this.playerFeelSeatXYArr[index].y);
-        }
-    }
-    var ChangeSeat$1 = new ChangeSeat();
-
-    class seat extends Laya.Script {
-        constructor() {
-            super();
-            this.IsMe = false;
-            this.Index = 0;
-            this.SeatId = 0;
-        }
-        onEnable() {
-            this.RegisterEvent();
-        }
-        onStart() {
-            setTimeout(() => {
-                this.Send();
-            });
-        }
-        RegisterEvent() {
-            this.owner.on(Laya.Event.CLICK, this, this.CLICK_SEAT);
-        }
-        Send() {
-            MyCenter$1.send('seat', this);
-        }
-        CLICK_SEAT(Event) {
-            ChangeSeat$1.change(Event, this);
-        }
-    }
-
-    class InitGameData {
-        Init(seatObj, conObj) {
-            seatObj.Index = conObj.Index;
-            seatObj.SeatId = conObj.Index;
-            let startSeat = seatObj.owner;
-            conObj.owner.startSeatXY.push({ x: startSeat.x, y: startSeat.y });
-            let feelSeat = seatObj.owner.getChildByName('feelView');
-            conObj.owner.startFeelSeatXY.push({ x: feelSeat.x, y: feelSeat.y });
-            let dealPokerSeat = conObj.owner.dealSeat;
-            let dealPokerSeatXY = dealPokerSeat.parent.localToGlobal(new Laya.Point(dealPokerSeat.x, dealPokerSeat.y));
-            conObj.owner.dealPokerSeatXY = { x: dealPokerSeatXY.x, y: dealPokerSeatXY.y };
-            let feelPokerSeat = conObj.owner.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
-            let feelPokerSeatXY = feelPokerSeat.parent.localToGlobal(new Laya.Point(feelPokerSeat.x, feelPokerSeat.y));
-            conObj.owner.feelPokerSeatXY = { x: feelPokerSeatXY.x, y: feelPokerSeatXY.y };
-            if (conObj.Index == 1 || conObj.Index == 2) {
-                seatObj.userId = `12345${conObj.Index}`;
-                seatObj.owner.getChildByName('head').visible = true;
-                seatObj.owner.getChildByName('head').skin = 'res/img/common/defaultIcon.png';
-                seatObj.owner.getChildByName('name').visible = true;
-                seatObj.owner.getChildByName('name').text = `用户名${(conObj.Index + 1)}`;
-                seatObj.owner.getChildByName('score').visible = true;
-                seatObj.owner.getChildByName('score').text = parseInt(String(Math.random() * 100 + 100));
-            }
-        }
-    }
-    var InitGameData$1 = new InitGameData();
 
     class DealMePoker {
         constructor() {
@@ -887,14 +822,106 @@
         }
     }
 
+    class ChangeSeat {
+        constructor() {
+            this.seatIndexArr = [0, 1, 2];
+            this.selectSeatIndex = null;
+            this.selectSeatId = null;
+        }
+        change(CLICKOBJ, thisObj) {
+            this.selectSeatIndex = thisObj.Index;
+            this.selectSeatId = thisObj.SeatId;
+            this.seatIndexArr = [0, 1, 2];
+            this.playerSeatArr = MyCenter$1.GameControlObj.players;
+            this.playerSeatXYArr = MyCenter$1.GameUIObj.startSeatXY;
+            this.playerFeelSeatXYArr = MyCenter$1.GameUIObj.startFeelSeatXY;
+            let NewSeatIndexArr = this.seatIndexArr.splice(this.selectSeatIndex, this.seatIndexArr.length).concat(this.seatIndexArr.splice(0, this.selectSeatIndex + 1));
+            this.setSeatContent(thisObj);
+            NewSeatIndexArr.forEach((item, index) => {
+                this.playerSeatArr[index].IsMe = false;
+                this.playerSeatArr[item].SeatId = index;
+                this.playerSeatArr[item].userId = `12345${index}`;
+                Laya.Tween.to(this.playerSeatArr[item].owner, { x: this.playerSeatXYArr[index].x, y: this.playerSeatXYArr[index].y }, Main$1.Speed['changeSeat']);
+                this.changeSeatNodeParam(this.playerSeatArr[item].owner, index);
+            });
+            thisObj.IsMe = true;
+        }
+        setSeatContent(seatObj) {
+            seatObj.owner.getChildByName('head').visible = true;
+            seatObj.owner.getChildByName('head').skin = 'res/img/common/defaultIcon.png';
+            seatObj.owner.getChildByName('name').visible = true;
+            seatObj.owner.getChildByName('name').text = `用户名-0`;
+            seatObj.owner.getChildByName('score').visible = true;
+            seatObj.owner.getChildByName('score').text = parseInt(String(Math.random() * 100 + 100));
+        }
+        changeSeatNodeParam(seatObj, index) {
+            let feelPokerNode = seatObj.getChildByName('feelView');
+            feelPokerNode.pos(this.playerFeelSeatXYArr[index].x, this.playerFeelSeatXYArr[index].y);
+        }
+    }
+    var ChangeSeat$1 = new ChangeSeat();
+
+    class seat extends Laya.Script {
+        constructor() {
+            super();
+            this.IsMe = false;
+            this.Index = 0;
+            this.SeatId = 0;
+        }
+        onEnable() {
+            this.RegisterEvent();
+        }
+        onStart() {
+            setTimeout(() => {
+                this.Send();
+            });
+        }
+        RegisterEvent() {
+            this.owner.on(Laya.Event.CLICK, this, this.CLICK_SEAT);
+        }
+        Send() {
+            MyCenter$1.send('seat', this);
+        }
+        CLICK_SEAT(Event) {
+            ChangeSeat$1.change(Event, this);
+        }
+    }
+
+    class TabPageUI extends Laya.Scene {
+        onAwake() {
+            console.log(this);
+        }
+        onOpened() {
+        }
+    }
+
+    class SetSceneWH$1 extends Laya.Script {
+        constructor() {
+            super();
+            this.intType = 1000;
+            this.numType = 1000;
+            this.strType = "hello laya";
+            this.boolType = true;
+        }
+        onEnable() {
+            this.setSceneWH();
+        }
+        setSceneWH() {
+            this.owner['width'] = Laya.stage.width;
+            this.owner['height'] = Laya.stage.height;
+        }
+    }
+
     class GameConfig {
         constructor() { }
         static init() {
             var reg = Laya.ClassUtils.regClass;
-            reg("game/GameCenter/seat.ts", seat);
             reg("game/GameCenter/GameUI.ts", GameUI);
             reg("game/common/setSceneWH.ts", SetSceneWH);
             reg("game/GameCenter/GameControl.ts", GameControl);
+            reg("game/GameCenter/seat.ts", seat);
+            reg("game/pages/TabPageUI.ts", TabPageUI);
+            reg("game/common/SetSceneWH.ts", SetSceneWH$1);
         }
     }
     GameConfig.width = 1242;
