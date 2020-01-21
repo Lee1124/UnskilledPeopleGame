@@ -44,6 +44,9 @@ export default class GameUI extends Laya.Scene {
         this['playBtn'].on(Laya.Event.CLICK, this, () => {
             this.GameControlJS.otherPlay();
         })
+        this['timeBtn'].on(Laya.Event.CLICK, this, () => {
+            this.GameControlJS.countDown();
+        })
         /**===测试=== */
     }
 }

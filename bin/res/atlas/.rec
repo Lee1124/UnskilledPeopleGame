@@ -1,12 +1,81 @@
 D .
+R 39B957DA texture.png
 D images
 D images/common
+P 0CA95849 back.png
+S B2DBE610 bg.jpg
+P E7B4145A bg2.png
+R 840B6C85 bottom.png
 P 16A364AA defaultIcon.png
+R EA4DEBE2 fenge.png
+P 4F6CC3A8 headBox.png
+P 28205814 progress1.png
+P CE2A7994 progress2.png
+P F5963E56 progress_bg.png
+P 3DCD37C1 progress_line.png
+P B183B79E sex0.png
+P 6F83D6AE sex1.png
+P 9183A59D slected_bg.png
+P A8165AEF slection_bar.png
+P 10E9022F tab_1.png
+P F24B3DF9 tab_2.png
+P A3EB62B8 tab_3.png
+P AADCC3DD tab_4.png
+P 10AE082B tab_5.png
+P C6761EA9 tab_news.png
+P 00481823 tab_notice.png
+P 5D6928D8 text_register.png
+P 3DAFB2BD textinput.png
+P AE2A4A1A title_change.png
+P 0EDDF982 title_hall.png
+P 70995EAA title_notice.png
+R E6EBA664 top.png
 D images/game
 S 5210B1C1 deskBg.jpg
 P 8667F84D zuoweiBg.png
+D images/hall
+P 1816C380 h_bg.png
+P FA6BD6D8 h_da_0.png
+P 3EC1D9C4 h_da_1.png
+R 4973A230 h_list_bg.png
+P E4BF4D56 h_quan_0.png
+P 7140DE43 h_quan_1.png
+P 16DA38EA h_xiao_0.png
+P 68F7B8C1 h_xiao_1.png
+P 72F7D2E0 h_zhong_0.png
+P 64313E53 h_zhong_1.png
+P 2FA1ABC0 icon.png
+P 9C23A329 state1.png
+P E38D8F65 state2.png
+P BBDC443B state3_1.png
+P 876CA315 state3_2.png
+P 0EDDF982 title_hall.png
+P 4A12A7B1 yidairu.png
+D images/login
+P 0C2A2128 change_btn.png
+R EA821DF6 login_btn.png
+R 8EAC55F0 login_line.png
+R 1AE10E86 logo.png
+R F7BF6A1D register_btn.png
+R 18AF3A51 tip_text.png
+D images/me
+P 012BD0A1 bg.png
+P D67AF844 icon_label.png
+P 8C5A086B id_label.png
+P 93DD7863 me_text1.png
+P 5B4606F5 name_label.png
 D images/poker
 P 76153516 -1.png
+D images/register
+R EBBCB0C3 btnBox.png
+P 5DC0C47F btnRigisterText.png
+P 22B81804 codeLabel.png
+P 17AFCA1B confrim.png
+P 8012E9F0 getCodeBtn.png
+P 19FF0BD8 pwdLabel.png
+P 50836AFF RegisterInputBg.png
+P 5D6928D8 text_register.png
+P 62C4EF9D userLabel.png
 D images/poker/chang
 P F53C10C3 1.png
 P 40AF3706 10.png

@@ -3,8 +3,19 @@ import GameUI from "./game/GameCenter/GameUI"
 import setSceneWH from "./game/common/setSceneWH"
 import GameControl from "./game/GameCenter/GameControl"
 import seat from "./game/GameCenter/seat"
-import TabPageUI from "./game/pages/TabPageUI"
+import LoginUI from "./game/pages/Login/LoginUI"
 import SetSceneWH from "./game/common/SetSceneWH"
+import Login from "./game/pages/Login/Login"
+import openView from "./game/common/openView"
+import RegisterUI from "./game/pages/Register/RegisterUI"
+import Register from "./game/pages/Register/Register"
+import setHd from "./game/common/setHd"
+import Back from "./game/common/Back"
+import Start from "./game/Fuction/Start"
+import TabPageUI from "./game/pages/TabPages/TabPageUI"
+import Me from "./game/pages/TabPages/Me/Me"
+import GameHall from "./game/pages/TabPages/GameHall/GameHall"
+import Notice from "./game/pages/TabPages/Notice/Notice"
 /*
 * 游戏初始化配置;
 */
@@ -15,7 +26,7 @@ export default class GameConfig{
     static screenMode:string="none";
     static alignV:string="top";
     static alignH:string="left";
-    static startScene:any="Game.scene";
+    static startScene:any="Start.scene";
     static sceneRoot:string="";
     static debug:boolean=false;
     static stat:boolean=false;
@@ -28,8 +39,19 @@ export default class GameConfig{
         reg("game/common/setSceneWH.ts",setSceneWH);
         reg("game/GameCenter/GameControl.ts",GameControl);
         reg("game/GameCenter/seat.ts",seat);
-        reg("game/pages/TabPageUI.ts",TabPageUI);
+        reg("game/pages/Login/LoginUI.ts",LoginUI);
         reg("game/common/SetSceneWH.ts",SetSceneWH);
+        reg("game/pages/Login/Login.ts",Login);
+        reg("game/common/openView.ts",openView);
+        reg("game/pages/Register/RegisterUI.ts",RegisterUI);
+        reg("game/pages/Register/Register.ts",Register);
+        reg("game/common/setHd.ts",setHd);
+        reg("game/common/Back.ts",Back);
+        reg("game/Fuction/Start.ts",Start);
+        reg("game/pages/TabPages/TabPageUI.ts",TabPageUI);
+        reg("game/pages/TabPages/Me/Me.ts",Me);
+        reg("game/pages/TabPages/GameHall/GameHall.ts",GameHall);
+        reg("game/pages/TabPages/Notice/Notice.ts",Notice);
     }
 }
 GameConfig.init();

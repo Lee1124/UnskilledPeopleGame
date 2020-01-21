@@ -185,7 +185,7 @@ export default class SuspensionTips extends Laya.Script {
      */
     tweenEnd(target) {
         this.owner.removeChild(target.parent);
-        this.targets['remove'](target.parent);
+        // this.targets['remove'](target.parent);
     }
 
     /**

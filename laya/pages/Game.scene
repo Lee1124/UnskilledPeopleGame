@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":6,
-    "selecteID":7,
+    "selectedBox":9,
+    "selecteID":18,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/GameCenter/GameUI.ts","height":2208},
     "nodeParent":-1,
-    "maxID":387,
+    "maxID":413,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -151,6 +151,19 @@
                             "compId":366,
                             "child":[
                                 ]
+                        },
+                        {
+                            "type":"Label",
+                            "searchKey":"Label,timeBtn,timeBtn",
+                            "props":{"width":180,"var":"timeBtn","valign":"middle","text":"倒计时","name":"timeBtn","left":0,"height":80,"fontSize":60,"color":"#ffffff","bottom":84,"bgColor":"#b02b29","align":"center"},
+                            "nodeParent":3,
+                            "label":"timeBtn",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":403,
+                            "child":[
+                                ]
                         }]
                 },
                 {
@@ -243,15 +256,41 @@
                                     "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,head",
-                                    "props":{"width":160,"visible":false,"name":"head","height":160,"centerY":0,"centerX":0},
+                                    "props":{"width":170,"visible":false,"name":"head","height":170,"centerY":0,"centerX":0},
                                     "nodeParent":9,
                                     "label":"head",
-                                    "isDirectory":false,
+                                    "isOpen":false,
+                                    "isDirectory":true,
                                     "isAniNode":true,
-                                    "hasChild":false,
+                                    "hasChild":true,
                                     "compId":18,
                                     "child":[
-                                        ]
+                                        {
+                                            "type":"Sprite",
+                                            "searchKey":"Sprite,headMask",
+                                            "props":{"y":5,"x":5,"width":160,"renderType":"mask","name":"headMask","height":160},
+                                            "nodeParent":18,
+                                            "label":"headMask",
+                                            "isOpen":true,
+                                            "isDirectory":true,
+                                            "isAniNode":true,
+                                            "hasChild":true,
+                                            "compId":387,
+                                            "child":[
+                                                {
+                                                    "type":"Circle",
+                                                    "searchKey":"Circle",
+                                                    "props":{"y":80,"x":80,"radius":80,"lineWidth":0,"fillColor":"#ff0000"},
+                                                    "nodeParent":387,
+                                                    "label":"Circle",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":388,
+                                                    "child":[
+                                                        ]
+                                                }]
+                                        }]
                                 },
                                 {
                                     "x":60,
@@ -401,6 +440,51 @@
                                             "child":[
                                                 ]
                                         }]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Image",
+                                    "searchKey":"Image,conutDown",
+                                    "props":{"y":8,"x":8,"width":160,"visible":false,"name":"conutDown","height":160,"centerY":0,"centerX":0},
+                                    "nodeParent":9,
+                                    "label":"conutDown",
+                                    "isOpen":true,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":396,
+                                    "child":[
+                                        {
+                                            "x":75,
+                                            "type":"Sprite",
+                                            "searchKey":"Sprite,timeMask",
+                                            "props":{"y":80,"x":80,"width":166,"rotation":-90,"pivotY":83,"pivotX":83,"name":"timeMask","height":166},
+                                            "nodeParent":396,
+                                            "label":"timeMask",
+                                            "isOpen":true,
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":400,
+                                            "child":[
+                                                ],
+                                            "$HIDDEN":false
+                                        },
+                                        {
+                                            "x":75,
+                                            "type":"Label",
+                                            "searchKey":"Label,timeText",
+                                            "props":{"width":100,"valign":"middle","text":"0s","name":"timeText","fontSize":42,"color":"#ffffff","centerY":0,"centerX":0,"align":"center"},
+                                            "nodeParent":396,
+                                            "label":"timeText",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":404,
+                                            "child":[
+                                                ]
+                                        }],
+                                    "$HIDDEN":true
                                 }]
                         },
                         {
@@ -410,13 +494,14 @@
                             "props":{"width":167,"top":0,"skin":"images/game/zuoweiBg.png","pivotY":84,"pivotX":84,"name":"empty_seat2","left":100,"height":167},
                             "nodeParent":7,
                             "label":"empty_seat2",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":10,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Script",
                                     "switchAble":true,
                                     "source":"src/game/GameCenter/seat.ts",
@@ -433,6 +518,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,score",
                                     "props":{"y":0,"x":0,"wordWrap":true,"width":165,"visible":false,"valign":"middle","top":167,"text":"0","padding":"6,6,6,6","name":"score","fontSize":36,"color":"#FFFFFF","centerX":0,"bgColor":"#232323","align":"center"},
@@ -446,6 +532,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,name",
                                     "props":{"y":0,"x":0,"wordWrap":false,"width":210,"visible":false,"valign":"middle","padding":"6,6,6,6","overflow":"hidden","name":"name","height":46,"fontSize":34,"color":"#FFFFFF","centerX":0,"bottom":167,"align":"center"},
@@ -459,19 +546,47 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,head",
-                                    "props":{"y":0,"x":0,"width":160,"visible":false,"name":"head","height":160,"centerY":0,"centerX":0},
+                                    "props":{"y":-1,"x":-1,"width":170,"visible":false,"name":"head","height":170,"centerY":0,"centerX":0},
                                     "nodeParent":10,
                                     "label":"head",
-                                    "isDirectory":false,
+                                    "isOpen":false,
+                                    "isDirectory":true,
                                     "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":19,
+                                    "hasChild":true,
+                                    "compId":390,
                                     "child":[
-                                        ]
+                                        {
+                                            "type":"Sprite",
+                                            "searchKey":"Sprite,headMask",
+                                            "props":{"y":5,"x":5,"width":160,"renderType":"mask","name":"headMask","height":160},
+                                            "nodeParent":390,
+                                            "label":"headMask",
+                                            "isOpen":true,
+                                            "isDirectory":true,
+                                            "isAniNode":true,
+                                            "hasChild":true,
+                                            "compId":391,
+                                            "child":[
+                                                {
+                                                    "type":"Circle",
+                                                    "searchKey":"Circle",
+                                                    "props":{"y":80,"x":80,"radius":80,"lineWidth":0,"fillColor":"#ff0000"},
+                                                    "nodeParent":391,
+                                                    "label":"Circle",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":392,
+                                                    "child":[
+                                                        ]
+                                                }]
+                                        }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu0",
                                     "props":{"x":-130,"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":220,"name":"diu0","height":0},
@@ -486,6 +601,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu1",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"name":"diu1","left":240,"height":0},
@@ -500,6 +616,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu2",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":240,"name":"diu2","height":0},
@@ -514,6 +631,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show0",
                                     "props":{"width":128,"visible":false,"top":-20,"scaleY":0.6,"scaleX":0.6,"name":"show0","left":240,"height":300},
@@ -528,6 +646,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show1",
                                     "props":{"width":512,"visible":false,"top":300,"scaleY":0.6,"scaleX":0.6,"name":"show1","height":300,"centerX":-10},
@@ -542,6 +661,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show2",
                                     "props":{"y":0,"x":0,"width":512,"visible":false,"top":300,"scaleY":0.6,"scaleX":0.6,"name":"show2","height":300,"centerX":10},
@@ -556,6 +676,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,getDealPokerSeat",
                                     "props":{"x":64,"width":128,"scaleY":0.3,"scaleX":0.3,"name":"getDealPokerSeat","height":450,"centerX":0,"bottom":-220},
@@ -569,6 +690,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,mePokerView",
                                     "props":{"y":26,"x":150,"width":128,"visible":false,"scaleY":0.9,"scaleX":0.9,"pivotY":450,"name":"mePokerView","height":450,"centerX":0,"bottom":260},
@@ -584,6 +706,7 @@
                                     "$HIDDEN":false
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,feelView",
                                     "props":{"width":115,"visible":true,"pivotY":203,"pivotX":58,"name":"feelView","left":150,"height":405,"centerY":0},
@@ -608,6 +731,51 @@
                                             "child":[
                                                 ]
                                         }]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Image",
+                                    "searchKey":"Image,conutDown",
+                                    "props":{"y":8,"x":8,"width":160,"visible":false,"name":"conutDown","height":160,"centerY":0,"centerX":0},
+                                    "nodeParent":10,
+                                    "label":"conutDown",
+                                    "isOpen":true,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":405,
+                                    "child":[
+                                        {
+                                            "x":75,
+                                            "type":"Sprite",
+                                            "searchKey":"Sprite,timeMask",
+                                            "props":{"y":80,"x":80,"width":166,"rotation":-90,"pivotY":83,"pivotX":83,"name":"timeMask","height":166},
+                                            "nodeParent":405,
+                                            "label":"timeMask",
+                                            "isOpen":true,
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":411,
+                                            "child":[
+                                                ],
+                                            "$HIDDEN":false
+                                        },
+                                        {
+                                            "x":75,
+                                            "type":"Label",
+                                            "searchKey":"Label,timeText",
+                                            "props":{"width":100,"valign":"middle","text":"0s","name":"timeText","fontSize":42,"color":"#ffffff","centerY":0,"centerX":0,"align":"center"},
+                                            "nodeParent":405,
+                                            "label":"timeText",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":407,
+                                            "child":[
+                                                ]
+                                        }],
+                                    "$HIDDEN":true
                                 }]
                         },
                         {
@@ -617,13 +785,14 @@
                             "props":{"y":84,"x":1059,"top":0,"skin":"images/game/zuoweiBg.png","right":100,"pivotY":84,"pivotX":84,"name":"empty_seat3"},
                             "nodeParent":7,
                             "label":"empty_seat3",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":11,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Script",
                                     "switchAble":true,
                                     "source":"src/game/GameCenter/seat.ts",
@@ -640,6 +809,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,score",
                                     "props":{"y":0,"x":0,"wordWrap":true,"width":165,"visible":false,"valign":"middle","top":167,"text":"0","padding":"6,6,6,6","name":"score","fontSize":36,"color":"#FFFFFF","centerX":0,"bgColor":"#232323","align":"center"},
@@ -653,6 +823,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,name",
                                     "props":{"y":0,"x":0,"wordWrap":false,"width":210,"visible":false,"valign":"middle","padding":"6,6,6,6","overflow":"hidden","name":"name","height":46,"fontSize":34,"color":"#FFFFFF","centerX":0,"bottom":167,"align":"center"},
@@ -666,19 +837,47 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,head",
-                                    "props":{"y":0,"x":0,"width":160,"visible":false,"name":"head","height":160,"centerY":0,"centerX":0},
+                                    "props":{"y":-1,"x":-1,"width":170,"visible":false,"name":"head","height":170,"centerY":0,"centerX":0},
                                     "nodeParent":11,
                                     "label":"head",
-                                    "isDirectory":false,
+                                    "isOpen":false,
+                                    "isDirectory":true,
                                     "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":20,
+                                    "hasChild":true,
+                                    "compId":393,
                                     "child":[
-                                        ]
+                                        {
+                                            "type":"Sprite",
+                                            "searchKey":"Sprite,headMask",
+                                            "props":{"y":5,"x":5,"width":160,"renderType":"mask","name":"headMask","height":160},
+                                            "nodeParent":393,
+                                            "label":"headMask",
+                                            "isOpen":true,
+                                            "isDirectory":true,
+                                            "isAniNode":true,
+                                            "hasChild":true,
+                                            "compId":394,
+                                            "child":[
+                                                {
+                                                    "type":"Circle",
+                                                    "searchKey":"Circle",
+                                                    "props":{"y":80,"x":80,"radius":80,"lineWidth":0,"fillColor":"#ff0000"},
+                                                    "nodeParent":394,
+                                                    "label":"Circle",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":395,
+                                                    "child":[
+                                                        ]
+                                                }]
+                                        }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu0",
                                     "props":{"x":-130,"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":220,"name":"diu0","height":0},
@@ -693,6 +892,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu1",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"name":"diu1","left":240,"height":0},
@@ -707,6 +907,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu2",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":240,"name":"diu2","height":0},
@@ -721,6 +922,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show0",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"name":"show0","left":240,"height":300},
@@ -735,6 +937,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show1",
                                     "props":{"y":0,"x":0,"width":512,"visible":false,"top":300,"scaleY":0.6,"scaleX":0.6,"name":"show1","height":300,"centerX":-10},
@@ -749,6 +952,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show2",
                                     "props":{"y":0,"width":512,"visible":false,"top":300,"scaleY":0.6,"scaleX":0.6,"name":"show2","height":300,"centerX":10},
@@ -763,6 +967,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,mePokerView",
                                     "props":{"y":-93,"x":26,"width":128,"visible":false,"scaleY":0.9,"scaleX":0.9,"pivotY":450,"name":"mePokerView","height":450,"centerX":0,"bottom":260},
@@ -778,6 +983,7 @@
                                     "$HIDDEN":false
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,feelView",
                                     "props":{"width":115,"visible":true,"right":150,"pivotY":203,"pivotX":58,"name":"feelView","height":405,"centerY":0},
@@ -804,6 +1010,7 @@
                                         }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,getDealPokerSeat",
                                     "props":{"y":0,"x":64,"width":128,"scaleY":0.3,"scaleX":0.3,"name":"getDealPokerSeat","height":450,"centerX":0,"bottom":-220},
@@ -815,6 +1022,51 @@
                                     "compId":385,
                                     "child":[
                                         ]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Image",
+                                    "searchKey":"Image,conutDown",
+                                    "props":{"y":8,"x":8,"width":160,"visible":false,"name":"conutDown","height":160,"centerY":0,"centerX":0},
+                                    "nodeParent":11,
+                                    "label":"conutDown",
+                                    "isOpen":true,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":408,
+                                    "child":[
+                                        {
+                                            "x":75,
+                                            "type":"Sprite",
+                                            "searchKey":"Sprite,timeMask",
+                                            "props":{"y":80,"x":80,"width":166,"rotation":-90,"pivotY":83,"pivotX":83,"name":"timeMask","height":166},
+                                            "nodeParent":408,
+                                            "label":"timeMask",
+                                            "isOpen":true,
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":412,
+                                            "child":[
+                                                ],
+                                            "$HIDDEN":false
+                                        },
+                                        {
+                                            "x":75,
+                                            "type":"Label",
+                                            "searchKey":"Label,timeText",
+                                            "props":{"width":100,"valign":"middle","text":"0s","name":"timeText","fontSize":42,"color":"#ffffff","centerY":0,"centerX":0,"align":"center"},
+                                            "nodeParent":408,
+                                            "label":"timeText",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":410,
+                                            "child":[
+                                                ]
+                                        }],
+                                    "$HIDDEN":true
                                 }]
                         }]
                 },

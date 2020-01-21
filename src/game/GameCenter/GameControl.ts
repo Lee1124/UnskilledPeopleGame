@@ -22,10 +22,10 @@ export default class GameControl extends Laya.Script {
     ];
     constructor() { super(); }
     onEnable(): void {
-        /**===测试=== */
-        Main.beforeReload();
-        Main.createTipBox();
-        /**===测试=== */
+        // /**===测试=== */
+        // Main.beforeReload();
+        // Main.createTipBox();
+        // /**===测试=== */
         this.KeepSeatObj();
         this.InitGameData();
     }
@@ -70,5 +70,16 @@ export default class GameControl extends Laya.Script {
     otherPlay() {
         this.num2++;
         DealOrPlayPoker.otherPlay(this.num2);
+    }
+    /**
+     * 倒计时
+     */
+    countDown(){
+        // countDown.open();
+        let index=parseInt(String(Math.random()*3));
+        this.players[index].playerCountDown(true,{
+            startTime:Math.round(new Date().getTime()/1000),
+            endTime:Math.round(new Date().getTime()/1000)+20
+        });
     }
 }
