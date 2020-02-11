@@ -11,6 +11,8 @@ import RegisterUI from "./game/pages/Register/RegisterUI"
 import Register from "./game/pages/Register/Register"
 import setHd from "./game/common/setHd"
 import Back from "./game/common/Back"
+import Set from "./game/pages/Set/Set"
+import MySwitch from "./game/common/MySwitch"
 import Start from "./game/Fuction/Start"
 import TabPageUI from "./game/pages/TabPages/TabPageUI"
 import Me from "./game/pages/TabPages/Me/Me"
@@ -47,6 +49,8 @@ export default class GameConfig{
         reg("game/pages/Register/Register.ts",Register);
         reg("game/common/setHd.ts",setHd);
         reg("game/common/Back.ts",Back);
+        reg("game/pages/Set/Set.ts",Set);
+        reg("game/common/MySwitch.ts",MySwitch);
         reg("game/Fuction/Start.ts",Start);
         reg("game/pages/TabPages/TabPageUI.ts",TabPageUI);
         reg("game/pages/TabPages/Me/Me.ts",Me);

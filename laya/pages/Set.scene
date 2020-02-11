@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":30,
-    "selecteID":34,
+    "selectedBox":2,
+    "selecteID":10,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","height":2208},
     "nodeParent":-1,
-    "maxID":46,
+    "maxID":49,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -33,6 +33,23 @@
         },
         {
             "x":15,
+            "type":"Script",
+            "switchAble":true,
+            "source":"src/game/pages/Set/Set.ts",
+            "searchKey":"Script,Set",
+            "removeAble":true,
+            "props":{"y":0,"x":0},
+            "nodeParent":2,
+            "label":"Set",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":48,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
             "type":"Image",
             "searchKey":"Image,bg",
             "props":{"top":0,"skin":"images/common/bg.jpg","right":0,"name":"bg","left":0,"bottom":0},
@@ -49,20 +66,19 @@
             "x":15,
             "type":"Image",
             "searchKey":"Image,hd",
-            "props":{"y":0,"x":0,"top":0,"skin":"images/common/top.png","right":0,"name":"hd","left":0,"height":195},
+            "props":{"top":0,"skin":"images/common/top.png","right":0.1,"name":"hd","left":0.1,"height":195},
             "nodeParent":2,
             "label":"hd",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":36,
             "child":[
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,titleBox",
-                    "props":{"width":1242,"top":5,"right":0,"name":"titleBox","left":0,"height":153,"bottom":0},
+                    "props":{"top":5,"right":0,"name":"titleBox","left":0,"height":153,"bottom":0},
                     "nodeParent":36,
                     "label":"titleBox",
                     "isOpen":true,
@@ -72,7 +88,6 @@
                     "compId":37,
                     "child":[
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,title",
                             "props":{"skin":"images/common/title_set.png","name":"title","centerY":0,"centerX":0},
@@ -86,13 +101,12 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,back_btn,back",
                             "props":{"x":656,"var":"back","skin":"images/common/back.png","name":"back_btn","left":85,"centerY":-10},
                             "nodeParent":37,
                             "label":"back_btn",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
@@ -101,23 +115,22 @@
                                 {
                                     "type":"Script",
                                     "switchAble":true,
-                                    "source":"src/game/common/back.js",
-                                    "searchKey":"Script,back(lost)",
+                                    "source":"src/game/common/Back.ts",
+                                    "searchKey":"Script,Back",
                                     "removeAble":true,
                                     "props":{},
                                     "nodeParent":39,
-                                    "label":"back(lost)",
+                                    "label":"Back",
                                     "isDirectory":false,
                                     "isAniNode":true,
                                     "hasChild":false,
-                                    "compId":40,
+                                    "compId":47,
                                     "child":[
                                         ]
                                 }]
                         }]
                 },
                 {
-                    "x":30,
                     "type":"Script",
                     "switchAble":true,
                     "source":"src/game/common/setHd.ts",
@@ -141,14 +154,13 @@
             "props":{"top":400,"skin":"images/common/bg2.png","right":60,"name":"contentBg","left":60,"height":570},
             "nodeParent":2,
             "label":"contentBg",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":10,
             "child":[
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,bg",
                     "props":{"top":40,"skin":"images/me/bg.png","right":40,"name":"bg","left":40,"bottom":40},
@@ -161,7 +173,6 @@
                     "compId":44,
                     "child":[
                         {
-                            "x":45,
                             "type":"List",
                             "searchKey":"List,ctList,ctList",
                             "props":{"x":60,"var":"ctList","top":15,"right":100,"name":"ctList","left":100,"bottom":15},
@@ -174,7 +185,6 @@
                             "compId":14,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Box",
                                     "searchKey":"Box,listBox",
                                     "props":{"right":0,"renderType":"render","name":"listBox","left":0,"height":145},
@@ -187,7 +197,6 @@
                                     "compId":11,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,line",
                                             "props":{"skin":"images/common/fenge.png","name":"line","centerX":0,"bottom":0},
@@ -201,7 +210,6 @@
                                                 ]
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,label",
                                             "props":{"name":"label","left":100,"centerY":0},
@@ -215,7 +223,6 @@
                                                 ]
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,goIconBox",
                                             "props":{"y":0,"x":0,"width":130,"right":100,"name":"goIconBox","height":77,"centerY":0},
@@ -228,7 +235,6 @@
                                             "compId":18,
                                             "child":[
                                                 {
-                                                    "x":90,
                                                     "type":"Sprite",
                                                     "searchKey":"Sprite,icon",
                                                     "props":{"y":11,"x":90,"texture":"images/common/go_icon.png","name":"icon"},
@@ -243,7 +249,6 @@
                                                 }]
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,testBox",
                                             "props":{"y":0,"x":0,"width":300,"right":100,"name":"testBox","height":77,"centerY":0},
@@ -270,7 +275,6 @@
                                                 }]
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,selectView",
                                             "props":{"y":0,"x":0,"width":130,"right":100,"name":"selectView","height":77,"centerY":0},
@@ -283,7 +287,6 @@
                                             "compId":30,
                                             "child":[
                                                 {
-                                                    "x":90,
                                                     "type":"Sprite",
                                                     "searchKey":"Sprite,no",
                                                     "props":{"y":0,"x":0,"texture":"images/common/switch_btn_off.png","name":"no"},
@@ -297,7 +300,6 @@
                                                         ]
                                                 },
                                                 {
-                                                    "x":90,
                                                     "type":"Sprite",
                                                     "searchKey":"Sprite,yes",
                                                     "props":{"y":0,"x":0,"visible":false,"texture":"images/common/switch_btn_on.png","name":"yes"},
@@ -307,6 +309,20 @@
                                                     "isAniNode":false,
                                                     "hasChild":false,
                                                     "compId":34,
+                                                    "child":[
+                                                        ]
+                                                },
+                                                {
+                                                    "type":"Script",
+                                                    "source":"src/game/common/MySwitch.ts",
+                                                    "searchKey":"Script,MySwitch",
+                                                    "props":{},
+                                                    "nodeParent":30,
+                                                    "label":"MySwitch",
+                                                    "isDirectory":false,
+                                                    "isAniNode":false,
+                                                    "hasChild":false,
+                                                    "compId":46,
                                                     "child":[
                                                         ]
                                                 }]

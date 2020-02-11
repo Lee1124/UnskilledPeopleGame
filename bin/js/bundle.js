@@ -209,7 +209,7 @@
                 { id: 5, src: 'res/img/me/me_text5.png' },
                 { id: 6, src: 'res/img/me/me_text6.png' }
             ];
-            this.loadScene = ['Game.scene', 'TabPages.scene', 'Register.scene'];
+            this.loadScene = ['Game.scene', 'TabPages.scene', 'Register.scene', 'Set.scene'];
             this.loadSceneResourcesArr = [];
             this.openSceneViewArr = [];
             this.hall = {
@@ -329,7 +329,7 @@
             Mask.size(Laya.stage.width, Laya.stage.height);
             this.diaLog = new Laya.Dialog();
             this.diaLog.pos((Laya.stage.width - 1132) / 2, (Laya.stage.height - 764) / 2);
-            this.diaLog.size(1132, 764);
+            this.diaLog.size(1132, 754);
             this.diaLog.zOrder = 5;
             let dialogBg = new Laya.Image();
             dialogBg.pos(0, 0);
@@ -344,14 +344,14 @@
             dialogContent.y = 250;
             dialogContent.text = '112222';
             let btn_one = new Laya.Image();
-            btn_one.size(609, 163);
-            btn_one.loadImage('res/img/diglog/btn_one.png', Laya.Handler.create(this, () => {
+            btn_one.size(450, 146);
+            btn_one.loadImage('res/img/diglog/btn_comfirm.png', Laya.Handler.create(this, () => {
                 btn_one.pos((1132 - btn_one.width) / 2, 764 - btn_one.height - 60);
             }));
             let btn_cancel = new Laya.Image();
             let btn_comfirm = new Laya.Image();
-            btn_cancel.size(460, 163);
-            btn_comfirm.size(460, 163);
+            btn_cancel.size(450, 146);
+            btn_comfirm.size(450, 146);
             btn_cancel.loadImage('res/img/diglog/btn_cancel.png', Laya.Handler.create(this, () => {
                 btn_cancel.pos(72, 764 - btn_cancel.height - 60);
             }));
@@ -412,7 +412,7 @@
         showDiaLog(msg, type, comfirmFn, cancelFn, textColor) {
             let myMsg = msg ? msg : '';
             let myType = type ? type : 1;
-            let myMsgColor = textColor ? textColor : '#935F13';
+            let myMsgColor = textColor ? textColor : '#B2A638';
             if (this.diaLogArr1.length > 0) {
                 this.diaLogArr1.forEach(item => {
                     item.btn1.visible = myType == 1 ? true : false;
@@ -2163,6 +2163,106 @@
         }
     }
 
+    class MySwitch extends Laya.Script {
+        constructor() {
+            super(...arguments);
+            this.callback = null;
+            this.callbackThis = null;
+            this.switchState = true;
+        }
+        onEnable() {
+            this.bindEvent();
+            this.initSwitch(null, true);
+        }
+        initSwitch(that, isSelect = true, callback) {
+            this.callbackThis = that;
+            this.callback = callback;
+            let yes = this.owner.getChildByName("yes");
+            yes.visible = isSelect ? true : false;
+        }
+        bindEvent() {
+            this.owner.on(Laya.Event.CLICK, this, this.clickSwitch);
+        }
+        clickSwitch(Event) {
+            Event.stopPropagation();
+            let yes = this.owner.getChildByName("yes");
+            yes.visible = !yes.visible;
+            this.switchState = yes.visible;
+            if (this.callback)
+                this.callback.call(this.callbackThis, this.switchState);
+        }
+    }
+
+    class Set extends Laya.Script {
+        onStart() {
+            this.initBack();
+            this.setList();
+            if (Main$1.wxGame)
+                this.initPage();
+        }
+        initPage() {
+        }
+        initBack() {
+            let backJS = this.owner['back'].getComponent(Back);
+            backJS.initBack();
+        }
+        setList() {
+            this.list = this.owner['ctList'];
+            this.list.array = [
+                { id: 1, label: 'res/img/common/set_text1.png' },
+                { id: 2, label: 'res/img/common/set_text2.png' },
+                { id: 3, label: 'res/img/common/set_text3.png', BanBenVal: '1.0.0' },
+            ];
+            this.list.renderHandler = new Laya.Handler(this, this.listRender);
+            this.list.mouseHandler = new Laya.Handler(this, this.listSelect);
+        }
+        listRender(cell, index) {
+            let label = cell.getChildByName('label');
+            label.skin = cell.dataSource.label;
+            if (cell.dataSource.id != 1) {
+                let selectView = cell.getChildByName('selectView');
+                selectView.removeSelf();
+            }
+            if (cell.dataSource.id == 1) {
+                this.initSwitch(cell);
+            }
+            if (cell.dataSource.id != 2) {
+                let goIconBox = cell.getChildByName('goIconBox');
+                goIconBox.removeSelf();
+            }
+            if (cell.dataSource.id != 3) {
+                let testBox = cell.getChildByName('testBox');
+                testBox.removeSelf();
+            }
+            if (index == this.list.length - 1) {
+                let line = cell.getChildByName('line');
+                line.removeSelf();
+            }
+        }
+        listSelect(Event, index) {
+            if (Event.type == 'click') {
+                let ID = Event.target.dataSource.id;
+                if (ID == 2) {
+                    Main$1.$openScene('aboutOur.scene', false, this.openDta, (res) => {
+                        res.x = Laya.stage.width;
+                        res.zOrder = 10;
+                        Laya.Tween.to(res, { x: 0 }, Main$1.Speed['changePage']);
+                    });
+                }
+            }
+        }
+        initSwitch(cell) {
+            let selectView = cell.getChildByName('selectView');
+            let SwitchJS = selectView.getComponent(MySwitch);
+            let gameMusicState = localStorage.getItem('gameMusic') ? localStorage.getItem('gameMusic') : 1;
+            let isOpened = gameMusicState == 0 ? false : true;
+            SwitchJS.initSwitch(this, isOpened, (bool) => {
+                let isOpen = bool ? 1 : 0;
+                localStorage.setItem('gameMusic', isOpen);
+            });
+        }
+    }
+
     class sliderSelect extends Laya.Script {
         constructor() {
             super(...arguments);
@@ -2247,10 +2347,22 @@
         meListOnClick(e) {
             if (e.type == 'click') {
                 let clickId = e.target.dataSource.id;
-                if (clickId == 6) {
-                    this.signOut();
+                switch (clickId) {
+                    case 5:
+                        this.goSet();
+                        break;
+                    case 6:
+                        this.signOut();
+                        break;
                 }
             }
+        }
+        goSet() {
+            Main$1.$openScene('Set.scene', false, null, (res) => {
+                res.x = Laya.stage.width;
+                res.zOrder = 10;
+                Laya.Tween.to(res, { x: 0 }, Main$1.Speed['changePage']);
+            });
         }
         signOut() {
             Main$1.showDiaLog('是否退出重新登录?', 2, () => {
@@ -2562,6 +2674,8 @@
             reg("game/pages/Register/Register.ts", RegisterUI);
             reg("game/common/setHd.ts", setHd);
             reg("game/common/Back.ts", Back);
+            reg("game/pages/Set/Set.ts", Set);
+            reg("game/common/MySwitch.ts", MySwitch);
             reg("game/Fuction/Start.ts", sliderSelect);
             reg("game/pages/TabPages/TabPageUI.ts", TabPageUI);
             reg("game/pages/TabPages/Me/Me.ts", Me);

@@ -8,6 +8,7 @@ P E7B4145A bg2.png
 R 840B6C85 bottom.png
 P 16A364AA defaultIcon.png
 R EA4DEBE2 fenge.png
+P 9FCB07EC go_icon.png
 P 4F6CC3A8 headBox.png
 P 7EF27C69 loadBg.png
 P C54A6FBC loadIcon.png
@@ -19,6 +20,8 @@ P B183B79E sex0.png
 P 6F83D6AE sex1.png
 P 9183A59D slected_bg.png
 P A8165AEF slection_bar.png
+P 17DF3823 switch_btn_off.png
+P 27BDF3FC switch_btn_on.png
 P 10E9022F tab_1.png
 P F24B3DF9 tab_2.png
 P A3EB62B8 tab_3.png
@@ -31,6 +34,7 @@ P 3DAFB2BD textinput.png
 P AE2A4A1A title_change.png
 P 0EDDF982 title_hall.png
 P 70995EAA title_notice.png
+P A5E1E804 title_set.png
 R E6EBA664 top.png
 D images/game
 S 5210B1C1 deskBg.jpg

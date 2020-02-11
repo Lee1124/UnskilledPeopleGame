@@ -81,7 +81,7 @@ class Main {
         { id: 6, src: 'res/img/me/me_text6.png' }
     ]
     //预加载的场景
-    loadScene: any[] = ['Game.scene', 'TabPages.scene', 'Register.scene']
+    loadScene: any[] = ['Game.scene', 'TabPages.scene', 'Register.scene','Set.scene']
     loadSceneResourcesArr: any[] = []
     openSceneViewArr: any[] = []
     //预加载指向
@@ -252,7 +252,7 @@ class Main {
         //弹框对象
         this.diaLog = new Laya.Dialog();
         this.diaLog.pos((Laya.stage.width - 1132) / 2, (Laya.stage.height - 764) / 2);
-        this.diaLog.size(1132, 764);
+        this.diaLog.size(1132, 754);
         this.diaLog.zOrder = 5;
         //弹框背景
         let dialogBg = new Laya.Image();
@@ -270,16 +270,16 @@ class Main {
         dialogContent.text = '112222';
         //创建一个确认按钮
         let btn_one = new Laya.Image();
-        btn_one.size(609, 163);
-        btn_one.loadImage('res/img/diglog/btn_one.png', Laya.Handler.create(this, () => {
+        btn_one.size(450, 146);
+        btn_one.loadImage('res/img/diglog/btn_comfirm.png', Laya.Handler.create(this, () => {
             btn_one.pos((1132 - btn_one.width) / 2, 764 - btn_one.height - 60);
         }));
 
         //创建一个确认按钮和一个取消按钮
         let btn_cancel = new Laya.Image();
         let btn_comfirm = new Laya.Image();
-        btn_cancel.size(460, 163);
-        btn_comfirm.size(460, 163);
+        btn_cancel.size(450, 146);
+        btn_comfirm.size(450, 146);
         btn_cancel.loadImage('res/img/diglog/btn_cancel.png', Laya.Handler.create(this, () => {
             btn_cancel.pos(72, 764 - btn_cancel.height - 60);
         }))
@@ -351,7 +351,7 @@ class Main {
     showDiaLog(msg: string, type?: number, comfirmFn?: Function, cancelFn?: Function, textColor?: string) {
         let myMsg = msg ? msg : '';
         let myType = type ? type : 1;
-        let myMsgColor = textColor ? textColor : '#935F13';
+        let myMsgColor = textColor ? textColor : '#B2A638';
         if (this.diaLogArr1.length > 0) {
             this.diaLogArr1.forEach(item => {
                 item.btn1.visible = myType == 1 ? true : false;
