@@ -2,16 +2,19 @@
  * 我的
  */
 import Main from '../../../common/Main';
+import HTTP from '../../../common/HttpRequest';
 export default class Me extends Laya.Script {
     //me列表
     meList: any;
+    //脚本所属的scene
+    UI:any;
     onStart(): void {
         this.meList = this.owner.getChildByName('list_bg').getChildByName('list_bg2').getChildByName('me_list');
         this.setPage();
     }
     openThisPage(){
         if (this.owner['visible']) {
-            // this.UI = this.owner.scene;
+            this.UI = this.owner.scene;
             this.requestPageData();
             // this.initOpenView();
         }
@@ -36,10 +39,51 @@ export default class Me extends Laya.Script {
         if(e.type=='click'){
             //点击选择的id
             let clickId:number=e.target.dataSource.id;
+            if(clickId==6){//退出登录
+                this.signOut();
+            }
         }
     }
 
-    requestPageData():void{
+    //退出登录
+    signOut():void{
+        Main.showDiaLog('是否退出重新登录?',2,()=>{
+            // Main.allowGameHallSetInterval = false;
+            Laya.Scene.open('login.scene', true, Main.sign.signOut);
+        })
+    }
 
+    //获取页面数据
+    requestPageData():void{
+        let data:any = {
+            uid: Main.userInfo.userId,
+            tuid: Main.userInfo.userId
+        }
+        HTTP.$request({
+            that: this,
+            url: '/M.User/GetInfo',
+            data: data,
+            success(res) {
+                if (res.data.ret.type == 0) {
+                    this.setPageData(res.data);
+                } else {
+                    Main.showDiaLog(res.data.ret.msg);
+                }
+            },
+            fail() {
+            }
+        })
+    }
+
+    setPageData(data:any) :void{
+        // console.log(data)
+        // let headUrl = 'res/img/head/' + data.head + '.png';
+        Main.$LoadImage(this.UI.headImg, data.head, Main.defaultData.head1,'skin');
+        this.UI.userNameValue.text = data.nick;
+        this.UI.userIDValue.text = data.userId;
+        this.UI.userScoreValue.text = data.score;
+        this.UI.me_sex0.visible = data.sex == 0 ? true : false;
+        this.UI.me_sex1.visible = data.sex == 1 ? true : false;
+        Main.serviceUrl = data.service;
     }
 }

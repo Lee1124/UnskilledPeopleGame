@@ -1,19 +1,20 @@
 import Main from '../../../common/Main';
-// import HTTP from '../../common/HttpRequest';
+import HTTP from '../../../common/HttpRequest';
 // import dropDownReload from '../../common/dropDownReload';
-// import AUTO from '../../common/AUTO';
+// import AUTO from '../../../common/AUTO';
 // import TabPagesUI from '../TabPages/TabPagesUI'
 export default class GameHall extends Laya.Script {
     //游戏大厅页面类型  全部， 小 ，中， 大
-    _navType: any = {
+    private _navType: any = {
         all: 1,
         small: 2,
         center: 3,
         big: 4
     }
     //选中的类型
-    _selectNavType: number = 0;
-
+    private _selectNavType: number = 1;
+    //脚本所属的scene
+    UI: any;
     //页面列表
     pageList: any;
 
@@ -23,13 +24,12 @@ export default class GameHall extends Laya.Script {
     }
     onEnable(): void {
         Main.$LOG('Hall游戏大厅脚本：', this);
-        // GameHall.instance = this;
     }
 
     openThisPage(): void {
         if (this.owner['visible']) {
-            // this.UI = this.owner.scene;
-            this.selectThisTab(this.owner.scene.hall_nav_bg._children[0], 0);//默认选择第一项
+            this.UI = this.owner.scene;
+            this.selectThisTab(this.owner.scene.hall_nav_bg._children[0], 1);//默认选择第一项
             if (Main.hall['allowRepuest'])
                 Laya.timer.loop(60000, this, this.requestPageData, [false]);
         }
@@ -57,7 +57,7 @@ export default class GameHall extends Laya.Script {
      * 选中当前
      * @param {*} itemObj 选中对象
      */
-    selectThisTab(itemObj: any, pageNum: number) {
+    selectThisTab(itemObj: any, pageNum: number): void {
         this.reloadNavSelectZT();
         itemObj.getChildByName("selectedBox").visible = true;
         this._selectNavType = pageNum;
@@ -67,18 +67,18 @@ export default class GameHall extends Laya.Script {
     /**
      * 设置全页面的数据
      */
-    setPage1Data(data) {
+    setPage1Data(data:any):void {
         // if (Main.AUTO&&(this.UI.pageData.roomPws<=0||!this.UI.pageData.roomPws))
         //     AUTO.initHall(this, data);
-        // let page1List = this.UI.gameHall_page1_list;
-        // // page1List.top=100;
-        // // let hallListHeight=page1List.height;
-        // page1List.vScrollBarSkin = "";
-        // page1List.array = data;
-        // page1List.renderHandler = new Laya.Handler(this, this.page1ListOnRender);
-        // page1List.mouseHandler = new Laya.Handler(this, this.rowOnClick);
-        // // this.watchListMove(page1List);
-        // page1List.visible = true;
+        let page1List = this.UI.hall_list;
+        // page1List.top=100;
+        // let hallListHeight=page1List.height;
+        page1List.vScrollBarSkin = "";
+        page1List.array = data;
+        page1List.renderHandler = new Laya.Handler(this, this.page1ListOnRender);
+        page1List.mouseHandler = new Laya.Handler(this, this.rowOnClick);
+        // this.watchListMove(page1List);
+        page1List.visible = true;
     }
 
     /**
@@ -96,7 +96,7 @@ export default class GameHall extends Laya.Script {
     //     });
     // }
 
-    page1ListOnRender(cell, index) {
+    page1ListOnRender(cell:any, index:number):void {
         // let contentBg = cell.getChildByName("content_bg");
         // let roomId = contentBg.getChildByName("roomID").getChildByName("value");
         // let pi = contentBg.getChildByName("num1").getChildByName("value");
@@ -140,7 +140,7 @@ export default class GameHall extends Laya.Script {
         //     });
         // }
 
-         if (Event.type == 'click') {
+        if (Event.type == 'click') {
             // Main.$LOG('游戏大厅点击列表:', Event.target, Event.target.dataSource);
             // let data = {
             //     roomPws: Event.target.dataSource.roomPws,
@@ -157,90 +157,89 @@ export default class GameHall extends Laya.Script {
      * 获取页面数据
      * @param isShowLoading 是否显示加载图标
      */
-    requestPageData(isShowLoading: boolean) {
-        this.pageList.visible = true;
-        this.pageList.array = [1,2,3,4,5,6];
-        this.pageList.vScrollBarSkin = "";
-        this.pageList.mouseHandler = new Laya.Handler(this, this.rowOnClick);
-        // if (!Main.allowRequesList)
-        //     Laya.timer.clear(this, this.requestPageData, [false]);
-        // else {
-        //     if (isShowLoading)
-        //         Main.showLoading(true);
-        //     let data = {
-        //         uid: Main.userInfo.userId
-        //     }
-        //     HTTP.$request({
-        //         that: this,
-        //         url: '/M.Games.CX/GetRoomList',
-        //         data: data,
-        //         success(res) {
-        //             Main.$LOG('获取大厅列表数据：', res);
-        //             if (isShowLoading)
-        //                 Main.showLoading(false);
-        //             if (res.data.ret.type == 0) {
-        //                 if (this.callFn) {
-        //                     this.callFn('刷新成功');
-        //                     this.callFn = null;
-        //                     setTimeout(() => {
-        //                         this.dealWithResData(res.data.rooms);
-        //                     }, 500)
-        //                 } else {
-        //                     this.dealWithResData(res.data.rooms);
-        //                 }
-        //                 this.openGameView();
-        //             } else {
-        //                 Main.showDialog(res.data.ret.msg, 1);
-        //             }
-        //         },
-        //         fail() {
-        //             if (isShowLoading)
-        //                 Main.showLoading(false);
-        //             Main.showDialog('网络异常!', 1);
-        //             if (this.callFn) {
-        //                 this.callFn('刷新失败');
-        //                 this.callFn = null;
-        //             }
-        //         }
-        //     })
-        // }
+    requestPageData(isShowLoading: boolean): void {
+        // this.pageList.visible = true;
+        // this.pageList.array = [1,2,3,4,5,6];
+        // this.pageList.vScrollBarSkin = "";
+        // this.pageList.mouseHandler = new Laya.Handler(this, this.rowOnClick);
+        if (!Main.hall.allowRepuest)
+            Laya.timer.clear(this, this.requestPageData);//, [false]
+        else {
+            if (isShowLoading)
+                Main.showLoading(true);
+            let data = {
+                uid: Main.userInfo.userId
+            }
+            HTTP.$request({
+                that: this,
+                url: '/M.Games.CX/GetRoomList',
+                data: data,
+                success(res: any) {
+                    Main.$LOG('获取大厅列表数据：', res);
+                    if (isShowLoading)
+                        Main.showLoading(false);
+                    if (res.data.ret.type == 0) {
+                        if (this.callFn) {
+                            this.callFn('刷新成功');
+                            this.callFn = null;
+                            setTimeout(() => {
+                                this.dealWithResData(res.data.rooms);
+                            }, 500)
+                        } else {
+                            this.dealWithResData(res.data.rooms);
+                        }
+                        this.openGameView();
+                    } else {
+                        Main.showDiaLog(res.data.ret.msg, 1);
+                    }
+                },
+                fail() {
+                    if (isShowLoading)
+                        Main.showLoading(false);
+                    Main.showDiaLog('网络异常!', 1);
+                    if (this.callFn) {
+                        this.callFn('刷新失败');
+                        this.callFn = null;
+                    }
+                }
+            })
+        }
     }
 
     /**
   * 是否打开游戏界面
   */
-    openGameView() {
-        // let data = this.UI.pageData;
-        // if (data.roomPws && data.roomPws > 0) {
-        //     Main.showLoading(true, Main.loadingType.three, '正在进入房间...');
-        //     let pageData = {
-        //         roomPws: data.roomPws,
-        //         page: Main.pages.page3
-        //     }
-        //     Main.$openScene('cheXuanGame_8.scene', true, pageData, () => {
-        //         Main.showLoading(false, Main.loadingType.three, '');
-        //     })
-        // }
+    openGameView():void {
+        let data:any = this.UI.pageData;
+        if (data.roomPws && data.roomPws > 0) {
+            Main.showLoading(true, Main.loadingType.three, '正在进入房间...');
+            let pageData = {
+                roomPws: data.roomPws,
+                page: Main.pages.page3
+            }
+            Main.$openScene('cheXuanGame_8.scene', true, pageData, () => {
+                Main.showLoading(false, Main.loadingType.three, '');
+            })
+        }
     }
 
     /**
      * 处理请求回来的数据
      * @param {*} data 返回的数据
      */
-    dealWithResData(data) {
-        let listData = data;
-        // console.log(listData.filter(item=>item.dairu).concat(listData.filter(item=>!item.dairu)))
-        let getYESdairudata = listData.filter(item => item.dairu);
-        let getNOdairudata = listData.filter(item => !item.dairu);
+    dealWithResData(data:any):void {
+        let listData:any = data;
+        let getYESdairudata = listData.filter((item:any)=> item.dairu);
+        let getNOdairudata = listData.filter((item:any) => !item.dairu);
         let getYESdairudata_pi = getYESdairudata.sort(this.compare('dizhu'));
         let getNOdairudata_pi = getNOdairudata.sort(this.compare('dizhu'));
-        let getYESdairudata_pi_youkongwei = getYESdairudata_pi.filter(item => item.participate > 0 && item.participate < item.number);
-        let getYESdairudata_pi_yiman = getYESdairudata_pi.filter(item => item.participate == item.number);
-        let getYESdairudata_pi_kongfangjian = getYESdairudata_pi.filter(item => item.participate == 0);
+        let getYESdairudata_pi_youkongwei = getYESdairudata_pi.filter((item:any) => item.participate > 0 && item.participate < item.number);
+        let getYESdairudata_pi_yiman = getYESdairudata_pi.filter((item:any) => item.participate == item.number);
+        let getYESdairudata_pi_kongfangjian = getYESdairudata_pi.filter((item:any) => item.participate == 0);
         let getYESdairudata_pi_lastData = (getYESdairudata_pi_youkongwei.concat(getYESdairudata_pi_yiman)).concat(getYESdairudata_pi_kongfangjian);
-        let getNOdairudata_pi_youkongwei = getNOdairudata_pi.filter(item => item.participate > 0 && item.participate < item.number);
-        let getNOdairudata_pi_yiman = getNOdairudata_pi.filter(item => item.participate == item.number);
-        let getNOdairudata_pi_kongfangjian = getNOdairudata_pi.filter(item => item.participate == 0);
+        let getNOdairudata_pi_youkongwei = getNOdairudata_pi.filter((item:any) => item.participate > 0 && item.participate < item.number);
+        let getNOdairudata_pi_yiman = getNOdairudata_pi.filter((item:any) => item.participate == item.number);
+        let getNOdairudata_pi_kongfangjian = getNOdairudata_pi.filter((item:any) => item.participate == 0);
         let getNOdairudata_pi_lastData = (getNOdairudata_pi_youkongwei.concat(getNOdairudata_pi_yiman)).concat(getNOdairudata_pi_kongfangjian);
         listData = getYESdairudata_pi_lastData.concat(getNOdairudata_pi_lastData);
         // console.log(getYESdairudata_pi_lastData.concat(getNOdairudata_pi_lastData))
@@ -248,19 +247,19 @@ export default class GameHall extends Laya.Script {
             listData = listData;
             this.setPage1Data(listData);
         } else if (this._selectNavType == this._navType.small) {//小
-            listData = listData.filter(item => item.dizhu >= 1 && item.dizhu <= 5);
+            listData = listData.filter((item:any) => item.dizhu >= 1 && item.dizhu <= 5);
             this.setPage1Data(listData);
         } else if (this._selectNavType == this._navType.center) {//中
-            listData = listData.filter(item => item.dizhu >= 10 && item.dizhu <= 20);
+            listData = listData.filter((item:any) => item.dizhu >= 10 && item.dizhu <= 20);
             this.setPage1Data(listData);
         } else if (this._selectNavType == this._navType.big) {//大s
-            listData = listData.filter(item => item.dizhu >= 50 && item.dizhu <= 100);
+            listData = listData.filter((item:any) => item.dizhu >= 50 && item.dizhu <= 100);
             this.setPage1Data(listData);
         }
     }
 
     compare(property, desc = true) {
-        return function (a, b) {
+        return function (a:any, b:any) {
             var value1 = a[property];
             var value2 = b[property];
             if (desc == true) {

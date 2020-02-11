@@ -3,6 +3,16 @@
  */
 import TIP from '../common/SuspensionTips';
 class Main {
+    //是否自动测试环境
+    AUTO:boolean=false;
+    //websoket请求地址
+    websoketApi: string = '132.232.34.32:8082';
+    //http请求的地址
+    requestApi: string = 'http://132.232.34.32:8081';
+    //资源获取地址
+    // resourseHttp:string='http://132.232.34.32/ydr/'
+    //用户信息
+    userInfo: any = null;
     //是否是微信端
     wxGame: false
     //debug
@@ -11,6 +21,8 @@ class Main {
     pokerWidth: number = 128;
     //牌的张数
     count: number = 105;
+    //客服链接
+    serviceUrl:string;
     //关于牌的参数
     pokerParam: any = {
         alpha: 0.7,
@@ -28,6 +40,10 @@ class Main {
         otherBottom: -220,
         meBottom: 340
     }
+    //默认数据
+    defaultData:any = {
+        head1: 'res/img/common/defaultHead.png'
+    }
     tipArr1: any[] = [];
     tipArr2: any[] = [];
     //配置速度
@@ -40,19 +56,19 @@ class Main {
         pokerHeight: 50,//出牌时变化高度的速度
         mePlay: 100,//‘我’出牌的速度
         otherPlay: 50,//‘其他’出牌的速度
-        changePage:200,//切换页面速度
+        changePage: 200,//切换页面速度
     }
-     //跳转划出界面标志
-     sign:any = {
+    //跳转划出界面标志
+    sign: any = {
         signOut: 1,
         register: 2,
         changePwd: 3,
         shop: 4
     }
-    //用户信息
-    userInfo: object = {
-        userId: 123450
-    }
+    // //用户信息
+    // userInfo: object = {
+    //     userId: 123450
+    // }
     //预加载的牌
     loadPokerArr: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
     //‘我的’页面列表数据
@@ -65,7 +81,7 @@ class Main {
         { id: 6, src: 'res/img/me/me_text6.png' }
     ]
     //预加载的场景
-    loadScene: any[] = ['Game.scene', 'TabPages.scene','Register.scene']
+    loadScene: any[] = ['Game.scene', 'TabPages.scene', 'Register.scene']
     loadSceneResourcesArr: any[] = []
     openSceneViewArr: any[] = []
     //预加载指向
@@ -86,10 +102,34 @@ class Main {
         page5: 'MePage',
         page6: 'login'
     }
+    //弹框对象
+    diaLog: any = null;
+    //弹框的遮罩
+    diaLogMask: any = null;
+    //弹框数组1
+    diaLogArr1: any[] = [];
+    //弹框数组2
+    diaLogArr2: any[] = [];
+    //加载类型
+    loadingType: any = {
+        one: 'Loading1',
+        two: 'Loading2',
+        three: 'Loading3',
+        four: 'Loading4',
+    }
+    //加载数组1
+    loadAniArr1: any[] = [];
+    //加载数组2
+    loadAniArr2: any[] = [];
     //控制台打印console.log
-    $LOG(...data) {
+    $LOG(...data:any) {
         if (this.debug)
             console.log(data)
+    }
+    //控制台打印console.error
+    $ERROR(...data:any) {
+        if (this.debug)
+            console.error(...data);
     }
 
     /**
@@ -135,7 +175,7 @@ class Main {
      * @param fn 打开回调函数
      * @param fn2 正在打开回调函数
      */
-    $openScene(url?: string, closeOther?: boolean, data?: any, fn?: Function, fn2?: Function) {
+    $openScene(url: string, closeOther: boolean, data?: any, fn?: Function, fn2?: Function) {
         this.loadSceneResourcesArr.forEach(item => {
             if (item.indexOf(url) != -1) {
                 Laya.Scene.open(url, closeOther, data, Laya.Handler.create(this, fn));
@@ -191,6 +231,305 @@ class Main {
         })
         if (this.tipArr1.length == 0)
             this.tipArr2 = [{ msg: msg }];
+    }
+
+    /**
+     * 预创建弹框
+     */
+    createDiaLog() {
+        let that = this;
+        //弹框遮罩
+        let myMask = Laya.stage.getChildByName("dialogMask");
+        if (myMask) {
+            myMask.removeSelf();
+        }
+        let Mask = new Laya.Sprite();
+        this.diaLogMask = Mask;
+        Mask.visible = false;
+        Mask.zOrder = 4;
+        Mask.pos(0, 0);
+        Mask.size(Laya.stage.width, Laya.stage.height);
+        //弹框对象
+        this.diaLog = new Laya.Dialog();
+        this.diaLog.pos((Laya.stage.width - 1132) / 2, (Laya.stage.height - 764) / 2);
+        this.diaLog.size(1132, 764);
+        this.diaLog.zOrder = 5;
+        //弹框背景
+        let dialogBg = new Laya.Image();
+        dialogBg.pos(0, 0);
+        dialogBg.loadImage('res/img/diglog/bg.png');
+        //弹框文字内容
+        let dialogContent = new Laya.Label();
+        dialogContent.fontSize = 60;
+        dialogContent.color = '#935F13';
+        dialogContent.size(1132, 180);
+        dialogContent.align = 'center';
+        dialogContent.valign = 'middle';
+        dialogContent.wordWrap = true;
+        dialogContent.y = 250;
+        dialogContent.text = '112222';
+        //创建一个确认按钮
+        let btn_one = new Laya.Image();
+        btn_one.size(609, 163);
+        btn_one.loadImage('res/img/diglog/btn_one.png', Laya.Handler.create(this, () => {
+            btn_one.pos((1132 - btn_one.width) / 2, 764 - btn_one.height - 60);
+        }));
+
+        //创建一个确认按钮和一个取消按钮
+        let btn_cancel = new Laya.Image();
+        let btn_comfirm = new Laya.Image();
+        btn_cancel.size(460, 163);
+        btn_comfirm.size(460, 163);
+        btn_cancel.loadImage('res/img/diglog/btn_cancel.png', Laya.Handler.create(this, () => {
+            btn_cancel.pos(72, 764 - btn_cancel.height - 60);
+        }))
+        btn_comfirm.loadImage('res/img/diglog/btn_comfirm.png', Laya.Handler.create(this, () => {
+            btn_comfirm.pos(600, 764 - btn_comfirm.height - 60);
+        }))
+        dialogBg.addChild(dialogContent);
+        dialogBg.addChild(btn_one);
+        dialogBg.addChild(btn_cancel);
+        dialogBg.addChild(btn_comfirm);
+        this.diaLog.addChild(dialogBg);
+        Mask.addChild(this.diaLog);
+        Laya.stage.addChild(Mask);
+        this.diaLogArr1 = [{ btn1: btn_one, btn2: btn_cancel, btn3: btn_comfirm, msg: dialogContent }];
+        this.diaLogCommon();
+    }
+    //弹框的公用函数
+    diaLogCommon() {
+        let arr1 = this.diaLogArr1[0];
+        this.diaLogArr2.forEach(item => {
+            arr1.btn1.visible = item.type == 1 ? true : false;
+            arr1.btn2.visible = item.type == 2 ? true : false;
+            arr1.btn3.visible = item.type == 2 ? true : false;
+            arr1.msg.text = item.msg;
+            arr1.msg.color = item.color;
+            this.diaLogMask.visible = true;
+            this.diaLog.show();
+            arr1.btn1.on(Laya.Event.CLICK, this, () => {
+                if (item.comfirmFn)
+                    item.comfirmFn('点击了确定按钮');
+                this.closeDiaLog();
+            })
+            arr1.btn2.on(Laya.Event.CLICK, this, () => {
+                if (item.cancelFn)
+                    item.cancelFn('点击了取消按钮');
+                this.closeDiaLog();
+            })
+            arr1.btn3.on(Laya.Event.CLICK, this, () => {
+                if (item.comfirmFn)
+                    item.comfirmFn('点击了确定按钮');
+                this.closeDiaLog();
+            })
+            this.diaLogMask.on(Laya.Event.CLICK, this, () => {
+                if (item.cancelFn)
+                    item.cancelFn('点击了取消按钮');
+                this.closeDiaLog();
+            })
+        })
+        this.diaLogArr2 = [];
+    }
+    //关闭弹框
+    closeDiaLog() {
+        this.diaLog.close();
+        this.diaLogMask.visible = false;
+        let arr = this.diaLogArr1[0];
+        arr.btn1.off(Laya.Event.CLICK);
+        arr.btn2.off(Laya.Event.CLICK);
+        arr.btn3.off(Laya.Event.CLICK);
+    }
+
+    /**
+     * 对话框
+     * @param {*} msg 提示内容
+     * @param {*} type 显示类型(注意：1--一个确定按钮,2--确定按钮和取消按钮)
+     * @param {*} comfirmFn 确认回调
+     * @param {*} cancelFn 取消回调
+     * @param {*} textColor 文字颜色
+     */
+    showDiaLog(msg: string, type?: number, comfirmFn?: Function, cancelFn?: Function, textColor?: string) {
+        let myMsg = msg ? msg : '';
+        let myType = type ? type : 1;
+        let myMsgColor = textColor ? textColor : '#935F13';
+        if (this.diaLogArr1.length > 0) {
+            this.diaLogArr1.forEach(item => {
+                item.btn1.visible = myType == 1 ? true : false;
+                item.btn2.visible = myType == 2 ? true : false;
+                item.btn3.visible = myType == 2 ? true : false;
+                item.msg.text = myMsg;
+                item.msg.color = myMsgColor;
+                this.diaLogMask.visible = true;
+                this.diaLog.show();
+                item.btn1.on(Laya.Event.CLICK, this, () => {
+                    if (comfirmFn)
+                        comfirmFn('点击了确定按钮');
+                    this.closeDiaLog();
+                })
+                item.btn2.on(Laya.Event.CLICK, this, () => {
+                    if (cancelFn)
+                        cancelFn('点击了取消按钮');
+                    this.closeDiaLog();
+                })
+                item.btn3.on(Laya.Event.CLICK, this, () => {
+                    if (comfirmFn)
+                        comfirmFn('点击了确定按钮');
+                    this.closeDiaLog();
+                })
+                this.diaLogMask.on(Laya.Event.CLICK, this, () => {
+                    if (cancelFn)
+                        cancelFn('点击了取消按钮');
+                    this.closeDiaLog();
+                })
+            })
+            return;
+        } else {
+            this.diaLogArr2 = [{ msg: myMsg, type: myType, comfirmFn: comfirmFn, cancelFn: cancelFn, color: myMsgColor }]
+        }
+    }
+
+    /**
+    * 创建加载图标到stage
+    * @param type 加载图标类型
+    */
+    createLoading(Type?: any) {
+        let type = Type ? Type : this.loadingType.one;
+        Laya.loader.load("res/atlas/images/common.atlas", Laya.Handler.create(this, onMyLoaded));
+        function onMyLoaded() {
+            let loadingMask = new Laya.Image();
+            loadingMask.visible = false;
+            loadingMask.left = 0;
+            loadingMask.top = 0;
+            loadingMask.bottom = 0;
+            loadingMask.right = 0;
+            loadingMask.zOrder = 10;
+            loadingMask.name = 'loadingMask-' + type;
+            loadingMask.on(Laya.Event.CLICK, this, () => { });
+            let animationBox = new Laya.Sprite();
+            let animationText = new Laya.Label();
+            if (type == this.loadingType.three) {
+                animationText.name = 'loadingText';
+                animationText.width = 220;
+                animationText.centerX = 0;
+                animationText.align = 'center';
+                animationText.zOrder = 10;
+                animationText.bottom = -85;
+                let aniText = this.setText(animationText, 30, '#FFFFFF');
+                animationBox.addChild(aniText);
+            }
+            animationBox.name = 'loadingBox';
+            animationBox.pos(Laya.stage.width / 2, Laya.stage.height / 2);
+            let ani = new Laya.Animation();
+            ani.name = 'loadingAni';
+            ani.loadAnimation("animation/loading/" + type + ".ani");
+            animationBox.addChild(ani);
+            loadingMask.addChild(animationBox);
+            Laya.stage.addChild(loadingMask);
+            this.loadAniArr1.push(type);
+            this.loadAniArr2.forEach(item => {
+                if (item.key == type) {
+                    let $loadingMask: any = Laya.stage.getChildByName('loadingMask-' + item.type);
+                    $loadingMask.visible = item.show;
+                    animationText.text = '';
+                    if (item.show) {
+                        animationText.text = item.text;
+                        ani.play();
+                    } else {
+                        ani.stop();
+                    }
+                }
+            })
+        }
+    }
+
+    /**
+     * 显示或隐藏加载图标
+     * @param isShow 是否显示
+     * @param type 显示类型
+     * @param msg 显示文字
+     */
+    showLoading(isShow:boolean = true, type:any = this.loadingType.one, msg:string = '') {
+        this.loadAniArr1.forEach(item => {
+            if (item == type) {
+                let loadingMask: any = Laya.stage.getChildByName('loadingMask-' + type);
+                let loadingBox: any = loadingMask.getChildByName('loadingBox');
+                let loadingAni: any = loadingBox.getChildByName('loadingAni');
+                let loadingText:any;
+                if (type == this.loadingType.three) {
+                    loadingText = loadingBox.getChildByName('loadingText');
+                    loadingText.text = '';
+                }
+                if (!loadingMask.visible && isShow) {
+                    if (type == this.loadingType.three)
+                        loadingText.text = msg;
+                    loadingAni.play();
+                } else if (!isShow) {
+                    loadingAni.stop();
+                }
+                loadingMask.visible = isShow;
+                return;
+            }
+        })
+        this.loadAniArr2 = [{ key: type, show: isShow, type: type, text: msg }];
+    }
+
+    /**
+     * 隐藏所有的加载
+     */
+    hideAllLoading() {
+        this.showLoading(false, this.loadingType.one);
+        this.showLoading(false, this.loadingType.two);
+        this.showLoading(false, this.loadingType.three);
+    }
+
+     /**
+     * 加载图片资源,判断加载失败则显示默认图片(默认图片分多种，根据需要)
+     * @param {*} node 加载图片的节点
+     * @param {*} url 加载图片资源地址
+     * @param {*} type 默认的图片类型 
+     * @param {*} type2 加载图片方式  skin 和 loadImage两种方式 
+     */
+    $LoadImage(node:any, url:string = '', type:string = this.defaultData.head1, type2:string = 'loadImage') {
+        if (url.indexOf('.png') != -1 || url.indexOf('.jpg') != -1 || url.indexOf('.jpeg') != -1) {
+            Laya.loader.load(url, Laya.Handler.create(this, (res:any) => {
+                if (res) {
+                    if (type2 == 'loadImage') {
+                        node.loadImage(url);
+                    } else if (type2 == 'skin') {
+                        node.skin = url;
+                    }
+                } else {
+                    if (type2 == 'loadImage') {
+                        node.loadImage(type);
+                    } else if (type2 == 'skin') {
+                        node.skin = type;
+                    }
+                }
+            }))
+        } else {
+            if (type2 == 'loadImage') {
+                node.loadImage(type);
+            } else if (type2 == 'skin') {
+                node.skin = type;
+            }
+        }
+    }
+
+    /**
+     * 获取当前时间戳(以S为单位)
+     */
+    getTimeChuo() {
+        return Math.round((new Date()).getTime() / 1000)
+    }
+
+    /**
+     * 将秒转化为时分秒
+     */
+    secondToDate(result:any) {
+        var h = Math.floor(result / 3600) < 10 ? '0' + Math.floor(result / 3600) : Math.floor(result / 3600);
+        var m = Math.floor((result / 60 % 60)) < 10 ? '0' + Math.floor((result / 60 % 60)) : Math.floor((result / 60 % 60));
+        var s = Math.floor((result % 60)) < 10 ? '0' + Math.floor((result % 60)) : Math.floor((result % 60));
+        return result = h + ":" + m + ":" + s;
     }
 }
 export default new Main();

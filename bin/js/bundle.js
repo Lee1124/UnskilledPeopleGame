@@ -156,6 +156,10 @@
 
     class Main {
         constructor() {
+            this.AUTO = false;
+            this.websoketApi = '132.232.34.32:8082';
+            this.requestApi = 'http://132.232.34.32:8081';
+            this.userInfo = null;
             this.debug = true;
             this.pokerWidth = 128;
             this.count = 105;
@@ -173,6 +177,9 @@
             this.deal = {
                 otherBottom: -220,
                 meBottom: 340
+            };
+            this.defaultData = {
+                head1: 'res/img/common/defaultHead.png'
             };
             this.tipArr1 = [];
             this.tipArr2 = [];
@@ -192,9 +199,6 @@
                 register: 2,
                 changePwd: 3,
                 shop: 4
-            };
-            this.userInfo = {
-                userId: 123450
             };
             this.loadPokerArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
             this.meListData = [
@@ -219,10 +223,26 @@
                 page5: 'MePage',
                 page6: 'login'
             };
+            this.diaLog = null;
+            this.diaLogMask = null;
+            this.diaLogArr1 = [];
+            this.diaLogArr2 = [];
+            this.loadingType = {
+                one: 'Loading1',
+                two: 'Loading2',
+                three: 'Loading3',
+                four: 'Loading4',
+            };
+            this.loadAniArr1 = [];
+            this.loadAniArr2 = [];
         }
         $LOG(...data) {
             if (this.debug)
                 console.log(data);
+        }
+        $ERROR(...data) {
+            if (this.debug)
+                console.error(...data);
         }
         beforeReloadResources(that, loadFn) {
             this.beforeLoadThat = that;
@@ -294,6 +314,259 @@
             });
             if (this.tipArr1.length == 0)
                 this.tipArr2 = [{ msg: msg }];
+        }
+        createDiaLog() {
+            let that = this;
+            let myMask = Laya.stage.getChildByName("dialogMask");
+            if (myMask) {
+                myMask.removeSelf();
+            }
+            let Mask = new Laya.Sprite();
+            this.diaLogMask = Mask;
+            Mask.visible = false;
+            Mask.zOrder = 4;
+            Mask.pos(0, 0);
+            Mask.size(Laya.stage.width, Laya.stage.height);
+            this.diaLog = new Laya.Dialog();
+            this.diaLog.pos((Laya.stage.width - 1132) / 2, (Laya.stage.height - 764) / 2);
+            this.diaLog.size(1132, 764);
+            this.diaLog.zOrder = 5;
+            let dialogBg = new Laya.Image();
+            dialogBg.pos(0, 0);
+            dialogBg.loadImage('res/img/diglog/bg.png');
+            let dialogContent = new Laya.Label();
+            dialogContent.fontSize = 60;
+            dialogContent.color = '#935F13';
+            dialogContent.size(1132, 180);
+            dialogContent.align = 'center';
+            dialogContent.valign = 'middle';
+            dialogContent.wordWrap = true;
+            dialogContent.y = 250;
+            dialogContent.text = '112222';
+            let btn_one = new Laya.Image();
+            btn_one.size(609, 163);
+            btn_one.loadImage('res/img/diglog/btn_one.png', Laya.Handler.create(this, () => {
+                btn_one.pos((1132 - btn_one.width) / 2, 764 - btn_one.height - 60);
+            }));
+            let btn_cancel = new Laya.Image();
+            let btn_comfirm = new Laya.Image();
+            btn_cancel.size(460, 163);
+            btn_comfirm.size(460, 163);
+            btn_cancel.loadImage('res/img/diglog/btn_cancel.png', Laya.Handler.create(this, () => {
+                btn_cancel.pos(72, 764 - btn_cancel.height - 60);
+            }));
+            btn_comfirm.loadImage('res/img/diglog/btn_comfirm.png', Laya.Handler.create(this, () => {
+                btn_comfirm.pos(600, 764 - btn_comfirm.height - 60);
+            }));
+            dialogBg.addChild(dialogContent);
+            dialogBg.addChild(btn_one);
+            dialogBg.addChild(btn_cancel);
+            dialogBg.addChild(btn_comfirm);
+            this.diaLog.addChild(dialogBg);
+            Mask.addChild(this.diaLog);
+            Laya.stage.addChild(Mask);
+            this.diaLogArr1 = [{ btn1: btn_one, btn2: btn_cancel, btn3: btn_comfirm, msg: dialogContent }];
+            this.diaLogCommon();
+        }
+        diaLogCommon() {
+            let arr1 = this.diaLogArr1[0];
+            this.diaLogArr2.forEach(item => {
+                arr1.btn1.visible = item.type == 1 ? true : false;
+                arr1.btn2.visible = item.type == 2 ? true : false;
+                arr1.btn3.visible = item.type == 2 ? true : false;
+                arr1.msg.text = item.msg;
+                arr1.msg.color = item.color;
+                this.diaLogMask.visible = true;
+                this.diaLog.show();
+                arr1.btn1.on(Laya.Event.CLICK, this, () => {
+                    if (item.comfirmFn)
+                        item.comfirmFn('点击了确定按钮');
+                    this.closeDiaLog();
+                });
+                arr1.btn2.on(Laya.Event.CLICK, this, () => {
+                    if (item.cancelFn)
+                        item.cancelFn('点击了取消按钮');
+                    this.closeDiaLog();
+                });
+                arr1.btn3.on(Laya.Event.CLICK, this, () => {
+                    if (item.comfirmFn)
+                        item.comfirmFn('点击了确定按钮');
+                    this.closeDiaLog();
+                });
+                this.diaLogMask.on(Laya.Event.CLICK, this, () => {
+                    if (item.cancelFn)
+                        item.cancelFn('点击了取消按钮');
+                    this.closeDiaLog();
+                });
+            });
+            this.diaLogArr2 = [];
+        }
+        closeDiaLog() {
+            this.diaLog.close();
+            this.diaLogMask.visible = false;
+            let arr = this.diaLogArr1[0];
+            arr.btn1.off(Laya.Event.CLICK);
+            arr.btn2.off(Laya.Event.CLICK);
+            arr.btn3.off(Laya.Event.CLICK);
+        }
+        showDiaLog(msg, type, comfirmFn, cancelFn, textColor) {
+            let myMsg = msg ? msg : '';
+            let myType = type ? type : 1;
+            let myMsgColor = textColor ? textColor : '#935F13';
+            if (this.diaLogArr1.length > 0) {
+                this.diaLogArr1.forEach(item => {
+                    item.btn1.visible = myType == 1 ? true : false;
+                    item.btn2.visible = myType == 2 ? true : false;
+                    item.btn3.visible = myType == 2 ? true : false;
+                    item.msg.text = myMsg;
+                    item.msg.color = myMsgColor;
+                    this.diaLogMask.visible = true;
+                    this.diaLog.show();
+                    item.btn1.on(Laya.Event.CLICK, this, () => {
+                        if (comfirmFn)
+                            comfirmFn('点击了确定按钮');
+                        this.closeDiaLog();
+                    });
+                    item.btn2.on(Laya.Event.CLICK, this, () => {
+                        if (cancelFn)
+                            cancelFn('点击了取消按钮');
+                        this.closeDiaLog();
+                    });
+                    item.btn3.on(Laya.Event.CLICK, this, () => {
+                        if (comfirmFn)
+                            comfirmFn('点击了确定按钮');
+                        this.closeDiaLog();
+                    });
+                    this.diaLogMask.on(Laya.Event.CLICK, this, () => {
+                        if (cancelFn)
+                            cancelFn('点击了取消按钮');
+                        this.closeDiaLog();
+                    });
+                });
+                return;
+            }
+            else {
+                this.diaLogArr2 = [{ msg: myMsg, type: myType, comfirmFn: comfirmFn, cancelFn: cancelFn, color: myMsgColor }];
+            }
+        }
+        createLoading(Type) {
+            let type = Type ? Type : this.loadingType.one;
+            Laya.loader.load("res/atlas/images/common.atlas", Laya.Handler.create(this, onMyLoaded));
+            function onMyLoaded() {
+                let loadingMask = new Laya.Image();
+                loadingMask.visible = false;
+                loadingMask.left = 0;
+                loadingMask.top = 0;
+                loadingMask.bottom = 0;
+                loadingMask.right = 0;
+                loadingMask.zOrder = 10;
+                loadingMask.name = 'loadingMask-' + type;
+                loadingMask.on(Laya.Event.CLICK, this, () => { });
+                let animationBox = new Laya.Sprite();
+                let animationText = new Laya.Label();
+                if (type == this.loadingType.three) {
+                    animationText.name = 'loadingText';
+                    animationText.width = 220;
+                    animationText.centerX = 0;
+                    animationText.align = 'center';
+                    animationText.zOrder = 10;
+                    animationText.bottom = -85;
+                    let aniText = this.setText(animationText, 30, '#FFFFFF');
+                    animationBox.addChild(aniText);
+                }
+                animationBox.name = 'loadingBox';
+                animationBox.pos(Laya.stage.width / 2, Laya.stage.height / 2);
+                let ani = new Laya.Animation();
+                ani.name = 'loadingAni';
+                ani.loadAnimation("animation/loading/" + type + ".ani");
+                animationBox.addChild(ani);
+                loadingMask.addChild(animationBox);
+                Laya.stage.addChild(loadingMask);
+                this.loadAniArr1.push(type);
+                this.loadAniArr2.forEach(item => {
+                    if (item.key == type) {
+                        let $loadingMask = Laya.stage.getChildByName('loadingMask-' + item.type);
+                        $loadingMask.visible = item.show;
+                        animationText.text = '';
+                        if (item.show) {
+                            animationText.text = item.text;
+                            ani.play();
+                        }
+                        else {
+                            ani.stop();
+                        }
+                    }
+                });
+            }
+        }
+        showLoading(isShow = true, type = this.loadingType.one, msg = '') {
+            this.loadAniArr1.forEach(item => {
+                if (item == type) {
+                    let loadingMask = Laya.stage.getChildByName('loadingMask-' + type);
+                    let loadingBox = loadingMask.getChildByName('loadingBox');
+                    let loadingAni = loadingBox.getChildByName('loadingAni');
+                    let loadingText;
+                    if (type == this.loadingType.three) {
+                        loadingText = loadingBox.getChildByName('loadingText');
+                        loadingText.text = '';
+                    }
+                    if (!loadingMask.visible && isShow) {
+                        if (type == this.loadingType.three)
+                            loadingText.text = msg;
+                        loadingAni.play();
+                    }
+                    else if (!isShow) {
+                        loadingAni.stop();
+                    }
+                    loadingMask.visible = isShow;
+                    return;
+                }
+            });
+            this.loadAniArr2 = [{ key: type, show: isShow, type: type, text: msg }];
+        }
+        hideAllLoading() {
+            this.showLoading(false, this.loadingType.one);
+            this.showLoading(false, this.loadingType.two);
+            this.showLoading(false, this.loadingType.three);
+        }
+        $LoadImage(node, url = '', type = this.defaultData.head1, type2 = 'loadImage') {
+            if (url.indexOf('.png') != -1 || url.indexOf('.jpg') != -1 || url.indexOf('.jpeg') != -1) {
+                Laya.loader.load(url, Laya.Handler.create(this, (res) => {
+                    if (res) {
+                        if (type2 == 'loadImage') {
+                            node.loadImage(url);
+                        }
+                        else if (type2 == 'skin') {
+                            node.skin = url;
+                        }
+                    }
+                    else {
+                        if (type2 == 'loadImage') {
+                            node.loadImage(type);
+                        }
+                        else if (type2 == 'skin') {
+                            node.skin = type;
+                        }
+                    }
+                }));
+            }
+            else {
+                if (type2 == 'loadImage') {
+                    node.loadImage(type);
+                }
+                else if (type2 == 'skin') {
+                    node.skin = type;
+                }
+            }
+        }
+        getTimeChuo() {
+            return Math.round((new Date()).getTime() / 1000);
+        }
+        secondToDate(result) {
+            var h = Math.floor(result / 3600) < 10 ? '0' + Math.floor(result / 3600) : Math.floor(result / 3600);
+            var m = Math.floor((result / 60 % 60)) < 10 ? '0' + Math.floor((result / 60 % 60)) : Math.floor((result / 60 % 60));
+            var s = Math.floor((result % 60)) < 10 ? '0' + Math.floor((result % 60)) : Math.floor((result % 60));
+            return result = h + ":" + m + ":" + s;
         }
     }
     var Main$1 = new Main();
@@ -1003,6 +1276,500 @@
         }
     }
 
+    /*
+     * JavaScript MD5
+     * https://github.com/blueimp/JavaScript-MD5
+     *
+     * Copyright 2011, Sebastian Tschan
+     * https://blueimp.net
+     *
+     * Licensed under the MIT license:
+     * https://opensource.org/licenses/MIT
+     *
+     * Based on
+     * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
+     * Digest Algorithm, as defined in RFC 1321.
+     * Version 2.2 Copyright (C) Paul Johnston 1999 - 2009
+     * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+     * Distributed under the BSD License
+     * See http://pajhome.org.uk/crypt/md5 for more info.
+     */
+
+    /* global define */
+
+    /* eslint-disable strict */
+
+    //;(function($) {
+    //  'use strict'
+
+      /**
+       * Add integers, wrapping at 2^32.
+       * This uses 16-bit operations internally to work around bugs in interpreters.
+       *
+       * @param {number} x First integer
+       * @param {number} y Second integer
+       * @returns {number} Sum
+       */
+      function safeAdd(x, y) {
+        var lsw = (x & 0xffff) + (y & 0xffff);
+        var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+        return (msw << 16) | (lsw & 0xffff)
+      }
+
+      /**
+       * Bitwise rotate a 32-bit number to the left.
+       *
+       * @param {number} num 32-bit number
+       * @param {number} cnt Rotation count
+       * @returns {number} Rotated number
+       */
+      function bitRotateLeft(num, cnt) {
+        return (num << cnt) | (num >>> (32 - cnt))
+      }
+
+      /**
+       * Basic operation the algorithm uses.
+       *
+       * @param {number} q q
+       * @param {number} a a
+       * @param {number} b b
+       * @param {number} x x
+       * @param {number} s s
+       * @param {number} t t
+       * @returns {number} Result
+       */
+      function md5cmn(q, a, b, x, s, t) {
+        return safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b)
+      }
+      /**
+       * Basic operation the algorithm uses.
+       *
+       * @param {number} a a
+       * @param {number} b b
+       * @param {number} c c
+       * @param {number} d d
+       * @param {number} x x
+       * @param {number} s s
+       * @param {number} t t
+       * @returns {number} Result
+       */
+      function md5ff(a, b, c, d, x, s, t) {
+        return md5cmn((b & c) | (~b & d), a, b, x, s, t)
+      }
+      /**
+       * Basic operation the algorithm uses.
+       *
+       * @param {number} a a
+       * @param {number} b b
+       * @param {number} c c
+       * @param {number} d d
+       * @param {number} x x
+       * @param {number} s s
+       * @param {number} t t
+       * @returns {number} Result
+       */
+      function md5gg(a, b, c, d, x, s, t) {
+        return md5cmn((b & d) | (c & ~d), a, b, x, s, t)
+      }
+      /**
+       * Basic operation the algorithm uses.
+       *
+       * @param {number} a a
+       * @param {number} b b
+       * @param {number} c c
+       * @param {number} d d
+       * @param {number} x x
+       * @param {number} s s
+       * @param {number} t t
+       * @returns {number} Result
+       */
+      function md5hh(a, b, c, d, x, s, t) {
+        return md5cmn(b ^ c ^ d, a, b, x, s, t)
+      }
+      /**
+       * Basic operation the algorithm uses.
+       *
+       * @param {number} a a
+       * @param {number} b b
+       * @param {number} c c
+       * @param {number} d d
+       * @param {number} x x
+       * @param {number} s s
+       * @param {number} t t
+       * @returns {number} Result
+       */
+      function md5ii(a, b, c, d, x, s, t) {
+        return md5cmn(c ^ (b | ~d), a, b, x, s, t)
+      }
+
+      /**
+       * Calculate the MD5 of an array of little-endian words, and a bit length.
+       *
+       * @param {Array} x Array of little-endian words
+       * @param {number} len Bit length
+       * @returns {Array<number>} MD5 Array
+       */
+      function binlMD5(x, len) {
+        /* append padding */
+        x[len >> 5] |= 0x80 << len % 32;
+        x[(((len + 64) >>> 9) << 4) + 14] = len;
+
+        var i;
+        var olda;
+        var oldb;
+        var oldc;
+        var oldd;
+        var a = 1732584193;
+        var b = -271733879;
+        var c = -1732584194;
+        var d = 271733878;
+
+        for (i = 0; i < x.length; i += 16) {
+          olda = a;
+          oldb = b;
+          oldc = c;
+          oldd = d;
+
+          a = md5ff(a, b, c, d, x[i], 7, -680876936);
+          d = md5ff(d, a, b, c, x[i + 1], 12, -389564586);
+          c = md5ff(c, d, a, b, x[i + 2], 17, 606105819);
+          b = md5ff(b, c, d, a, x[i + 3], 22, -1044525330);
+          a = md5ff(a, b, c, d, x[i + 4], 7, -176418897);
+          d = md5ff(d, a, b, c, x[i + 5], 12, 1200080426);
+          c = md5ff(c, d, a, b, x[i + 6], 17, -1473231341);
+          b = md5ff(b, c, d, a, x[i + 7], 22, -45705983);
+          a = md5ff(a, b, c, d, x[i + 8], 7, 1770035416);
+          d = md5ff(d, a, b, c, x[i + 9], 12, -1958414417);
+          c = md5ff(c, d, a, b, x[i + 10], 17, -42063);
+          b = md5ff(b, c, d, a, x[i + 11], 22, -1990404162);
+          a = md5ff(a, b, c, d, x[i + 12], 7, 1804603682);
+          d = md5ff(d, a, b, c, x[i + 13], 12, -40341101);
+          c = md5ff(c, d, a, b, x[i + 14], 17, -1502002290);
+          b = md5ff(b, c, d, a, x[i + 15], 22, 1236535329);
+
+          a = md5gg(a, b, c, d, x[i + 1], 5, -165796510);
+          d = md5gg(d, a, b, c, x[i + 6], 9, -1069501632);
+          c = md5gg(c, d, a, b, x[i + 11], 14, 643717713);
+          b = md5gg(b, c, d, a, x[i], 20, -373897302);
+          a = md5gg(a, b, c, d, x[i + 5], 5, -701558691);
+          d = md5gg(d, a, b, c, x[i + 10], 9, 38016083);
+          c = md5gg(c, d, a, b, x[i + 15], 14, -660478335);
+          b = md5gg(b, c, d, a, x[i + 4], 20, -405537848);
+          a = md5gg(a, b, c, d, x[i + 9], 5, 568446438);
+          d = md5gg(d, a, b, c, x[i + 14], 9, -1019803690);
+          c = md5gg(c, d, a, b, x[i + 3], 14, -187363961);
+          b = md5gg(b, c, d, a, x[i + 8], 20, 1163531501);
+          a = md5gg(a, b, c, d, x[i + 13], 5, -1444681467);
+          d = md5gg(d, a, b, c, x[i + 2], 9, -51403784);
+          c = md5gg(c, d, a, b, x[i + 7], 14, 1735328473);
+          b = md5gg(b, c, d, a, x[i + 12], 20, -1926607734);
+
+          a = md5hh(a, b, c, d, x[i + 5], 4, -378558);
+          d = md5hh(d, a, b, c, x[i + 8], 11, -2022574463);
+          c = md5hh(c, d, a, b, x[i + 11], 16, 1839030562);
+          b = md5hh(b, c, d, a, x[i + 14], 23, -35309556);
+          a = md5hh(a, b, c, d, x[i + 1], 4, -1530992060);
+          d = md5hh(d, a, b, c, x[i + 4], 11, 1272893353);
+          c = md5hh(c, d, a, b, x[i + 7], 16, -155497632);
+          b = md5hh(b, c, d, a, x[i + 10], 23, -1094730640);
+          a = md5hh(a, b, c, d, x[i + 13], 4, 681279174);
+          d = md5hh(d, a, b, c, x[i], 11, -358537222);
+          c = md5hh(c, d, a, b, x[i + 3], 16, -722521979);
+          b = md5hh(b, c, d, a, x[i + 6], 23, 76029189);
+          a = md5hh(a, b, c, d, x[i + 9], 4, -640364487);
+          d = md5hh(d, a, b, c, x[i + 12], 11, -421815835);
+          c = md5hh(c, d, a, b, x[i + 15], 16, 530742520);
+          b = md5hh(b, c, d, a, x[i + 2], 23, -995338651);
+
+          a = md5ii(a, b, c, d, x[i], 6, -198630844);
+          d = md5ii(d, a, b, c, x[i + 7], 10, 1126891415);
+          c = md5ii(c, d, a, b, x[i + 14], 15, -1416354905);
+          b = md5ii(b, c, d, a, x[i + 5], 21, -57434055);
+          a = md5ii(a, b, c, d, x[i + 12], 6, 1700485571);
+          d = md5ii(d, a, b, c, x[i + 3], 10, -1894986606);
+          c = md5ii(c, d, a, b, x[i + 10], 15, -1051523);
+          b = md5ii(b, c, d, a, x[i + 1], 21, -2054922799);
+          a = md5ii(a, b, c, d, x[i + 8], 6, 1873313359);
+          d = md5ii(d, a, b, c, x[i + 15], 10, -30611744);
+          c = md5ii(c, d, a, b, x[i + 6], 15, -1560198380);
+          b = md5ii(b, c, d, a, x[i + 13], 21, 1309151649);
+          a = md5ii(a, b, c, d, x[i + 4], 6, -145523070);
+          d = md5ii(d, a, b, c, x[i + 11], 10, -1120210379);
+          c = md5ii(c, d, a, b, x[i + 2], 15, 718787259);
+          b = md5ii(b, c, d, a, x[i + 9], 21, -343485551);
+
+          a = safeAdd(a, olda);
+          b = safeAdd(b, oldb);
+          c = safeAdd(c, oldc);
+          d = safeAdd(d, oldd);
+        }
+        return [a, b, c, d]
+      }
+
+      /**
+       * Convert an array of little-endian words to a string
+       *
+       * @param {Array<number>} input MD5 Array
+       * @returns {string} MD5 string
+       */
+      function binl2rstr(input) {
+        var i;
+        var output = '';
+        var length32 = input.length * 32;
+        for (i = 0; i < length32; i += 8) {
+          output += String.fromCharCode((input[i >> 5] >>> i % 32) & 0xff);
+        }
+        return output
+      }
+
+      /**
+       * Convert a raw string to an array of little-endian words
+       * Characters >255 have their high-byte silently ignored.
+       *
+       * @param {string} input Raw input string
+       * @returns {Array<number>} Array of little-endian words
+       */
+      function rstr2binl(input) {
+        var i;
+        var output = [];
+        output[(input.length >> 2) - 1] = undefined;
+        for (i = 0; i < output.length; i += 1) {
+          output[i] = 0;
+        }
+        var length8 = input.length * 8;
+        for (i = 0; i < length8; i += 8) {
+          output[i >> 5] |= (input.charCodeAt(i / 8) & 0xff) << i % 32;
+        }
+        return output
+      }
+
+      /**
+       * Calculate the MD5 of a raw string
+       *
+       * @param {string} s Input string
+       * @returns {string} Raw MD5 string
+       */
+      function rstrMD5(s) {
+        return binl2rstr(binlMD5(rstr2binl(s), s.length * 8))
+      }
+
+      /**
+       * Calculates the HMAC-MD5 of a key and some data (raw strings)
+       *
+       * @param {string} key HMAC key
+       * @param {string} data Raw input string
+       * @returns {string} Raw MD5 string
+       */
+      function rstrHMACMD5(key, data) {
+        var i;
+        var bkey = rstr2binl(key);
+        var ipad = [];
+        var opad = [];
+        var hash;
+        ipad[15] = opad[15] = undefined;
+        if (bkey.length > 16) {
+          bkey = binlMD5(bkey, key.length * 8);
+        }
+        for (i = 0; i < 16; i += 1) {
+          ipad[i] = bkey[i] ^ 0x36363636;
+          opad[i] = bkey[i] ^ 0x5c5c5c5c;
+        }
+        hash = binlMD5(ipad.concat(rstr2binl(data)), 512 + data.length * 8);
+        return binl2rstr(binlMD5(opad.concat(hash), 512 + 128))
+      }
+
+      /**
+       * Convert a raw string to a hex string
+       *
+       * @param {string} input Raw input string
+       * @returns {string} Hex encoded string
+       */
+      function rstr2hex(input) {
+        var hexTab = '0123456789abcdef';
+        var output = '';
+        var x;
+        var i;
+        for (i = 0; i < input.length; i += 1) {
+          x = input.charCodeAt(i);
+          output += hexTab.charAt((x >>> 4) & 0x0f) + hexTab.charAt(x & 0x0f);
+        }
+        return output
+      }
+
+      /**
+       * Encode a string as UTF-8
+       *
+       * @param {string} input Input string
+       * @returns {string} UTF8 string
+       */
+      function str2rstrUTF8(input) {
+        return unescape(encodeURIComponent(input))
+      }
+
+      /**
+       * Encodes input string as raw MD5 string
+       *
+       * @param {string} s Input string
+       * @returns {string} Raw MD5 string
+       */
+      function rawMD5(s) {
+        return rstrMD5(str2rstrUTF8(s))
+      }
+      /**
+       * Encodes input string as Hex encoded string
+       *
+       * @param {string} s Input string
+       * @returns {string} Hex encoded string
+       */
+      function hexMD5(s) {
+        return rstr2hex(rawMD5(s))
+      }
+      /**
+       * Calculates the raw HMAC-MD5 for the given key and data
+       *
+       * @param {string} k HMAC key
+       * @param {string} d Input string
+       * @returns {string} Raw MD5 string
+       */
+      function rawHMACMD5(k, d) {
+        return rstrHMACMD5(str2rstrUTF8(k), str2rstrUTF8(d))
+      }
+      /**
+       * Calculates the Hex encoded HMAC-MD5 for the given key and data
+       *
+       * @param {string} k HMAC key
+       * @param {string} d Input string
+       * @returns {string} Raw MD5 string
+       */
+      function hexHMACMD5(k, d) {
+        return rstr2hex(rawHMACMD5(k, d))
+      }
+
+      /**
+       * Calculates MD5 value for a given string.
+       * If a key is provided, calculates the HMAC-MD5 value.
+       * Returns a Hex encoded string unless the raw argument is given.
+       *
+       * @param {string} string Input string
+       * @param {string} [key] HMAC key
+       * @param {boolean} [raw] Raw output switch
+       * @returns {string} MD5 output
+       */
+      function md5(string, key, raw) {
+        if (!key) {
+          if (!raw) {
+            return hexMD5(string)
+          }
+          return rawMD5(string)
+        }
+        if (!raw) {
+          return hexHMACMD5(key, string)
+        }
+        return rawHMACMD5(key, string)
+      }
+    /*
+      if (typeof define === 'function' && define.amd) {
+        define(function() {
+          return md5
+        })
+      } else if (typeof module === 'object' && module.exports) {
+        module.exports = md5
+      } else {
+        $.md5 = md5
+      }
+      */
+    //})(this)
+    function md51(str){
+        console.log(str);
+        return str;
+    }
+    var md5$1 = {
+        md5
+    };
+
+    class HttpRequest {
+        $request(obj) {
+            let that = obj.that;
+            let xhr = new Laya.HttpRequest();
+            let url = Main$1.requestApi + obj.url;
+            let dataObj = obj.data;
+            let postData = '';
+            let method = obj.method ? obj.method : 'get';
+            let dataObjArr = [];
+            if (method == 'get') {
+                var timestamp = new Date().getTime();
+                let sstr = "";
+                if (Main$1.userInfo) {
+                    sstr = Main$1.userInfo.key + '&' + timestamp;
+                }
+                for (var key in dataObj) {
+                    if (dataObj.hasOwnProperty(key)) {
+                        dataObjArr.push(key);
+                        if (dataObjArr.length == 1) {
+                            url = url + '?' + key + '=' + dataObj[key];
+                        }
+                        else {
+                            url = url + '&' + key + '=' + dataObj[key];
+                        }
+                        sstr += "&" + dataObj[key];
+                    }
+                }
+                if (Main$1.userInfo) {
+                    url += '&t=' + timestamp;
+                    Main$1.$LOG("md5：" + sstr + " key:" + Main$1.userInfo.key);
+                    url += '&sign=' + md5$1.md5(sstr);
+                }
+            }
+            else if (method == 'post') {
+                for (var key in dataObj) {
+                    if (dataObj.hasOwnProperty(key)) {
+                        dataObjArr.push(key);
+                        if (dataObjArr.length == 1) {
+                            postData = key + '=' + dataObj[key];
+                        }
+                        else {
+                            postData += '&' + key + '=' + dataObj[key];
+                        }
+                    }
+                }
+            }
+            xhr.http.timeout = 10000;
+            xhr.http.ontimeout = function () {
+                Main$1.showLoading(false);
+                Main$1.showDiaLog('请求超时,稍后再试!');
+                if (obj.timeout)
+                    obj.timeout.call(that, '请求超时,稍后再试!');
+            };
+            xhr.once(Laya.Event.COMPLETE, this, (res) => {
+                if (!res.status) {
+                    Main$1.$ERROR('冲突登录:', res);
+                    if (res.code == 1003 ||
+                        res.code == 1004) {
+                        Main$1.showDiaLog('登录失效，请重新登录', 1, () => {
+                            Main$1.hideAllLoading();
+                            Laya.Scene.open('login.scene', true, Main$1.sign.signOut);
+                        });
+                    }
+                    return;
+                }
+                obj.success.call(that, res);
+            });
+            xhr.once(Laya.Event.ERROR, this, (err) => {
+                Main$1.$ERROR('请求异常:', err);
+                Main$1.showDiaLog('网络异常');
+                if (obj.fail)
+                    obj.fail.call(that, err);
+            });
+            xhr.once(Laya.Event.PROGRESS, this, (ess) => {
+                Main$1.$ERROR('PROGRESS:', ess);
+                if (obj.ess)
+                    obj.ess(ess);
+            });
+            xhr.send(url, postData, method, 'json');
+        }
+    }
+    var HTTP = new HttpRequest();
+
     class openView extends Laya.Script {
         constructor() {
             super(...arguments);
@@ -1049,14 +1816,136 @@
             this.flag = true;
         }
         onEnable() {
+            this.phone = this.owner['phone_value'];
+            this.pwd = this.owner['pwd_value'];
         }
         onStart() {
             this.initOpenView();
+            this.startLoadPage();
         }
         initPage() {
         }
+        startLoadPage() {
+            let userInfo;
+            if (!Main$1.AUTO)
+                userInfo = Main$1.wxGame ? wx.getStorageSync('userInfo') : JSON.parse(localStorage.getItem("userInfo"));
+            else
+                userInfo = Main$1.userInfo;
+            if (userInfo) {
+                this.phone.text = userInfo.user ? userInfo.user : '';
+                this.pwd.text = userInfo.pwd ? userInfo.pwd : '';
+                if ((this.phone.text != '' && this.phone.text.trim('') != '') && (this.pwd.text != '' && this.pwd.text.trim('') != '') && !this.owner['loginState'])
+                    this.login();
+            }
+        }
         login() {
-            Laya.Scene.open('TabPages.scene', true);
+            if (this.flag) {
+                this.flag = false;
+                Main$1.showLoading(true);
+                let user = this.phone.text;
+                let pwd = this.pwd.text;
+                if (user == '') {
+                    this.flag = true;
+                    Main$1.showDiaLog('账号不能为空!');
+                    Main$1.showLoading(false);
+                    return false;
+                }
+                else if (pwd == '') {
+                    this.flag = true;
+                    Main$1.showDiaLog('密码不能为空!');
+                    Main$1.showLoading(false);
+                    return false;
+                }
+                let jsonObj = {
+                    pws: pwd
+                };
+                jsonObj = escape(JSON.stringify(jsonObj));
+                let data = {
+                    acc: user,
+                    ip: '192.168.0.112',
+                    type: 'accpws',
+                    json: jsonObj,
+                    devid: Laya.Browser.onAndroid ? "Android" : "PC",
+                };
+                HTTP.$request({
+                    that: this,
+                    url: '/M.Acc/Login',
+                    data: data,
+                    success(res) {
+                        console.log(res);
+                        if (res.data.ret.type == 0) {
+                            let data = {
+                                user: user,
+                                pwd: pwd,
+                                userId: res.data.userId,
+                                key: res.data.key,
+                                inRoomPws: res.data.inRoomPws,
+                                init: res.data.init
+                            };
+                            this.changeMainUserInfo(data);
+                            setTimeout(() => {
+                                this.dealWithLoginedView(data);
+                            }, 1000);
+                        }
+                        else {
+                            this.flag = true;
+                            Main$1.showLoading(false);
+                            Main$1.showDiaLog(res.data.ret.msg);
+                            if (Main$1.AUTO) {
+                                setTimeout(() => {
+                                    Main$1.closeDiaLog();
+                                }, 400);
+                            }
+                        }
+                    },
+                    fail() {
+                        this.flag = true;
+                        Main$1.showLoading(false);
+                    },
+                    timeout() {
+                        this.flag = true;
+                    }
+                });
+            }
+        }
+        changeMainUserInfo(data) {
+            if (!Main$1.AUTO) {
+                if (Main$1.wxGame) {
+                }
+                else {
+                    localStorage.setItem('userInfo', JSON.stringify(data));
+                }
+            }
+            Main$1.userInfo = data;
+        }
+        dealWithLoginedView(data) {
+            let pageData = {
+                roomPws: data.inRoomPws,
+                page: Main$1.pages.page3
+            };
+            if (data.init) {
+                Laya.Scene.open('TabPages.scene', true, pageData, Laya.Handler.create(this, (res) => {
+                    Main$1.showLoading(false);
+                    clearTimeout(this.loadTimeID);
+                    this.flag = true;
+                }), Laya.Handler.create(this, () => {
+                    this.loadTimeID = setTimeout(() => {
+                        Main$1.showLoading(false);
+                        Main$1.$LOG('加载超时！');
+                        clearTimeout(this.loadTimeID);
+                    }, 10000);
+                }));
+            }
+            else {
+                let openData = {
+                    userId: data.userId
+                };
+                Main$1.$openScene('TabPages.scene', true, openData, (res) => {
+                    Main$1.showLoading(false);
+                    clearTimeout(this.loadTimeID);
+                    this.flag = true;
+                });
+            }
         }
         initOpenView() {
             let openData1 = {
@@ -1073,6 +1962,10 @@
     }
 
     class Login extends Laya.Scene {
+        constructor() {
+            super(...arguments);
+            this.loginState = null;
+        }
         onAwake() {
             this.registerEvent();
         }
@@ -1080,6 +1973,7 @@
             this['login_btn'].on(Laya.Event.CLICK, this, this.login, [this.getComponent(login)]);
         }
         onOpened(options) {
+            this.loginState = options ? options : null;
         }
         login(loginJS) {
             loginJS.login();
@@ -1100,16 +1994,6 @@
         setSceneWH() {
             this.owner['width'] = Laya.stage.width;
             this.owner['height'] = Laya.stage.height;
-        }
-    }
-
-    class RegisterUI extends Laya.Scene {
-        onAwake() {
-        }
-        onOpened(options) {
-            this.pageData = options;
-        }
-        setPage() {
         }
     }
 
@@ -1154,7 +2038,11 @@
         }
     }
 
-    class RegisterUI$1 extends Laya.Script {
+    class RegisterUI extends Laya.Script {
+        constructor() {
+            super(...arguments);
+            this.flag = true;
+        }
         onStart() {
             this.page = this.owner['pageData'].page;
             this.setPageData();
@@ -1170,6 +2058,102 @@
             let backJS = this.owner['back_btn'].getComponent(Back);
             backJS.initBack(1, 'Login.scene', Main$1.sign.signOut);
             return backJS;
+        }
+        comfirmRegisterOrChange() {
+            let that = this;
+            let user = this.owner['phone_value'].text;
+            let pwd = this.owner['pwd_value'].text;
+            let code = this.owner['code_value'].text;
+            Main$1.showLoading(true);
+            if (user == "") {
+                this.flag = true;
+                Main$1.showLoading(false);
+                Main$1.showDiaLog('手机号不能为空！!');
+                return;
+            }
+            else if (pwd == "") {
+                this.flag = true;
+                Main$1.showLoading(false);
+                Main$1.showDiaLog('密码不能为空!');
+                return;
+            }
+            else if (code == "") {
+                this.flag = true;
+                Main$1.showLoading(false);
+                Main$1.showDiaLog('验证码不能为空!');
+                return;
+            }
+            let data = {
+                name: user,
+                pws: pwd,
+                code: code
+            };
+            if (this.page == Main$1.sign.changePwd) {
+                data = {
+                    name: user,
+                    now: pwd,
+                    code: code
+                };
+            }
+            let url = this.page == Main$1.sign.register ? "/M.Acc/Register" : "/M.Acc/ModifyPws";
+            HTTP.$request({
+                that: this,
+                url: url,
+                data: data,
+                success(res) {
+                    if (res.data.ret.type == 0) {
+                        this.flag = true;
+                        Main$1.showLoading(false);
+                        let data = {
+                            user: user,
+                            pwd: pwd,
+                        };
+                        if (Main$1.wxGame) {
+                        }
+                        else {
+                            localStorage.setItem('userInfo', JSON.stringify(data));
+                        }
+                        if (this.page == Main$1.sign.register) {
+                            Main$1.showDiaLog('注册成功,返回登录', 1, () => {
+                                that.back();
+                            });
+                        }
+                        else {
+                            Main$1.showDiaLog('修改成功');
+                        }
+                    }
+                    else {
+                        this.flag = true;
+                        Main$1.showLoading(false);
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                },
+                fail() {
+                    this.flag = true;
+                    Main$1.showLoading(false);
+                },
+                timeout() {
+                    this.flag = true;
+                }
+            });
+        }
+        back() {
+            let backJS = this.initBack();
+            backJS.back();
+        }
+    }
+
+    class RegisterUI$1 extends Laya.Scene {
+        onAwake() {
+            this._RegisterJS = this.getComponent(RegisterUI);
+            this['register_btn'].on(Laya.Event.CLICK, this, this.comfirmRegisterOrChange);
+            this['change_btn'].on(Laya.Event.CLICK, this, this.comfirmRegisterOrChange);
+        }
+        onOpened(options) {
+            this.pageData = options;
+        }
+        comfirmRegisterOrChange() {
+            this._RegisterJS.comfirmRegisterOrChange();
         }
     }
 
@@ -1216,7 +2200,9 @@
                 console.log('进来了', res);
                 this.dealWithBeforeLoadScene(res);
             });
+            Main$1.createLoading(Main$1.loadingType.one);
             Main$1.createTipBox();
+            Main$1.createDiaLog();
             this.loadArrLength = Main$1.loadScene.length;
         }
         dealWithBeforeLoadScene(res) {
@@ -1241,6 +2227,7 @@
         }
         openThisPage() {
             if (this.owner['visible']) {
+                this.UI = this.owner.scene;
                 this.requestPageData();
             }
         }
@@ -1260,9 +2247,45 @@
         meListOnClick(e) {
             if (e.type == 'click') {
                 let clickId = e.target.dataSource.id;
+                if (clickId == 6) {
+                    this.signOut();
+                }
             }
         }
+        signOut() {
+            Main$1.showDiaLog('是否退出重新登录?', 2, () => {
+                Laya.Scene.open('login.scene', true, Main$1.sign.signOut);
+            });
+        }
         requestPageData() {
+            let data = {
+                uid: Main$1.userInfo.userId,
+                tuid: Main$1.userInfo.userId
+            };
+            HTTP.$request({
+                that: this,
+                url: '/M.User/GetInfo',
+                data: data,
+                success(res) {
+                    if (res.data.ret.type == 0) {
+                        this.setPageData(res.data);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                },
+                fail() {
+                }
+            });
+        }
+        setPageData(data) {
+            Main$1.$LoadImage(this.UI.headImg, data.head, Main$1.defaultData.head1, 'skin');
+            this.UI.userNameValue.text = data.nick;
+            this.UI.userIDValue.text = data.userId;
+            this.UI.userScoreValue.text = data.score;
+            this.UI.me_sex0.visible = data.sex == 0 ? true : false;
+            this.UI.me_sex1.visible = data.sex == 1 ? true : false;
+            Main$1.serviceUrl = data.service;
         }
     }
 
@@ -1275,7 +2298,7 @@
                 center: 3,
                 big: 4
             };
-            this._selectNavType = 0;
+            this._selectNavType = 1;
         }
         onAwake() {
             this.pageList = this.owner.scene.hall_list;
@@ -1286,7 +2309,8 @@
         }
         openThisPage() {
             if (this.owner['visible']) {
-                this.selectThisTab(this.owner.scene.hall_nav_bg._children[0], 0);
+                this.UI = this.owner.scene;
+                this.selectThisTab(this.owner.scene.hall_nav_bg._children[0], 1);
                 if (Main$1.hall['allowRepuest'])
                     Laya.timer.loop(60000, this, this.requestPageData, [false]);
             }
@@ -1308,6 +2332,12 @@
             this.requestPageData(true);
         }
         setPage1Data(data) {
+            let page1List = this.UI.hall_list;
+            page1List.vScrollBarSkin = "";
+            page1List.array = data;
+            page1List.renderHandler = new Laya.Handler(this, this.page1ListOnRender);
+            page1List.mouseHandler = new Laya.Handler(this, this.rowOnClick);
+            page1List.visible = true;
         }
         page1ListOnRender(cell, index) {
         }
@@ -1318,26 +2348,77 @@
             }
         }
         requestPageData(isShowLoading) {
-            this.pageList.visible = true;
-            this.pageList.array = [1, 2, 3, 4, 5, 6];
-            this.pageList.vScrollBarSkin = "";
-            this.pageList.mouseHandler = new Laya.Handler(this, this.rowOnClick);
+            if (!Main$1.hall.allowRepuest)
+                Laya.timer.clear(this, this.requestPageData);
+            else {
+                if (isShowLoading)
+                    Main$1.showLoading(true);
+                let data = {
+                    uid: Main$1.userInfo.userId
+                };
+                HTTP.$request({
+                    that: this,
+                    url: '/M.Games.CX/GetRoomList',
+                    data: data,
+                    success(res) {
+                        Main$1.$LOG('获取大厅列表数据：', res);
+                        if (isShowLoading)
+                            Main$1.showLoading(false);
+                        if (res.data.ret.type == 0) {
+                            if (this.callFn) {
+                                this.callFn('刷新成功');
+                                this.callFn = null;
+                                setTimeout(() => {
+                                    this.dealWithResData(res.data.rooms);
+                                }, 500);
+                            }
+                            else {
+                                this.dealWithResData(res.data.rooms);
+                            }
+                            this.openGameView();
+                        }
+                        else {
+                            Main$1.showDiaLog(res.data.ret.msg, 1);
+                        }
+                    },
+                    fail() {
+                        if (isShowLoading)
+                            Main$1.showLoading(false);
+                        Main$1.showDiaLog('网络异常!', 1);
+                        if (this.callFn) {
+                            this.callFn('刷新失败');
+                            this.callFn = null;
+                        }
+                    }
+                });
+            }
         }
         openGameView() {
+            let data = this.UI.pageData;
+            if (data.roomPws && data.roomPws > 0) {
+                Main$1.showLoading(true, Main$1.loadingType.three, '正在进入房间...');
+                let pageData = {
+                    roomPws: data.roomPws,
+                    page: Main$1.pages.page3
+                };
+                Main$1.$openScene('cheXuanGame_8.scene', true, pageData, () => {
+                    Main$1.showLoading(false, Main$1.loadingType.three, '');
+                });
+            }
         }
         dealWithResData(data) {
             let listData = data;
-            let getYESdairudata = listData.filter(item => item.dairu);
-            let getNOdairudata = listData.filter(item => !item.dairu);
+            let getYESdairudata = listData.filter((item) => item.dairu);
+            let getNOdairudata = listData.filter((item) => !item.dairu);
             let getYESdairudata_pi = getYESdairudata.sort(this.compare('dizhu'));
             let getNOdairudata_pi = getNOdairudata.sort(this.compare('dizhu'));
-            let getYESdairudata_pi_youkongwei = getYESdairudata_pi.filter(item => item.participate > 0 && item.participate < item.number);
-            let getYESdairudata_pi_yiman = getYESdairudata_pi.filter(item => item.participate == item.number);
-            let getYESdairudata_pi_kongfangjian = getYESdairudata_pi.filter(item => item.participate == 0);
+            let getYESdairudata_pi_youkongwei = getYESdairudata_pi.filter((item) => item.participate > 0 && item.participate < item.number);
+            let getYESdairudata_pi_yiman = getYESdairudata_pi.filter((item) => item.participate == item.number);
+            let getYESdairudata_pi_kongfangjian = getYESdairudata_pi.filter((item) => item.participate == 0);
             let getYESdairudata_pi_lastData = (getYESdairudata_pi_youkongwei.concat(getYESdairudata_pi_yiman)).concat(getYESdairudata_pi_kongfangjian);
-            let getNOdairudata_pi_youkongwei = getNOdairudata_pi.filter(item => item.participate > 0 && item.participate < item.number);
-            let getNOdairudata_pi_yiman = getNOdairudata_pi.filter(item => item.participate == item.number);
-            let getNOdairudata_pi_kongfangjian = getNOdairudata_pi.filter(item => item.participate == 0);
+            let getNOdairudata_pi_youkongwei = getNOdairudata_pi.filter((item) => item.participate > 0 && item.participate < item.number);
+            let getNOdairudata_pi_yiman = getNOdairudata_pi.filter((item) => item.participate == item.number);
+            let getNOdairudata_pi_kongfangjian = getNOdairudata_pi.filter((item) => item.participate == 0);
             let getNOdairudata_pi_lastData = (getNOdairudata_pi_youkongwei.concat(getNOdairudata_pi_yiman)).concat(getNOdairudata_pi_kongfangjian);
             listData = getYESdairudata_pi_lastData.concat(getNOdairudata_pi_lastData);
             if (this._selectNavType == this._navType.all) {
@@ -1345,15 +2426,15 @@
                 this.setPage1Data(listData);
             }
             else if (this._selectNavType == this._navType.small) {
-                listData = listData.filter(item => item.dizhu >= 1 && item.dizhu <= 5);
+                listData = listData.filter((item) => item.dizhu >= 1 && item.dizhu <= 5);
                 this.setPage1Data(listData);
             }
             else if (this._selectNavType == this._navType.center) {
-                listData = listData.filter(item => item.dizhu >= 10 && item.dizhu <= 20);
+                listData = listData.filter((item) => item.dizhu >= 10 && item.dizhu <= 20);
                 this.setPage1Data(listData);
             }
             else if (this._selectNavType == this._navType.big) {
-                listData = listData.filter(item => item.dizhu >= 50 && item.dizhu <= 100);
+                listData = listData.filter((item) => item.dizhu >= 50 && item.dizhu <= 100);
                 this.setPage1Data(listData);
             }
         }
@@ -1426,7 +2507,6 @@
             this.pageData = options;
             this.selectedPage = options ? options.page ? options.page : Main$1.pages.page3 : Main$1.pages.page3;
             this.openView(this.selectedPage);
-            console.log(this, this.selectedPage);
         }
         registerEvent() {
             let navList = this['tabNav']._children;
@@ -1478,8 +2558,8 @@
             reg("game/common/SetSceneWH.ts", SetSceneWH$1);
             reg("game/pages/Login/Login.ts", login);
             reg("game/common/openView.ts", openView);
-            reg("game/pages/Register/RegisterUI.ts", RegisterUI);
-            reg("game/pages/Register/Register.ts", RegisterUI$1);
+            reg("game/pages/Register/RegisterUI.ts", RegisterUI$1);
+            reg("game/pages/Register/Register.ts", RegisterUI);
             reg("game/common/setHd.ts", setHd);
             reg("game/common/Back.ts", Back);
             reg("game/Fuction/Start.ts", sliderSelect);

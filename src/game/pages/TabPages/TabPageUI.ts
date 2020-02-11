@@ -18,7 +18,6 @@ export default class TabPageUI extends Laya.Scene {
         this.pageData = options;
         this.selectedPage = options ? options.page ? options.page : Main.pages.page3 : Main.pages.page3;
         this.openView(this.selectedPage);
-        console.log(this, this.selectedPage)
     }
 
     /**

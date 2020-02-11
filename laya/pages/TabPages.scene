@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":65,
-    "selecteID":97,
+    "selectedBox":68,
+    "selecteID":69,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/pages/TabPages/TabPageUI.ts","height":2208},
     "nodeParent":-1,
-    "maxID":130,
+    "maxID":134,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -328,10 +328,10 @@
                                         {
                                             "type":"Image",
                                             "searchKey":"Image,head,headView",
-                                            "props":{"width":327,"var":"headView","top":0,"name":"head","left":0,"height":327},
+                                            "props":{"width":327,"var":"headView","top":0,"skin":"images/common/headBox.png","name":"head","left":0,"height":327},
                                             "nodeParent":25,
                                             "label":"head",
-                                            "isOpen":false,
+                                            "isOpen":true,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
@@ -339,28 +339,41 @@
                                             "child":[
                                                 {
                                                     "type":"Image",
-                                                    "searchKey":"Image,headBg",
-                                                    "props":{"y":0,"x":0,"width":327,"skin":"images/common/headBox.png","name":"headBg","height":327},
+                                                    "searchKey":"Image,headBg,headImg",
+                                                    "props":{"width":310,"var":"headImg","name":"headBg","height":310,"centerY":0,"centerX":0},
                                                     "nodeParent":26,
                                                     "label":"headBg",
                                                     "isOpen":false,
                                                     "isDirectory":true,
                                                     "isAniNode":true,
                                                     "hasChild":true,
-                                                    "compId":27,
+                                                    "compId":132,
                                                     "child":[
                                                         {
-                                                            "type":"Image",
-                                                            "searchKey":"Image,head,headUrl",
-                                                            "props":{"width":310,"var":"headUrl","name":"head","height":310,"centerY":0,"centerX":0},
-                                                            "nodeParent":27,
-                                                            "label":"head",
-                                                            "isDirectory":false,
+                                                            "type":"Sprite",
+                                                            "searchKey":"Sprite,headMask",
+                                                            "props":{"y":0,"x":0,"width":310,"renderType":"mask","name":"headMask","height":310},
+                                                            "nodeParent":132,
+                                                            "label":"headMask",
+                                                            "isOpen":false,
+                                                            "isDirectory":true,
                                                             "isAniNode":true,
-                                                            "hasChild":false,
-                                                            "compId":28,
+                                                            "hasChild":true,
+                                                            "compId":130,
                                                             "child":[
-                                                                ]
+                                                                {
+                                                                    "type":"Circle",
+                                                                    "searchKey":"Circle",
+                                                                    "props":{"y":155,"x":155,"radius":155,"lineWidth":0,"fillColor":"#ff0000"},
+                                                                    "nodeParent":130,
+                                                                    "label":"Circle",
+                                                                    "isDirectory":false,
+                                                                    "isAniNode":true,
+                                                                    "hasChild":false,
+                                                                    "compId":131,
+                                                                    "child":[
+                                                                        ]
+                                                                }]
                                                         }]
                                                 },
                                                 {
@@ -398,7 +411,7 @@
                                             "props":{"right":0,"name":"name","left":400,"height":60,"centerY":-90},
                                             "nodeParent":25,
                                             "label":"name",
-                                            "isOpen":true,
+                                            "isOpen":false,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
@@ -437,7 +450,7 @@
                                             "props":{"x":0,"right":0,"name":"ID","left":400,"height":60,"centerY":0},
                                             "nodeParent":25,
                                             "label":"ID",
-                                            "isOpen":true,
+                                            "isOpen":false,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
@@ -697,14 +710,13 @@
                                     "props":{"x":0,"width":1040,"var":"hall_nav_bg","top":0,"skin":"images/common/slection_bar.png","name":"nav_bg","centerX":0},
                                     "nodeParent":56,
                                     "label":"nav_bg",
-                                    "isOpen":true,
+                                    "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
                                     "compId":57,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,select_box1",
                                             "props":{"width":260,"name":"select_box1","left":0,"height":117,"centerY":0},
@@ -717,7 +729,6 @@
                                             "compId":59,
                                             "child":[
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,text",
                                                     "props":{"skin":"images/hall/h_quan_0.png","name":"text","centerY":0,"centerX":0},
@@ -731,7 +742,6 @@
                                                         ]
                                                 },
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,selectedBox",
                                                     "props":{"visible":false,"skin":"images/common/slected_bg.png","name":"selectedBox","height":117,"centerX":0},
@@ -761,7 +771,6 @@
                                             "$HIDDEN":false
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,select_box2",
                                             "props":{"y":0,"width":260,"name":"select_box2","left":260,"height":117,"centerY":0},
@@ -774,7 +783,6 @@
                                             "compId":61,
                                             "child":[
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,text",
                                                     "props":{"visible":true,"skin":"images/hall/h_xiao_0.png","name":"text","centerY":0,"centerX":0},
@@ -788,7 +796,6 @@
                                                         ]
                                                 },
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,selectedBox",
                                                     "props":{"x":0,"width":260,"visible":false,"skin":"images/common/slected_bg.png","name":"selectedBox","height":117,"centerY":0,"centerX":0},
@@ -801,7 +808,6 @@
                                                     "compId":93,
                                                     "child":[
                                                         {
-                                                            "x":105,
                                                             "type":"Image",
                                                             "searchKey":"Image,text",
                                                             "props":{"skin":"images/hall/h_xiao_1.png","name":"text","centerY":0,"centerX":0},
@@ -818,7 +824,6 @@
                                                 }]
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,select_box3",
                                             "props":{"y":0,"width":260,"right":260,"name":"select_box3","height":117,"centerY":0},
@@ -831,7 +836,6 @@
                                             "compId":63,
                                             "child":[
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,text",
                                                     "props":{"width":69,"visible":true,"skin":"images/hall/h_zhong_0.png","pivotY":36,"pivotX":35,"name":"text","height":71,"centerY":0,"centerX":0},
@@ -846,7 +850,6 @@
                                                     "$HIDDEN":false
                                                 },
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,selectedBox",
                                                     "props":{"y":0,"x":0,"width":260,"visible":false,"skin":"images/common/slected_bg.png","name":"selectedBox","height":117,"centerX":0},
@@ -859,7 +862,6 @@
                                                     "compId":95,
                                                     "child":[
                                                         {
-                                                            "x":105,
                                                             "type":"Image",
                                                             "searchKey":"Image,text",
                                                             "props":{"width":74,"skin":"images/hall/h_zhong_1.png","pivotY":37,"pivotX":37,"name":"text","height":74,"centerY":0,"centerX":0},
@@ -876,7 +878,6 @@
                                                 }]
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,select_box4",
                                             "props":{"y":0,"x":0,"width":260,"right":0,"name":"select_box4","height":117,"centerY":0},
@@ -889,7 +890,6 @@
                                             "compId":65,
                                             "child":[
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,text",
                                                     "props":{"y":0,"x":0,"visible":true,"skin":"images/hall/h_da_0.png","name":"text","centerY":0,"centerX":0},
@@ -903,7 +903,6 @@
                                                         ]
                                                 },
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,selectedBox",
                                                     "props":{"y":0,"x":0,"width":260,"visible":false,"skin":"images/common/slected_bg.png","name":"selectedBox","height":117,"centerX":0},
@@ -916,7 +915,6 @@
                                                     "compId":97,
                                                     "child":[
                                                         {
-                                                            "x":105,
                                                             "type":"Image",
                                                             "searchKey":"Image,text",
                                                             "props":{"skin":"images/hall/h_da_1.png","name":"text","centerY":0,"centerX":0},
@@ -940,13 +938,14 @@
                                     "props":{"x":0,"top":190,"skin":"images/common/bg2.png","right":36,"name":"page_bg","left":36,"bottom":0},
                                     "nodeParent":56,
                                     "label":"page_bg",
-                                    "isOpen":false,
+                                    "isOpen":true,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
                                     "compId":67,
                                     "child":[
                                         {
+                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,page_bg2",
                                             "props":{"top":50,"skin":"images/hall/h_bg.png","right":50,"name":"page_bg2","left":50,"bottom":50},
@@ -959,6 +958,7 @@
                                             "compId":68,
                                             "child":[
                                                 {
+                                                    "x":90,
                                                     "type":"List",
                                                     "searchKey":"List,page1_list,hall_list",
                                                     "props":{"visible":false,"var":"hall_list","top":0,"spaceY":20,"right":0,"repeatX":1,"name":"page1_list","left":0,"elasticEnabled":true,"bottom":0},
@@ -971,6 +971,7 @@
                                                     "compId":69,
                                                     "child":[
                                                         {
+                                                            "x":105,
                                                             "type":"Box",
                                                             "searchKey":"Box,page1_list_box",
                                                             "props":{"right":0,"renderType":"render","name":"page1_list_box","left":0,"height":282},
@@ -983,6 +984,7 @@
                                                             "compId":70,
                                                             "child":[
                                                                 {
+                                                                    "x":120,
                                                                     "type":"Image",
                                                                     "searchKey":"Image,content_bg",
                                                                     "props":{"top":0,"skin":"images/hall/h_list_bg.png","right":0,"name":"content_bg","left":0,"bottom":0},
@@ -995,6 +997,7 @@
                                                                     "compId":71,
                                                                     "child":[
                                                                         {
+                                                                            "x":135,
                                                                             "type":"Image",
                                                                             "searchKey":"Image,roomID",
                                                                             "props":{"width":174,"top":42,"name":"roomID","left":450,"height":50},
@@ -1021,6 +1024,7 @@
                                                                                 }]
                                                                         },
                                                                         {
+                                                                            "x":135,
                                                                             "type":"Image",
                                                                             "searchKey":"Image,pi",
                                                                             "props":{"width":90,"name":"pi","left":307,"height":34,"bottom":66},
@@ -1047,6 +1051,7 @@
                                                                                 }]
                                                                         },
                                                                         {
+                                                                            "x":135,
                                                                             "type":"Image",
                                                                             "searchKey":"Image,online",
                                                                             "props":{"width":98,"name":"online","left":454,"height":34,"bottom":66},
@@ -1073,6 +1078,7 @@
                                                                                 }]
                                                                         },
                                                                         {
+                                                                            "x":135,
                                                                             "type":"Image",
                                                                             "searchKey":"Image,time",
                                                                             "props":{"width":200,"name":"time","left":606,"height":34,"bottom":66},
@@ -1099,6 +1105,7 @@
                                                                                 }]
                                                                         },
                                                                         {
+                                                                            "x":135,
                                                                             "type":"Image",
                                                                             "searchKey":"Image,lastTime",
                                                                             "props":{"width":135,"name":"lastTime","left":918,"height":34,"bottom":62},
@@ -1125,6 +1132,7 @@
                                                                                 }]
                                                                         },
                                                                         {
+                                                                            "x":135,
                                                                             "type":"Image",
                                                                             "searchKey":"Image,state",
                                                                             "props":{"width":175,"top":33,"right":15,"name":"state","height":74},
@@ -1194,6 +1202,7 @@
                                                                                 }]
                                                                         },
                                                                         {
+                                                                            "x":135,
                                                                             "type":"Image",
                                                                             "searchKey":"Image,yidairuState",
                                                                             "props":{"visible":false,"top":26,"skin":"images/hall/yidairu.png","right":213,"name":"yidairuState"},
