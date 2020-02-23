@@ -97,8 +97,8 @@ export default class GameHall extends Laya.Script {
     // }
 
     page1ListOnRender(cell:any, index:number):void {
-        // let contentBg = cell.getChildByName("content_bg");
-        // let roomId = contentBg.getChildByName("roomID").getChildByName("value");
+        let contentBg:any = cell.getChildByName("content_bg");
+        let roomId:any = contentBg.getChildByName("roomID").getChildByName("value");
         // let pi = contentBg.getChildByName("num1").getChildByName("value");
         // let online = contentBg.getChildByName("online").getChildByName("value");
         // let time = contentBg.getChildByName("time").getChildByName("value");
@@ -107,7 +107,7 @@ export default class GameHall extends Laya.Script {
         // let state_1 = contentBg.getChildByName("state").getChildByName("state_1");
         // let state_2 = contentBg.getChildByName("state").getChildByName("state_2");
         // let state_dairu = contentBg.getChildByName("yidairuState");
-        // roomId.text = cell.dataSource.roomPws;
+        roomId.text = cell.dataSource.roomid;
         // pi.text = cell.dataSource.dizhu;
         // online.text = cell.dataSource.participate + '/' + cell.dataSource.number;
         // if (cell.dataSource.participate == 0) {
@@ -142,12 +142,14 @@ export default class GameHall extends Laya.Script {
 
         if (Event.type == 'click') {
             // Main.$LOG('游戏大厅点击列表:', Event.target, Event.target.dataSource);
-            // let data = {
-            //     roomPws: Event.target.dataSource.roomPws,
-            //     page: Main.pages.page3
-            // }
+            let data:any= {
+                roomPws: Event.target.dataSource.roomPws,
+                page: Main.pages.page3
+            }
+            console.log(data)
             // Main.showLoading(true, Main.loadingType.three, '正在进入房间...');
-            Main.$openScene('Game.scene', true, null, () => {
+            Main.$openScene('Game.scene', true, data, () => {
+                Main.hall.allowRepuest = false;
                 // Main.showLoading(false, Main.loadingType.three, '');
             });
         }
@@ -170,15 +172,19 @@ export default class GameHall extends Laya.Script {
             let data = {
                 uid: Main.userInfo.userId
             }
+
+            /**
+             * http://192.168.0.0/Games.YDR/GetRoomList?uid=10001
+             */
             HTTP.$request({
                 that: this,
-                url: '/M.Games.CX/GetRoomList',
+                url: '/M.Games.YDR/GetRoomList',
                 data: data,
                 success(res: any) {
                     Main.$LOG('获取大厅列表数据：', res);
                     if (isShowLoading)
                         Main.showLoading(false);
-                    if (res.data.ret.type == 0) {
+                    if (res.status) {
                         if (this.callFn) {
                             this.callFn('刷新成功');
                             this.callFn = null;

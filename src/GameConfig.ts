@@ -2,17 +2,24 @@
 import GameUI from "./game/GameCenter/GameUI"
 import setSceneWH from "./game/common/setSceneWH"
 import GameControl from "./game/GameCenter/GameControl"
+import openView from "./game/common/openView"
 import seat from "./game/GameCenter/seat"
+import SetViewWH from "./game/common/SetViewWH"
+import OpenDiaLog from "./game/Fuction/OpenDiaLog"
+import SlideSelect from "./game/common/SlideSelect"
+import MyClickSelect from "./game/common/MyClickSelect"
 import LoginUI from "./game/pages/Login/LoginUI"
 import SetSceneWH from "./game/common/SetSceneWH"
 import Login from "./game/pages/Login/Login"
-import openView from "./game/common/openView"
+import ZhanJiGet from "./game/pages/shishizhanji/ZhanJiGet"
+import Back from "./game/common/Back"
 import RegisterUI from "./game/pages/Register/RegisterUI"
 import Register from "./game/pages/Register/Register"
 import setHd from "./game/common/setHd"
-import Back from "./game/common/Back"
 import Set from "./game/pages/Set/Set"
 import MySwitch from "./game/common/MySwitch"
+import ShopUI from "./game/pages/Shop/ShopUI"
+import Shop from "./game/pages/Shop/Shop"
 import Start from "./game/Fuction/Start"
 import TabPageUI from "./game/pages/TabPages/TabPageUI"
 import Me from "./game/pages/TabPages/Me/Me"
@@ -40,17 +47,24 @@ export default class GameConfig{
         reg("game/GameCenter/GameUI.ts",GameUI);
         reg("game/common/setSceneWH.ts",setSceneWH);
         reg("game/GameCenter/GameControl.ts",GameControl);
+        reg("game/common/openView.ts",openView);
         reg("game/GameCenter/seat.ts",seat);
+        reg("game/common/SetViewWH.ts",SetViewWH);
+        reg("game/Fuction/OpenDiaLog.ts",OpenDiaLog);
+        reg("game/common/SlideSelect.ts",SlideSelect);
+        reg("game/common/MyClickSelect.ts",MyClickSelect);
         reg("game/pages/Login/LoginUI.ts",LoginUI);
         reg("game/common/SetSceneWH.ts",SetSceneWH);
         reg("game/pages/Login/Login.ts",Login);
-        reg("game/common/openView.ts",openView);
+        reg("game/pages/shishizhanji/ZhanJiGet.ts",ZhanJiGet);
+        reg("game/common/Back.ts",Back);
         reg("game/pages/Register/RegisterUI.ts",RegisterUI);
         reg("game/pages/Register/Register.ts",Register);
         reg("game/common/setHd.ts",setHd);
-        reg("game/common/Back.ts",Back);
         reg("game/pages/Set/Set.ts",Set);
         reg("game/common/MySwitch.ts",MySwitch);
+        reg("game/pages/Shop/ShopUI.ts",ShopUI);
+        reg("game/pages/Shop/Shop.ts",Shop);
         reg("game/Fuction/Start.ts",Start);
         reg("game/pages/TabPages/TabPageUI.ts",TabPageUI);
         reg("game/pages/TabPages/Me/Me.ts",Me);

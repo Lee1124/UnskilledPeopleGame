@@ -8,7 +8,10 @@ export default class Me extends Laya.Script {
     meList: any;
     //脚本所属的scene
     UI: any;
+    //所属场景
+    toScene:any;
     onStart(): void {
+        this.toScene=this.owner.scene;
         this.meList = this.owner.getChildByName('list_bg').getChildByName('list_bg2').getChildByName('me_list');
         this.setPage();
     }
@@ -39,7 +42,11 @@ export default class Me extends Laya.Script {
         if (e.type == 'click') {
             //点击选择的id
             let clickId: number = e.target.dataSource.id;
+            console.log(clickId)
             switch (clickId) {
+                case 1:///商城
+                    this.goShop();
+                    break;
                 case 5:///设置
                     this.goSet();
                     break;
@@ -48,6 +55,16 @@ export default class Me extends Laya.Script {
                     break;
             }
         }
+    }
+    //商城
+    goShop():void{
+        Main.$openScene('Shop.scene',false,null,(res:any)=>{
+            res.x = Laya.stage.width;
+            res.zOrder = 10;
+            Laya.Tween.to(res, { x: 0 }, Main.Speed['changePage'],null,Laya.Handler.create(this,()=>{
+                this.toScene.removeSelf();
+            }));
+        })
     }
 
     //设置
@@ -71,7 +88,7 @@ export default class Me extends Laya.Script {
     requestPageData(): void {
         let data: any = {
             uid: Main.userInfo.userId,
-            tuid: Main.userInfo.userId
+            // tuid: Main.userInfo.userId
         }
         HTTP.$request({
             that: this,

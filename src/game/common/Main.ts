@@ -3,12 +3,23 @@
  */
 import TIP from '../common/SuspensionTips';
 class Main {
+     //手机信息
+    phoneNews:any = {
+        statusHeight: 0,//手机系统栏的高度
+        deviceNews: '',//系统名称：Android / iOS
+    }
     //是否自动测试环境
     AUTO:boolean=false;
-    //websoket请求地址
-    websoketApi: string = '132.232.34.32:8082';
+    // //websoket请求地址
+    websoketApi: string = '132.232.34.32:8092';
     //http请求的地址
-    requestApi: string = 'http://132.232.34.32:8081';
+    requestApi: string = 'http://132.232.34.32:8091';
+
+     //websoket请求地址
+    //  websoketApi: string = '132.232.34.32:8082';
+    //  //http请求的地址
+    //  requestApi: string = 'http://132.232.34.32:8081';
+
     //资源获取地址
     // resourseHttp:string='http://132.232.34.32/ydr/'
     //用户信息
@@ -71,6 +82,8 @@ class Main {
     // }
     //预加载的牌
     loadPokerArr: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
+    //预加载菜单的图片资源
+    loadMenuImgArr:any[]=['res/img/menu/menu_1.png','res/img/menu/menu_2.png','res/img/menu/menu_3.png','res/img/menu/menu_4.png','res/img/menu/menu_5.png','res/img/menu/menu_6.png'];
     //‘我的’页面列表数据
     meListData: any[] = [
         { id: 1, src: 'res/img/me/me_text1.png' },
@@ -81,7 +94,7 @@ class Main {
         { id: 6, src: 'res/img/me/me_text6.png' }
     ]
     //预加载的场景
-    loadScene: any[] = ['Game.scene', 'TabPages.scene', 'Register.scene','Set.scene']
+    loadScene: any[] = ['Game.scene', 'TabPages.scene', 'Register.scene','Set.scene','Shop.scene','RealTimeResult.scene']
     loadSceneResourcesArr: any[] = []
     openSceneViewArr: any[] = []
     //预加载指向
@@ -142,6 +155,9 @@ class Main {
         this.loadPokerArr.forEach(item => {
             Laya.loader.load(['res/img/poker/chang/' + item + '.png']);
             Laya.loader.load(['res/img/poker/duan/' + item + '.png']);
+        })
+        this.loadMenuImgArr.forEach(item => {
+            Laya.loader.load([item]);
         })
         this.meListData.forEach(item => {
             Laya.loader.load([item.src]);

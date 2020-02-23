@@ -88,7 +88,6 @@ export default class sliderSelect extends Laya.Script {
 
     onLoading() {
         Main.beforeReloadResources(this, (res:any) => {
-            console.log('进来了',res)
             this.dealWithBeforeLoadScene(res);
         });
         Main.createLoading(Main.loadingType.one);//预创建HTTP请求加载中的资源

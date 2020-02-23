@@ -6,12 +6,24 @@ P 0CA95849 back.png
 S B2DBE610 bg.jpg
 P E7B4145A bg2.png
 R 840B6C85 bottom.png
+P A681EDF7 btn1_box.png
+P 7ACDBEC5 btn1_text3.png
+P DD96E869 coinIcon.png
+P C99F59AB comfirmBtn.png
 P 16A364AA defaultIcon.png
+P 3AB2A41E dialogBg.png
+P DA00E453 dialogBG1.png
 R EA4DEBE2 fenge.png
 P 9FCB07EC go_icon.png
 P 4F6CC3A8 headBox.png
+P 904B408F ld0.png
+P 7DF6C7B3 ld1.png
+P EA0DBB87 ld2.png
+P F8655D0F ld3.png
 P 7EF27C69 loadBg.png
 P C54A6FBC loadIcon.png
+P CA536294 loading2.png
+P 7946C791 menu_bg.png
 P 28205814 progress1.png
 P CE2A7994 progress2.png
 P F5963E56 progress_bg.png
@@ -35,9 +47,14 @@ P AE2A4A1A title_change.png
 P 0EDDF982 title_hall.png
 P 70995EAA title_notice.png
 P A5E1E804 title_set.png
+P A6FB34FB title_shop.png
 R E6EBA664 top.png
 D images/game
 S 5210B1C1 deskBg.jpg
+P 4102CD84 icon_chat.png
+P 909CF546 icon_look.png
+P 9250EBF2 icon_look2.png
+P 31B5D074 icon_menu.png
 P 8667F84D zuoweiBg.png
 D images/hall
 P 1816C380 h_bg.png
@@ -57,6 +74,16 @@ P BBDC443B state3_1.png
 P 876CA315 state3_2.png
 P 0EDDF982 title_hall.png
 P 4A12A7B1 yidairu.png
+D images/liuzuo
+P 213A70AF l_bg.png
+P 9CD4C44C l_close.png
+P E3E0DA21 l_kuang1.png
+P 90C723D1 l_kuang2.png
+P 4C0B1DE6 l_no.png
+P CACB2461 l_return.png
+P 563C8E78 l_sign.png
+P C1F7BEAF l_title.png
+P B3866EDF l_yes.png
 D images/login
 P 0C2A2128 change_btn.png
 R EA821DF6 login_btn.png
@@ -64,6 +91,19 @@ R 8EAC55F0 login_line.png
 R 1AE10E86 logo.png
 R F7BF6A1D register_btn.png
 R 18AF3A51 tip_text.png
+D images/makeUpCoin
+P C137ACFC bobo_big.png
+R 9E8F810C bobo_btn.png
+P 9CD4C44C bobo_close.png
+P CC3C3FA1 bobo_dairu.png
+P FA105064 bobo_ID.png
+P A9B384F8 bobo_jibi.png
+P D4DE4421 bobo_jifen.png
+P 1C0A12E4 bobo_moeny.png
+P D08D6DE3 bobo_small.png
+P C6B6E25E bobo_tdbtn.png
+R 41790D6F bobo_tiao.png
+P D80DF0AE bobo_title.png
 D images/me
 P 012BD0A1 bg.png
 P D67AF844 icon_label.png
@@ -82,6 +122,22 @@ P 19FF0BD8 pwdLabel.png
 P 50836AFF RegisterInputBg.png
 P 5D6928D8 text_register.png
 P 62C4EF9D userLabel.png
+D images/shishizhanji
+P D149A166 2_03.png
+P 0A549414 s_alldairu.png
+P AA164C17 s_allgetscore.png
+P DB9EEF61 s_bg.png
+P CD4FF98E s_bg2.png
+P 49E242A2 s_bg3.png
+R 9C737CBE s_hd.png
+P 0C05644D s_head.png
+P 4E5C9806 s_lastTime.png
+P F38EDA2B s_title1.png
+P 31794178 s_title2.png
+P CBCE70AA s_title3.png
+P BD09DE9E s_title5.png
+P 61A88D54 微信图片_20200221191548.png
+P BFBDED64 微信图片_20200221191558.png
 D images/poker/chang
 P F53C10C3 1.png
 P 40AF3706 10.png

@@ -34,15 +34,15 @@ class InitGameData {
         // conObj.owner.mePokerGetSeat = { x: getMePokerSeatXY.x, y: getMePokerSeatXY.y };
 
         //====================测试=================
-        if (conObj.Index == 1 || conObj.Index == 2) {
-            seatObj.userId = `12345${conObj.Index}`;
-            seatObj.owner.getChildByName('head').visible = true;
-            seatObj.owner.getChildByName('head').skin = 'res/img/common/defaultIcon.png';
-            seatObj.owner.getChildByName('name').visible = true;
-            seatObj.owner.getChildByName('name').text = `用户名${(conObj.Index + 1)}`;
-            seatObj.owner.getChildByName('score').visible = true;
-            seatObj.owner.getChildByName('score').text = parseInt(String(Math.random() * 100 + 100));
-        }
+        // if (conObj.Index == 1 || conObj.Index == 2) {
+        //     seatObj.userId = `12345${conObj.Index}`;
+        //     seatObj.owner.getChildByName('head').visible = true;
+        //     seatObj.owner.getChildByName('head').skin = 'res/img/common/defaultHead.png';
+        //     seatObj.owner.getChildByName('name').visible = true;
+        //     seatObj.owner.getChildByName('name').text = `用户名${(conObj.Index + 1)}`;
+        //     seatObj.owner.getChildByName('score').visible = true;
+        //     seatObj.owner.getChildByName('score').text = parseInt(String(Math.random() * 100 + 100));
+        // }
     }
 }
 export default new InitGameData();

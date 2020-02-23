@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":68,
-    "selecteID":69,
+    "selectedBox":70,
+    "selecteID":71,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/pages/TabPages/TabPageUI.ts","height":2208},
     "nodeParent":-1,
@@ -1224,7 +1224,7 @@
                                         }]
                                 }]
                         }],
-                    "$HIDDEN":false
+                    "$HIDDEN":true
                 },
                 {
                     "x":30,
@@ -1328,7 +1328,7 @@
                                     "props":{"x":0,"width":1040,"var":"notice_tab","top":0,"skin":"images/common/slection_bar.png","name":"nav","height":118,"centerX":0},
                                     "nodeParent":110,
                                     "label":"nav",
-                                    "isOpen":true,
+                                    "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
@@ -1340,7 +1340,7 @@
                                             "props":{"width":520,"var":"systemNotice_box","name":"systemNotice_box","height":118},
                                             "nodeParent":111,
                                             "label":"systemNotice_box",
-                                            "isOpen":true,
+                                            "isOpen":false,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
@@ -1395,7 +1395,7 @@
                                             "props":{"y":0,"x":519,"width":520,"var":"myNews_box","name":"myNews_box","height":118},
                                             "nodeParent":111,
                                             "label":"myNews_box",
-                                            "isOpen":true,
+                                            "isOpen":false,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
@@ -1472,7 +1472,7 @@
                                                 {
                                                     "type":"List",
                                                     "searchKey":"List,sysytem_list",
-                                                    "props":{"visible":false,"top":0,"spaceY":20,"right":0,"repeatX":1,"name":"sysytem_list","left":0,"elasticEnabled":true,"bottom":0},
+                                                    "props":{"visible":false,"top":20,"spaceY":10,"right":0,"repeatX":1,"name":"sysytem_list","left":0,"elasticEnabled":true,"bottom":20},
                                                     "nodeParent":118,
                                                     "label":"sysytem_list",
                                                     "isOpen":true,
@@ -1496,7 +1496,7 @@
                                                                 {
                                                                     "type":"Image",
                                                                     "searchKey":"Image,sysytem_content",
-                                                                    "props":{"top":0,"skin":"images/hall/h_list_bg.png","right":0,"name":"sysytem_content","left":0,"bottom":0},
+                                                                    "props":{"top":0,"right":0,"name":"sysytem_content","left":0,"bottom":0},
                                                                     "nodeParent":120,
                                                                     "label":"sysytem_content",
                                                                     "isDirectory":false,

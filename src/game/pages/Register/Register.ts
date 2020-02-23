@@ -24,7 +24,7 @@ export default class RegisterUI extends Laya.Script {
     //初始化返回
     initBack(): void {
         let backJS:any = this.owner['back_btn'].getComponent(Back);
-        backJS.initBack(1, 'Login.scene', Main.sign.signOut);
+        backJS.initBack(1, 0,'Login.scene', Main.sign.signOut);
         return backJS;
     }
 

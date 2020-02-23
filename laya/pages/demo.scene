@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":5,
-    "selecteID":8,
+    "selectedBox":160,
+    "selecteID":167,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","height":2208},
     "nodeParent":-1,
-    "maxID":68,
+    "maxID":177,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -17,835 +17,1415 @@
         {
             "x":15,
             "type":"Image",
-            "searchKey":"Image,NoticePage,NoticePage",
-            "props":{"y":0,"x":0,"visible":false,"var":"NoticePage","top":0,"right":0,"name":"NoticePage","left":0,"bottom":0},
+            "searchKey":"Image,dialog_box,dialog_box",
+            "props":{"zOrder":3,"y":0,"x":0,"width":0,"visible":true,"var":"dialog_box","top":0,"name":"dialog_box","left":0,"isModal":true,"bottom":0,"bgColor":"#a42624","alpha":1},
             "nodeParent":2,
-            "label":"NoticePage",
+            "label":"dialog_box",
             "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
-            "compId":3,
+            "compId":68,
             "child":[
                 {
                     "x":30,
-                    "type":"Image",
-                    "searchKey":"Image,hd",
-                    "props":{"width":1242,"top":0,"skin":"images/common/title_hd_bg.png","right":0,"name":"hd","left":0,"height":163},
-                    "nodeParent":3,
-                    "label":"hd",
+                    "type":"Panel",
+                    "searchKey":"Panel,_mask,_mask",
+                    "props":{"y":0,"x":0,"width":1242,"visible":false,"var":"_mask","name":"_mask","height":2208,"bgColor":"#000000","alpha":0.5},
+                    "nodeParent":68,
+                    "label":"_mask",
                     "isOpen":true,
-                    "isDirectory":true,
+                    "isDirectory":false,
                     "isAniNode":true,
-                    "hasChild":true,
-                    "compId":5,
+                    "hasChild":false,
+                    "compId":69,
                     "child":[
-                        {
-                            "x":45,
-                            "type":"Image",
-                            "searchKey":"Image,titleBox",
-                            "props":{"width":1242,"top":5,"right":0,"name":"titleBox","left":0,"height":153,"bottom":0},
-                            "nodeParent":5,
-                            "label":"titleBox",
-                            "isOpen":true,
-                            "isDirectory":true,
-                            "isAniNode":true,
-                            "hasChild":true,
-                            "compId":6,
-                            "child":[
-                                {
-                                    "x":60,
-                                    "type":"Image",
-                                    "searchKey":"Image,title",
-                                    "props":{"skin":"images/common/title_notice.png","name":"title","centerY":0,"centerX":0},
-                                    "nodeParent":6,
-                                    "label":"title",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":7,
-                                    "child":[
-                                        ]
-                                }]
-                        }]
+                        ]
                 },
                 {
                     "x":30,
                     "type":"Image",
-                    "searchKey":"Image,content,notice_content",
-                    "props":{"var":"notice_content","top":270,"right":0,"name":"content","left":0,"bottom":225},
-                    "nodeParent":3,
-                    "label":"content",
-                    "isOpen":true,
+                    "searchKey":"Image,menu,menu",
+                    "props":{"y":-1240,"x":-15,"width":674,"var":"menu","skin":"images/common/bg2.png","name":"menu","height":1240},
+                    "nodeParent":68,
+                    "label":"menu",
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
-                    "compId":9,
+                    "compId":71,
                     "child":[
                         {
-                            "x":45,
-                            "type":"Image",
-                            "searchKey":"Image,nav",
-                            "props":{"x":0,"width":1040,"top":0,"skin":"images/hall/nav_bg.png","name":"nav","centerX":0},
-                            "nodeParent":9,
-                            "label":"nav",
-                            "isOpen":false,
+                            "type":"List",
+                            "searchKey":"List,menuList",
+                            "props":{"top":48,"spaceY":0,"right":48,"repeatY":7,"repeatX":1,"name":"menuList","left":50,"bottom":53},
+                            "nodeParent":71,
+                            "label":"menuList",
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
-                            "compId":10,
+                            "compId":72,
+                            "child":[
+                                {
+                                    "type":"Box",
+                                    "searchKey":"Box,menuList_box",
+                                    "props":{"y":0,"right":0,"renderType":"render","name":"menuList_box","left":0,"height":162},
+                                    "nodeParent":72,
+                                    "label":"menuList_box",
+                                    "isOpen":true,
+                                    "isDirectory":true,
+                                    "isAniNode":false,
+                                    "hasChild":true,
+                                    "compId":73,
+                                    "child":[
+                                        {
+                                            "type":"Image",
+                                            "searchKey":"Image,menu_row_node",
+                                            "props":{"top":0,"right":0,"name":"menu_row_node","left":0,"bottom":0},
+                                            "nodeParent":73,
+                                            "label":"menu_row_node",
+                                            "isOpen":true,
+                                            "isDirectory":true,
+                                            "isAniNode":false,
+                                            "hasChild":true,
+                                            "compId":74,
+                                            "child":[
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,line",
+                                                    "props":{"y":162,"skin":"images/gameView/menu_line.png","right":0,"name":"line","left":0},
+                                                    "nodeParent":74,
+                                                    "label":"line",
+                                                    "isDirectory":false,
+                                                    "isAniNode":false,
+                                                    "hasChild":false,
+                                                    "compId":75,
+                                                    "child":[
+                                                        ]
+                                                },
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,listContent",
+                                                    "props":{"y":82,"x":288,"name":"listContent","centerY":0,"centerX":-10},
+                                                    "nodeParent":74,
+                                                    "label":"listContent",
+                                                    "isDirectory":false,
+                                                    "isAniNode":false,
+                                                    "hasChild":false,
+                                                    "compId":76,
+                                                    "child":[
+                                                        ]
+                                                }]
+                                        }]
+                                }]
+                        }],
+                    "$HIDDEN":true
+                },
+                {
+                    "x":30,
+                    "type":"Image",
+                    "searchKey":"Image,makeUp_bobo,makeUp_bobo",
+                    "props":{"y":-880,"x":96,"width":1050,"var":"makeUp_bobo","skin":"images/common/bg2.png","name":"makeUp_bobo","height":880},
+                    "nodeParent":68,
+                    "label":"makeUp_bobo",
+                    "isOpen":false,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":77,
+                    "child":[
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,close,bobo_close",
+                            "props":{"y":0,"x":0,"var":"bobo_close","top":80,"skin":"images/dialog/bobo_close.png","right":80,"name":"close"},
+                            "nodeParent":77,
+                            "label":"close",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":78,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,title",
+                            "props":{"y":80,"x":393,"top":80,"skin":"images/dialog/bobo_title.png","name":"title","centerX":0},
+                            "nodeParent":77,
+                            "label":"title",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":79,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,personNews",
+                            "props":{"x":0,"width":860,"top":530,"name":"personNews","height":65,"centerX":0},
+                            "nodeParent":77,
+                            "label":"personNews",
+                            "isOpen":true,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":80,
                             "child":[
                                 {
                                     "type":"Image",
-                                    "searchKey":"Image,nav_text",
-                                    "props":{"skin":"images/Notice/nav.png","name":"nav_text","centerY":-4,"centerX":0},
-                                    "nodeParent":10,
-                                    "label":"nav_text",
+                                    "searchKey":"Image,title1",
+                                    "props":{"skin":"images/dialog/bobo_ID.png","name":"title1","left":0,"centerY":0},
+                                    "nodeParent":80,
+                                    "label":"title1",
+                                    "isOpen":false,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":81,
+                                    "child":[
+                                        {
+                                            "type":"Text",
+                                            "searchKey":"Text,value,bobo_ID",
+                                            "props":{"y":-3,"x":61,"width":172,"var":"bobo_ID","name":"value","height":40,"fontSize":40,"color":"#936e1e","bold":true},
+                                            "nodeParent":81,
+                                            "label":"value",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":82,
+                                            "child":[
+                                                ]
+                                        }]
+                                },
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,title2",
+                                    "props":{"x":232,"skin":"images/dialog/bobo_jifen.png","name":"title2","centerY":0},
+                                    "nodeParent":80,
+                                    "label":"title2",
+                                    "isOpen":true,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":83,
+                                    "child":[
+                                        {
+                                            "type":"Image",
+                                            "searchKey":"Image,icon",
+                                            "props":{"top":10,"skin":"images/dialog/bobo_jibi.png","right":-57,"name":"icon"},
+                                            "nodeParent":83,
+                                            "label":"icon",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":84,
+                                            "child":[
+                                                ]
+                                        },
+                                        {
+                                            "type":"Label",
+                                            "searchKey":"Label,value,bobo_trueScore",
+                                            "props":{"wordWrap":true,"width":160,"var":"bobo_trueScore","text":"0","name":"value","left":250,"fontSize":40,"color":"#936e1e","centerY":0,"bold":true},
+                                            "nodeParent":83,
+                                            "label":"value",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":85,
+                                            "child":[
+                                                ]
+                                        }]
+                                },
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,title3",
+                                    "props":{"skin":"images/dialog/bobo_moeny.png","name":"title3","left":661,"centerY":3},
+                                    "nodeParent":80,
+                                    "label":"title3",
+                                    "isOpen":true,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":86,
+                                    "child":[
+                                        {
+                                            "type":"Text",
+                                            "searchKey":"Text,value,bobo_fuwufei",
+                                            "props":{"y":5,"x":149,"width":84,"var":"bobo_fuwufei","text":"0","name":"value","height":40,"fontSize":40,"color":"#936e1e","bold":true},
+                                            "nodeParent":86,
+                                            "label":"value",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":87,
+                                            "child":[
+                                                ]
+                                        }]
+                                }]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,selectTitle",
+                            "props":{"y":0,"x":0,"width":860,"top":250,"name":"selectTitle","height":65,"centerX":0},
+                            "nodeParent":77,
+                            "label":"selectTitle",
+                            "isOpen":true,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":88,
+                            "child":[
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,title1",
+                                    "props":{"skin":"images/dialog/bobo_small.png","name":"title1","left":0,"centerY":0},
+                                    "nodeParent":88,
+                                    "label":"title1",
                                     "isDirectory":false,
                                     "isAniNode":true,
                                     "hasChild":false,
-                                    "compId":11,
+                                    "compId":89,
                                     "child":[
                                         ]
                                 },
                                 {
                                     "type":"Image",
-                                    "searchKey":"Image,systemNotice_box,systemNotice_box",
-                                    "props":{"width":520,"var":"systemNotice_box","name":"systemNotice_box","height":126},
-                                    "nodeParent":10,
-                                    "label":"systemNotice_box",
-                                    "isOpen":true,
-                                    "isDirectory":true,
+                                    "searchKey":"Image,title3",
+                                    "props":{"skin":"images/dialog/bobo_big.png","right":0,"name":"title3","centerY":0},
+                                    "nodeParent":88,
+                                    "label":"title3",
+                                    "isDirectory":false,
                                     "isAniNode":true,
-                                    "hasChild":true,
-                                    "compId":12,
+                                    "hasChild":false,
+                                    "compId":90,
                                     "child":[
-                                        {
-                                            "type":"Image",
-                                            "searchKey":"Image,systemNotice,systemNotice",
-                                            "props":{"y":0,"x":0,"var":"systemNotice","skin":"images/Notice/system_notice.png","name":"systemNotice"},
-                                            "nodeParent":12,
-                                            "label":"systemNotice",
-                                            "isDirectory":false,
-                                            "isAniNode":true,
-                                            "hasChild":false,
-                                            "compId":13,
-                                            "child":[
-                                                ],
-                                            "$HIDDEN":false
-                                        }]
+                                        ]
                                 },
                                 {
                                     "type":"Image",
-                                    "searchKey":"Image,myNews_box,myNews_box",
-                                    "props":{"y":0,"x":519,"width":520,"var":"myNews_box","name":"myNews_box","height":126},
-                                    "nodeParent":10,
-                                    "label":"myNews_box",
+                                    "searchKey":"Image,title2",
+                                    "props":{"skin":"images/dialog/bobo_dairu.png","name":"title2","centerY":0,"centerX":-81},
+                                    "nodeParent":88,
+                                    "label":"title2",
                                     "isOpen":true,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
-                                    "compId":14,
+                                    "compId":91,
                                     "child":[
                                         {
-                                            "type":"Image",
-                                            "searchKey":"Image,myNews,myNews",
-                                            "props":{"y":0,"x":-4,"visible":false,"var":"myNews","skin":"images/Notice/myNews.png","name":"myNews"},
-                                            "nodeParent":14,
-                                            "label":"myNews",
+                                            "type":"Label",
+                                            "searchKey":"Label,bobo_daiRuScore,bobo_daiRuScore",
+                                            "props":{"y":-7,"x":210,"wordWrap":true,"width":310,"var":"bobo_daiRuScore","text":"0","name":"bobo_daiRuScore","fontSize":60,"color":"#FF9E2D"},
+                                            "nodeParent":91,
+                                            "label":"bobo_daiRuScore",
                                             "isDirectory":false,
                                             "isAniNode":true,
                                             "hasChild":false,
-                                            "compId":15,
+                                            "compId":92,
                                             "child":[
-                                                ],
-                                            "$HIDDEN":true
+                                                ]
                                         }]
                                 }]
                         },
                         {
-                            "x":45,
                             "type":"Image",
-                            "searchKey":"Image,page_bg",
-                            "props":{"x":0,"top":200,"skin":"images/Notice/bg1.png","right":24,"name":"page_bg","left":25,"bottom":0},
-                            "nodeParent":9,
-                            "label":"page_bg",
-                            "isOpen":false,
+                            "searchKey":"Image,sliderView,sliderView",
+                            "props":{"y":0,"x":0,"width":817,"var":"sliderView","name":"sliderView","height":100,"centerY":-30,"centerX":10},
+                            "nodeParent":77,
+                            "label":"sliderView",
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
-                            "compId":16,
+                            "compId":93,
                             "child":[
                                 {
                                     "type":"Image",
-                                    "searchKey":"Image,system_page",
-                                    "props":{"y":0,"x":0,"width":1040,"top":50,"name":"system_page","centerX":0,"bottom":100},
-                                    "nodeParent":16,
-                                    "label":"system_page",
-                                    "isOpen":false,
+                                    "searchKey":"Image,slider_bg",
+                                    "props":{"y":0,"x":0,"visible":true,"skin":"images/dialog/bobo_tiao.png","name":"slider_bg","centerY":0,"centerX":0},
+                                    "nodeParent":93,
+                                    "label":"slider_bg",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":94,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,slider_btn",
+                                    "props":{"y":0,"x":0,"width":92,"visible":true,"skin":"images/dialog/bobo_tdbtn.png","pivotY":50,"pivotX":46,"name":"slider_btn","height":99,"centerY":0},
+                                    "nodeParent":93,
+                                    "label":"slider_btn",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":95,
+                                    "child":[
+                                        ]
+                                }]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,confirmDaiRuBtn",
+                            "props":{"width":600,"skin":"images/common/btn1_box.png","name":"confirmDaiRuBtn","height":163,"centerX":0,"bottom":70},
+                            "nodeParent":77,
+                            "label":"confirmDaiRuBtn",
+                            "isOpen":true,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":96,
+                            "child":[
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,text",
+                                    "props":{"y":45,"x":-80,"skin":"images/common/btn1_text3.png","name":"text","centerY":0,"centerX":0},
+                                    "nodeParent":96,
+                                    "label":"text",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":97,
+                                    "child":[
+                                        ]
+                                }]
+                        }],
+                    "$HIDDEN":false
+                },
+                {
+                    "x":30,
+                    "type":"Image",
+                    "searchKey":"Image,gameSet_dialog,gameSet_dialog",
+                    "props":{"y":-1185,"x":59,"width":1124,"var":"gameSet_dialog","skin":"images/common/bg2.png","name":"gameSet_dialog","height":1185},
+                    "nodeParent":68,
+                    "label":"gameSet_dialog",
+                    "isOpen":false,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":98,
+                    "child":[
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,close,gameSet_close",
+                            "props":{"y":0,"x":0,"var":"gameSet_close","top":85,"skin":"images/dialog/bobo_close.png","right":85,"name":"close"},
+                            "nodeParent":98,
+                            "label":"close",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":99,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,gameSet_title",
+                            "props":{"y":0,"x":0,"top":100,"skin":"images/GameSet/gameSet_title.png","name":"gameSet_title","centerX":0},
+                            "nodeParent":98,
+                            "label":"gameSet_title",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":100,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,gameSet_selectDesk",
+                            "props":{"y":0,"x":0,"width":800,"top":240,"name":"gameSet_selectDesk","height":450,"centerX":0},
+                            "nodeParent":98,
+                            "label":"gameSet_selectDesk",
+                            "isOpen":true,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":101,
+                            "child":[
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,gameSet_title2",
+                                    "props":{"y":0,"x":0,"skin":"images/GameSet/gameSet_deskselect.png","name":"gameSet_title2"},
+                                    "nodeParent":101,
+                                    "label":"gameSet_title2",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":102,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,deskViewBox,gameSet_deskViewBox",
+                                    "props":{"y":93,"width":800,"var":"gameSet_deskViewBox","name":"deskViewBox","height":353,"centerX":0},
+                                    "nodeParent":101,
+                                    "label":"deskViewBox",
+                                    "isOpen":true,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
-                                    "compId":17,
+                                    "compId":103,
                                     "child":[
                                         {
-                                            "type":"List",
-                                            "searchKey":"List,sysytem_list,sysytem_list",
-                                            "props":{"var":"sysytem_list","top":0,"right":0,"repeatX":1,"name":"sysytem_list","left":0,"elasticEnabled":true,"bottom":0},
-                                            "nodeParent":17,
-                                            "label":"sysytem_list",
+                                            "type":"Image",
+                                            "searchKey":"Image,desk_bg1",
+                                            "props":{"y":-22.5,"skin":"images/GameSet/desk_bg.png","name":"desk_bg1","centerX":-150},
+                                            "nodeParent":103,
+                                            "label":"desk_bg1",
                                             "isOpen":true,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
-                                            "compId":18,
+                                            "compId":104,
                                             "child":[
                                                 {
-                                                    "type":"Box",
-                                                    "searchKey":"Box,system_row_box",
-                                                    "props":{"right":0,"renderType":"render","name":"system_row_box","left":0,"height":280},
-                                                    "nodeParent":18,
-                                                    "label":"system_row_box",
-                                                    "isOpen":true,
+                                                    "type":"Image",
+                                                    "searchKey":"Image,desk",
+                                                    "props":{"y":23,"width":195,"skin":"images/GameSet/desk2.png","name":"desk","height":353,"centerY":0,"centerX":0},
+                                                    "nodeParent":104,
+                                                    "label":"desk",
+                                                    "isOpen":false,
                                                     "isDirectory":true,
-                                                    "isAniNode":false,
+                                                    "isAniNode":true,
                                                     "hasChild":true,
-                                                    "compId":19,
+                                                    "compId":105,
                                                     "child":[
                                                         {
                                                             "type":"Image",
-                                                            "searchKey":"Image,sysytem_content",
-                                                            "props":{"top":0,"right":0,"name":"sysytem_content","left":0,"bottom":0},
-                                                            "nodeParent":19,
-                                                            "label":"sysytem_content",
+                                                            "searchKey":"Image,selectSign",
+                                                            "props":{"visible":true,"skin":"images/GameSet/gameSet_selectedBox.png","name":"selectSign","centerY":0,"centerX":0},
+                                                            "nodeParent":105,
+                                                            "label":"selectSign",
                                                             "isDirectory":false,
-                                                            "isAniNode":false,
+                                                            "isAniNode":true,
                                                             "hasChild":false,
-                                                            "compId":20,
+                                                            "compId":106,
+                                                            "child":[
+                                                                ]
+                                                        }]
+                                                }]
+                                        },
+                                        {
+                                            "type":"Image",
+                                            "searchKey":"Image,desk_bg2",
+                                            "props":{"y":-22,"skin":"images/GameSet/desk_bg.png","name":"desk_bg2","centerX":150},
+                                            "nodeParent":103,
+                                            "label":"desk_bg2",
+                                            "isOpen":true,
+                                            "isDirectory":true,
+                                            "isAniNode":true,
+                                            "hasChild":true,
+                                            "compId":107,
+                                            "child":[
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,desk",
+                                                    "props":{"y":22,"width":195,"skin":"images/GameSet/desk1.png","name":"desk","height":353,"centerY":0,"centerX":0},
+                                                    "nodeParent":107,
+                                                    "label":"desk",
+                                                    "isOpen":true,
+                                                    "isDirectory":true,
+                                                    "isAniNode":true,
+                                                    "hasChild":true,
+                                                    "compId":108,
+                                                    "child":[
+                                                        {
+                                                            "type":"Image",
+                                                            "searchKey":"Image,selectSign",
+                                                            "props":{"visible":false,"skin":"images/GameSet/gameSet_selectedBox.png","name":"selectSign","centerY":0,"centerX":0},
+                                                            "nodeParent":108,
+                                                            "label":"selectSign",
+                                                            "isDirectory":false,
+                                                            "isAniNode":true,
+                                                            "hasChild":false,
+                                                            "compId":109,
                                                             "child":[
                                                                 ]
                                                         }]
                                                 }]
                                         }]
-                                },
-                                {
-                                    "type":"Image",
-                                    "searchKey":"Image,myNews_page",
-                                    "props":{"y":0,"x":0,"width":1040,"visible":false,"top":50,"name":"myNews_page","centerX":0,"bottom":100},
-                                    "nodeParent":16,
-                                    "label":"myNews_page",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":21,
-                                    "child":[
-                                        ],
-                                    "$HIDDEN":true
                                 }]
-                        }],
-                    "$HIDDEN":false
-                }],
-            "$HIDDEN":true
-        },
-        {
-            "x":15,
-            "type":"Image",
-            "searchKey":"Image,HallPage,HallPage",
-            "props":{"y":0,"x":0,"visible":false,"var":"HallPage","top":0,"right":0,"name":"HallPage","left":0,"bottom":0},
-            "nodeParent":2,
-            "label":"HallPage",
-            "isOpen":true,
-            "isDirectory":true,
-            "isAniNode":true,
-            "hasChild":true,
-            "compId":4,
-            "child":[
-                {
-                    "x":30,
-                    "type":"Image",
-                    "searchKey":"Image,content,hall_content",
-                    "props":{"x":0,"var":"hall_content","top":220,"right":0,"name":"content","left":0,"bottom":225},
-                    "nodeParent":4,
-                    "label":"content",
-                    "isOpen":true,
-                    "isDirectory":true,
-                    "isAniNode":true,
-                    "hasChild":true,
-                    "compId":22,
-                    "child":[
+                        },
                         {
-                            "x":45,
                             "type":"Image",
-                            "searchKey":"Image,nav_bg,hall_nav_bg",
-                            "props":{"x":0,"width":1040,"var":"hall_nav_bg","top":0,"skin":"images/hall/nav_bg.png","name":"nav_bg","centerX":0},
-                            "nodeParent":22,
-                            "label":"nav_bg",
+                            "searchKey":"Image,switch_bg",
+                            "props":{"y":0,"x":0,"skin":"images/GameSet/switch_bg.png","name":"switch_bg","left":118,"bottom":285},
+                            "nodeParent":98,
+                            "label":"switch_bg",
                             "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
-                            "compId":23,
+                            "compId":110,
                             "child":[
                                 {
-                                    "type":"Sprite",
-                                    "searchKey":"Sprite,nav_text",
-                                    "props":{"y":25,"x":99,"texture":"images/hall/nav_text.png","name":"nav_text"},
-                                    "nodeParent":23,
-                                    "label":"nav_text",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":24,
-                                    "child":[
-                                        ]
-                                },
-                                {
                                     "type":"Image",
-                                    "searchKey":"Image,select_box1",
-                                    "props":{"width":257,"name":"select_box1","left":0,"height":117,"centerY":0},
-                                    "nodeParent":23,
-                                    "label":"select_box1",
+                                    "searchKey":"Image,game_music",
+                                    "props":{"skin":"images/GameSet/gameSet_1.png","name":"game_music","centerY":0,"centerX":-75},
+                                    "nodeParent":110,
+                                    "label":"game_music",
                                     "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
-                                    "compId":25,
+                                    "compId":111,
                                     "child":[
                                         {
                                             "type":"Image",
-                                            "searchKey":"Image,btn",
-                                            "props":{"skin":"images/hall/quan.png","name":"btn","centerY":0,"centerX":0},
-                                            "nodeParent":25,
-                                            "label":"btn",
-                                            "isDirectory":false,
+                                            "searchKey":"Image,switchBox,game_music_switchBox",
+                                            "props":{"width":129,"var":"game_music_switchBox","right":-150,"name":"switchBox","height":77,"centerY":0},
+                                            "nodeParent":111,
+                                            "label":"switchBox",
+                                            "isOpen":false,
+                                            "isDirectory":true,
                                             "isAniNode":true,
-                                            "hasChild":false,
-                                            "compId":26,
+                                            "hasChild":true,
+                                            "compId":112,
                                             "child":[
-                                                ]
-                                        }],
-                                    "$HIDDEN":false
-                                },
-                                {
-                                    "type":"Image",
-                                    "searchKey":"Image,select_box2",
-                                    "props":{"y":0,"width":257,"name":"select_box2","left":257,"height":117,"centerY":0},
-                                    "nodeParent":23,
-                                    "label":"select_box2",
-                                    "isOpen":false,
-                                    "isDirectory":true,
-                                    "isAniNode":true,
-                                    "hasChild":true,
-                                    "compId":27,
-                                    "child":[
-                                        {
-                                            "type":"Image",
-                                            "searchKey":"Image,btn",
-                                            "props":{"y":0,"x":0,"visible":false,"skin":"images/hall/xiao.png","name":"btn","centerY":0,"centerX":0},
-                                            "nodeParent":27,
-                                            "label":"btn",
-                                            "isDirectory":false,
-                                            "isAniNode":true,
-                                            "hasChild":false,
-                                            "compId":28,
-                                            "child":[
-                                                ]
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,switch0",
+                                                    "props":{"skin":"images/GameSet/switch0.png","name":"switch0"},
+                                                    "nodeParent":112,
+                                                    "label":"switch0",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":113,
+                                                    "child":[
+                                                        ]
+                                                },
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,switch1",
+                                                    "props":{"y":0,"x":0,"visible":false,"skin":"images/GameSet/switch1.png","name":"switch1"},
+                                                    "nodeParent":112,
+                                                    "label":"switch1",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":114,
+                                                    "child":[
+                                                        ]
+                                                }]
                                         }]
-                                },
+                                }]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,switch_bg",
+                            "props":{"y":0,"x":0,"skin":"images/GameSet/switch_bg.png","right":118,"name":"switch_bg","bottom":285},
+                            "nodeParent":98,
+                            "label":"switch_bg",
+                            "isOpen":false,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":115,
+                            "child":[
                                 {
                                     "type":"Image",
-                                    "searchKey":"Image,select_box3",
-                                    "props":{"y":0,"width":257,"right":257,"name":"select_box3","height":117,"centerY":0},
-                                    "nodeParent":23,
-                                    "label":"select_box3",
+                                    "searchKey":"Image,game_chat",
+                                    "props":{"skin":"images/GameSet/gameSet_label2.png","name":"game_chat","centerY":0,"centerX":-75},
+                                    "nodeParent":115,
+                                    "label":"game_chat",
                                     "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
-                                    "compId":29,
+                                    "compId":116,
                                     "child":[
                                         {
                                             "type":"Image",
-                                            "searchKey":"Image,btn",
-                                            "props":{"y":0,"x":0,"visible":false,"skin":"images/hall/zhong.png","name":"btn","centerY":0,"centerX":0},
-                                            "nodeParent":29,
-                                            "label":"btn",
-                                            "isDirectory":false,
+                                            "searchKey":"Image,switchBox,game_chat_switchBox",
+                                            "props":{"width":129,"var":"game_chat_switchBox","right":-150,"name":"switchBox","height":77,"centerY":0},
+                                            "nodeParent":116,
+                                            "label":"switchBox",
+                                            "isOpen":false,
+                                            "isDirectory":true,
                                             "isAniNode":true,
-                                            "hasChild":false,
-                                            "compId":30,
+                                            "hasChild":true,
+                                            "compId":117,
                                             "child":[
-                                                ],
-                                            "$HIDDEN":false
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,switch0",
+                                                    "props":{"skin":"images/GameSet/switch0.png","name":"switch0"},
+                                                    "nodeParent":117,
+                                                    "label":"switch0",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":118,
+                                                    "child":[
+                                                        ]
+                                                },
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,switch1",
+                                                    "props":{"y":0,"x":0,"skin":"images/GameSet/switch1.png","name":"switch1"},
+                                                    "nodeParent":117,
+                                                    "label":"switch1",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":119,
+                                                    "child":[
+                                                        ]
+                                                }]
                                         }]
-                                },
+                                }]
+                        }],
+                    "$HIDDEN":true
+                },
+                {
+                    "x":30,
+                    "type":"Image",
+                    "searchKey":"Image,PlayerNews,PlayerNews_dialog",
+                    "props":{"y":-948,"x":61,"width":1120,"var":"PlayerNews_dialog","skin":"images/PersonNews2/news_bg.png","name":"PlayerNews","height":948},
+                    "nodeParent":68,
+                    "label":"PlayerNews",
+                    "isOpen":false,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":120,
+                    "child":[
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,news_title",
+                            "props":{"y":80,"x":422,"skin":"images/PersonNews2/news_title.png","name":"news_title"},
+                            "nodeParent":120,
+                            "label":"news_title",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":121,
+                            "child":[
+                                ],
+                            "$LOCKED":true
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,news_close",
+                            "props":{"y":70,"x":969,"skin":"images/PersonNews2/news_close.png","name":"news_close"},
+                            "nodeParent":120,
+                            "label":"news_close",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":122,
+                            "child":[
+                                ],
+                            "$LOCKED":true
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,news_head_box",
+                            "props":{"y":190,"x":119,"width":275,"skin":"images/PersonNews2/news_head.png","name":"news_head_box","height":275},
+                            "nodeParent":120,
+                            "label":"news_head_box",
+                            "isOpen":false,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":123,
+                            "child":[
                                 {
                                     "type":"Image",
-                                    "searchKey":"Image,select_box4",
-                                    "props":{"y":0,"x":0,"width":257,"right":0,"name":"select_box4","height":117,"centerY":0},
-                                    "nodeParent":23,
-                                    "label":"select_box4",
+                                    "searchKey":"Image,headBg",
+                                    "props":{"y":0,"x":0,"width":275,"name":"headBg","height":275},
+                                    "nodeParent":123,
+                                    "label":"headBg",
                                     "isOpen":true,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
-                                    "compId":31,
+                                    "compId":124,
                                     "child":[
                                         {
                                             "type":"Image",
-                                            "searchKey":"Image,btn",
-                                            "props":{"y":0,"x":0,"visible":false,"skin":"images/hall/da.png","name":"btn","centerY":0,"centerX":0},
-                                            "nodeParent":31,
-                                            "label":"btn",
+                                            "searchKey":"Image,head",
+                                            "props":{"width":260,"name":"head","height":260,"centerY":0,"centerX":0},
+                                            "nodeParent":124,
+                                            "label":"head",
                                             "isDirectory":false,
                                             "isAniNode":true,
                                             "hasChild":false,
-                                            "compId":32,
+                                            "compId":125,
                                             "child":[
                                                 ]
                                         }]
                                 }]
                         },
                         {
-                            "x":45,
                             "type":"Image",
-                            "searchKey":"Image,page_bg",
-                            "props":{"x":0,"top":190,"skin":"images/hall/bg1.png","right":36,"name":"page_bg","left":36,"bottom":0},
-                            "nodeParent":22,
-                            "label":"page_bg",
+                            "searchKey":"Image,news_box",
+                            "props":{"y":258,"x":463,"width":556,"name":"news_box","height":177},
+                            "nodeParent":120,
+                            "label":"news_box",
                             "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
-                            "compId":33,
+                            "compId":126,
                             "child":[
                                 {
-                                    "type":"Image",
-                                    "searchKey":"Image,page1",
-                                    "props":{"y":0,"x":0,"width":1040,"top":50,"name":"page1","centerX":0,"bottom":60},
-                                    "nodeParent":33,
-                                    "label":"page1",
-                                    "isOpen":true,
+                                    "type":"Text",
+                                    "searchKey":"Text,news_name",
+                                    "props":{"y":28,"x":0,"name":"news_name","fontSize":52,"color":"#935F13","bold":true},
+                                    "nodeParent":126,
+                                    "label":"news_name",
+                                    "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
-                                    "compId":34,
+                                    "compId":127,
                                     "child":[
                                         {
-                                            "type":"List",
-                                            "searchKey":"List,page1_list,gameHall_page1_list",
-                                            "props":{"visible":false,"var":"gameHall_page1_list","top":0,"right":0,"repeatX":1,"name":"page1_list","left":0,"elasticEnabled":true,"bottom":0},
-                                            "nodeParent":34,
-                                            "label":"page1_list",
+                                            "type":"Image",
+                                            "searchKey":"Image,news_sex",
+                                            "props":{"y":-24,"x":0,"width":100,"name":"news_sex","left":0,"height":100},
+                                            "nodeParent":127,
+                                            "label":"news_sex",
                                             "isOpen":true,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
-                                            "compId":35,
+                                            "compId":128,
                                             "child":[
                                                 {
-                                                    "type":"Box",
-                                                    "searchKey":"Box,page1_list_box",
-                                                    "props":{"right":0,"renderType":"render","name":"page1_list_box","left":0,"height":288},
-                                                    "nodeParent":35,
-                                                    "label":"page1_list_box",
-                                                    "isOpen":true,
+                                                    "type":"Image",
+                                                    "searchKey":"Image,sex0",
+                                                    "props":{"skin":"images/newMe/sex0.png","name":"sex0","centerY":0,"centerX":0},
+                                                    "nodeParent":128,
+                                                    "label":"sex0",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":129,
+                                                    "child":[
+                                                        ]
+                                                },
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,sex1",
+                                                    "props":{"y":0,"x":0,"skin":"images/newMe/sex1.png","name":"sex1","centerY":0,"centerX":0},
+                                                    "nodeParent":128,
+                                                    "label":"sex1",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":130,
+                                                    "child":[
+                                                        ]
+                                                }]
+                                        }]
+                                },
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,news_ID",
+                                    "props":{"skin":"images/PersonNews2/news_ID.png","name":"news_ID","left":0,"bottom":-1},
+                                    "nodeParent":126,
+                                    "label":"news_ID",
+                                    "isOpen":false,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":131,
+                                    "child":[
+                                        {
+                                            "type":"Text",
+                                            "searchKey":"Text,news_ID_value",
+                                            "props":{"y":-4,"x":65,"name":"news_ID_value","fontSize":46,"color":"#935F13","bold":true},
+                                            "nodeParent":131,
+                                            "label":"news_ID_value",
+                                            "isOpen":true,
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":132,
+                                            "child":[
+                                                ]
+                                        }]
+                                }]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,news_alljs",
+                            "props":{"y":538,"x":152,"skin":"images/PersonNews2/news_totaljs.png","name":"news_alljs"},
+                            "nodeParent":120,
+                            "label":"news_alljs",
+                            "isOpen":false,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":133,
+                            "child":[
+                                {
+                                    "type":"Text",
+                                    "searchKey":"Text,news_alljs_value",
+                                    "props":{"y":3,"x":190,"name":"news_alljs_value","fontSize":48,"color":"#FCE08D","bold":false},
+                                    "nodeParent":133,
+                                    "label":"news_alljs_value",
+                                    "isOpen":true,
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":134,
+                                    "child":[
+                                        ]
+                                }]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,news_fanpairate",
+                            "props":{"y":538,"x":610,"skin":"images/PersonNews2/news_fanpairate.png","name":"news_fanpairate"},
+                            "nodeParent":120,
+                            "label":"news_fanpairate",
+                            "isOpen":false,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":135,
+                            "child":[
+                                {
+                                    "type":"Text",
+                                    "searchKey":"Text,news_fanpairate_value",
+                                    "props":{"y":3,"x":190,"name":"news_fanpairate_value","fontSize":48,"color":"#FCE08D","bold":false},
+                                    "nodeParent":135,
+                                    "label":"news_fanpairate_value",
+                                    "isOpen":true,
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":136,
+                                    "child":[
+                                        ]
+                                }]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,news_allss",
+                            "props":{"y":633,"x":152,"skin":"images/PersonNews2/news_totalss.png","name":"news_allss"},
+                            "nodeParent":120,
+                            "label":"news_allss",
+                            "isOpen":false,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":137,
+                            "child":[
+                                {
+                                    "type":"Text",
+                                    "searchKey":"Text,news_allss_value",
+                                    "props":{"y":3,"x":190,"name":"news_allss_value","fontSize":48,"color":"#935f13","bold":false},
+                                    "nodeParent":137,
+                                    "label":"news_allss_value",
+                                    "isOpen":true,
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":138,
+                                    "child":[
+                                        ]
+                                }]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,news_fanpaiwinrate",
+                            "props":{"y":633,"x":610,"skin":"images/PersonNews2/news_fanpaiwinrate.png","name":"news_fanpaiwinrate"},
+                            "nodeParent":120,
+                            "label":"news_fanpaiwinrate",
+                            "isOpen":false,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":139,
+                            "child":[
+                                {
+                                    "type":"Text",
+                                    "searchKey":"Text,news_fanpaiwinrate_value",
+                                    "props":{"y":3,"x":240,"name":"news_fanpaiwinrate_value","fontSize":48,"color":"#935f13","bold":false},
+                                    "nodeParent":139,
+                                    "label":"news_fanpaiwinrate_value",
+                                    "isOpen":true,
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":140,
+                                    "child":[
+                                        ]
+                                }]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,news_winss",
+                            "props":{"y":723,"x":152,"skin":"images/PersonNews2/news_winss.png","name":"news_winss"},
+                            "nodeParent":120,
+                            "label":"news_winss",
+                            "isOpen":false,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":141,
+                            "child":[
+                                {
+                                    "type":"Text",
+                                    "searchKey":"Text,news_winss_value",
+                                    "props":{"y":3,"x":242,"name":"news_winss_value","fontSize":48,"color":"#FCE08D","bold":false},
+                                    "nodeParent":141,
+                                    "label":"news_winss_value",
+                                    "isOpen":true,
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":142,
+                                    "child":[
+                                        ]
+                                }]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,news_allwinrate",
+                            "props":{"y":724,"x":610,"skin":"images/PersonNews2/news_allwinrate.png","name":"news_allwinrate"},
+                            "nodeParent":120,
+                            "label":"news_allwinrate",
+                            "isOpen":false,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":143,
+                            "child":[
+                                {
+                                    "type":"Text",
+                                    "searchKey":"Text,news_allwinrate_value",
+                                    "props":{"y":4,"x":195,"name":"news_allwinrate_value","fontSize":48,"color":"#FCE08D","bold":false},
+                                    "nodeParent":143,
+                                    "label":"news_allwinrate_value",
+                                    "isOpen":true,
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":144,
+                                    "child":[
+                                        ]
+                                }]
+                        }],
+                    "$HIDDEN":true
+                },
+                {
+                    "x":30,
+                    "type":"Image",
+                    "searchKey":"Image,LiuZuo,LiuZuo_dialog",
+                    "props":{"x":64.5,"width":1140,"var":"LiuZuo_dialog","skin":"images/LiuZuo/l_bg.png","name":"LiuZuo","height":850,"bottom":-850},
+                    "nodeParent":68,
+                    "label":"LiuZuo",
+                    "isOpen":false,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":145,
+                    "child":[
+                        {
+                            "type":"Sprite",
+                            "searchKey":"Sprite,title",
+                            "props":{"y":112,"x":364,"texture":"images/LiuZuo/l_title.png","name":"title"},
+                            "nodeParent":145,
+                            "label":"title",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":146,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,close",
+                            "props":{"top":90,"skin":"images/LiuZuo/l_close.png","right":90,"name":"close"},
+                            "nodeParent":145,
+                            "label":"close",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":147,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,confrimBtn",
+                            "props":{"y":590,"width":608,"skin":"images/common/btn1_box.png","name":"confrimBtn","centerX":0},
+                            "nodeParent":145,
+                            "label":"confrimBtn",
+                            "isOpen":false,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":148,
+                            "child":[
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,text",
+                                    "props":{"skin":"images/common/btn1_test1.png","name":"text","centerY":0,"centerX":0},
+                                    "nodeParent":148,
+                                    "label":"text",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":149,
+                                    "child":[
+                                        ]
+                                }]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,selectListBox",
+                            "props":{"width":949,"name":"selectListBox","height":280,"centerY":-36,"centerX":0},
+                            "nodeParent":145,
+                            "label":"selectListBox",
+                            "isOpen":true,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":150,
+                            "child":[
+                                {
+                                    "type":"List",
+                                    "searchKey":"List,selectList",
+                                    "props":{"y":0,"x":0,"visible":false,"top":0,"spaceY":65,"right":0,"name":"selectList","left":0,"bottom":0},
+                                    "nodeParent":150,
+                                    "label":"selectList",
+                                    "isOpen":true,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":151,
+                                    "child":[
+                                        {
+                                            "type":"Box",
+                                            "searchKey":"Box,listBox",
+                                            "props":{"width":949,"right":0,"renderType":"render","name":"listBox","left":0,"height":106},
+                                            "nodeParent":151,
+                                            "label":"listBox",
+                                            "isOpen":true,
+                                            "isDirectory":true,
+                                            "isAniNode":false,
+                                            "hasChild":true,
+                                            "compId":152,
+                                            "child":[
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,listRow",
+                                                    "props":{"y":0,"x":0,"width":760,"skin":"images/LiuZuo/l_kuang1.png","name":"listRow","centerX":0,"bottom":0},
+                                                    "nodeParent":152,
+                                                    "label":"listRow",
+                                                    "isOpen":false,
                                                     "isDirectory":true,
                                                     "isAniNode":false,
                                                     "hasChild":true,
-                                                    "compId":36,
+                                                    "compId":153,
                                                     "child":[
                                                         {
                                                             "type":"Image",
-                                                            "searchKey":"Image,content_bg",
-                                                            "props":{"top":0,"skin":"images/hall/list_bg.png","right":0,"name":"content_bg","left":0,"bottom":0},
-                                                            "nodeParent":36,
-                                                            "label":"content_bg",
+                                                            "searchKey":"Image,select",
+                                                            "props":{"y":22,"width":61,"name":"select","left":65,"height":61},
+                                                            "nodeParent":153,
+                                                            "label":"select",
                                                             "isOpen":true,
                                                             "isDirectory":true,
                                                             "isAniNode":false,
                                                             "hasChild":true,
-                                                            "compId":37,
+                                                            "compId":154,
                                                             "child":[
                                                                 {
-                                                                    "type":"Image",
-                                                                    "searchKey":"Image,roomID",
-                                                                    "props":{"width":174,"top":45,"name":"roomID","left":450,"height":50},
-                                                                    "nodeParent":37,
-                                                                    "label":"roomID",
-                                                                    "isOpen":false,
-                                                                    "isDirectory":true,
-                                                                    "isAniNode":false,
-                                                                    "hasChild":true,
-                                                                    "compId":38,
-                                                                    "child":[
-                                                                        {
-                                                                            "type":"Text",
-                                                                            "searchKey":"Text,value",
-                                                                            "props":{"y":0,"x":0,"width":235,"text":"123456","name":"value","height":50,"fontSize":50,"color":"#936e1f"},
-                                                                            "nodeParent":38,
-                                                                            "label":"value",
-                                                                            "isDirectory":false,
-                                                                            "isAniNode":false,
-                                                                            "hasChild":false,
-                                                                            "compId":39,
-                                                                            "child":[
-                                                                                ]
-                                                                        }]
-                                                                },
-                                                                {
-                                                                    "type":"Image",
-                                                                    "searchKey":"Image,num1",
-                                                                    "props":{"width":90,"name":"num1","left":295,"height":34,"bottom":65},
-                                                                    "nodeParent":37,
-                                                                    "label":"num1",
-                                                                    "isOpen":false,
-                                                                    "isDirectory":true,
-                                                                    "isAniNode":false,
-                                                                    "hasChild":true,
-                                                                    "compId":40,
-                                                                    "child":[
-                                                                        {
-                                                                            "type":"Text",
-                                                                            "searchKey":"Text,value",
-                                                                            "props":{"y":0,"x":0,"width":90,"valign":"middle","name":"value","height":34,"fontSize":34,"color":"#d59b2a"},
-                                                                            "nodeParent":40,
-                                                                            "label":"value",
-                                                                            "isDirectory":false,
-                                                                            "isAniNode":false,
-                                                                            "hasChild":false,
-                                                                            "compId":41,
-                                                                            "child":[
-                                                                                ]
-                                                                        }]
-                                                                },
-                                                                {
-                                                                    "type":"Image",
-                                                                    "searchKey":"Image,online",
-                                                                    "props":{"width":98,"name":"online","left":438,"height":34,"bottom":65},
-                                                                    "nodeParent":37,
-                                                                    "label":"online",
-                                                                    "isOpen":false,
-                                                                    "isDirectory":true,
-                                                                    "isAniNode":false,
-                                                                    "hasChild":true,
-                                                                    "compId":42,
-                                                                    "child":[
-                                                                        {
-                                                                            "type":"Text",
-                                                                            "searchKey":"Text,value",
-                                                                            "props":{"y":0,"x":0,"width":90,"valign":"middle","name":"value","height":34,"fontSize":34,"color":"#d59b2a"},
-                                                                            "nodeParent":42,
-                                                                            "label":"value",
-                                                                            "isDirectory":false,
-                                                                            "isAniNode":false,
-                                                                            "hasChild":false,
-                                                                            "compId":43,
-                                                                            "child":[
-                                                                                ]
-                                                                        }]
-                                                                },
-                                                                {
-                                                                    "type":"Image",
-                                                                    "searchKey":"Image,time",
-                                                                    "props":{"width":200,"name":"time","left":585,"height":34,"bottom":65},
-                                                                    "nodeParent":37,
-                                                                    "label":"time",
-                                                                    "isOpen":false,
-                                                                    "isDirectory":true,
-                                                                    "isAniNode":false,
-                                                                    "hasChild":true,
-                                                                    "compId":44,
-                                                                    "child":[
-                                                                        {
-                                                                            "type":"Text",
-                                                                            "searchKey":"Text,value",
-                                                                            "props":{"y":0,"x":0,"width":200,"valign":"middle","name":"value","height":34,"fontSize":34,"color":"#d59b2a"},
-                                                                            "nodeParent":44,
-                                                                            "label":"value",
-                                                                            "isDirectory":false,
-                                                                            "isAniNode":false,
-                                                                            "hasChild":false,
-                                                                            "compId":45,
-                                                                            "child":[
-                                                                                ]
-                                                                        }]
-                                                                },
-                                                                {
-                                                                    "type":"Image",
-                                                                    "searchKey":"Image,lastTime",
-                                                                    "props":{"width":135,"name":"lastTime","left":890,"height":34,"bottom":65},
-                                                                    "nodeParent":37,
-                                                                    "label":"lastTime",
-                                                                    "isOpen":false,
-                                                                    "isDirectory":true,
-                                                                    "isAniNode":false,
-                                                                    "hasChild":true,
-                                                                    "compId":46,
-                                                                    "child":[
-                                                                        {
-                                                                            "type":"Text",
-                                                                            "searchKey":"Text,value",
-                                                                            "props":{"y":0,"x":0,"width":135,"valign":"middle","text":"00:00:00","name":"value","height":34,"fontSize":34,"color":"#d59b2a","align":"center"},
-                                                                            "nodeParent":46,
-                                                                            "label":"value",
-                                                                            "isDirectory":false,
-                                                                            "isAniNode":false,
-                                                                            "hasChild":false,
-                                                                            "compId":47,
-                                                                            "child":[
-                                                                                ]
-                                                                        }]
-                                                                },
-                                                                {
-                                                                    "type":"Image",
-                                                                    "searchKey":"Image,state",
-                                                                    "props":{"width":175,"top":33,"right":15,"name":"state","height":74},
-                                                                    "nodeParent":37,
-                                                                    "label":"state",
-                                                                    "isOpen":true,
-                                                                    "isDirectory":true,
-                                                                    "isAniNode":false,
-                                                                    "hasChild":true,
-                                                                    "compId":48,
-                                                                    "child":[
-                                                                        {
-                                                                            "type":"Image",
-                                                                            "searchKey":"Image,state_2",
-                                                                            "props":{"y":0,"x":0,"visible":false,"skin":"images/hall/zt2.png","name":"state_2"},
-                                                                            "nodeParent":48,
-                                                                            "label":"state_2",
-                                                                            "isDirectory":false,
-                                                                            "isAniNode":false,
-                                                                            "hasChild":false,
-                                                                            "compId":49,
-                                                                            "child":[
-                                                                                ],
-                                                                            "$HIDDEN":false
-                                                                        },
-                                                                        {
-                                                                            "type":"Image",
-                                                                            "searchKey":"Image,state_1",
-                                                                            "props":{"visible":false,"skin":"images/hall/zt1.png","name":"state_1"},
-                                                                            "nodeParent":48,
-                                                                            "label":"state_1",
-                                                                            "isDirectory":false,
-                                                                            "isAniNode":false,
-                                                                            "hasChild":false,
-                                                                            "compId":50,
-                                                                            "child":[
-                                                                                ],
-                                                                            "$HIDDEN":false
-                                                                        },
-                                                                        {
-                                                                            "type":"Image",
-                                                                            "searchKey":"Image,state_0",
-                                                                            "props":{"y":0,"x":0,"visible":true,"skin":"images/hall/zt0.png","name":"state_0"},
-                                                                            "nodeParent":48,
-                                                                            "label":"state_0",
-                                                                            "isDirectory":false,
-                                                                            "isAniNode":false,
-                                                                            "hasChild":false,
-                                                                            "compId":51,
-                                                                            "child":[
-                                                                                ],
-                                                                            "$HIDDEN":true
-                                                                        }]
-                                                                },
-                                                                {
-                                                                    "type":"Image",
-                                                                    "searchKey":"Image,yidairuState",
-                                                                    "props":{"visible":false,"top":30,"skin":"images/hall/yidairu.png","right":213,"name":"yidairuState"},
-                                                                    "nodeParent":37,
-                                                                    "label":"yidairuState",
+                                                                    "type":"Sprite",
+                                                                    "searchKey":"Sprite,no",
+                                                                    "props":{"y":0,"x":0,"texture":"images/LiuZuo/l_no.png","name":"no"},
+                                                                    "nodeParent":154,
+                                                                    "label":"no",
                                                                     "isDirectory":false,
                                                                     "isAniNode":false,
                                                                     "hasChild":false,
-                                                                    "compId":52,
+                                                                    "compId":155,
+                                                                    "child":[
+                                                                        ]
+                                                                },
+                                                                {
+                                                                    "type":"Sprite",
+                                                                    "searchKey":"Sprite,yes",
+                                                                    "props":{"y":0,"x":0,"visible":false,"texture":"images/LiuZuo/l_yes.png","name":"yes"},
+                                                                    "nodeParent":154,
+                                                                    "label":"yes",
+                                                                    "isDirectory":false,
+                                                                    "isAniNode":false,
+                                                                    "hasChild":false,
+                                                                    "compId":156,
+                                                                    "child":[
+                                                                        ]
+                                                                }]
+                                                        },
+                                                        {
+                                                            "type":"Image",
+                                                            "searchKey":"Image,label",
+                                                            "props":{"y":25,"right":65,"name":"label"},
+                                                            "nodeParent":153,
+                                                            "label":"label",
+                                                            "isDirectory":false,
+                                                            "isAniNode":false,
+                                                            "hasChild":false,
+                                                            "compId":157,
+                                                            "child":[
+                                                                ]
+                                                        }]
+                                                }]
+                                        }]
+                                }]
+                        }],
+                    "$HIDDEN":false
+                },
+                {
+                    "x":30,
+                    "type":"Image",
+                    "searchKey":"Image,chat,chat_dialog",
+                    "props":{"y":2208,"width":1242,"visible":false,"var":"chat_dialog","skin":"images/Chat/chat_bg.png","name":"chat","left":0,"height":630},
+                    "nodeParent":68,
+                    "label":"chat",
+                    "isOpen":true,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":159,
+                    "child":[
+                        {
+                            "x":45,
+                            "type":"Image",
+                            "searchKey":"Image,selectView",
+                            "props":{"width":142,"top":0,"right":0,"name":"selectView","height":630,"bottom":0},
+                            "nodeParent":159,
+                            "label":"selectView",
+                            "isOpen":true,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":160,
+                            "child":[
+                                {
+                                    "x":60,
+                                    "type":"List",
+                                    "searchKey":"List,selectList",
+                                    "props":{"top":0,"right":0,"name":"selectList","left":0,"bottom":0},
+                                    "nodeParent":160,
+                                    "label":"selectList",
+                                    "isOpen":false,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":161,
+                                    "child":[
+                                        {
+                                            "type":"Box",
+                                            "searchKey":"Box,slectBox",
+                                            "props":{"right":0,"renderType":"render","name":"slectBox","left":0,"height":315},
+                                            "nodeParent":161,
+                                            "label":"slectBox",
+                                            "isOpen":true,
+                                            "isDirectory":true,
+                                            "isAniNode":false,
+                                            "hasChild":true,
+                                            "compId":162,
+                                            "child":[
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,listRow",
+                                                    "props":{"top":0,"right":0,"name":"listRow","left":0,"bottom":0},
+                                                    "nodeParent":162,
+                                                    "label":"listRow",
+                                                    "isOpen":true,
+                                                    "isDirectory":true,
+                                                    "isAniNode":false,
+                                                    "hasChild":true,
+                                                    "compId":163,
+                                                    "child":[
+                                                        {
+                                                            "type":"Image",
+                                                            "searchKey":"Image,select",
+                                                            "props":{"top":0,"right":0,"name":"select","left":0,"bottom":0},
+                                                            "nodeParent":163,
+                                                            "label":"select",
+                                                            "isOpen":true,
+                                                            "isDirectory":true,
+                                                            "isAniNode":false,
+                                                            "hasChild":true,
+                                                            "compId":164,
+                                                            "child":[
+                                                                {
+                                                                    "type":"Sprite",
+                                                                    "searchKey":"Sprite,yes",
+                                                                    "props":{"y":4,"x":5,"visible":false,"texture":"images/Chat/chat_selected.png","name":"yes"},
+                                                                    "nodeParent":164,
+                                                                    "label":"yes",
+                                                                    "isDirectory":false,
+                                                                    "isAniNode":false,
+                                                                    "hasChild":false,
+                                                                    "compId":165,
+                                                                    "child":[
+                                                                        ]
+                                                                },
+                                                                {
+                                                                    "type":"Sprite",
+                                                                    "searchKey":"Sprite,no",
+                                                                    "props":{"y":112,"x":15,"name":"no"},
+                                                                    "nodeParent":164,
+                                                                    "label":"no",
+                                                                    "isDirectory":false,
+                                                                    "isAniNode":false,
+                                                                    "hasChild":false,
+                                                                    "compId":166,
                                                                     "child":[
                                                                         ]
                                                                 }]
                                                         }]
                                                 }]
-                                        }],
-                                    "$HIDDEN":true
+                                        }]
                                 }]
-                        }]
-                },
-                {
-                    "x":30,
-                    "type":"Image",
-                    "searchKey":"Image,hd",
-                    "props":{"y":0,"x":0,"width":1242,"top":0,"skin":"images/common/title_hd_bg.png","right":0,"name":"hd","left":0,"height":163},
-                    "nodeParent":4,
-                    "label":"hd",
-                    "isOpen":true,
-                    "isDirectory":true,
-                    "isAniNode":true,
-                    "hasChild":true,
-                    "compId":54,
-                    "child":[
+                        },
                         {
                             "x":45,
                             "type":"Image",
-                            "searchKey":"Image,titleBox",
-                            "props":{"width":1242,"top":5,"right":0,"name":"titleBox","left":0,"height":153,"bottom":0},
-                            "nodeParent":54,
-                            "label":"titleBox",
+                            "searchKey":"Image,voiceChatView",
+                            "props":{"top":0,"right":142,"name":"voiceChatView","left":0,"bottom":0},
+                            "nodeParent":159,
+                            "label":"voiceChatView",
                             "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
-                            "compId":55,
+                            "compId":168,
                             "child":[
                                 {
                                     "x":60,
-                                    "type":"Image",
-                                    "searchKey":"Image,title",
-                                    "props":{"skin":"images/common/title_hall.png","name":"title","centerY":0,"centerX":0},
-                                    "nodeParent":55,
-                                    "label":"title",
-                                    "isDirectory":false,
+                                    "type":"List",
+                                    "searchKey":"List,voiceList",
+                                    "props":{"visible":false,"top":0,"right":0,"name":"voiceList","left":0,"elasticEnabled":true,"bottom":0},
+                                    "nodeParent":168,
+                                    "label":"voiceList",
+                                    "isOpen":true,
+                                    "isDirectory":true,
                                     "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":56,
+                                    "hasChild":true,
+                                    "compId":169,
                                     "child":[
-                                        ]
-                                },
-                                {
-                                    "x":60,
-                                    "type":"Image",
-                                    "searchKey":"Image,icon",
-                                    "props":{"y":10,"x":1084,"skin":"images/hall/icon.png","right":90,"name":"icon","centerY":0},
-                                    "nodeParent":55,
-                                    "label":"icon",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":57,
-                                    "child":[
-                                        ]
-                                }]
-                        }]
-                }],
-            "$HIDDEN":true
-        },
-        {
-            "x":15,
-            "type":"Image",
-            "searchKey":"Image,tabPagesDialogBox,tabPagesDialogBox",
-            "props":{"zOrder":9,"y":0,"x":0,"visible":false,"var":"tabPagesDialogBox","top":0,"right":0,"name":"tabPagesDialogBox","left":0,"bottom":0},
-            "nodeParent":2,
-            "label":"tabPagesDialogBox",
-            "isOpen":false,
-            "isDirectory":true,
-            "isAniNode":true,
-            "hasChild":true,
-            "compId":59,
-            "child":[
-                {
-                    "type":"Dialog",
-                    "searchKey":"Dialog,share_dialog,share_dialog",
-                    "props":{"x":51,"width":1140,"visible":true,"var":"share_dialog","name":"share_dialog","isShowEffect":false,"height":770,"centerY":-200},
-                    "nodeParent":59,
-                    "label":"share_dialog",
-                    "isOpen":true,
-                    "isDirectory":true,
-                    "isAniNode":true,
-                    "hasChild":true,
-                    "compId":60,
-                    "child":[
+                                        {
+                                            "x":75,
+                                            "type":"Box",
+                                            "searchKey":"Box,voiceBox",
+                                            "props":{"right":0,"renderType":"render","name":"voiceBox","left":0,"height":126},
+                                            "nodeParent":169,
+                                            "label":"voiceBox",
+                                            "isOpen":true,
+                                            "isDirectory":true,
+                                            "isAniNode":false,
+                                            "hasChild":true,
+                                            "compId":170,
+                                            "child":[
+                                                {
+                                                    "x":90,
+                                                    "type":"Label",
+                                                    "searchKey":"Label,text",
+                                                    "props":{"wordWrap":true,"valign":"middle","right":50,"name":"text","left":50,"fontSize":46,"color":"#FFFFFF","centerY":0,"bold":true},
+                                                    "nodeParent":170,
+                                                    "label":"text",
+                                                    "isDirectory":false,
+                                                    "isAniNode":false,
+                                                    "hasChild":false,
+                                                    "compId":171,
+                                                    "child":[
+                                                        ]
+                                                },
+                                                {
+                                                    "x":90,
+                                                    "type":"Image",
+                                                    "searchKey":"Image,line",
+                                                    "props":{"skin":"images/Chat/chat_line.png","right":0,"name":"line","left":0,"bottom":0},
+                                                    "nodeParent":170,
+                                                    "label":"line",
+                                                    "isDirectory":false,
+                                                    "isAniNode":false,
+                                                    "hasChild":false,
+                                                    "compId":172,
+                                                    "child":[
+                                                        ]
+                                                }]
+                                        }]
+                                }],
+                            "$HIDDEN":true
+                        },
                         {
+                            "x":45,
                             "type":"Image",
-                            "searchKey":"Image,s_bg",
-                            "props":{"top":0,"skin":"images/Share/f_bg.png","right":0,"name":"s_bg","left":0,"bottom":0},
-                            "nodeParent":60,
-                            "label":"s_bg",
+                            "searchKey":"Image,expressionChatView",
+                            "props":{"y":0,"x":0,"top":0,"right":142,"name":"expressionChatView","left":0,"bottom":0},
+                            "nodeParent":159,
+                            "label":"expressionChatView",
                             "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
-                            "compId":61,
+                            "compId":173,
                             "child":[
                                 {
-                                    "type":"Image",
-                                    "searchKey":"Image,s_title",
-                                    "props":{"x":467,"top":95,"skin":"images/Share/f_title.png","name":"s_title"},
-                                    "nodeParent":61,
-                                    "label":"s_title",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":62,
-                                    "child":[
-                                        ]
-                                },
-                                {
-                                    "type":"Image",
-                                    "searchKey":"Image,s_close,s_close",
-                                    "props":{"var":"s_close","top":70,"skin":"images/Share/f_close.png","right":70,"name":"s_close"},
-                                    "nodeParent":61,
-                                    "label":"s_close",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":63,
-                                    "child":[
-                                        ]
-                                },
-                                {
-                                    "type":"Image",
-                                    "searchKey":"Image,s_friends",
-                                    "props":{"y":252,"skin":"images/Share/f_icon1.png","name":"s_friends","left":120},
-                                    "nodeParent":61,
-                                    "label":"s_friends",
-                                    "isOpen":false,
+                                    "x":60,
+                                    "type":"List",
+                                    "searchKey":"List,expressionList",
+                                    "props":{"visible":false,"top":0,"right":30,"name":"expressionList","left":20,"elasticEnabled":true,"bottom":0},
+                                    "nodeParent":173,
+                                    "label":"expressionList",
+                                    "isOpen":true,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
-                                    "compId":64,
+                                    "compId":174,
                                     "child":[
                                         {
-                                            "type":"Image",
-                                            "searchKey":"Image,tip",
-                                            "props":{"skin":"images/Share/f_title1.png","name":"tip","centerX":0,"bottom":-90},
-                                            "nodeParent":64,
-                                            "label":"tip",
-                                            "isDirectory":false,
-                                            "isAniNode":true,
-                                            "hasChild":false,
-                                            "compId":65,
+                                            "x":75,
+                                            "type":"Box",
+                                            "searchKey":"Box,expressionBox",
+                                            "props":{"width":212,"renderType":"render","name":"expressionBox","height":210},
+                                            "nodeParent":174,
+                                            "label":"expressionBox",
+                                            "isOpen":true,
+                                            "isDirectory":true,
+                                            "isAniNode":false,
+                                            "hasChild":true,
+                                            "compId":175,
                                             "child":[
-                                                ]
-                                        }]
-                                },
-                                {
-                                    "type":"Image",
-                                    "searchKey":"Image,s_friends2",
-                                    "props":{"y":237,"skin":"images/Share/f_icon2.png","right":120,"name":"s_friends2"},
-                                    "nodeParent":61,
-                                    "label":"s_friends2",
-                                    "isOpen":false,
-                                    "isDirectory":true,
-                                    "isAniNode":true,
-                                    "hasChild":true,
-                                    "compId":66,
-                                    "child":[
-                                        {
-                                            "type":"Image",
-                                            "searchKey":"Image,tip",
-                                            "props":{"skin":"images/Share/f_title2.png","name":"tip","centerX":0,"bottom":-90},
-                                            "nodeParent":66,
-                                            "label":"tip",
-                                            "isDirectory":false,
-                                            "isAniNode":true,
-                                            "hasChild":false,
-                                            "compId":67,
-                                            "child":[
-                                                ]
+                                                {
+                                                    "x":90,
+                                                    "type":"Sprite",
+                                                    "searchKey":"Sprite,icon",
+                                                    "props":{"y":37,"x":38,"width":135,"name":"icon","height":135},
+                                                    "nodeParent":175,
+                                                    "label":"icon",
+                                                    "isDirectory":false,
+                                                    "isAniNode":false,
+                                                    "hasChild":false,
+                                                    "compId":176,
+                                                    "child":[
+                                                        ]
+                                                }]
                                         }]
                                 }]
-                        }]
+                        }],
+                    "$HIDDEN":true
                 }],
             "$HIDDEN":true
         }],

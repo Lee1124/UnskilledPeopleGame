@@ -41,7 +41,7 @@ export default class TabPageUI extends Laya.Scene {
     }
 
     openView(page:any): void {
-        Main.hall.allowRequesList = false;
+        Main.hall.allowRepuest = false;
         this.closeAllpages();
         this[page].visible = true;
         this.reloadNavSelect();
@@ -50,6 +50,7 @@ export default class TabPageUI extends Laya.Scene {
             let MeJS: any = this[page].getComponent(Me);
             MeJS.openThisPage();
         } else if (page === Main.pages.page3) {
+            Main.hall.allowRepuest = true;
             let HallJS: any = this[page].getComponent(Hall);
             HallJS.openThisPage();
         }else if (page === Main.pages.page1) {

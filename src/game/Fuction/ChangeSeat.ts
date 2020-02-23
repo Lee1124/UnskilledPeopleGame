@@ -3,6 +3,7 @@
  *  */
 import MyCenter from '../common/MyCenter';
 import Main from '../common/Main';
+import websoket from '../Fuction/webSoketSend';
 class ChangeSeat {
     //预设的位置索引
     seatIndexArr: number[] = [0, 1, 2];
@@ -17,34 +18,61 @@ class ChangeSeat {
     //玩家摸牌坐标数组
     playerFeelSeatXYArr: any[];
     change(CLICKOBJ: any, thisObj: any) {
+        let that = this;
         this.selectSeatIndex = thisObj.Index;
         this.selectSeatId = thisObj.SeatId;
         this.seatIndexArr = [0, 1, 2];
         this.playerSeatArr = MyCenter.GameControlObj.players;
         this.playerSeatXYArr = MyCenter.GameUIObj.startSeatXY;
         this.playerFeelSeatXYArr = MyCenter.GameUIObj.startFeelSeatXY;
-        // console.log(MyCenter.GameUIObj)
-        // console.log(thisObj.Index,thisObj.SeatId,this.playerSeatArr)
-        //选中时预设的位置索引重新排序
-        let NewSeatIndexArr = this.seatIndexArr.splice(this.selectSeatIndex, this.seatIndexArr.length).concat(this.seatIndexArr.splice(0, this.selectSeatIndex + 1));
-        this.setSeatContent(thisObj);
-        NewSeatIndexArr.forEach((item: number, index: number) => {
-            this.playerSeatArr[index].IsMe = false;
-            this.playerSeatArr[item].SeatId = index;
-            this.playerSeatArr[item].userId = `12345${index}`;
-            Laya.Tween.to(this.playerSeatArr[item].owner, { x: this.playerSeatXYArr[index].x, y: this.playerSeatXYArr[index].y }, Main.Speed['changeSeat']);
-            this.changeSeatNodeParam(this.playerSeatArr[item].owner, index);
-        })
-        thisObj.IsMe = true;
+        console.log(this.playerSeatArr)
+        if (thisObj.userId == '' || !thisObj.userId) {
+            websoket.seatAt(thisObj.SeatId,this,(res:any)=>{
+                if (res.ret.type == 0) {
+                    //选中时预设的位置索引重新排序
+                    let NewSeatIndexArr = that.seatIndexArr.splice(that.selectSeatIndex, that.seatIndexArr.length).concat(that.seatIndexArr.splice(0, that.selectSeatIndex + 1));
+                    // console.log(NewSeatIndexArr)
+                    NewSeatIndexArr.forEach((item: number, index: number) => {
+                        // that.playerSeatArr[index].IsMe = false;
+                        // that.playerSeatArr[item].SeatId = index;
+                        Laya.Tween.to(that.playerSeatArr[item].owner, { x: that.playerSeatXYArr[index].x, y: that.playerSeatXYArr[index].y }, Main.Speed['changeSeat']);
+                        that.changeSeatNodeParam(that.playerSeatArr[item].owner, index);
+                    })
+                }
+            });
+            // MyCenter.GameControlObj.onSend({
+            //     name: 'M.Room.C2R_SeatAt',
+            //     data: {
+            //         roomid: MyCenter.GameControlObj.roomId,
+            //         idx: thisObj.SeatId
+            //     },
+            //     success(res: any) {
+            //         MyCenter.GameControlObj.dealSoketMessage('占位：', res)
+            //         if (res.ret.type == 0) {
+            //             //选中时预设的位置索引重新排序
+            //             let NewSeatIndexArr = that.seatIndexArr.splice(that.selectSeatIndex, that.seatIndexArr.length).concat(that.seatIndexArr.splice(0, that.selectSeatIndex + 1));
+            //             NewSeatIndexArr.forEach((item: number, index: number) => {
+            //                 that.playerSeatArr[index].IsMe = false;
+            //                 that.playerSeatArr[item].SeatId = index;
+            //                 // this.playerSeatArr[item].userId = `12345${index}`;
+            //                 Laya.Tween.to(that.playerSeatArr[item].owner, { x: that.playerSeatXYArr[index].x, y: that.playerSeatXYArr[index].y }, Main.Speed['changeSeat']);
+            //                 that.changeSeatNodeParam(that.playerSeatArr[item].owner, index);
+            //             })
+            //         }
+            //         // thisObj.IsMe = true;
+            //     }
+            // })
+        }
+
     }
 
     setSeatContent(seatObj: any) {
-        seatObj.owner.getChildByName('head').visible = true;
-        seatObj.owner.getChildByName('head').skin = 'res/img/common/defaultIcon.png';
-        seatObj.owner.getChildByName('name').visible = true;
-        seatObj.owner.getChildByName('name').text = `用户名-0`;
-        seatObj.owner.getChildByName('score').visible = true;
-        seatObj.owner.getChildByName('score').text = parseInt(String(Math.random() * 100 + 100));
+        // seatObj.owner.getChildByName('head').visible = true;
+        // seatObj.owner.getChildByName('head').skin = 'res/img/common/defaultHead.png';
+        // seatObj.owner.getChildByName('name').visible = true;
+        // seatObj.owner.getChildByName('name').text = `用户名-0`;
+        // seatObj.owner.getChildByName('score').visible = true;
+        // seatObj.owner.getChildByName('score').text = parseInt(String(Math.random() * 100 + 100));
     }
 
     /**

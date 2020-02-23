@@ -10,4 +10,13 @@
    <item name="images/common/progress_bg.png" type="ProgressBar" compress="0" pack="0" quality="80" props="sizeGrid=0,36,0,45" picType="0" scale="0"/>
    <item name="images/common/progress_line.png" type="ProgressBar" compress="0" pack="0" quality="80" props="sizeGrid=0,30,0,34" picType="0" scale="0"/>
    <item name="images/common/slected_bg.png" type="Sprite" compress="0" pack="0" quality="80" props="sizeGrid=0,106,0,106" picType="0" scale="0"/>
+   <item name="images/common/dialogBG1.png" type="Sprite" compress="0" pack="0" quality="80" props="sizeGrid=120,120,120,120" picType="0" scale="0"/>
+   <item name="images/common/btn1_box.png" type="Sprite" compress="0" pack="0" quality="80" props="sizeGrid=0,92,0,92" picType="0" scale="0"/>
+   <item name="images/common/dialogBg.png" type="Sprite" compress="0" pack="0" quality="80" props="sizeGrid=110,110,110,110" picType="0" scale="0"/>
+   <item name="images/common/menu_bg.png" type="Sprite" compress="0" pack="0" quality="80" props="sizeGrid=80,80,80,80" picType="0" scale="0"/>
+   <item name="images/liuzuo/l_bg.png" type="Sprite" compress="0" pack="0" quality="80" props="sizeGrid=110,110,110,110" picType="0" scale="0"/>
+   <item name="images/liuzuo/l_kuang1.png" type="Sprite" compress="0" pack="0" quality="80" props="sizeGrid=0,87,0,87" picType="0" scale="0"/>
+   <item name="images/shishizhanji/s_bg.png" type="Sprite" compress="0" pack="0" quality="80" props="@@!@@" picType="0" scale="0"/>
+   <item name="images/shishizhanji/s_bg2.png" type="Sprite" compress="0" pack="0" quality="80" props="sizeGrid=148,36,39,43" picType="0" scale="0"/>
+   <item name="images/shishizhanji/s_bg3.png" type="Sprite" compress="0" pack="0" quality="80" props="sizeGrid=30,30,30,30" picType="0" scale="0"/>
 </res>
