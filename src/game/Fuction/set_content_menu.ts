@@ -34,34 +34,34 @@ class setMenu {
             let onlyColseSelf: boolean = (clicId == 3 || clicId == 4) && isMeArr.length > 0 ? true : false;
             menuJS.close(onlyColseSelf);
             switch (Event.target.id) {
-                case 1:
+                case 1://起立
                     websoket.playerSeatUpSend();
                     break;
-                case 2:
+                case 2://牌局设置
                     console.log('1')
                     break;
-                case 3:
+                case 3://补充金币
                     if (isMeArr.length > 0) {
-                        step_1.diaLogState(true, null);
+                        step_1.diaLogState(true, null,2);
                     } else {
                         Main.showTip('您当前为观战模式,无法补充金币!');
                     }
                     break;
-                case 4:
+                case 4://留坐
                     if (isMeArr.length > 0) {
                         setLiuZuo.open();
                     } else {
                         Main.showTip('您当前为观战模式,无法留坐!');
                     }
                     break;
-                case 5:
+                case 5: //商城
                     Main.$openScene('Shop.scene', false, { isTabPage: false }, (res) => {
                         res.zOrder = 30;
                         res.x = Laya.stage.width;
                         Laya.Tween.to(res, { x: 0 }, Main.Speed['changePage']);
                     })
                     break;
-                case 6:
+                case 6://离开房间
                     websoket.playerLeaveRoomSend();
                     break;
             }

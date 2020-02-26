@@ -15,6 +15,8 @@ class step_1_seatAtOrDown {
     dairuScore: number;
     //所占位置seatId
     seatIndex: number;
+    //带入金币类型(1.带入坐下，2.补充金币)
+    addCoinType:any;
     /**
      * 占座设置
      * @param thisPlayer 玩家脚本
@@ -42,8 +44,10 @@ class step_1_seatAtOrDown {
      * 弹框的状态
      * @param show 是否显示
      * @param thisPlayer 玩家脚本
+     * @param type 1.
      */
-    diaLogState(show: boolean = true, thisPlayer: any): void {
+    diaLogState(show: boolean = true, thisPlayer: any,type?:any): void {
+        this.addCoinType=type?type:1;
         let makeUpBOBO: any = MyCenter.GameControlObj.owner['makeUpCoin'].getComponent(OpenDiaLog);
         let slideJS: any = MyCenter.GameControlObj.owner['makeUpCoin'].getChildByName('sliderView').getComponent(SlideSeledct);
         switch (show) {
@@ -106,6 +110,7 @@ class step_1_seatAtOrDown {
         //留坐标志设置
         let liuzuoView: any = thisPlayer.owner.getChildByName('liuzuo');
         liuzuoView.visible=false;
+        Laya.timer.clear(thisPlayer, thisPlayer.palyerLiuZuoTime);
     }
 
     /**
@@ -190,7 +195,7 @@ class step_1_seatAtOrDown {
     registerEvent(): void {
         let dairuBtn: any = MyCenter.GameControlObj.owner.makeUpCoin.getChildByName('confirmDaiRuBtn');
         dairuBtn.on(Laya.Event.CLICK, this, () => {
-            websoket.comfirmIntoScore(this.seatIndex, this.dairuScore);
+            websoket.comfirmIntoScore(this.seatIndex, this.dairuScore,this.addCoinType,true);
         })
     }
     /**

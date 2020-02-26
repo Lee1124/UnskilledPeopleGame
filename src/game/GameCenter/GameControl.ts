@@ -13,7 +13,7 @@ import OpenDiaLog from '../Fuction/OpenDiaLog';
 import SlideSeledct from '../common/SlideSelect';
 
 import ReloadData from '../Fuction/ReloadData';
-import step_0_initGameNews from '../Fuction/step_0_initGameNews';
+import step_0_initGameNews from '../Fuction/step_2_startNewGame';
 export default class GameControl extends Laya.Script {
     /** @prop {name:dealPoker,tips:"发牌的牌",type:Prefab}*/
     //房间密钥
@@ -88,6 +88,7 @@ export default class GameControl extends Laya.Script {
 
             //更新数据
             if (resData._t == 'R2C_UpdateRoom') {
+                Main.showLoading(false, Main.loadingType.two);
                 if (resData.ret.type == 0) {
                     ReloadData.init();
                     resData.param.json.forEach((item: any) => {
@@ -126,8 +127,8 @@ export default class GameControl extends Laya.Script {
                 }
             }
 
-            //带入
-            if (resData._t == "R2C_AddDairu") {
+            //带入积分坐下(或补充金币)
+            if (resData._t == "R2C_AddDairu"||resData._t=="R2C_SitDown") {
                 if (resData.ret.type == 0 || resData.ret.type == 4) {
                     // this.setMeMakeBOBO(resData);
                     resData.param.json.forEach((item: any) => {
@@ -138,6 +139,8 @@ export default class GameControl extends Laya.Script {
                 }
                 if (resData.ret.type != 0) {
                     Main.showTip(resData.ret.msg);
+                    let makeUpBOBO: any = this.owner['makeUpCoin'].getComponent(OpenDiaLog);
+                    makeUpBOBO.close();
                 }
             }
 
@@ -164,9 +167,43 @@ export default class GameControl extends Laya.Script {
                     this.leaveRoomDeal(resData);
                 }
             }
+
+            //====开始游戏部分====
+            if (resData._t == "G2C_StartNewWheel") {
+                this.startNewGame(resData);
+            }else if(resData._t == "G2C_DealHand"){
+                this.dealPlayerPoker(resData);
+            }
+
+
         } catch (error) {
             Main.$LOG(error)
         }
+    }
+    
+    /**
+     * ========游戏部分=========
+     */
+
+     /**
+      * 开始游戏
+      * @param data 
+      */
+    startNewGame(data:any):void{
+        this.players.forEach((itemJS:any)=>{
+            data.players.forEach((itemData:any)=>{
+                if(itemJS.userId==itemData.uid){
+                    itemJS.startNewGame(data);
+                }
+            })
+        })
+    }
+
+    /**
+     * 发牌
+     */
+    dealPlayerPoker(data:any):void{
+        DealOrPlayPoker.deal(data);
     }
 
     /**
@@ -188,7 +225,7 @@ export default class GameControl extends Laya.Script {
      */
     getGameNews(data: any): void {
         this.GameNews = data;
-        step_0_initGameNews.init_addCoin(this, data);
+        // step_0_initGameNews.init_addCoin(this, data);
     }
 
     //更新当前数据
@@ -284,7 +321,6 @@ export default class GameControl extends Laya.Script {
      * @param data 数据
      */
     playerReturnSeat(data: any): void {
-        console.log(this.players)
         this.players.forEach((JSitem: any) => {
             if (JSitem.userId == data.userId) {
                 JSitem.playerReturnSeatFn(data);

@@ -4,6 +4,8 @@
 import MyCenter from '../common/MyCenter';
 import Main from '../common/Main';
 class DealMePoker {
+    //====正式====
+    others: any[] = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
     //自己发牌容器
     meDealView: any;
     //玩家自己最终的摆牌容器
@@ -26,40 +28,37 @@ class DealMePoker {
     players: any;
     //发牌显示
     showDealView: any;
-    deal() {
-        // this.createShowDeal();
+
+    /**
+     * 发牌
+     * @param data 数据
+     */
+    deal(data: any): void {
         let mePokerArr: any[] = [];
         this.userIndex = 0;
         this.pokerIndex = 0;
         this.timerNum = 0;
         this.players = MyCenter.GameControlObj.players;
         this.init();
-        console.log(this.players)
-        this.userPokerData0 = [
-            { uid: 123450, data: [{ name: 'p1', poker: [1, 1, 1, 1] }, { name: 'p2', poker: [10, 4] }, { name: 'p3', poker: [4, 8, 2, 7, 21, 6, 2] }, { name: 'p4', poker: [1, 2, 3] }, { name: 'p5', poker: [9, 9, 9, 9] }] },
-            { uid: 123451, data: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1] },
-            { uid: 123452, data: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1] }
-        ]
-        //组合自己的牌的数据
-        this.userPokerData0.forEach(item => {
+        this.userPokerData0 = data.players;
+        this.userPokerData = [];
+        this.userPokerData0.forEach((item: any) => {
             if (item.uid == Main.userInfo['userId']) {
-                item.data.forEach(item2 => {
-                    mePokerArr = mePokerArr.concat(item2.poker);
+                item.pokers.forEach((item2: any) => {
+                    item2.forEach((item3: any, index3: number) => {
+                        item2[index3] = parseInt(String(item3 / 10000))
+                    })
+                    mePokerArr = mePokerArr.concat(item2);
                 })
             }
-        })
-        this.userPokerData = [
-            { uid: 123450, data: mePokerArr },
-            { uid: 123451, data: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1] },
-            { uid: 123452, data: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1] }
-        ]
-        this.userPokerData.forEach((item, index) => {
-            this.pokerNum += item.data.length;
         });
-        // this.meDealView = MyCenter.GameUIObj.meDealView;
-        // this.meDealView.visible = true;
-        // this.meDealView.alpha = 1;
-        // Laya.timer.loop(Main.Speed['dealPoker'], this, this.MovePoker);
+        this.userPokerData0.forEach((item: any, index: number) => {
+            let data: any = item.uid == Main.userInfo['userId'] ? mePokerArr : this.others;
+            this.userPokerData[index] = { userId: item.uid, data: data };
+        });
+        // this.userPokerData.forEach((item, index) => {
+        //     this.pokerNum += item.data.length;
+        // });
         this.MovePoker();
     }
 
@@ -67,15 +66,18 @@ class DealMePoker {
      * 初始化
      */
     init() {
+        if (this.meDealView)
+            this.meDealView.removeChildren();
         //初始化发牌容器的层级
         MyCenter.GameUIObj.dealSeat.zOrder = 0;
         //初始化玩家受到发牌的位置
-        this.players.forEach(item => {
+        this.players.forEach((item: any) => {
             let getDealPokerSeat = item.owner.getChildByName('getDealPokerSeat');
             getDealPokerSeat.bottom = item.IsMe ? Main.deal['meBottom'] : Main.deal['otherBottom'];
             item.owner.zOrder = item.IsMe ? 1 : 0;
         })
     }
+
     /**
      * 开始移动牌
      * @param index 牌索引
@@ -90,14 +92,14 @@ class DealMePoker {
         dealPoker.alpha = 0;
         dealPoker.pos(0, 0);
         dealSeat.addChild(dealPoker);
-        this.players.forEach((item, index) => {
-            if (item.userId == dealPlayerData.uid) {
+        this.players.forEach((item: any, index: number) => {
+            if (item.userId == dealPlayerData.userId) {
                 let getDealPokerSeat = item.owner.getChildByName('getDealPokerSeat');
                 let getDealPokerSeatXY = getDealPokerSeat.parent.localToGlobal(new Laya.Point(getDealPokerSeat.x, getDealPokerSeat.y));
                 let x: number = getDealPokerSeatXY.x - MyCenter.GameUIObj.dealPokerSeatXY.x;
                 let y: number = getDealPokerSeatXY.y - MyCenter.GameUIObj.dealPokerSeatXY.y;
                 let moveObj = dealSeat.getChildByName(String(this.timerNum));
-                Laya.Tween.to(moveObj, { alpha: 0.4, x: x, y: y }, Main.Speed['dealPoker'] * 0.8, null, Laya.Handler.create(this, () => {
+                Laya.Tween.to(moveObj, { alpha: 0.8, x: x, y: y }, Main.Speed['dealPoker'] * 0.8, null, Laya.Handler.create(this, () => {
                     if (item.IsMe) {
                         this.meDealView = item.owner.getChildByName('mePokerView');
                         this.meDealView.visible = true;
@@ -181,17 +183,17 @@ class DealMePoker {
      * 合牌,移动每列牌到中间消失一系列动作结束(接下来就是显示切好的牌)
      */
     showMePokerView(): void {//mePokerData: any
-        let mePokerData = [
-            { name: 'p1', poker: [1, 1, 1, 1] },
-            { name: 'p2', poker: [10, 4] },
-            { name: 'p3', poker: [4, 8, 2, 7, 21, 6, 2] },
-            { name: 'p4', poker: [1, 2, 3] },
-            { name: 'p5', poker: [9, 9, 9, 9] },
-        ]
-        let playerMe = this.players.filter(item => item.IsMe);
+        let mePokerData: any[] = [];
+        this.userPokerData0.forEach((item: any, index: number) => {
+            if (item.uid == Main.userInfo.userId) {
+                item.pokers.forEach((item2: any, index2: number) => {
+                    mePokerData[index2] = { name: 'p' + index2, poker: item2 }
+                })
+            }
+        })
+        let playerMe: any = this.players.filter((item: any) => item.IsMe);
         if (playerMe.length > 0) {
             //摆牌容器
-            // this.mePutView = playerMe[0].owner.getChildByName('mePokerView');
             //设置摆牌容器的总宽度
             this.meDealView.width = Main.pokerWidth * mePokerData.length;
             mePokerData.forEach((item: any, index: number) => {
@@ -225,7 +227,7 @@ class DealMePoker {
      * 点击牌事件
      * @param pokerObj 点击的牌对象
      *  */
-    ClickPoker(pokerObj: any, e) {
+    ClickPoker(pokerObj: any, e: any) {
         e.stopPropagation();
         if (pokerObj.height > Main.pokerWidth) {
             this.mePlayPoker(pokerObj);
@@ -343,10 +345,10 @@ class DealMePoker {
     /**节点重新放置位置 */
     mePutViewReloadSeat() {
         let mePutViewChildren = this.meDealView._children;
-        mePutViewChildren.forEach((item, index) => {
+        mePutViewChildren.forEach((item: any, index: number) => {
             let innerChildren = item._children;
             item.x = Main.pokerWidth * index;
-            innerChildren.forEach((item2, index2) => {
+            innerChildren.forEach((item2: any, index2: number) => {
                 //清除点击高亮
                 let clickColorImg = item2.getChildByName('clickColorImg');
                 if (clickColorImg)

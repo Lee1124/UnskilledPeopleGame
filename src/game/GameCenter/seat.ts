@@ -3,6 +3,7 @@ import MyCenter from '../common/MyCenter';//中转站
 import ChangeSeat from '../Fuction/ChangeSeat';//切换位置
 import countDown from '../Fuction/CountDown';//倒计时
 import step_1_seatAtOrDown from '../Fuction/step_1_seatAtOrDown';//第一步
+import step_2_startNewGame from '../Fuction/step_2_startNewGame';//第二步(开始一局新游戏)
 import set_content_liuzuo from '../Fuction/set_content_liuzuo';//留坐
 export default class seat extends Laya.Script {
     //玩家Id
@@ -116,6 +117,16 @@ export default class seat extends Laya.Script {
     palyerLiuZuoTime(scoreView:any):void{
         set_content_liuzuo.liuzuoTime(this,scoreView);
     }
+
+
+    /**
+     * =====游戏部分=====
+     */
+    startNewGame(data:any):void{
+        step_2_startNewGame.start(this,data);
+    }
+
+    
 
 
     //==============正式===============

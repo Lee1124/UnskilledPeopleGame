@@ -1053,7 +1053,7 @@
 	    changeClips() {
 	        var img = Laya.Loader.getRes(this._skin);
 	        if (!img) {
-	            console.log("lose skin", this._skin);
+	            // console.log("lose skin", this._skin);
 	            return;
 	        }
 	        var width = img.sourceWidth;

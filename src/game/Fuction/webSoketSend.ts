@@ -83,7 +83,6 @@ class websketSend {
                 Main.$LOG('初始化---[Rpc回调]:', resMsg);
                 if (resMsg._t == "G2C_Connect") {
                     if (resMsg.ret.type == 0) {
-                        // RecSoketReloadData.reload(this);
                         Main.showLoading(false, Main.loadingType.two);
                         this.soketConnetNum = 0;
                         this.onSend({
@@ -198,9 +197,10 @@ class websketSend {
     * @param seatIndex 位置索引
     * @param dairuScore 带入的积分
     */
-    comfirmIntoScore(seatIndex:number,dairuScore:number):void{
+    comfirmIntoScore(seatIndex:number,dairuScore:number,type?:any,isComfirm?:boolean):void{
+        let sendName:any=type==2?'M.Room.C2R_AddDairu':'M.Room.C2R_SitDown';
         this.onSend({
-            name: 'M.Room.C2R_AddDairu',
+            name: sendName,
             data: {
                 roomid: this.conThis.roomId,
                 idx: seatIndex,
@@ -208,6 +208,9 @@ class websketSend {
             },
             success(res:any) {
                 this.conThis.dealSoketMessage('补充钵钵：', res);
+                if(res.ret.type==0&&isComfirm){
+                    Main.showTip('带入成功');
+                }
             }
         })
     }

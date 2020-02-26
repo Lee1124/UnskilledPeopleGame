@@ -113,11 +113,10 @@ export default class OpenDiaLog extends Laya.Script {
         if (this.owner['visible'])
             Laya.Tween.to(this.owner, { y: $y }, this.openSpeed, null, Laya.Handler.create(this, () => {
                 this.owner['visible'] = false;
-                if (!onlyColseSelf) {
+                if (!onlyColseSelf) {//如果为false
                     this.dialogMask.visible = false;
                     this.dialogView.visible = false;
                     this.dialogMask.off(Laya.Event.CLICK);
-                    this.flag = true;
                 }
                 if (this.closeFn)
                     this.closeFn.call(this.JSthis);
@@ -126,9 +125,7 @@ export default class OpenDiaLog extends Laya.Script {
 
     /**注册事件 */
     registerEvent(): void {
-        if (this.flag) {
-            this.flag = false;
-            this.dialogMask.on(Laya.Event.CLICK, this, this.close, [false])
-        }
+        this.dialogMask.off(Laya.Event.CLICK);
+        this.dialogMask.on(Laya.Event.CLICK, this, this.close, [false]);
     }
 }

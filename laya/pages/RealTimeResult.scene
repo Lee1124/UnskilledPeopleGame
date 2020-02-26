@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":5,
+    "selectedBox":9,
+    "selecteID":10,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","height":2208},
     "nodeParent":-1,
@@ -70,13 +70,14 @@
                     "props":{"x":32,"var":"s_hd","top":20,"skin":"images/shishizhanji/s_hd.png","name":"s_hd"},
                     "nodeParent":5,
                     "label":"s_hd",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":6,
                     "child":[
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,s_alldairu",
                             "props":{"skin":"images/shishizhanji/s_alldairu.png","name":"s_alldairu","left":43,"bottom":35},
@@ -89,9 +90,10 @@
                             "compId":7,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Text",
                                     "searchKey":"Text,value,allDaiRuValue",
-                                    "props":{"y":1,"x":123,"width":82,"var":"allDaiRuValue","text":"0","name":"value","height":32,"fontSize":32,"color":"#BDAD34"},
+                                    "props":{"y":5,"x":123,"width":82,"var":"allDaiRuValue","text":"0","name":"value","height":32,"fontSize":32,"color":"#BDAD34"},
                                     "nodeParent":7,
                                     "label":"value",
                                     "isDirectory":false,
@@ -105,6 +107,7 @@
                             "$HIDDEN":false
                         },
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,s_allScore",
                             "props":{"skin":"images/shishizhanji/s_allgetscore.png","name":"s_allScore","left":345,"bottom":35},
@@ -117,9 +120,10 @@
                             "compId":9,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Text",
                                     "searchKey":"Text,value,allGetScore",
-                                    "props":{"y":1,"x":123,"width":82,"var":"allGetScore","text":"0","name":"value","height":32,"fontSize":32,"color":"#BDAD34"},
+                                    "props":{"y":4,"x":123,"width":82,"var":"allGetScore","text":"0","name":"value","height":32,"fontSize":32,"color":"#BDAD34"},
                                     "nodeParent":9,
                                     "label":"value",
                                     "isDirectory":false,
@@ -133,6 +137,7 @@
                             "$HIDDEN":false
                         },
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,s_lastTime",
                             "props":{"skin":"images/shishizhanji/s_lastTime.png","name":"s_lastTime","left":614,"bottom":36},
@@ -145,9 +150,10 @@
                             "compId":11,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Text",
                                     "searchKey":"Text,value,roomLastTime",
-                                    "props":{"y":0,"x":159,"width":141,"var":"roomLastTime","text":"00:00:00","name":"value","height":32,"fontSize":32,"color":"#BDAD34"},
+                                    "props":{"y":3,"x":159,"width":141,"var":"roomLastTime","text":"00:00:00","name":"value","height":32,"fontSize":32,"color":"#BDAD34"},
                                     "nodeParent":11,
                                     "label":"value",
                                     "isDirectory":false,

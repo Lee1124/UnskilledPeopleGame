@@ -3,13 +3,14 @@
     "type":"View",
     "selectedBox":2,
     "searchKey":"View",
-    "props":{"sceneWidth":600,"sceneHeight":400,"sceneColor":"#000000"},
+    "props":{"sceneWidth":100,"sceneHeight":100,"sceneColor":"#000000"},
     "nodeParent":-1,
-    "maxID":3,
+    "maxID":6,
     "label":"View",
-    "isDirectory":false,
+    "isOpen":null,
+    "isDirectory":true,
     "isAniNode":true,
-    "hasChild":false,
+    "hasChild":true,
     "compId":2,
     "child":[
         {
@@ -24,6 +25,31 @@
             "compId":3,
             "child":[
                 ]
+        },
+        {
+            "type":"GraphicNode",
+            "searchKey":"GraphicNode",
+            "props":{},
+            "nodeParent":2,
+            "label":"GraphicNode",
+            "isDirectory":true,
+            "isAniNode":true,
+            "hasChild":true,
+            "compId":4,
+            "child":[
+                {
+                    "type":"GraphicNode",
+                    "searchKey":"GraphicNode",
+                    "props":{},
+                    "nodeParent":4,
+                    "label":"GraphicNode",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":5,
+                    "child":[
+                        ]
+                }]
         }],
     "animations":[
         {
@@ -67,6 +93,41 @@
                                 "key":"skin",
                                 "index":0
                             }],
+                        "scaleY":[
+                            {
+                                "value":1.6,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":3,
+                                "key":"scaleY",
+                                "index":0
+                            }],
+                        "scaleX":[
+                            {
+                                "value":1.6,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":3,
+                                "key":"scaleX",
+                                "index":0
+                            }],
+                        "rotation":[
+                            {
+                                "value":0,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":3,
+                                "key":"rotation",
+                                "index":0
+                            },
+                            {
+                                "value":360,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":3,
+                                "key":"rotation",
+                                "index":28
+                            }],
                         "pivotY":[
                             {
                                 "value":43,
@@ -91,6 +152,184 @@
                                 "tweenMethod":"linearNone",
                                 "tween":true,
                                 "target":3,
+                                "key":"height",
+                                "index":0
+                            }]
+                    }
+                },
+                {
+                    "target":4,
+                    "keyframes":{
+                        "y":[
+                            {
+                                "value":0,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":4,
+                                "key":"y",
+                                "index":0
+                            }],
+                        "x":[
+                            {
+                                "value":0,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":4,
+                                "key":"x",
+                                "index":0
+                            }],
+                        "width":[
+                            {
+                                "value":45,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":4,
+                                "key":"width",
+                                "index":0
+                            }],
+                        "skin":[
+                            {
+                                "value":"images/common/loadingBg2.png",
+                                "tweenMethod":"linearNone",
+                                "tween":false,
+                                "target":4,
+                                "key":"skin",
+                                "index":0
+                            }],
+                        "scaleY":[
+                            {
+                                "value":1.6,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":4,
+                                "key":"scaleY",
+                                "index":0
+                            }],
+                        "scaleX":[
+                            {
+                                "value":1.6,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":4,
+                                "key":"scaleX",
+                                "index":0
+                            }],
+                        "pivotY":[
+                            {
+                                "value":23,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":4,
+                                "key":"pivotY",
+                                "index":0
+                            }],
+                        "pivotX":[
+                            {
+                                "value":23,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":4,
+                                "key":"pivotX",
+                                "index":0
+                            }],
+                        "height":[
+                            {
+                                "value":45,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":4,
+                                "key":"height",
+                                "index":0
+                            }]
+                    }
+                },
+                {
+                    "target":5,
+                    "keyframes":{
+                        "y":[
+                            {
+                                "value":22.5,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":5,
+                                "key":"y",
+                                "index":0
+                            }],
+                        "x":[
+                            {
+                                "value":22.5,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":5,
+                                "key":"x",
+                                "index":0
+                            }],
+                        "width":[
+                            {
+                                "value":33,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":5,
+                                "key":"width",
+                                "index":0
+                            }],
+                        "skin":[
+                            {
+                                "value":"images/common/ld0.png",
+                                "tweenMethod":"linearNone",
+                                "tween":false,
+                                "target":5,
+                                "key":"skin",
+                                "index":0
+                            },
+                            {
+                                "value":"images/common/ld1.png",
+                                "tweenMethod":"linearNone",
+                                "tween":false,
+                                "target":5,
+                                "key":"skin",
+                                "index":7
+                            },
+                            {
+                                "value":"images/common/ld2.png",
+                                "tweenMethod":"linearNone",
+                                "tween":false,
+                                "target":5,
+                                "key":"skin",
+                                "index":14
+                            },
+                            {
+                                "value":"images/common/ld3.png",
+                                "tweenMethod":"linearNone",
+                                "tween":false,
+                                "target":5,
+                                "key":"skin",
+                                "index":21
+                            }],
+                        "pivotY":[
+                            {
+                                "value":16,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":5,
+                                "key":"pivotY",
+                                "index":0
+                            }],
+                        "pivotX":[
+                            {
+                                "value":17,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":5,
+                                "key":"pivotX",
+                                "index":0
+                            }],
+                        "height":[
+                            {
+                                "value":31,
+                                "tweenMethod":"linearNone",
+                                "tween":true,
+                                "target":5,
                                 "key":"height",
                                 "index":0
                             }]
