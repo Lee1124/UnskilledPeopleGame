@@ -15,7 +15,6 @@ class setMenu {
         this.menuList.array = Main.loadMenuImgArr;
         this.menuList.renderHandler = new Laya.Handler(this, this.menuListOnRender);
         this.menuList.mouseHandler = new Laya.Handler(this, this.menuListOnClick);
-
     }
 
     menuListOnRender(cell: any, index: number): void {

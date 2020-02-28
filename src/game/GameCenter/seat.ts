@@ -5,7 +5,10 @@ import countDown from '../Fuction/CountDown';//倒计时
 import step_1_seatAtOrDown from '../Fuction/step_1_seatAtOrDown';//第一步
 import step_2_startNewGame from '../Fuction/step_2_startNewGame';//第二步(开始一局新游戏)
 import set_content_liuzuo from '../Fuction/set_content_liuzuo';//留坐
+import set_content_chat from '../Fuction/set_content_chat';//表情聊天
 export default class seat extends Laya.Script {
+    //玩家位置动画的定时器id
+    aniTimeID:number;
     //玩家Id
     userId:number;
     //占座剩余时间
@@ -116,6 +119,14 @@ export default class seat extends Laya.Script {
      */
     palyerLiuZuoTime(scoreView:any):void{
         set_content_liuzuo.liuzuoTime(this,scoreView);
+    }
+
+    /**
+     * 玩家聊天
+     * @param data 
+     */
+    playerChat(data:any):void{
+        set_content_chat.playerChat(this,data);
     }
 
 

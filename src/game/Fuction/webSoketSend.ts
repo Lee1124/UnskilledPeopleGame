@@ -233,5 +233,32 @@ class websketSend {
             }
         })
     }
+
+
+    /**
+     * 聊天
+     * @param msgType 类型（1.为表情，2.为文字）
+     * @param content 内容
+     * @param msgId 消息id
+     */
+    chatReq(msgType:any=1,content:any,msgId:any):void{
+        this.onSend({
+            name: 'M.Games.CX.C2G_GameChat',
+            data: {
+                chat: {
+                    "recipient": -1,
+                    "sender": Main.userInfo.userId,
+                    "content": content,
+                    "msgType": msgType,
+                    "msgId": msgId,
+                },
+                roomId: this.conThis.roomId,
+                chatType: 0,
+            },
+            success(res:any) {
+                this.conThis.dealSoketMessage('发送表情：', res);
+            }
+        })
+    }
 }
 export default new websketSend();

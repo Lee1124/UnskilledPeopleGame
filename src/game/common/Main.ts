@@ -145,6 +145,25 @@ class Main {
             console.error(...data);
     }
 
+     //表情聊天列表
+     expressionChat:any[] = [
+        { id: 0, icon: 'res/img/Expression/0_0.png' },
+        { id: 1, icon: 'res/img/Expression/1_0.png' },
+        { id: 2, icon: 'res/img/Expression/2_0.png' },
+        { id: 3, icon: 'res/img/Expression/3_0.png' },
+        { id: 4, icon: 'res/img/Expression/4_0.png' },
+        { id: 5, icon: 'res/img/Expression/5_0.png' },
+        { id: 6, icon: 'res/img/Expression/6_0.png' },
+        { id: 7, icon: 'res/img/Expression/7_0.png' },
+        { id: 8, icon: 'res/img/Expression/8_0.png' },
+        { id: 9, icon: 'res/img/Expression/9_0.png' },
+        { id: 10, icon: 'res/img/Expression/10_0.png' },
+        { id: 11, icon: 'res/img/Expression/11_0.png' },
+        { id: 12, icon: 'res/img/Expression/12_0.png' },
+        { id: 13, icon: 'res/img/Expression/13_0.png' },
+        { id: 14, icon: 'res/img/Expression/14_0.png' }
+    ];
+
     /**
      * 预加载数据
      */

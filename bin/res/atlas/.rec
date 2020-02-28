@@ -1,6 +1,11 @@
 D .
 R 39B957DA texture.png
 D images
+D images/Chat
+R 88404278 chat_bg.png
+P 7DA08237 chat_selected.png
+P 0FFD9A70 chat_send.png
+P 7AB175A2 textinput.png
 D images/common
 P 0CA95849 back.png
 P CD13AC34 banker.png

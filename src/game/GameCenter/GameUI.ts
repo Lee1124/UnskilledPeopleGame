@@ -3,6 +3,7 @@ import MyCenter from '../common/MyCenter';
 import GameControl from '../GameCenter/GameControl';
 import OpenDiaLog from '../Fuction/OpenDiaLog';
 import setMenuContent from '../Fuction/set_content_menu';
+import setChatContent from '../Fuction/set_content_chat';
 
 import openView from '../common/openView';
 export default class GameUI extends Laya.Scene {
@@ -25,11 +26,12 @@ export default class GameUI extends Laya.Scene {
     onEnable(): void {
         this.InitGameUIData();
         this.RegisterEvent();
-        setMenuContent.init(this);
     }
     onOpened(options:any){
         this.openData=options;
         this.initJS();
+        setMenuContent.init(this);
+        setChatContent.init(this);
     }
     /**初始化数据 */
     InitGameUIData() {
@@ -72,12 +74,12 @@ export default class GameUI extends Laya.Scene {
                     case 'btn_menu':
                         this.openMenu();
                     break;
-                    case 'btn_look2':
+                    // case 'btn_look2':
 
-                    break;
-                    case 'btn_look1':
+                    // break;
+                    // case 'btn_look1':
 
-                    break;
+                    // break;
                     case 'btn_chat':
                         this.openChat();
                     break;
@@ -100,6 +102,9 @@ export default class GameUI extends Laya.Scene {
      * 设置聊天菜单的内容
      */
     openChat():void{
-        console.log('聊天')
+        let chatJS: any = MyCenter.GameControlObj.owner['chat'].getComponent(OpenDiaLog);
+        chatJS.init(4,0,this,null,null,()=>{
+            chatJS.open();
+        });
     }
 }

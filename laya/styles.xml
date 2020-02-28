@@ -19,4 +19,6 @@
    <item name="images/shishizhanji/s_bg.png" type="Sprite" compress="0" pack="0" quality="80" props="@@!@@" picType="0" scale="0"/>
    <item name="images/shishizhanji/s_bg2.png" type="Sprite" compress="0" pack="0" quality="80" props="sizeGrid=148,36,39,43" picType="0" scale="0"/>
    <item name="images/shishizhanji/s_bg3.png" type="Sprite" compress="0" pack="0" quality="80" props="sizeGrid=30,30,30,30" picType="0" scale="0"/>
+   <item name="images/Chat/chat_bg.png" type="Sprite" compress="0" pack="0" quality="80" props="sizeGrid=0,153,0,65" picType="0" scale="0"/>
+   <item name="images/Chat/textinput.png" type="TextInput" compress="0" pack="0" quality="80" props="sizeGrid=0,18,0,18" picType="0" scale="0"/>
 </res>

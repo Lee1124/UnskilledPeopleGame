@@ -431,6 +431,23 @@
             };
             this.loadAniArr1 = [];
             this.loadAniArr2 = [];
+            this.expressionChat = [
+                { id: 0, icon: 'res/img/Expression/0_0.png' },
+                { id: 1, icon: 'res/img/Expression/1_0.png' },
+                { id: 2, icon: 'res/img/Expression/2_0.png' },
+                { id: 3, icon: 'res/img/Expression/3_0.png' },
+                { id: 4, icon: 'res/img/Expression/4_0.png' },
+                { id: 5, icon: 'res/img/Expression/5_0.png' },
+                { id: 6, icon: 'res/img/Expression/6_0.png' },
+                { id: 7, icon: 'res/img/Expression/7_0.png' },
+                { id: 8, icon: 'res/img/Expression/8_0.png' },
+                { id: 9, icon: 'res/img/Expression/9_0.png' },
+                { id: 10, icon: 'res/img/Expression/10_0.png' },
+                { id: 11, icon: 'res/img/Expression/11_0.png' },
+                { id: 12, icon: 'res/img/Expression/12_0.png' },
+                { id: 13, icon: 'res/img/Expression/13_0.png' },
+                { id: 14, icon: 'res/img/Expression/14_0.png' }
+            ];
         }
         $LOG(...data) {
             if (this.debug)
@@ -941,6 +958,25 @@
                 },
                 success(res) {
                     this.conThis.dealSoketMessage('留座：', res);
+                }
+            });
+        }
+        chatReq(msgType = 1, content, msgId) {
+            this.onSend({
+                name: 'M.Games.CX.C2G_GameChat',
+                data: {
+                    chat: {
+                        "recipient": -1,
+                        "sender": Main$1.userInfo.userId,
+                        "content": content,
+                        "msgType": msgType,
+                        "msgId": msgId,
+                    },
+                    roomId: this.conThis.roomId,
+                    chatType: 0,
+                },
+                success(res) {
+                    this.conThis.dealSoketMessage('发送表情：', res);
                 }
             });
         }
@@ -1569,6 +1605,190 @@
     }
     var ReloadData$1 = new ReloadData();
 
+    class MyClickSelect extends Laya.Script {
+        onEnable() {
+            this.bindEvent();
+            this.init();
+        }
+        bindEvent() {
+            this.list = this.owner.getChildByName("selectList");
+            this.list.cells.forEach((item) => {
+                let $select = item.getChildByName("listRow").getChildByName("select");
+                $select.on(Laya.Event.CLICK, this, this.clickSelectBox, [$select, item]);
+            });
+        }
+        clearAllSelect() {
+            this.list.cells.forEach((item) => {
+                let $yes = item.getChildByName("listRow").getChildByName("select").getChildByName("yes");
+                $yes.visible = false;
+            });
+        }
+        clickSelectBox(selectBox, cell) {
+            this.clearAllSelect();
+            let yes = selectBox.getChildByName("yes");
+            yes.visible = !yes.visible;
+            if (this.returnFn)
+                this.returnFn.call(this.thisJS, cell.dataSource.value);
+        }
+        init(isSelectIndex = 0) {
+            this.clearAllSelect();
+            this.list.cells.forEach((item, index) => {
+                if (index == isSelectIndex) {
+                    let $yes = item.getChildByName("listRow").getChildByName("select").getChildByName("yes");
+                    $yes.visible = true;
+                }
+            });
+        }
+        MySelect(thisJS, isSelectIndex = 0, fn) {
+            this.thisJS = thisJS;
+            this.returnFn = fn;
+            this.init(isSelectIndex);
+        }
+    }
+
+    class setChat {
+        constructor() {
+            this.selectedNum = 0;
+            this.textChatList = [];
+            this.preTextH = 0;
+        }
+        init(thisUI) {
+            this.thisUI = thisUI;
+            this.initSelectList(thisUI);
+            this.initExpressionList(thisUI);
+            this.initClickSelect(thisUI);
+            this.initShow(thisUI);
+            this.initTextChatContent(thisUI);
+            this.initTextChatSend(thisUI);
+        }
+        initCommonLabel(name, msg) {
+            let chatCt = new Laya.Label();
+            chatCt.name = name;
+            chatCt.align = 'middle';
+            chatCt.fontSize = 40;
+            chatCt.color = '#FFFFFF';
+            chatCt.wordWrap = true;
+            chatCt.left = 0;
+            chatCt.right = 0;
+            chatCt.text = msg;
+            chatCt.leading = 5;
+            chatCt.y = this.preTextH;
+            return chatCt;
+        }
+        initTextChatSend(thisUI) {
+            let textValue = thisUI.chat.getChildByName('textChatView').getChildByName('textView').getChildByName('textValue');
+            let sendBtn = thisUI.chat.getChildByName('textChatView').getChildByName('textView').getChildByName('sendBtn');
+            sendBtn.off(Laya.Event.CLICK);
+            sendBtn.on(Laya.Event.CLICK, this, () => {
+                websoket.chatReq(2, String(textValue.text), 2);
+                textValue.text = '';
+            });
+        }
+        initTextChatContent(thisUI) {
+            let sendTextView = thisUI.chat.getChildByName('textChatView').getChildByName('textView').getChildByName('textValue');
+            sendTextView.text = '';
+            let textShowView = thisUI.chat.getChildByName('textChatView').getChildByName('textShowView');
+            textShowView.vScrollBarSkin = "";
+            this.textChatList.forEach((item, index) => {
+                let nameIndex = item.name + index;
+                if (textShowView.getChildByName(nameIndex)) {
+                    this.preTextH = textShowView.getChildByName(nameIndex).y + textShowView.getChildByName(nameIndex).displayHeight + 30;
+                }
+                else {
+                    let returnChatCt = this.initCommonLabel(nameIndex, item.name + '：' + item.content);
+                    textShowView.addChild(returnChatCt);
+                    this.preTextH += returnChatCt.displayHeight + 30;
+                    setTimeout(() => {
+                        textShowView.vScrollBar.value = textShowView.vScrollBar.max;
+                    }, 100);
+                }
+            });
+        }
+        playerTextChat(data) {
+            this.textChatList.push({ name: data.senderName, content: data.chat.content });
+            this.initTextChatContent(this.thisUI);
+        }
+        initClickSelect(thisUI) {
+            let MeArr = MyCenter$1.GameControlObj.players.filter((item) => item.IsMe);
+            this.selectedNum = MeArr.length > 0 ? this.selectedNum : 1;
+            let selectJS = thisUI.chat.getChildByName('selectView').getComponent(MyClickSelect);
+            selectJS.MySelect(this, this.selectedNum, (val) => {
+                this.selectedNum = val;
+                this.initShow(thisUI);
+            });
+        }
+        initShow(thisUI) {
+            let expressionView = thisUI.chat.getChildByName('expressionChatView');
+            expressionView.visible = this.selectedNum == 0 ? true : false;
+            let textChatView = thisUI.chat.getChildByName('textChatView');
+            textChatView.visible = this.selectedNum == 1 ? true : false;
+        }
+        initSelectList(thisUI) {
+            this.selectList = thisUI.chat.getChildByName('selectView').getChildByName('selectList');
+            this.selectList.array = [{ value: 0, icon: 'res/img/common/chat_icon1.png' }, { value: 1, icon: 'res/img/common/chat_icon2.png' }];
+            this.selectList.renderHandler = new Laya.Handler(this, this.selectListOnRender);
+        }
+        selectListOnRender(cell, index) {
+            let iconBox = cell.getChildByName('listRow').getChildByName('select').getChildByName('no');
+            iconBox.loadImage(cell.dataSource.icon);
+        }
+        initExpressionList(thisUI) {
+            this.expressionList = thisUI.chat.getChildByName('expressionChatView').getChildByName('expressionList');
+            this.expressionList.array = Main$1.expressionChat;
+            this.expressionList.vScrollBarSkin = "";
+            this.expressionList.renderHandler = new Laya.Handler(this, this.expressionListOnRender);
+            this.expressionList.mouseHandler = new Laya.Handler(this, this.expressionListOnClick);
+            this.expressionList.visible = true;
+        }
+        expressionListOnRender(cell, index) {
+            let iconBox = cell.getChildByName('icon');
+            iconBox.loadImage(cell.dataSource.icon);
+        }
+        expressionListOnClick(Event) {
+            if (Event.type == 'click') {
+                let MeArr = MyCenter$1.GameControlObj.players.filter((item) => item.IsMe);
+                if (MeArr.length > 0) {
+                    let chatJS = MyCenter$1.GameControlObj.owner['chat'].getComponent(OpenDiaLog);
+                    chatJS.close();
+                    let ID = Event.target.dataSource.id;
+                    websoket.chatReq(1, String(ID), ID);
+                }
+                else {
+                    Main$1.showTip('您处于观战模式,不能发送表情!');
+                }
+            }
+        }
+        playerChat(thisJS, data) {
+            let gifBox = thisJS.owner.getChildByName("gifBox");
+            gifBox.visible = true;
+            let thisAni = gifBox.getChildByName('expressionAni');
+            if (thisAni) {
+                thisAni.removeSelf();
+            }
+            if (thisJS.aniTimeID) {
+                clearTimeout(thisJS.aniTimeID);
+            }
+            Laya.loader.load("res/atlas/images/GIF/expression.atlas", Laya.Handler.create(this, onMyLoaded));
+            function onMyLoaded() {
+                let ani = new Laya.Animation();
+                ani.name = 'expressionAni';
+                ani.pos(thisJS.owner.pivotX, thisJS.owner.pivotY);
+                ani.loadAnimation("animation/expression/" + data.chat.content + ".ani");
+                gifBox.addChild(ani);
+                ani.play();
+                thisJS.aniTimeID = setTimeout(() => {
+                    let thisAni = gifBox.getChildByName('expressionAni');
+                    if (thisAni) {
+                        thisAni.removeSelf();
+                    }
+                    gifBox.visible = false;
+                    clearTimeout(thisJS.aniTimeID);
+                }, 4000);
+            }
+        }
+    }
+    var set_content_chat = new setChat();
+
     class GameControl extends Laya.Script {
         constructor() {
             super(...arguments);
@@ -1692,6 +1912,14 @@
                         this.leaveRoomDeal(resData);
                     }
                 }
+                if (resData._t == "G2C_GameChat") {
+                    if (resData.ret.type == 0) {
+                        this.playerChat(resData);
+                    }
+                    else {
+                        Main$1.showTip(resData.ret.msg);
+                    }
+                }
                 if (resData._t == "G2C_StartNewWheel") {
                     this.startNewGame(resData);
                 }
@@ -1804,6 +2032,18 @@
                     JSitem.playerSeatDownFn(data);
                 }
             });
+        }
+        playerChat(data) {
+            if (data.chat.msgType == 1) {
+                this.players.forEach((JSitem) => {
+                    if (JSitem.userId == data.chat.sender) {
+                        JSitem.playerChat(data);
+                    }
+                });
+            }
+            else if (data.chat.msgType == 2) {
+                set_content_chat.playerTextChat(data);
+            }
         }
         requestRoomUpdateData(data) {
             this.roomId = data.roomId;
@@ -2518,47 +2758,6 @@
     }
     var step_1_seatAtOrDown$1 = new step_1_seatAtOrDown();
 
-    class MyClickSelect extends Laya.Script {
-        onEnable() {
-            this.bindEvent();
-            this.init();
-        }
-        bindEvent() {
-            this.list = this.owner.getChildByName("selectList");
-            this.list.cells.forEach((item) => {
-                let $select = item.getChildByName("listRow").getChildByName("select");
-                $select.on(Laya.Event.CLICK, this, this.clickSelectBox, [$select, item]);
-            });
-        }
-        clearAllSelect() {
-            this.list.cells.forEach((item) => {
-                let $yes = item.getChildByName("listRow").getChildByName("select").getChildByName("yes");
-                $yes.visible = false;
-            });
-        }
-        clickSelectBox(selectBox, cell) {
-            this.clearAllSelect();
-            let yes = selectBox.getChildByName("yes");
-            yes.visible = !yes.visible;
-            if (this.returnFn)
-                this.returnFn.call(this.thisJS, cell.dataSource.value);
-        }
-        init(isSelectIndex = 0) {
-            this.clearAllSelect();
-            this.list.cells.forEach((item, index) => {
-                if (index == isSelectIndex) {
-                    let $yes = item.getChildByName("listRow").getChildByName("select").getChildByName("yes");
-                    $yes.visible = true;
-                }
-            });
-        }
-        MySelect(thisJS, isSelectIndex = 0, fn) {
-            this.thisJS = thisJS;
-            this.returnFn = fn;
-            this.init(isSelectIndex);
-        }
-    }
-
     class setLiuZuo {
         constructor() {
             this.selectScore = 150;
@@ -2764,11 +2963,12 @@
         onEnable() {
             this.InitGameUIData();
             this.RegisterEvent();
-            setMenuContent.init(this);
         }
         onOpened(options) {
             this.openData = options;
             this.initJS();
+            setMenuContent.init(this);
+            set_content_chat.init(this);
         }
         InitGameUIData() {
             this.GameControlJS = this.getComponent(GameControl);
@@ -2803,10 +3003,6 @@
                         case 'btn_menu':
                             this.openMenu();
                             break;
-                        case 'btn_look2':
-                            break;
-                        case 'btn_look1':
-                            break;
                         case 'btn_chat':
                             this.openChat();
                             break;
@@ -2821,7 +3017,10 @@
             });
         }
         openChat() {
-            console.log('聊天');
+            let chatJS = MyCenter$1.GameControlObj.owner['chat'].getComponent(OpenDiaLog);
+            chatJS.init(4, 0, this, null, null, () => {
+                chatJS.open();
+            });
         }
     }
 
@@ -2978,6 +3177,9 @@
         }
         palyerLiuZuoTime(scoreView) {
             set_content_liuzuo.liuzuoTime(this, scoreView);
+        }
+        playerChat(data) {
+            set_content_chat.playerChat(this, data);
         }
         startNewGame(data) {
             step_2_startNewGame$1.start(this, data);

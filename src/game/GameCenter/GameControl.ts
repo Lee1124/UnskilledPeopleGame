@@ -14,6 +14,8 @@ import SlideSeledct from '../common/SlideSelect';
 
 import ReloadData from '../Fuction/ReloadData';
 import step_0_initGameNews from '../Fuction/step_2_startNewGame';
+
+import set_content_chat from '../Fuction/set_content_chat';//聊天
 export default class GameControl extends Laya.Script {
     /** @prop {name:dealPoker,tips:"发牌的牌",type:Prefab}*/
     //房间密钥
@@ -165,6 +167,15 @@ export default class GameControl extends Laya.Script {
                     Main.showTip(resData.ret.msg);
                 } else {
                     this.leaveRoomDeal(resData);
+                }
+            }
+
+            //聊天
+            if(resData._t == "G2C_GameChat"){
+                if (resData.ret.type == 0) {
+                    this.playerChat(resData);
+                } else {
+                    Main.showTip(resData.ret.msg);
                 }
             }
 
@@ -338,6 +349,22 @@ export default class GameControl extends Laya.Script {
                 JSitem.playerSeatDownFn(data);
             }
         })
+    }
+    
+    /**
+     * 玩家聊天
+     * @param data 数据
+     */
+    playerChat(data:any):void{
+        if(data.chat.msgType==1){
+            this.players.forEach((JSitem: any) => {
+                if (JSitem.userId == data.chat.sender) {
+                    JSitem.playerChat(data);
+                }
+            })
+        }else if(data.chat.msgType==2){
+            set_content_chat.playerTextChat(data);
+        }
     }
 
     /**请求房间数据 */
