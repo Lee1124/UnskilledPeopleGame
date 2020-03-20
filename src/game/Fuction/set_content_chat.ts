@@ -17,10 +17,16 @@ class setChat {
     textChatList:any[]=[];
     //前一个文本的高度
     preTextH:number=0;
+    //
+    preTextH2:number=0;
     //thisUI;
     thisUI:any;
+    timeOutID:number;
     init(thisUI: any): void {
         // this.initCommon();
+        this.textChatList=[];
+        this.preTextH=0;
+        this.preTextH2=0;
         this.thisUI=thisUI;
         this.initSelectList(thisUI);
         this.initExpressionList(thisUI);
@@ -30,18 +36,18 @@ class setChat {
         this.initTextChatSend(thisUI);
     }
 
-    initCommonLabel(name:string,msg:string):void{
+    initCommonLabel(name:string,msg:string,fontSize:number,leading:number,preTextH:any):void{
         let chatCt:any=new Laya.Label();
         chatCt.name=name;
         chatCt.align='middle';
-        chatCt.fontSize=40;
+        chatCt.fontSize=fontSize;
         chatCt.color='#FFFFFF';
         chatCt.wordWrap=true;
         chatCt.left=0;
         chatCt.right=0;
         chatCt.text=msg;
-        chatCt.leading=5;
-        chatCt.y=this.preTextH;
+        chatCt.leading=leading;
+        chatCt.y=preTextH;
         return chatCt;
     }
 
@@ -51,8 +57,12 @@ class setChat {
         let sendBtn:any=thisUI.chat.getChildByName('textChatView').getChildByName('textView').getChildByName('sendBtn');
         sendBtn.off(Laya.Event.CLICK);
         sendBtn.on(Laya.Event.CLICK,this,()=>{
-            websoket.chatReq(2, String(textValue.text), 2);
-            textValue.text='';
+            if(textValue.text!=''&&textValue.text.trim()!=''){
+                websoket.chatReq(2, String(textValue.text), 2);
+                textValue.text='';
+            }else{
+                Main.showTip('发送的内容不能为空!');
+            }
         });
     }
 
@@ -62,17 +72,37 @@ class setChat {
         sendTextView.text='';
         let textShowView:any=thisUI.chat.getChildByName('textChatView').getChildByName('textShowView');
         textShowView.vScrollBarSkin = "";
+
+        let deskChatView:any=MyCenter.GameUIObj.deskView.getChildByName('chatView');
+        Laya.Tween.to(deskChatView,{alpha:0.6},200);
+        deskChatView.vScrollBarSkin = "";
+
         this.textChatList.forEach((item:any,index:number)=>{
             let nameIndex:string=item.name+index;
             if(textShowView.getChildByName(nameIndex)){
                 this.preTextH=textShowView.getChildByName(nameIndex).y+textShowView.getChildByName(nameIndex).displayHeight+30;
             }else{
-                let returnChatCt:any=this.initCommonLabel(nameIndex,item.name+'：'+item.content);
+                let returnChatCt:any=this.initCommonLabel(nameIndex,item.name+'：'+item.content,40,5,this.preTextH);
                 textShowView.addChild(returnChatCt);
                 this.preTextH+=returnChatCt.displayHeight+30;
                 setTimeout(()=>{
                     textShowView.vScrollBar.value=textShowView.vScrollBar.max;
                 },100)
+            }
+
+            if(deskChatView.getChildByName(nameIndex)){
+                this.preTextH2=deskChatView.getChildByName(nameIndex).y+deskChatView.getChildByName(nameIndex).displayHeight+0;
+            }else{
+                let returnChatCt:any=this.initCommonLabel(nameIndex,item.name+'：'+item.content,35,2,this.preTextH2);
+                deskChatView.addChild(returnChatCt);
+                this.preTextH2+=returnChatCt.displayHeight+0;
+                setTimeout(()=>{
+                    deskChatView.vScrollBar.value=deskChatView.vScrollBar.max;
+                },100)
+                clearTimeout(this.timeOutID);
+                this.timeOutID=setTimeout(()=>{
+                    Laya.Tween.to(deskChatView,{alpha:0},200);
+                },5000)
             }
         })
     }

@@ -15,6 +15,7 @@ R 840B6C85 bottom.png
 P A681EDF7 btn1_box.png
 P 7ACDBEC5 btn1_text3.png
 P DD96E869 coinIcon.png
+P F9F6980A coinIcon2.png
 P C99F59AB comfirmBtn.png
 P 16A364AA defaultIcon.png
 P 3AB2A41E dialogBg.png
@@ -55,6 +56,7 @@ P 0EDDF982 title_hall.png
 P 70995EAA title_notice.png
 P A5E1E804 title_set.png
 P A6FB34FB title_shop.png
+P E9F2A5D6 title_wallet.png
 R E6EBA664 top.png
 D images/game
 S 5210B1C1 deskBg.jpg
@@ -146,6 +148,32 @@ P CBCE70AA s_title3.png
 P BD09DE9E s_title5.png
 P 61A88D54 微信图片_20200221191548.png
 P BFBDED64 微信图片_20200221191558.png
+D images/wallet
+P 4B69BF87 allowOutLabel.png
+P F9F6980A coinIcon2.png
+R 7E1D77B8 comfirmBtn.png
+R 7C09C3E0 fristTitle.png
+P 1B831F08 icon.png
+P 62D23A7D IDIcon.png
+P EC36D10A inputBox.png
+P 92249D80 label1.png
+P 5B8C9923 label2.png
+P EE60D4D4 label3.png
+P 099FAFEA label4.png
+P A384B0EF out_1.png
+P D4022A60 out_icon1.png
+R 9300C0A9 outBtn.png
+R 05A24928 payBtn1.png
+R 5323C183 payBtn2.png
+P 5B6F8BC3 search_bg.png
+P 92A806C3 thead1.png
+P 13C7C305 thead2.png
+P BFD27516 thead3.png
+P E5EDA134 thead4.png
+P 1265943B title_1.png
+P 4B1F5A9E title_2.png
+P 134149A4 title_3.png
+P 23C0998C title_selected.png
 D images/GIF/expression
 P 737504E6 0_0.png
 P 7C2642E7 0_1.png

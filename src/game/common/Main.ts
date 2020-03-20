@@ -111,7 +111,7 @@ class Main {
         page1: 'NoticePage',
         page2: 'FamilyPage',
         page3: 'HallPage',
-        page4: 'MoneyPage',
+        page4: 'WalletPage',
         page5: 'MePage',
         page6: 'login'
     }

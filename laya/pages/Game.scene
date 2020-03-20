@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":523,
-    "selecteID":531,
+    "selectedBox":533,
+    "selecteID":534,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/GameCenter/GameUI.ts","height":2208},
     "nodeParent":-1,
-    "maxID":532,
+    "maxID":535,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -55,13 +55,14 @@
             "props":{"var":"deskView","top":0,"right":0,"name":"deskView","left":0,"bottom":0},
             "nodeParent":2,
             "label":"deskView",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":6,
             "child":[
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,deskBg",
                     "props":{"y":0,"x":0,"top":0,"skin":"images/game/deskBg.jpg","right":0,"name":"deskBg","left":0,"bottom":0},
@@ -166,6 +167,7 @@
                         }]
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,btnView,btnView",
                     "props":{"var":"btnView","top":0,"right":0,"name":"btnView","left":0,"bottom":0},
@@ -300,6 +302,7 @@
                         }]
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,deskOther",
                     "props":{"y":853,"width":800,"name":"deskOther","height":500,"centerX":0},
@@ -314,12 +317,13 @@
                     "$HIDDEN":true
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,seatList,seatList",
                     "props":{"zOrder":1,"var":"seatList","top":506,"right":0,"name":"seatList","left":0,"bottom":300},
                     "nodeParent":6,
                     "label":"seatList",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
@@ -1346,6 +1350,7 @@
                         }]
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,dealSeat,dealSeat",
                     "props":{"zOrder":2,"y":150,"x":589,"width":64,"var":"dealSeat","name":"dealSeat","height":225,"centerX":0},
@@ -1448,6 +1453,21 @@
                                         ]
                                 }]
                         }]
+                },
+                {
+                    "x":30,
+                    "type":"Panel",
+                    "searchKey":"Panel,chatView",
+                    "props":{"y":228,"width":350,"visible":true,"name":"chatView","left":20,"height":222,"elasticEnabled":true,"alpha":0},
+                    "nodeParent":6,
+                    "label":"chatView",
+                    "isOpen":true,
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":533,
+                    "child":[
+                        ]
                 }]
         },
         {
@@ -1457,14 +1477,13 @@
             "props":{"visible":false,"var":"dialogView","top":0,"right":0,"name":"dialogView","left":0,"bottom":0},
             "nodeParent":2,
             "label":"dialogView",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":413,
             "child":[
                 {
-                    "x":30,
                     "type":"Panel",
                     "searchKey":"Panel,dialogMask,dialogMask",
                     "props":{"width":1242,"visible":false,"var":"dialogMask","name":"dialogMask","height":2208,"centerX":0,"bgColor":"#000000","alpha":0.2},
@@ -1494,7 +1513,6 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,makeUpCoin,makeUpCoin",
                     "props":{"y":-880,"width":1050,"visible":true,"var":"makeUpCoin","skin":"images/common/dialogBg.png","name":"makeUpCoin","height":880,"centerX":0},
@@ -1789,7 +1807,6 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,menu,menu",
                     "props":{"y":-1075,"x":0,"width":660,"visible":false,"var":"menu","skin":"images/common/menu_bg.png","name":"menu","height":1075},
@@ -1872,7 +1889,6 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,LiuZuo,LiuZuo",
                     "props":{"y":0,"x":64,"width":1140,"var":"LiuZuo","skin":"images/liuzuo/l_bg.png","name":"LiuZuo","height":850,"bottom":-850},
@@ -2063,20 +2079,18 @@
                     "$HIDDEN":true
                 },
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,chat,chat",
                     "props":{"y":2208,"x":0,"width":1242,"visible":false,"var":"chat","skin":"images/Chat/chat_bg.png","name":"chat","left":0,"height":630},
                     "nodeParent":413,
                     "label":"chat",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":491,
                     "child":[
                         {
-                            "x":45,
                             "type":"Script",
                             "switchAble":true,
                             "source":"src/game/Fuction/OpenDiaLog.ts",
@@ -2093,7 +2107,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,selectView",
                             "props":{"width":142,"top":0,"right":0,"name":"selectView","height":630,"bottom":0},
@@ -2201,7 +2214,6 @@
                                 }]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,expressionChatView",
                             "props":{"y":0,"x":0,"top":0,"right":142,"name":"expressionChatView","left":0,"bottom":0},
@@ -2255,7 +2267,6 @@
                             "$HIDDEN":true
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,textChatView",
                             "props":{"y":0,"x":0,"top":0,"right":142,"name":"textChatView","left":0,"bottom":0},
@@ -2268,7 +2279,6 @@
                             "compId":514,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,textView",
                                     "props":{"right":0,"name":"textView","left":0,"height":130,"bottom":0},
@@ -2281,7 +2291,6 @@
                                     "compId":518,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"TextInput",
                                             "searchKey":"TextInput,textValue",
                                             "props":{"wordWrap":true,"width":860,"valign":"middle","type":"text","skin":"images/Chat/textinput.png","padding":"0,20,0,20","name":"textValue","left":30,"height":105,"fontSize":52,"color":"#222222","centerY":0},
@@ -2295,7 +2304,6 @@
                                                 ]
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,sendBtn",
                                             "props":{"skin":"images/Chat/chat_send.png","right":10,"name":"sendBtn","centerY":6},
@@ -2310,7 +2318,6 @@
                                         }]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Panel",
                                     "searchKey":"Panel,textShowView",
                                     "props":{"top":30,"right":30,"name":"textShowView","left":30,"elasticEnabled":true,"bottom":140},

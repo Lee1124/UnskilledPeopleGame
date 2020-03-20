@@ -5,18 +5,22 @@ import Main from '../../common/Main';
 import Me from '../../pages/TabPages/Me/Me';
 import Hall from '../../pages/TabPages/GameHall/GameHall';
 import Notice from '../../pages/TabPages/Notice/Notice';
+import Wallet from '../../pages/TabPages/Wallet/Wallet';
 export default class TabPageUI extends Laya.Scene {
     //页面值
     pageData: any;
     //选中的页面
     selectedPage: any;
+    //默认显示的页面
+    defaultPage:any;
     onAwake(): void {
         this.registerEvent();
+        this.defaultPage=Main.pages.page4;
     }
     onOpened(options: any): void {
         Main.$LOG('tab页面所收到的值：', options);
         this.pageData = options;
-        this.selectedPage = options ? options.page ? options.page : Main.pages.page3 : Main.pages.page3;
+        this.selectedPage = options ? options.page ? options.page : this.defaultPage : this.defaultPage;
         this.openView(this.selectedPage);
     }
 
@@ -56,6 +60,9 @@ export default class TabPageUI extends Laya.Scene {
         }else if (page === Main.pages.page1) {
             let NoticeJS: any = this[page].getComponent(Notice);
             NoticeJS.openThisPage();
+        }else if (page === Main.pages.page4) {
+            let WalleteJS: any = this[page].getComponent(Wallet);
+            WalleteJS.openThisPage();
         }
     }
 

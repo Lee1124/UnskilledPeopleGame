@@ -364,6 +364,7 @@ export default class GameControl extends Laya.Script {
             })
         }else if(data.chat.msgType==2){
             set_content_chat.playerTextChat(data);
+            // set_content_chat.playerDeskTextChat(data);
         }
     }
 

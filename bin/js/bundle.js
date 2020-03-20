@@ -415,7 +415,7 @@
                 page1: 'NoticePage',
                 page2: 'FamilyPage',
                 page3: 'HallPage',
-                page4: 'MoneyPage',
+                page4: 'WalletPage',
                 page5: 'MePage',
                 page6: 'login'
             };
@@ -1651,8 +1651,12 @@
             this.selectedNum = 0;
             this.textChatList = [];
             this.preTextH = 0;
+            this.preTextH2 = 0;
         }
         init(thisUI) {
+            this.textChatList = [];
+            this.preTextH = 0;
+            this.preTextH2 = 0;
             this.thisUI = thisUI;
             this.initSelectList(thisUI);
             this.initExpressionList(thisUI);
@@ -1661,18 +1665,18 @@
             this.initTextChatContent(thisUI);
             this.initTextChatSend(thisUI);
         }
-        initCommonLabel(name, msg) {
+        initCommonLabel(name, msg, fontSize, leading, preTextH) {
             let chatCt = new Laya.Label();
             chatCt.name = name;
             chatCt.align = 'middle';
-            chatCt.fontSize = 40;
+            chatCt.fontSize = fontSize;
             chatCt.color = '#FFFFFF';
             chatCt.wordWrap = true;
             chatCt.left = 0;
             chatCt.right = 0;
             chatCt.text = msg;
-            chatCt.leading = 5;
-            chatCt.y = this.preTextH;
+            chatCt.leading = leading;
+            chatCt.y = preTextH;
             return chatCt;
         }
         initTextChatSend(thisUI) {
@@ -1680,8 +1684,13 @@
             let sendBtn = thisUI.chat.getChildByName('textChatView').getChildByName('textView').getChildByName('sendBtn');
             sendBtn.off(Laya.Event.CLICK);
             sendBtn.on(Laya.Event.CLICK, this, () => {
-                websoket.chatReq(2, String(textValue.text), 2);
-                textValue.text = '';
+                if (textValue.text != '' && textValue.text.trim() != '') {
+                    websoket.chatReq(2, String(textValue.text), 2);
+                    textValue.text = '';
+                }
+                else {
+                    Main$1.showTip('发送的内容不能为空!');
+                }
             });
         }
         initTextChatContent(thisUI) {
@@ -1689,18 +1698,36 @@
             sendTextView.text = '';
             let textShowView = thisUI.chat.getChildByName('textChatView').getChildByName('textShowView');
             textShowView.vScrollBarSkin = "";
+            let deskChatView = MyCenter$1.GameUIObj.deskView.getChildByName('chatView');
+            Laya.Tween.to(deskChatView, { alpha: 0.6 }, 200);
+            deskChatView.vScrollBarSkin = "";
             this.textChatList.forEach((item, index) => {
                 let nameIndex = item.name + index;
                 if (textShowView.getChildByName(nameIndex)) {
                     this.preTextH = textShowView.getChildByName(nameIndex).y + textShowView.getChildByName(nameIndex).displayHeight + 30;
                 }
                 else {
-                    let returnChatCt = this.initCommonLabel(nameIndex, item.name + '：' + item.content);
+                    let returnChatCt = this.initCommonLabel(nameIndex, item.name + '：' + item.content, 40, 5, this.preTextH);
                     textShowView.addChild(returnChatCt);
                     this.preTextH += returnChatCt.displayHeight + 30;
                     setTimeout(() => {
                         textShowView.vScrollBar.value = textShowView.vScrollBar.max;
                     }, 100);
+                }
+                if (deskChatView.getChildByName(nameIndex)) {
+                    this.preTextH2 = deskChatView.getChildByName(nameIndex).y + deskChatView.getChildByName(nameIndex).displayHeight + 0;
+                }
+                else {
+                    let returnChatCt = this.initCommonLabel(nameIndex, item.name + '：' + item.content, 35, 2, this.preTextH2);
+                    deskChatView.addChild(returnChatCt);
+                    this.preTextH2 += returnChatCt.displayHeight + 0;
+                    setTimeout(() => {
+                        deskChatView.vScrollBar.value = deskChatView.vScrollBar.max;
+                    }, 100);
+                    clearTimeout(this.timeOutID);
+                    this.timeOutID = setTimeout(() => {
+                        Laya.Tween.to(deskChatView, { alpha: 0 }, 200);
+                    }, 5000);
                 }
             });
         }
@@ -4238,14 +4265,51 @@
         }
     }
 
+    class Wallet extends Laya.Script {
+        constructor() {
+            super(...arguments);
+            this._selectNavType = 1;
+        }
+        onStart() {
+        }
+        onAwake() {
+            this.registerEvent();
+        }
+        openThisPage() {
+            if (this.owner['visible']) {
+                console.log('进来wallet', this);
+                this.selectThisTab(this.owner.scene.wallet_nav_bg._children[0], 1);
+            }
+        }
+        registerEvent() {
+            this.owner.scene.wallet_nav_bg._children.forEach((item, index) => {
+                item.on(Laya.Event.CLICK, this, this.selectThisTab, [item, index + 1]);
+            });
+        }
+        reloadNavSelectZT() {
+            this.owner.scene.wallet_nav_bg._children.forEach((item, index) => {
+                item.getChildByName("selectedBox").visible = false;
+            });
+        }
+        selectThisTab(itemObj, pageNum) {
+            this.reloadNavSelectZT();
+            itemObj.getChildByName("selectedBox").visible = true;
+            this._selectNavType = pageNum;
+            this.owner.scene.wallet_view_bg._children.forEach((item, index) => {
+                item.visible = item.name.split('view')[1] == pageNum ? true : false;
+            });
+        }
+    }
+
     class TabPageUI extends Laya.Scene {
         onAwake() {
             this.registerEvent();
+            this.defaultPage = Main$1.pages.page4;
         }
         onOpened(options) {
             Main$1.$LOG('tab页面所收到的值：', options);
             this.pageData = options;
-            this.selectedPage = options ? options.page ? options.page : Main$1.pages.page3 : Main$1.pages.page3;
+            this.selectedPage = options ? options.page ? options.page : this.defaultPage : this.defaultPage;
             this.openView(this.selectedPage);
         }
         registerEvent() {
@@ -4278,6 +4342,10 @@
             else if (page === Main$1.pages.page1) {
                 let NoticeJS = this[page].getComponent(Notice);
                 NoticeJS.openThisPage();
+            }
+            else if (page === Main$1.pages.page4) {
+                let WalleteJS = this[page].getComponent(Wallet);
+                WalleteJS.openThisPage();
             }
         }
         reloadNavSelect() {
@@ -4317,6 +4385,7 @@
             reg("game/pages/TabPages/Me/Me.ts", Me);
             reg("game/pages/TabPages/GameHall/GameHall.ts", GameHall);
             reg("game/pages/TabPages/Notice/Notice.ts", Notice);
+            reg("game/pages/TabPages/Wallet/Wallet.ts", Wallet);
         }
     }
     GameConfig.width = 1242;
@@ -4325,7 +4394,7 @@
     GameConfig.screenMode = "none";
     GameConfig.alignV = "top";
     GameConfig.alignH = "left";
-    GameConfig.startScene = "Start.scene";
+    GameConfig.startScene = "TabPages.scene";
     GameConfig.sceneRoot = "";
     GameConfig.debug = false;
     GameConfig.stat = false;
