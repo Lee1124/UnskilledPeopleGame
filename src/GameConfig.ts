@@ -26,6 +26,7 @@ import Me from "./game/pages/TabPages/Me/Me"
 import GameHall from "./game/pages/TabPages/GameHall/GameHall"
 import Notice from "./game/pages/TabPages/Notice/Notice"
 import Wallet from "./game/pages/TabPages/Wallet/Wallet"
+import Friends from "./game/pages/TabPages/Friends/Friends"
 /*
 * 游戏初始化配置;
 */
@@ -36,7 +37,7 @@ export default class GameConfig{
     static screenMode:string="none";
     static alignV:string="top";
     static alignH:string="left";
-    static startScene:any="TabPages.scene";
+    static startScene:any="Start.scene";
     static sceneRoot:string="";
     static debug:boolean=false;
     static stat:boolean=false;
@@ -72,6 +73,7 @@ export default class GameConfig{
         reg("game/pages/TabPages/GameHall/GameHall.ts",GameHall);
         reg("game/pages/TabPages/Notice/Notice.ts",Notice);
         reg("game/pages/TabPages/Wallet/Wallet.ts",Wallet);
+        reg("game/pages/TabPages/Friends/Friends.ts",Friends);
     }
 }
 GameConfig.init();

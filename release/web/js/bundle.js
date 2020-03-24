@@ -413,9 +413,9 @@
             };
             this.pages = {
                 page1: 'NoticePage',
-                page2: 'FamilyPage',
+                page2: 'FriendsPage',
                 page3: 'HallPage',
-                page4: 'MoneyPage',
+                page4: 'WalletPage',
                 page5: 'MePage',
                 page6: 'login'
             };
@@ -431,6 +431,23 @@
             };
             this.loadAniArr1 = [];
             this.loadAniArr2 = [];
+            this.expressionChat = [
+                { id: 0, icon: 'res/img/Expression/0_0.png' },
+                { id: 1, icon: 'res/img/Expression/1_0.png' },
+                { id: 2, icon: 'res/img/Expression/2_0.png' },
+                { id: 3, icon: 'res/img/Expression/3_0.png' },
+                { id: 4, icon: 'res/img/Expression/4_0.png' },
+                { id: 5, icon: 'res/img/Expression/5_0.png' },
+                { id: 6, icon: 'res/img/Expression/6_0.png' },
+                { id: 7, icon: 'res/img/Expression/7_0.png' },
+                { id: 8, icon: 'res/img/Expression/8_0.png' },
+                { id: 9, icon: 'res/img/Expression/9_0.png' },
+                { id: 10, icon: 'res/img/Expression/10_0.png' },
+                { id: 11, icon: 'res/img/Expression/11_0.png' },
+                { id: 12, icon: 'res/img/Expression/12_0.png' },
+                { id: 13, icon: 'res/img/Expression/13_0.png' },
+                { id: 14, icon: 'res/img/Expression/14_0.png' }
+            ];
         }
         $LOG(...data) {
             if (this.debug)
@@ -767,6 +784,33 @@
             var s = Math.floor((result % 60)) < 10 ? '0' + Math.floor((result % 60)) : Math.floor((result % 60));
             return result = h + ":" + m + ":" + s;
         }
+        strIsNull(str) {
+            return (str == '' || str.trim() == '') ? true : false;
+        }
+        getDate(format, timeNum) {
+            let _format = !format ? 'yyyy/mm/dd' : format;
+            let oTime;
+            let oDate = new Date(timeNum * 1000);
+            let oYear = oDate.getFullYear();
+            let oMonth = oDate.getMonth() + 1;
+            let oDay = oDate.getDate();
+            let oHour = oDate.getHours();
+            let oMin = oDate.getMinutes();
+            let oSec = oDate.getSeconds();
+            if (_format == 'yyyy-mm-dd') {
+                oTime = oYear + '-' + this.getzf(oMonth) + '-' + this.getzf(oDay) + ' ' + this.getzf(oHour) + ':' + this.getzf(oMin) + ':' + this.getzf(oSec);
+            }
+            else if (_format == 'yyyy/mm/dd') {
+                oTime = oYear + '/' + this.getzf(oMonth) + '/' + this.getzf(oDay) + ' ' + this.getzf(oHour) + ':' + this.getzf(oMin) + ':' + this.getzf(oSec);
+            }
+            return oTime;
+        }
+        getzf(num) {
+            if (parseInt(num) < 10) {
+                num = '0' + num;
+            }
+            return num;
+        }
     }
     var Main$1 = new Main();
 
@@ -941,6 +985,25 @@
                 },
                 success(res) {
                     this.conThis.dealSoketMessage('留座：', res);
+                }
+            });
+        }
+        chatReq(msgType = 1, content, msgId) {
+            this.onSend({
+                name: 'M.Games.CX.C2G_GameChat',
+                data: {
+                    chat: {
+                        "recipient": -1,
+                        "sender": Main$1.userInfo.userId,
+                        "content": content,
+                        "msgType": msgType,
+                        "msgId": msgId,
+                    },
+                    roomId: this.conThis.roomId,
+                    chatType: 0,
+                },
+                success(res) {
+                    this.conThis.dealSoketMessage('发送表情：', res);
                 }
             });
         }
@@ -1503,7 +1566,6 @@
             }));
         }
         close(onlyColseSelf = false) {
-            console.log('进来关闭：');
             let $y;
             switch (this.openType) {
                 case 1:
@@ -1532,7 +1594,6 @@
                 }));
         }
         registerEvent() {
-            console.log('注册事件');
             this.dialogMask.off(Laya.Event.CLICK);
             this.dialogMask.on(Laya.Event.CLICK, this, this.close, [false]);
         }
@@ -1570,6 +1631,217 @@
         }
     }
     var ReloadData$1 = new ReloadData();
+
+    class MyClickSelect extends Laya.Script {
+        onEnable() {
+            this.bindEvent();
+            this.init();
+        }
+        bindEvent() {
+            this.list = this.owner.getChildByName("selectList");
+            this.list.cells.forEach((item) => {
+                let $select = item.getChildByName("listRow").getChildByName("select");
+                $select.on(Laya.Event.CLICK, this, this.clickSelectBox, [$select, item]);
+            });
+        }
+        clearAllSelect() {
+            this.list.cells.forEach((item) => {
+                let $yes = item.getChildByName("listRow").getChildByName("select").getChildByName("yes");
+                $yes.visible = false;
+            });
+        }
+        clickSelectBox(selectBox, cell) {
+            this.clearAllSelect();
+            let yes = selectBox.getChildByName("yes");
+            yes.visible = !yes.visible;
+            if (this.returnFn)
+                this.returnFn.call(this.thisJS, cell.dataSource.value);
+        }
+        init(isSelectIndex = 0) {
+            this.clearAllSelect();
+            this.list.cells.forEach((item, index) => {
+                if (index == isSelectIndex) {
+                    let $yes = item.getChildByName("listRow").getChildByName("select").getChildByName("yes");
+                    $yes.visible = true;
+                }
+            });
+        }
+        MySelect(thisJS, isSelectIndex = 0, fn) {
+            this.thisJS = thisJS;
+            this.returnFn = fn;
+            this.init(isSelectIndex);
+        }
+    }
+
+    class setChat {
+        constructor() {
+            this.selectedNum = 0;
+            this.textChatList = [];
+            this.preTextH = 0;
+            this.preTextH2 = 0;
+        }
+        init(thisUI) {
+            this.textChatList = [];
+            this.preTextH = 0;
+            this.preTextH2 = 0;
+            this.thisUI = thisUI;
+            this.initSelectList(thisUI);
+            this.initExpressionList(thisUI);
+            this.initClickSelect(thisUI);
+            this.initShow(thisUI);
+            this.initTextChatContent(thisUI);
+            this.initTextChatSend(thisUI);
+        }
+        initCommonLabel(name, msg, fontSize, leading, preTextH) {
+            let chatCt = new Laya.Label();
+            chatCt.name = name;
+            chatCt.align = 'middle';
+            chatCt.fontSize = fontSize;
+            chatCt.color = '#FFFFFF';
+            chatCt.wordWrap = true;
+            chatCt.left = 0;
+            chatCt.right = 0;
+            chatCt.text = msg;
+            chatCt.leading = leading;
+            chatCt.y = preTextH;
+            return chatCt;
+        }
+        initTextChatSend(thisUI) {
+            let textValue = thisUI.chat.getChildByName('textChatView').getChildByName('textView').getChildByName('textValue');
+            let sendBtn = thisUI.chat.getChildByName('textChatView').getChildByName('textView').getChildByName('sendBtn');
+            sendBtn.off(Laya.Event.CLICK);
+            sendBtn.on(Laya.Event.CLICK, this, () => {
+                if (textValue.text != '' && textValue.text.trim() != '') {
+                    websoket.chatReq(2, String(textValue.text), 2);
+                    textValue.text = '';
+                }
+                else {
+                    Main$1.showTip('发送的内容不能为空!');
+                }
+            });
+        }
+        initTextChatContent(thisUI) {
+            let sendTextView = thisUI.chat.getChildByName('textChatView').getChildByName('textView').getChildByName('textValue');
+            sendTextView.text = '';
+            let textShowView = thisUI.chat.getChildByName('textChatView').getChildByName('textShowView');
+            textShowView.vScrollBarSkin = "";
+            let deskChatView = MyCenter$1.GameUIObj.deskView.getChildByName('chatView');
+            Laya.Tween.to(deskChatView, { alpha: 0.6 }, 200);
+            deskChatView.vScrollBarSkin = "";
+            this.textChatList.forEach((item, index) => {
+                let nameIndex = item.name + index;
+                if (textShowView.getChildByName(nameIndex)) {
+                    this.preTextH = textShowView.getChildByName(nameIndex).y + textShowView.getChildByName(nameIndex).displayHeight + 30;
+                }
+                else {
+                    let returnChatCt = this.initCommonLabel(nameIndex, item.name + '：' + item.content, 40, 5, this.preTextH);
+                    textShowView.addChild(returnChatCt);
+                    this.preTextH += returnChatCt.displayHeight + 30;
+                    setTimeout(() => {
+                        textShowView.vScrollBar.value = textShowView.vScrollBar.max;
+                    }, 100);
+                }
+                if (deskChatView.getChildByName(nameIndex)) {
+                    this.preTextH2 = deskChatView.getChildByName(nameIndex).y + deskChatView.getChildByName(nameIndex).displayHeight + 0;
+                }
+                else {
+                    let returnChatCt = this.initCommonLabel(nameIndex, item.name + '：' + item.content, 35, 2, this.preTextH2);
+                    deskChatView.addChild(returnChatCt);
+                    this.preTextH2 += returnChatCt.displayHeight + 0;
+                    setTimeout(() => {
+                        deskChatView.vScrollBar.value = deskChatView.vScrollBar.max;
+                    }, 100);
+                    clearTimeout(this.timeOutID);
+                    this.timeOutID = setTimeout(() => {
+                        Laya.Tween.to(deskChatView, { alpha: 0 }, 200);
+                    }, 5000);
+                }
+            });
+        }
+        playerTextChat(data) {
+            this.textChatList.push({ name: data.senderName, content: data.chat.content });
+            this.initTextChatContent(this.thisUI);
+        }
+        initClickSelect(thisUI) {
+            let MeArr = MyCenter$1.GameControlObj.players.filter((item) => item.IsMe);
+            this.selectedNum = MeArr.length > 0 ? this.selectedNum : 1;
+            let selectJS = thisUI.chat.getChildByName('selectView').getComponent(MyClickSelect);
+            selectJS.MySelect(this, this.selectedNum, (val) => {
+                this.selectedNum = val;
+                this.initShow(thisUI);
+            });
+        }
+        initShow(thisUI) {
+            let expressionView = thisUI.chat.getChildByName('expressionChatView');
+            expressionView.visible = this.selectedNum == 0 ? true : false;
+            let textChatView = thisUI.chat.getChildByName('textChatView');
+            textChatView.visible = this.selectedNum == 1 ? true : false;
+        }
+        initSelectList(thisUI) {
+            this.selectList = thisUI.chat.getChildByName('selectView').getChildByName('selectList');
+            this.selectList.array = [{ value: 0, icon: 'res/img/common/chat_icon1.png' }, { value: 1, icon: 'res/img/common/chat_icon2.png' }];
+            this.selectList.renderHandler = new Laya.Handler(this, this.selectListOnRender);
+        }
+        selectListOnRender(cell, index) {
+            let iconBox = cell.getChildByName('listRow').getChildByName('select').getChildByName('no');
+            iconBox.loadImage(cell.dataSource.icon);
+        }
+        initExpressionList(thisUI) {
+            this.expressionList = thisUI.chat.getChildByName('expressionChatView').getChildByName('expressionList');
+            this.expressionList.array = Main$1.expressionChat;
+            this.expressionList.vScrollBarSkin = "";
+            this.expressionList.renderHandler = new Laya.Handler(this, this.expressionListOnRender);
+            this.expressionList.mouseHandler = new Laya.Handler(this, this.expressionListOnClick);
+            this.expressionList.visible = true;
+        }
+        expressionListOnRender(cell, index) {
+            let iconBox = cell.getChildByName('icon');
+            iconBox.loadImage(cell.dataSource.icon);
+        }
+        expressionListOnClick(Event) {
+            if (Event.type == 'click') {
+                let MeArr = MyCenter$1.GameControlObj.players.filter((item) => item.IsMe);
+                if (MeArr.length > 0) {
+                    let chatJS = MyCenter$1.GameControlObj.owner['chat'].getComponent(OpenDiaLog);
+                    chatJS.close();
+                    let ID = Event.target.dataSource.id;
+                    websoket.chatReq(1, String(ID), ID);
+                }
+                else {
+                    Main$1.showTip('您处于观战模式,不能发送表情!');
+                }
+            }
+        }
+        playerChat(thisJS, data) {
+            let gifBox = thisJS.owner.getChildByName("gifBox");
+            gifBox.visible = true;
+            let thisAni = gifBox.getChildByName('expressionAni');
+            if (thisAni) {
+                thisAni.removeSelf();
+            }
+            if (thisJS.aniTimeID) {
+                clearTimeout(thisJS.aniTimeID);
+            }
+            Laya.loader.load("res/atlas/images/GIF/expression.atlas", Laya.Handler.create(this, onMyLoaded));
+            function onMyLoaded() {
+                let ani = new Laya.Animation();
+                ani.name = 'expressionAni';
+                ani.pos(thisJS.owner.pivotX, thisJS.owner.pivotY);
+                ani.loadAnimation("animation/expression/" + data.chat.content + ".ani");
+                gifBox.addChild(ani);
+                ani.play();
+                thisJS.aniTimeID = setTimeout(() => {
+                    let thisAni = gifBox.getChildByName('expressionAni');
+                    if (thisAni) {
+                        thisAni.removeSelf();
+                    }
+                    gifBox.visible = false;
+                    clearTimeout(thisJS.aniTimeID);
+                }, 4000);
+            }
+        }
+    }
+    var set_content_chat = new setChat();
 
     class GameControl extends Laya.Script {
         constructor() {
@@ -1694,6 +1966,14 @@
                         this.leaveRoomDeal(resData);
                     }
                 }
+                if (resData._t == "G2C_GameChat") {
+                    if (resData.ret.type == 0) {
+                        this.playerChat(resData);
+                    }
+                    else {
+                        Main$1.showTip(resData.ret.msg);
+                    }
+                }
                 if (resData._t == "G2C_StartNewWheel") {
                     this.startNewGame(resData);
                 }
@@ -1806,6 +2086,18 @@
                     JSitem.playerSeatDownFn(data);
                 }
             });
+        }
+        playerChat(data) {
+            if (data.chat.msgType == 1) {
+                this.players.forEach((JSitem) => {
+                    if (JSitem.userId == data.chat.sender) {
+                        JSitem.playerChat(data);
+                    }
+                });
+            }
+            else if (data.chat.msgType == 2) {
+                set_content_chat.playerTextChat(data);
+            }
         }
         requestRoomUpdateData(data) {
             this.roomId = data.roomId;
@@ -2364,6 +2656,7 @@
             xhr.once(Laya.Event.ERROR, this, (err) => {
                 Main$1.$ERROR('请求异常:', err);
                 Main$1.showDiaLog('网络异常');
+                Main$1.showLoading(false);
                 if (obj.fail)
                     obj.fail.call(that, err);
             });
@@ -2519,47 +2812,6 @@
         }
     }
     var step_1_seatAtOrDown$1 = new step_1_seatAtOrDown();
-
-    class MyClickSelect extends Laya.Script {
-        onEnable() {
-            this.bindEvent();
-            this.init();
-        }
-        bindEvent() {
-            this.list = this.owner.getChildByName("selectList");
-            this.list.cells.forEach((item) => {
-                let $select = item.getChildByName("listRow").getChildByName("select");
-                $select.on(Laya.Event.CLICK, this, this.clickSelectBox, [$select, item]);
-            });
-        }
-        clearAllSelect() {
-            this.list.cells.forEach((item) => {
-                let $yes = item.getChildByName("listRow").getChildByName("select").getChildByName("yes");
-                $yes.visible = false;
-            });
-        }
-        clickSelectBox(selectBox, cell) {
-            this.clearAllSelect();
-            let yes = selectBox.getChildByName("yes");
-            yes.visible = !yes.visible;
-            if (this.returnFn)
-                this.returnFn.call(this.thisJS, cell.dataSource.value);
-        }
-        init(isSelectIndex = 0) {
-            this.clearAllSelect();
-            this.list.cells.forEach((item, index) => {
-                if (index == isSelectIndex) {
-                    let $yes = item.getChildByName("listRow").getChildByName("select").getChildByName("yes");
-                    $yes.visible = true;
-                }
-            });
-        }
-        MySelect(thisJS, isSelectIndex = 0, fn) {
-            this.thisJS = thisJS;
-            this.returnFn = fn;
-            this.init(isSelectIndex);
-        }
-    }
 
     class setLiuZuo {
         constructor() {
@@ -2766,11 +3018,12 @@
         onEnable() {
             this.InitGameUIData();
             this.RegisterEvent();
-            setMenuContent.init(this);
         }
         onOpened(options) {
             this.openData = options;
             this.initJS();
+            setMenuContent.init(this);
+            set_content_chat.init(this);
         }
         InitGameUIData() {
             this.GameControlJS = this.getComponent(GameControl);
@@ -2805,10 +3058,6 @@
                         case 'btn_menu':
                             this.openMenu();
                             break;
-                        case 'btn_look2':
-                            break;
-                        case 'btn_look1':
-                            break;
                         case 'btn_chat':
                             this.openChat();
                             break;
@@ -2823,7 +3072,10 @@
             });
         }
         openChat() {
-            console.log('聊天');
+            let chatJS = MyCenter$1.GameControlObj.owner['chat'].getComponent(OpenDiaLog);
+            chatJS.init(4, 0, this, null, null, () => {
+                chatJS.open();
+            });
         }
     }
 
@@ -2980,6 +3232,9 @@
         }
         palyerLiuZuoTime(scoreView) {
             set_content_liuzuo.liuzuoTime(this, scoreView);
+        }
+        playerChat(data) {
+            set_content_chat.playerChat(this, data);
         }
         startNewGame(data) {
             step_2_startNewGame$1.start(this, data);
@@ -3705,6 +3960,96 @@
         }
     }
 
+    class HttpReq {
+        getUserNews(that, callback) {
+            let data = {
+                uid: Main$1.userInfo.userId,
+            };
+            HTTP.$request({
+                that: that,
+                url: '/M.User/GetInfo',
+                data: data,
+                success(res) {
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                }
+            });
+        }
+        walletSearch(that, callback) {
+            let data = {
+                uid: Main$1.userInfo.userId
+            };
+            HTTP.$request({
+                that: that,
+                url: '/M.WLT/GetWallet',
+                data: data,
+                success(res) {
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                }
+            });
+        }
+        setOutPwd(that, data, callback) {
+            HTTP.$request({
+                that: that,
+                url: '/M.WLT/SetWalletPsw',
+                data: data,
+                success(res) {
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                }
+            });
+        }
+        reqOutMoney(that, data, callback) {
+            Main$1.showLoading(true);
+            HTTP.$request({
+                that: that,
+                url: '/M.WLT/RequestWalletOut',
+                data: data,
+                success(res) {
+                    Main$1.showLoading(false);
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                }
+            });
+        }
+        searchReqOutList(that, callback) {
+            let data = {
+                uid: Main$1.userInfo.userId
+            };
+            HTTP.$request({
+                that: that,
+                url: '/M.WLT/GetWalletOutRecords',
+                data: data,
+                success(res) {
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                }
+            });
+        }
+    }
+    var HttpReqContent = new HttpReq();
+
     class Me extends Laya.Script {
         onStart() {
             this.toScene = this.owner.scene;
@@ -3769,33 +4114,17 @@
             });
         }
         requestPageData() {
-            let data = {
-                uid: Main$1.userInfo.userId,
-            };
-            HTTP.$request({
-                that: this,
-                url: '/M.User/GetInfo',
-                data: data,
-                success(res) {
-                    if (res.data.ret.type == 0) {
-                        this.setPageData(res.data);
-                    }
-                    else {
-                        Main$1.showDiaLog(res.data.ret.msg);
-                    }
-                },
-                fail() {
-                }
+            HttpReqContent.getUserNews(this, (res) => {
+                Main$1.$LOG('我页面数据：', res);
+                let data = res.data;
+                Main$1.$LoadImage(this.UI.headImg, data.head, Main$1.defaultData.head1, 'skin');
+                this.UI.userNameValue.text = data.nick;
+                this.UI.userIDValue.text = data.userId;
+                this.UI.userScoreValue.text = data.score;
+                this.UI.me_sex0.visible = data.sex == 0 ? true : false;
+                this.UI.me_sex1.visible = data.sex == 1 ? true : false;
+                Main$1.serviceUrl = data.service;
             });
-        }
-        setPageData(data) {
-            Main$1.$LoadImage(this.UI.headImg, data.head, Main$1.defaultData.head1, 'skin');
-            this.UI.userNameValue.text = data.nick;
-            this.UI.userIDValue.text = data.userId;
-            this.UI.userScoreValue.text = data.score;
-            this.UI.me_sex0.visible = data.sex == 0 ? true : false;
-            this.UI.me_sex1.visible = data.sex == 1 ? true : false;
-            Main$1.serviceUrl = data.service;
         }
     }
 
@@ -4038,14 +4367,239 @@
         }
     }
 
+    class Wallet extends Laya.Script {
+        constructor() {
+            super(...arguments);
+            this._selectNavType = 1;
+            this.allowMoney = 0;
+            this.isSetPwd = false;
+            this.outType = 0;
+            this.outPwd = 111111;
+        }
+        onStart() {
+        }
+        onAwake() {
+            this.registerEvent();
+        }
+        openThisPage() {
+            if (this.owner['visible']) {
+                console.log('进来wallet', this);
+                this.selectThisTab(this.owner.scene.wallet_nav_bg._children[0], 1);
+            }
+        }
+        registerEvent() {
+            this.owner.scene.wallet_nav_bg._children.forEach((item, index) => {
+                item.on(Laya.Event.CLICK, this, this.selectThisTab, [item, index + 1]);
+            });
+        }
+        reloadNavSelectZT() {
+            this.owner.scene.wallet_nav_bg._children.forEach((item, index) => {
+                item.getChildByName("selectedBox").visible = false;
+            });
+        }
+        selectThisTab(itemObj, pageNum) {
+            this.reloadNavSelectZT();
+            itemObj.getChildByName("selectedBox").visible = true;
+            this._selectNavType = pageNum;
+            this.changePages(pageNum);
+        }
+        changePages(num) {
+            this.owner.scene.wallet_view_bg._children.forEach((item, index) => {
+                item.visible = item.name.split('view')[1] == num ? true : false;
+                if (item.name.split('view')[1] == num)
+                    this.changePageData(num);
+            });
+        }
+        changePageData(num) {
+            switch (num) {
+                case 1:
+                    this.setView1Data();
+                    break;
+                case 2:
+                    this.setView2Data();
+                    break;
+                case 3:
+                    this.setView3Data();
+                    break;
+            }
+        }
+        setView1Data() {
+            HttpReqContent.getUserNews(this, (res) => {
+                Main$1.$LOG('设置提现页面数据：', res);
+                let data = res.data;
+                let userNewsView = this.owner.scene.wallets_view1.getChildByName('userNews');
+                let head = userNewsView.getChildByName('headBg').getChildByName('head');
+                let userId = userNewsView.getChildByName('userId').getChildByName('userIdVal');
+                let userCoin = userNewsView.getChildByName('userCoin').getChildByName('userCoinVal');
+                Main$1.$LoadImage(head, data.head, Main$1.defaultData.head1, 'skin');
+                userId.text = data.userId;
+                userCoin.text = data.score;
+            });
+        }
+        setView2Data() {
+            HttpReqContent.walletSearch(this, (res) => {
+                Main$1.$LOG('钱包查询：', res);
+                this.isSetPwd = res.data.IsPsw;
+                this.allowMoney = res.data.Money;
+                this.setView2Page();
+            });
+        }
+        setView2Page() {
+            let view2_1 = this.owner.scene.wallets_view2.getChildByName('view2_1');
+            let view2_2 = this.owner.scene.wallets_view2.getChildByName('view2_2');
+            let allowMoney = view2_2.getChildByName('allowOut').getChildByName('allowVal');
+            allowMoney.text = this.allowMoney;
+            view2_1.visible = false;
+            view2_2.visible = false;
+            view2_1.visible = this.isSetPwd ? false : true;
+            view2_2.visible = this.isSetPwd ? true : false;
+            if (!this.isSetPwd) {
+                let setPwdBtn = view2_1.getChildByName('comfrimBtn');
+                setPwdBtn.off(Laya.Event.CLICK);
+                setPwdBtn.on(Laya.Event.CLICK, this, this.setPwdComfrim, [view2_1]);
+            }
+            else {
+                let reqOutBtn = view2_2.getChildByName('btn');
+                let inputView = view2_2.getChildByName('inputView');
+                let name = inputView.getChildByName('view1').getChildByName('input');
+                let cardNum = inputView.getChildByName('view2').getChildByName('input');
+                let bankName = inputView.getChildByName('view3').getChildByName('input');
+                let outPrice = inputView.getChildByName('view4').getChildByName('input');
+                name.text = cardNum.text = bankName.text = outPrice.text = '';
+                reqOutBtn.off(Laya.Event.CLICK);
+                reqOutBtn.on(Laya.Event.CLICK, this, this.reqOut, [view2_2]);
+            }
+        }
+        reqOut(view2_2) {
+            let inputView = view2_2.getChildByName('inputView');
+            let name = inputView.getChildByName('view1').getChildByName('input').text;
+            let cardNum = inputView.getChildByName('view2').getChildByName('input').text;
+            let bankName = inputView.getChildByName('view3').getChildByName('input').text;
+            let outPrice = inputView.getChildByName('view4').getChildByName('input').text;
+            if (Main$1.strIsNull(name)) {
+                Main$1.showDiaLog('请您输入真实姓名!');
+                return false;
+            }
+            else if (Main$1.strIsNull(cardNum)) {
+                Main$1.showDiaLog('请您输入银行卡号!');
+                return false;
+            }
+            else if (Main$1.strIsNull(bankName)) {
+                Main$1.showDiaLog('请您输入银行名字!');
+                return false;
+            }
+            else if (Main$1.strIsNull(outPrice)) {
+                Main$1.showDiaLog('请您输入金额!');
+                return false;
+            }
+            if (outPrice > this.allowMoney) {
+                Main$1.showDiaLog('提现金额不能大于可用提现金额!');
+                return false;
+            }
+            let data = {
+                uid: Main$1.userInfo.userId,
+                psw: this.outPwd,
+                money: outPrice,
+                type: this.outType,
+                username: name,
+                cardnumber: cardNum,
+                bankname: bankName
+            };
+            HttpReqContent.reqOutMoney(this, data, (res) => {
+                Main$1.$LOG('提现申请：', res);
+                Main$1.showDiaLog('提现申请成功!', 1, () => {
+                    this.setView2Data();
+                });
+            });
+        }
+        setPwdComfrim(view2_1) {
+            let pwd1Text = view2_1.getChildByName('inputView').getChildByName('input1').getChildByName('input').text;
+            let pwd2Text = view2_1.getChildByName('inputView').getChildByName('input2').getChildByName('input').text;
+            if (/^\d{6}$/.test(pwd1Text) && /^\d{6}$/.test(pwd2Text)) {
+                if (pwd1Text === pwd2Text) {
+                    let data = {
+                        uid: Main$1.userInfo.userId,
+                        psw: parseInt(pwd2Text)
+                    };
+                    HttpReqContent.setOutPwd(this, data, (res) => {
+                        Main$1.$LOG('设置密码：', res);
+                        Main$1.showDiaLog('设置成功!', 1, () => {
+                            this.isSetPwd = true;
+                            this.setView2Page();
+                        });
+                    });
+                }
+                else {
+                    Main$1.showDiaLog('您输入的两次密码不相同!');
+                }
+            }
+            else {
+                Main$1.showDiaLog('请您输入6位数字密码!');
+            }
+        }
+        setView3Data() {
+            HttpReqContent.searchReqOutList(this, (res) => {
+                Main$1.$LOG('查询申请提现列表：', res);
+                let v3List = this.owner.scene.wallets_view3.getChildByName('tbodyView').getChildByName('v3List');
+                v3List.visible = true;
+                v3List.vScrollBarSkin = '';
+                v3List.array = res.data.records;
+                v3List.renderHandler = new Laya.Handler(this, this.v3ListRender);
+            });
+        }
+        v3ListRender(cell, index) {
+            let c1 = cell.getChildByName('c1');
+            let c2 = cell.getChildByName('c2');
+            let c3 = cell.getChildByName('c3');
+            let c4 = cell.getChildByName('c4');
+            c2.text = cell.dataSource.Money;
+            c3.text = Main$1.getDate(null, cell.dataSource.RequestTime);
+            switch (cell.dataSource.Type) {
+                case 0:
+                    c1.text = '银行卡';
+                    break;
+                case 1:
+                    c1.text = '支付宝';
+                    break;
+                case 2:
+                    c1.text = '微信';
+                    break;
+            }
+            switch (cell.dataSource.State) {
+                case 0:
+                    c4.text = '申请中';
+                    break;
+                case 1:
+                    c4.text = '申请中';
+                    break;
+                case 2:
+                    c4.text = '已提现';
+                    break;
+            }
+        }
+    }
+
+    class Friends extends Laya.Script {
+        onStart() {
+        }
+        onAwake() {
+        }
+        openThisPage() {
+            if (this.owner['visible']) {
+                console.log('进来亲友圈friends', this);
+            }
+        }
+    }
+
     class TabPageUI extends Laya.Scene {
         onAwake() {
             this.registerEvent();
+            this.defaultPage = Main$1.pages.page4;
         }
         onOpened(options) {
             Main$1.$LOG('tab页面所收到的值：', options);
             this.pageData = options;
-            this.selectedPage = options ? options.page ? options.page : Main$1.pages.page3 : Main$1.pages.page3;
+            this.selectedPage = options ? options.page ? options.page : this.defaultPage : this.defaultPage;
             this.openView(this.selectedPage);
         }
         registerEvent() {
@@ -4078,6 +4632,14 @@
             else if (page === Main$1.pages.page1) {
                 let NoticeJS = this[page].getComponent(Notice);
                 NoticeJS.openThisPage();
+            }
+            else if (page === Main$1.pages.page4) {
+                let WalleteJS = this[page].getComponent(Wallet);
+                WalleteJS.openThisPage();
+            }
+            else if (page === Main$1.pages.page2) {
+                let FriendsJS = this[page].getComponent(Friends);
+                FriendsJS.openThisPage();
             }
         }
         reloadNavSelect() {
@@ -4117,6 +4679,8 @@
             reg("game/pages/TabPages/Me/Me.ts", Me);
             reg("game/pages/TabPages/GameHall/GameHall.ts", GameHall);
             reg("game/pages/TabPages/Notice/Notice.ts", Notice);
+            reg("game/pages/TabPages/Wallet/Wallet.ts", Wallet);
+            reg("game/pages/TabPages/Friends/Friends.ts", Friends);
         }
     }
     GameConfig.width = 1242;

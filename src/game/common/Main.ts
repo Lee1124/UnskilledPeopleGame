@@ -3,19 +3,19 @@
  */
 import TIP from '../common/SuspensionTips';
 class Main {
-     //手机信息
-    phoneNews:any = {
+    //手机信息
+    phoneNews: any = {
         statusHeight: 0,//手机系统栏的高度
         deviceNews: '',//系统名称：Android / iOS
     }
     //是否自动测试环境
-    AUTO:boolean=false;
+    AUTO: boolean = false;
     // //websoket请求地址
     websoketApi: string = '132.232.34.32:8092';
     //http请求的地址
     requestApi: string = 'http://132.232.34.32:8091';
 
-     //websoket请求地址
+    //websoket请求地址
     //  websoketApi: string = '132.232.34.32:8082';
     //  //http请求的地址
     //  requestApi: string = 'http://132.232.34.32:8081';
@@ -33,7 +33,7 @@ class Main {
     //牌的张数
     count: number = 105;
     //客服链接
-    serviceUrl:string;
+    serviceUrl: string;
     //关于牌的参数
     pokerParam: any = {
         alpha: 0.7,
@@ -52,7 +52,7 @@ class Main {
         meBottom: 340
     }
     //默认数据
-    defaultData:any = {
+    defaultData: any = {
         head1: 'res/img/common/defaultHead.png'
     }
     tipArr1: any[] = [];
@@ -83,7 +83,7 @@ class Main {
     //预加载的牌
     loadPokerArr: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
     //预加载菜单的图片资源
-    loadMenuImgArr:any[]=['res/img/menu/menu_1.png','res/img/menu/menu_2.png','res/img/menu/menu_3.png','res/img/menu/menu_4.png','res/img/menu/menu_5.png','res/img/menu/menu_6.png'];
+    loadMenuImgArr: any[] = ['res/img/menu/menu_1.png', 'res/img/menu/menu_2.png', 'res/img/menu/menu_3.png', 'res/img/menu/menu_4.png', 'res/img/menu/menu_5.png', 'res/img/menu/menu_6.png'];
     //‘我的’页面列表数据
     meListData: any[] = [
         { id: 1, src: 'res/img/me/me_text1.png' },
@@ -94,7 +94,7 @@ class Main {
         { id: 6, src: 'res/img/me/me_text6.png' }
     ]
     //预加载的场景
-    loadScene: any[] = ['Game.scene', 'TabPages.scene', 'Register.scene','Set.scene','Shop.scene','RealTimeResult.scene']
+    loadScene: any[] = ['Game.scene', 'TabPages.scene', 'Register.scene', 'Set.scene', 'Shop.scene', 'RealTimeResult.scene']
     loadSceneResourcesArr: any[] = []
     openSceneViewArr: any[] = []
     //预加载指向
@@ -109,7 +109,7 @@ class Main {
     //界面
     pages = {
         page1: 'NoticePage',
-        page2: 'FamilyPage',
+        page2: 'FriendsPage',
         page3: 'HallPage',
         page4: 'WalletPage',
         page5: 'MePage',
@@ -135,18 +135,18 @@ class Main {
     //加载数组2
     loadAniArr2: any[] = [];
     //控制台打印console.log
-    $LOG(...data:any) {
+    $LOG(...data: any) {
         if (this.debug)
             console.log(data)
     }
     //控制台打印console.error
-    $ERROR(...data:any) {
+    $ERROR(...data: any) {
         if (this.debug)
             console.error(...data);
     }
 
-     //表情聊天列表
-     expressionChat:any[] = [
+    //表情聊天列表
+    expressionChat: any[] = [
         { id: 0, icon: 'res/img/Expression/0_0.png' },
         { id: 1, icon: 'res/img/Expression/1_0.png' },
         { id: 2, icon: 'res/img/Expression/2_0.png' },
@@ -483,13 +483,13 @@ class Main {
      * @param type 显示类型
      * @param msg 显示文字
      */
-    showLoading(isShow:boolean = true, type:any = this.loadingType.one, msg:string = '') {
+    showLoading(isShow: boolean = true, type: any = this.loadingType.one, msg: string = '') {
         this.loadAniArr1.forEach(item => {
             if (item == type) {
                 let loadingMask: any = Laya.stage.getChildByName('loadingMask-' + type);
                 let loadingBox: any = loadingMask.getChildByName('loadingBox');
                 let loadingAni: any = loadingBox.getChildByName('loadingAni');
-                let loadingText:any;
+                let loadingText: any;
                 if (type == this.loadingType.three) {
                     loadingText = loadingBox.getChildByName('loadingText');
                     loadingText.text = '';
@@ -517,16 +517,16 @@ class Main {
         this.showLoading(false, this.loadingType.three);
     }
 
-     /**
-     * 加载图片资源,判断加载失败则显示默认图片(默认图片分多种，根据需要)
-     * @param {*} node 加载图片的节点
-     * @param {*} url 加载图片资源地址
-     * @param {*} type 默认的图片类型 
-     * @param {*} type2 加载图片方式  skin 和 loadImage两种方式 
-     */
-    $LoadImage(node:any, url:string = '', type:string = this.defaultData.head1, type2:string = 'loadImage') {
+    /**
+    * 加载图片资源,判断加载失败则显示默认图片(默认图片分多种，根据需要)
+    * @param {*} node 加载图片的节点
+    * @param {*} url 加载图片资源地址
+    * @param {*} type 默认的图片类型 
+    * @param {*} type2 加载图片方式  skin 和 loadImage两种方式 
+    */
+    $LoadImage(node: any, url: string = '', type: string = this.defaultData.head1, type2: string = 'loadImage') {
         if (url.indexOf('.png') != -1 || url.indexOf('.jpg') != -1 || url.indexOf('.jpeg') != -1) {
-            Laya.loader.load(url, Laya.Handler.create(this, (res:any) => {
+            Laya.loader.load(url, Laya.Handler.create(this, (res: any) => {
                 if (res) {
                     if (type2 == 'loadImage') {
                         node.loadImage(url);
@@ -560,11 +560,43 @@ class Main {
     /**
      * 将秒转化为时分秒
      */
-    secondToDate(result:any) {
+    secondToDate(result: any) {
         var h = Math.floor(result / 3600) < 10 ? '0' + Math.floor(result / 3600) : Math.floor(result / 3600);
         var m = Math.floor((result / 60 % 60)) < 10 ? '0' + Math.floor((result / 60 % 60)) : Math.floor((result / 60 % 60));
         var s = Math.floor((result % 60)) < 10 ? '0' + Math.floor((result % 60)) : Math.floor((result % 60));
         return result = h + ":" + m + ":" + s;
+    }
+
+    /**
+     * 判断字符是否位空 为空返回true 不为空返回false
+     */
+    strIsNull(str: any) {
+        return (str == '' || str.trim() == '') ? true : false;
+    }
+
+    getDate(format: any, timeNum: any) {
+        let _format=!format?'yyyy/mm/dd':format;
+        let oTime: any;
+        let oDate: any = new Date(timeNum*1000);
+        let oYear: any = oDate.getFullYear();
+        let oMonth: any = oDate.getMonth() + 1;
+        let oDay: any = oDate.getDate();
+        let oHour: any = oDate.getHours();
+        let oMin: any = oDate.getMinutes();
+        let oSec: any = oDate.getSeconds();
+        if (_format == 'yyyy-mm-dd') {
+            oTime = oYear + '-' + this.getzf(oMonth) + '-' + this.getzf(oDay) + ' ' + this.getzf(oHour) + ':' + this.getzf(oMin) + ':' + this.getzf(oSec);//最后拼接时间
+        } else if (_format == 'yyyy/mm/dd') {
+            oTime = oYear + '/' + this.getzf(oMonth) + '/' + this.getzf(oDay) + ' ' + this.getzf(oHour) + ':' + this.getzf(oMin) + ':' + this.getzf(oSec);//最后拼接时间
+        }
+        return oTime;
+    }
+    //补0操作  
+    getzf(num: any) {
+        if (parseInt(num) < 10) {
+            num = '0' + num;
+        }
+        return num;
     }
 }
 export default new Main();

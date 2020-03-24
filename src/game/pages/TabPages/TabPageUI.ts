@@ -6,6 +6,7 @@ import Me from '../../pages/TabPages/Me/Me';
 import Hall from '../../pages/TabPages/GameHall/GameHall';
 import Notice from '../../pages/TabPages/Notice/Notice';
 import Wallet from '../../pages/TabPages/Wallet/Wallet';
+import Friends from '../../pages/TabPages/Friends/Friends';
 export default class TabPageUI extends Laya.Scene {
     //页面值
     pageData: any;
@@ -15,7 +16,7 @@ export default class TabPageUI extends Laya.Scene {
     defaultPage:any;
     onAwake(): void {
         this.registerEvent();
-        this.defaultPage=Main.pages.page4;
+        this.defaultPage=Main.pages.page3;
     }
     onOpened(options: any): void {
         Main.$LOG('tab页面所收到的值：', options);
@@ -63,6 +64,9 @@ export default class TabPageUI extends Laya.Scene {
         }else if (page === Main.pages.page4) {
             let WalleteJS: any = this[page].getComponent(Wallet);
             WalleteJS.openThisPage();
+        }else if (page === Main.pages.page2) {
+            let FriendsJS: any = this[page].getComponent(Friends);
+            FriendsJS.openThisPage();
         }
     }
 

@@ -7,7 +7,7 @@ class HttpRequest {
      * @param {*} obj.data 请求数据
      * @param {*} obj.method 请求方式(暂时支持get和post)
      */
-    $request(obj) {
+    $request(obj:any) {
         let that = obj.that;
         let xhr = new Laya.HttpRequest();
         let url = Main.requestApi + obj.url;
@@ -61,7 +61,7 @@ class HttpRequest {
             if (obj.timeout)
                 obj.timeout.call(that,'请求超时,稍后再试!');
         }
-        xhr.once(Laya.Event.COMPLETE, this, (res) => {
+        xhr.once(Laya.Event.COMPLETE, this, (res:any) => {
             if (!res.status) {
                 Main.$ERROR('冲突登录:', res);
                 if (res.code == 1003 || //参数错误
@@ -76,13 +76,14 @@ class HttpRequest {
             }
             obj.success.call(that, res)
         });
-        xhr.once(Laya.Event.ERROR, this, (err) => {
+        xhr.once(Laya.Event.ERROR, this, (err:any) => {
             Main.$ERROR('请求异常:', err);
             Main.showDiaLog('网络异常');
+            Main.showLoading(false);
             if (obj.fail)
                 obj.fail.call(that, err)
         });
-        xhr.once(Laya.Event.PROGRESS, this, (ess) => {
+        xhr.once(Laya.Event.PROGRESS, this, (ess:any) => {
             Main.$ERROR('PROGRESS:', ess);
             if (obj.ess)
                 obj.ess(ess)

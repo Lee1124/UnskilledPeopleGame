@@ -3,6 +3,7 @@
  */
 import Main from '../../../common/Main';
 import HTTP from '../../../common/HttpRequest';
+import HttpReqContent from '../../../common/HttpReqContent';
 export default class Me extends Laya.Script {
     //me列表
     meList: any;
@@ -86,35 +87,16 @@ export default class Me extends Laya.Script {
 
     //获取页面数据
     requestPageData(): void {
-        let data: any = {
-            uid: Main.userInfo.userId,
-            // tuid: Main.userInfo.userId
-        }
-        HTTP.$request({
-            that: this,
-            url: '/M.User/GetInfo',
-            data: data,
-            success(res) {
-                if (res.data.ret.type == 0) {
-                    this.setPageData(res.data);
-                } else {
-                    Main.showDiaLog(res.data.ret.msg);
-                }
-            },
-            fail() {
-            }
+        HttpReqContent.getUserNews(this, (res: any) => {
+            Main.$LOG('我页面数据：',res);
+            let data:any=res.data;
+            Main.$LoadImage(this.UI.headImg, data.head, Main.defaultData.head1, 'skin');
+            this.UI.userNameValue.text = data.nick;
+            this.UI.userIDValue.text = data.userId;
+            this.UI.userScoreValue.text = data.score;
+            this.UI.me_sex0.visible = data.sex == 0 ? true : false;
+            this.UI.me_sex1.visible = data.sex == 1 ? true : false;
+            Main.serviceUrl = data.service;
         })
-    }
-
-    setPageData(data: any): void {
-        // console.log(data)
-        // let headUrl = 'res/img/head/' + data.head + '.png';
-        Main.$LoadImage(this.UI.headImg, data.head, Main.defaultData.head1, 'skin');
-        this.UI.userNameValue.text = data.nick;
-        this.UI.userIDValue.text = data.userId;
-        this.UI.userScoreValue.text = data.score;
-        this.UI.me_sex0.visible = data.sex == 0 ? true : false;
-        this.UI.me_sex1.visible = data.sex == 1 ? true : false;
-        Main.serviceUrl = data.service;
     }
 }

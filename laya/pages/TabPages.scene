@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":227,
-    "selecteID":231,
+    "selectedBox":163,
+    "selecteID":232,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/pages/TabPages/TabPageUI.ts","height":2208},
     "nodeParent":-1,
-    "maxID":232,
+    "maxID":254,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -102,10 +102,10 @@
                 {
                     "x":30,
                     "type":"Image",
-                    "searchKey":"Image,FamilyPage,tab_paiju",
-                    "props":{"width":220,"var":"tab_paiju","top":0,"name":"FamilyPage","height":147,"centerX":-220},
+                    "searchKey":"Image,FriendsPage,tab_friends",
+                    "props":{"width":220,"var":"tab_friends","top":0,"name":"FriendsPage","height":147,"centerX":-220},
                     "nodeParent":5,
-                    "label":"FamilyPage",
+                    "label":"FriendsPage",
                     "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
@@ -284,14 +284,13 @@
                     "props":{"y":0,"x":0,"visible":false,"var":"MePage","top":0,"right":0,"name":"MePage","left":0,"bottom":0},
                     "nodeParent":6,
                     "label":"MePage",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":23,
                     "child":[
                         {
-                            "x":45,
                             "type":"Script",
                             "switchAble":true,
                             "source":"src/game/pages/TabPages/Me/Me.ts",
@@ -308,7 +307,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,list_bg,me_content",
                             "props":{"var":"me_content","top":135,"skin":"images/common/bg2.png","right":50,"name":"list_bg","left":50,"height":1380},
@@ -1811,8 +1809,8 @@
                                         {
                                             "x":75,
                                             "type":"Image",
-                                            "searchKey":"Image,view1",
-                                            "props":{"top":50,"right":50,"name":"view1","left":50,"bottom":50},
+                                            "searchKey":"Image,view1,wallets_view1",
+                                            "props":{"var":"wallets_view1","top":50,"right":50,"name":"view1","left":50,"bottom":50},
                                             "nodeParent":145,
                                             "label":"view1",
                                             "isOpen":false,
@@ -1909,7 +1907,8 @@
                                                                     "hasChild":false,
                                                                     "compId":170,
                                                                     "child":[
-                                                                        ]
+                                                                        ],
+                                                                    "$HIDDEN":true
                                                                 }]
                                                         },
                                                         {
@@ -1918,7 +1917,7 @@
                                                             "props":{"y":234,"x":529,"skin":"images/common/coinIcon2.png","name":"userCoin"},
                                                             "nodeParent":164,
                                                             "label":"userCoin",
-                                                            "isOpen":true,
+                                                            "isOpen":false,
                                                             "isDirectory":true,
                                                             "isAniNode":true,
                                                             "hasChild":true,
@@ -1996,8 +1995,8 @@
                                         {
                                             "x":75,
                                             "type":"Image",
-                                            "searchKey":"Image,view2",
-                                            "props":{"y":0,"x":0,"top":50,"right":50,"name":"view2","left":50,"bottom":50},
+                                            "searchKey":"Image,view2,wallets_view2",
+                                            "props":{"y":0,"x":0,"var":"wallets_view2","top":50,"right":50,"name":"view2","left":50,"bottom":50},
                                             "nodeParent":145,
                                             "label":"view2",
                                             "isOpen":false,
@@ -2009,7 +2008,7 @@
                                                 {
                                                     "type":"Image",
                                                     "searchKey":"Image,view2_1",
-                                                    "props":{"y":0,"x":0,"top":0,"right":0,"name":"view2_1","left":0,"bottom":0},
+                                                    "props":{"y":0,"x":0,"visible":false,"top":0,"right":0,"name":"view2_1","left":0,"bottom":0},
                                                     "nodeParent":162,
                                                     "label":"view2_1",
                                                     "isOpen":false,
@@ -2037,7 +2036,7 @@
                                                             "props":{"top":340,"right":0,"name":"inputView","left":0,"height":300},
                                                             "nodeParent":213,
                                                             "label":"inputView",
-                                                            "isOpen":false,
+                                                            "isOpen":true,
                                                             "isDirectory":true,
                                                             "isAniNode":true,
                                                             "hasChild":true,
@@ -2049,7 +2048,7 @@
                                                                     "props":{"x":0,"top":0,"skin":"images/wallet/inputBox.png","right":0,"name":"input1","left":0},
                                                                     "nodeParent":215,
                                                                     "label":"input1",
-                                                                    "isOpen":false,
+                                                                    "isOpen":true,
                                                                     "isDirectory":true,
                                                                     "isAniNode":true,
                                                                     "hasChild":true,
@@ -2058,7 +2057,7 @@
                                                                         {
                                                                             "type":"TextInput",
                                                                             "searchKey":"TextInput,input",
-                                                                            "props":{"type":"text","skin":"images/common/textinput.png","right":70,"promptColor":"#374949","prompt":"请输入提现交易密码","name":"input","left":70,"height":80,"fontSize":52,"color":"#FFFFFF","centerY":0,"bold":true,"align":"center"},
+                                                                            "props":{"type":"password","skin":"images/common/textinput.png","right":70,"promptColor":"#374949","prompt":"请输入6位数字提现交易密码","name":"input","left":70,"height":80,"fontSize":52,"color":"#FFFFFF","centerY":0,"bold":true,"align":"center"},
                                                                             "nodeParent":217,
                                                                             "label":"input",
                                                                             "isDirectory":false,
@@ -2084,7 +2083,7 @@
                                                                         {
                                                                             "type":"TextInput",
                                                                             "searchKey":"TextInput,input",
-                                                                            "props":{"type":"text","skin":"images/common/textinput.png","right":70,"promptColor":"#374949","prompt":"请再次确认提现交易密码","name":"input","left":70,"height":80,"fontSize":52,"color":"#FFFFFF","centerY":0,"bold":true,"align":"center"},
+                                                                            "props":{"type":"password","skin":"images/common/textinput.png","right":70,"promptColor":"#374949","prompt":"请再次确认提现交易密码","name":"input","left":70,"height":80,"fontSize":52,"color":"#FFFFFF","centerY":0,"bold":true,"align":"center"},
                                                                             "nodeParent":220,
                                                                             "label":"input",
                                                                             "isDirectory":false,
@@ -2108,7 +2107,8 @@
                                                             "compId":222,
                                                             "child":[
                                                                 ]
-                                                        }]
+                                                        }],
+                                                    "$HIDDEN":true
                                                 },
                                                 {
                                                     "type":"Image",
@@ -2116,7 +2116,7 @@
                                                     "props":{"visible":false,"top":0,"right":0,"name":"view2_2","left":0,"bottom":0},
                                                     "nodeParent":162,
                                                     "label":"view2_2",
-                                                    "isOpen":false,
+                                                    "isOpen":true,
                                                     "isDirectory":true,
                                                     "isAniNode":true,
                                                     "hasChild":true,
@@ -2270,7 +2270,7 @@
                                                                     "props":{"top":3,"skin":"images/wallet/inputBox.png","right":0,"name":"view1","left":0},
                                                                     "nodeParent":194,
                                                                     "label":"view1",
-                                                                    "isOpen":false,
+                                                                    "isOpen":true,
                                                                     "isDirectory":true,
                                                                     "isAniNode":true,
                                                                     "hasChild":true,
@@ -2434,15 +2434,15 @@
                                                             "child":[
                                                                 ]
                                                         }],
-                                                    "$HIDDEN":true
+                                                    "$HIDDEN":false
                                                 }],
                                             "$HIDDEN":true
                                         },
                                         {
                                             "x":75,
                                             "type":"Image",
-                                            "searchKey":"Image,view3",
-                                            "props":{"y":0,"x":0,"top":50,"skin":"images/wallet/search_bg.png","right":50,"name":"view3","left":50,"bottom":50},
+                                            "searchKey":"Image,view3,wallets_view3",
+                                            "props":{"y":0,"x":0,"var":"wallets_view3","top":50,"skin":"images/wallet/search_bg.png","right":50,"name":"view3","left":50,"bottom":50},
                                             "nodeParent":145,
                                             "label":"view3",
                                             "isOpen":true,
@@ -2455,30 +2455,28 @@
                                                     "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,theadView",
-                                                    "props":{"y":0,"width":1052,"right":0,"name":"theadView","left":0,"height":131},
+                                                    "props":{"y":0,"width":1052,"right":0,"name":"theadView","left":0,"height":130},
                                                     "nodeParent":163,
                                                     "label":"theadView",
-                                                    "isOpen":true,
+                                                    "isOpen":false,
                                                     "isDirectory":true,
                                                     "isAniNode":true,
                                                     "hasChild":true,
                                                     "compId":223,
                                                     "child":[
                                                         {
-                                                            "x":105,
                                                             "type":"Image",
                                                             "searchKey":"Image,thead",
                                                             "props":{"y":0,"x":0,"width":263,"name":"thead","left":0,"height":131},
                                                             "nodeParent":223,
                                                             "label":"thead",
-                                                            "isOpen":true,
+                                                            "isOpen":false,
                                                             "isDirectory":true,
                                                             "isAniNode":true,
                                                             "hasChild":true,
                                                             "compId":224,
                                                             "child":[
                                                                 {
-                                                                    "x":120,
                                                                     "type":"Image",
                                                                     "searchKey":"Image,text",
                                                                     "props":{"skin":"images/wallet/thead1.png","name":"text","centerY":0,"centerX":0},
@@ -2493,20 +2491,18 @@
                                                                 }]
                                                         },
                                                         {
-                                                            "x":105,
                                                             "type":"Image",
                                                             "searchKey":"Image,thead",
                                                             "props":{"y":0,"width":263,"name":"thead","left":263,"height":131},
                                                             "nodeParent":223,
                                                             "label":"thead",
-                                                            "isOpen":true,
+                                                            "isOpen":false,
                                                             "isDirectory":true,
                                                             "isAniNode":true,
                                                             "hasChild":true,
                                                             "compId":225,
                                                             "child":[
                                                                 {
-                                                                    "x":120,
                                                                     "type":"Image",
                                                                     "searchKey":"Image,text",
                                                                     "props":{"y":0,"x":0,"skin":"images/wallet/thead2.png","name":"text","centerY":0,"centerX":0},
@@ -2521,20 +2517,18 @@
                                                                 }]
                                                         },
                                                         {
-                                                            "x":105,
                                                             "type":"Image",
                                                             "searchKey":"Image,thead",
                                                             "props":{"y":0,"width":263,"name":"thead","left":526,"height":131},
                                                             "nodeParent":223,
                                                             "label":"thead",
-                                                            "isOpen":true,
+                                                            "isOpen":false,
                                                             "isDirectory":true,
                                                             "isAniNode":true,
                                                             "hasChild":true,
                                                             "compId":226,
                                                             "child":[
                                                                 {
-                                                                    "x":120,
                                                                     "type":"Image",
                                                                     "searchKey":"Image,text",
                                                                     "props":{"y":0,"x":0,"skin":"images/wallet/thead3.png","name":"text","centerY":0,"centerX":0},
@@ -2549,20 +2543,18 @@
                                                                 }]
                                                         },
                                                         {
-                                                            "x":105,
                                                             "type":"Image",
                                                             "searchKey":"Image,thead",
                                                             "props":{"y":0,"width":263,"name":"thead","left":789,"height":131},
                                                             "nodeParent":223,
                                                             "label":"thead",
-                                                            "isOpen":true,
+                                                            "isOpen":false,
                                                             "isDirectory":true,
                                                             "isAniNode":true,
                                                             "hasChild":true,
                                                             "compId":227,
                                                             "child":[
                                                                 {
-                                                                    "x":120,
                                                                     "type":"Image",
                                                                     "searchKey":"Image,text",
                                                                     "props":{"y":0,"x":0,"skin":"images/wallet/thead4.png","name":"text","centerY":0,"centerX":0},
@@ -2576,9 +2568,194 @@
                                                                         ]
                                                                 }]
                                                         }]
-                                                }]
+                                                },
+                                                {
+                                                    "x":90,
+                                                    "type":"Image",
+                                                    "searchKey":"Image,tbodyView",
+                                                    "props":{"x":0,"width":1052,"top":140,"right":0,"name":"tbodyView","left":0,"height":130,"bottom":20},
+                                                    "nodeParent":163,
+                                                    "label":"tbodyView",
+                                                    "isOpen":true,
+                                                    "isDirectory":true,
+                                                    "isAniNode":true,
+                                                    "hasChild":true,
+                                                    "compId":232,
+                                                    "child":[
+                                                        {
+                                                            "x":105,
+                                                            "type":"List",
+                                                            "searchKey":"List,v3List",
+                                                            "props":{"visible":false,"top":0,"right":0,"name":"v3List","left":0,"elasticEnabled":true,"bottom":0},
+                                                            "nodeParent":232,
+                                                            "label":"v3List",
+                                                            "isOpen":true,
+                                                            "isDirectory":true,
+                                                            "isAniNode":true,
+                                                            "hasChild":true,
+                                                            "compId":242,
+                                                            "child":[
+                                                                {
+                                                                    "x":120,
+                                                                    "type":"Box",
+                                                                    "searchKey":"Box,v3Box",
+                                                                    "props":{"y":0,"right":0,"renderType":"render","name":"v3Box","left":0,"height":100},
+                                                                    "nodeParent":242,
+                                                                    "label":"v3Box",
+                                                                    "isOpen":true,
+                                                                    "isDirectory":true,
+                                                                    "isAniNode":false,
+                                                                    "hasChild":true,
+                                                                    "compId":243,
+                                                                    "child":[
+                                                                        {
+                                                                            "x":135,
+                                                                            "type":"Label",
+                                                                            "searchKey":"Label,c1",
+                                                                            "props":{"width":263,"valign":"middle","top":0,"overflow":"hidden","name":"c1","fontSize":42,"color":"#FFFFFF","bottom":0,"align":"center"},
+                                                                            "nodeParent":243,
+                                                                            "label":"c1",
+                                                                            "isDirectory":false,
+                                                                            "isAniNode":false,
+                                                                            "hasChild":false,
+                                                                            "compId":244,
+                                                                            "child":[
+                                                                                ]
+                                                                        },
+                                                                        {
+                                                                            "x":135,
+                                                                            "type":"Label",
+                                                                            "searchKey":"Label,c2",
+                                                                            "props":{"width":263,"valign":"middle","top":0,"overflow":"hidden","name":"c2","left":263,"fontSize":42,"color":"#FFFFFF","bottom":0,"align":"center"},
+                                                                            "nodeParent":243,
+                                                                            "label":"c2",
+                                                                            "isDirectory":false,
+                                                                            "isAniNode":false,
+                                                                            "hasChild":false,
+                                                                            "compId":245,
+                                                                            "child":[
+                                                                                ]
+                                                                        },
+                                                                        {
+                                                                            "x":135,
+                                                                            "type":"Label",
+                                                                            "searchKey":"Label,c3",
+                                                                            "props":{"wordWrap":true,"width":263,"valign":"middle","top":0,"text":"2020/01/01 12:00:00","overflow":"hidden","name":"c3","left":526,"fontSize":42,"color":"#FFFFFF","bottom":0,"align":"center"},
+                                                                            "nodeParent":243,
+                                                                            "label":"c3",
+                                                                            "isDirectory":false,
+                                                                            "isAniNode":false,
+                                                                            "hasChild":false,
+                                                                            "compId":246,
+                                                                            "child":[
+                                                                                ]
+                                                                        },
+                                                                        {
+                                                                            "x":135,
+                                                                            "type":"Label",
+                                                                            "searchKey":"Label,c4",
+                                                                            "props":{"width":263,"valign":"middle","top":0,"overflow":"hidden","name":"c4","left":789,"fontSize":42,"color":"#FFFFFF","bottom":0,"align":"center"},
+                                                                            "nodeParent":243,
+                                                                            "label":"c4",
+                                                                            "isDirectory":false,
+                                                                            "isAniNode":false,
+                                                                            "hasChild":false,
+                                                                            "compId":247,
+                                                                            "child":[
+                                                                                ]
+                                                                        }]
+                                                                }]
+                                                        }]
+                                                }],
+                                            "$HIDDEN":false
                                         }]
                                 }]
+                        }],
+                    "$HIDDEN":true
+                },
+                {
+                    "x":30,
+                    "type":"Image",
+                    "searchKey":"Image,FriendsPage,FriendsPage",
+                    "props":{"var":"FriendsPage","top":0,"right":0,"name":"FriendsPage","left":0,"bottom":0},
+                    "nodeParent":6,
+                    "label":"FriendsPage",
+                    "isOpen":false,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":248,
+                    "child":[
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,hd",
+                            "props":{"y":0,"x":0,"top":0,"skin":"images/common/top.png","right":0.1,"name":"hd","left":0.1,"height":195},
+                            "nodeParent":248,
+                            "label":"hd",
+                            "isOpen":false,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":249,
+                            "child":[
+                                {
+                                    "type":"Script",
+                                    "switchAble":true,
+                                    "source":"src/game/common/setHd.ts",
+                                    "searchKey":"Script,setHd",
+                                    "removeAble":true,
+                                    "props":{"y":0,"x":0},
+                                    "nodeParent":249,
+                                    "label":"setHd",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":250,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,titleBox",
+                                    "props":{"top":0,"right":1,"name":"titleBox","left":0,"bottom":10},
+                                    "nodeParent":249,
+                                    "label":"titleBox",
+                                    "isOpen":true,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":251,
+                                    "child":[
+                                        {
+                                            "type":"Image",
+                                            "searchKey":"Image,title",
+                                            "props":{"skin":"images/common/title_wallet.png","name":"title","centerY":0,"centerX":0},
+                                            "nodeParent":251,
+                                            "label":"title",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":252,
+                                            "child":[
+                                                ]
+                                        }]
+                                }]
+                        },
+                        {
+                            "type":"Script",
+                            "switchAble":true,
+                            "source":"src/game/pages/TabPages/Friends/Friends.ts",
+                            "searchKey":"Script,Friends",
+                            "removeAble":true,
+                            "props":{},
+                            "nodeParent":248,
+                            "label":"Friends",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":253,
+                            "child":[
+                                ]
                         }]
                 }]
         }],
