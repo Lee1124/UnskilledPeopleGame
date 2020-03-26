@@ -2,11 +2,11 @@
     "x":0,
     "type":"Scene",
     "selectedBox":2,
-    "selecteID":399,
+    "selecteID":428,
     "searchKey":"Scene",
     "props":{"y":0,"x":0,"width":1242,"visible":true,"sceneColor":"#000000","height":2208},
     "nodeParent":-1,
-    "maxID":425,
+    "maxID":459,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -55,14 +55,13 @@
             "props":{"visible":true,"top":0,"skin":"images/common/bg.jpg","right":0,"name":"bg","left":0,"bottom":0},
             "nodeParent":2,
             "label":"bg",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":399,
             "child":[
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,progressBg,progressBg",
                     "props":{"width":900,"var":"progressBg","skin":"images/common/progress_bg.png","name":"progressBg","height":35,"centerY":400,"centerX":0},
@@ -75,7 +74,6 @@
                     "compId":404,
                     "child":[
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,progress",
                             "props":{"width":50,"skin":"images/common/progress_line.png","name":"progress","left":0},
@@ -89,7 +87,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,test,loadText",
                             "props":{"width":900,"var":"loadText","text":"正在加载资源...","name":"test","left":0,"height":40,"fontSize":40,"color":"#FFFFFF","bottom":-60,"bold":true},
@@ -117,7 +114,6 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,logo",
                     "props":{"skin":"images/login/logo.png","name":"logo","centerY":-644,"centerX":0},
@@ -130,6 +126,381 @@
                     "child":[
                         ],
                     "$HIDDEN":false
+                }]
+        },
+        {
+            "x":15,
+            "type":"Image",
+            "searchKey":"Image,diaLog,diaLog",
+            "props":{"var":"diaLog","top":0,"right":0,"name":"diaLog","left":0,"bottom":0},
+            "nodeParent":2,
+            "label":"diaLog",
+            "isOpen":true,
+            "isDirectory":true,
+            "isAniNode":true,
+            "hasChild":true,
+            "compId":426,
+            "child":[
+                {
+                    "x":30,
+                    "type":"Script",
+                    "switchAble":true,
+                    "source":"src/game/common/openOutDiaLog.ts",
+                    "searchKey":"Script,openOutDiaLog",
+                    "removeAble":true,
+                    "props":{"y":0,"x":0},
+                    "nodeParent":426,
+                    "label":"openOutDiaLog",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":429,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Panel",
+                    "searchKey":"Panel,diaLogMask",
+                    "props":{"top":10,"right":0,"name":"diaLogMask","left":0,"bottom":0,"bgColor":"#000000","alpha":0},
+                    "nodeParent":426,
+                    "label":"diaLogMask",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":427,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Image",
+                    "searchKey":"Image,pwdkeyboard",
+                    "props":{"skin":"images/other/jpbg.png","right":0,"name":"pwdkeyboard","left":0,"height":1026,"bottom":0},
+                    "nodeParent":426,
+                    "label":"pwdkeyboard",
+                    "isOpen":false,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":428,
+                    "child":[
+                        {
+                            "type":"Script",
+                            "switchAble":true,
+                            "source":"src/game/common/outPwdKeyBoard.ts",
+                            "searchKey":"Script,outPwdKeyBoard",
+                            "removeAble":true,
+                            "props":{"y":0,"x":0},
+                            "nodeParent":428,
+                            "label":"outPwdKeyBoard",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":458,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,title",
+                            "props":{"right":0,"name":"title","left":0,"height":106},
+                            "nodeParent":428,
+                            "label":"title",
+                            "isOpen":false,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":430,
+                            "child":[
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,line",
+                                    "props":{"skin":"images/other/fgline.png","right":0,"name":"line","left":0,"bottom":0},
+                                    "nodeParent":430,
+                                    "label":"line",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":432,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,text",
+                                    "props":{"skin":"images/other/tip.png","name":"text","left":50,"centerY":0},
+                                    "nodeParent":430,
+                                    "label":"text",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":433,
+                                    "child":[
+                                        ]
+                                }]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,pwdView",
+                            "props":{"x":0,"top":106,"right":0,"name":"pwdView","left":0,"height":170},
+                            "nodeParent":428,
+                            "label":"pwdView",
+                            "isOpen":true,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":434,
+                            "child":[
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,box",
+                                    "props":{"width":842,"name":"box","height":135,"centerY":0,"centerX":0},
+                                    "nodeParent":434,
+                                    "label":"box",
+                                    "isOpen":true,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":435,
+                                    "child":[
+                                        {
+                                            "type":"Image",
+                                            "searchKey":"Image,p0",
+                                            "props":{"skin":"images/other/pwdBg.png","name":"p0","left":0},
+                                            "nodeParent":435,
+                                            "label":"p0",
+                                            "isOpen":false,
+                                            "isDirectory":true,
+                                            "isAniNode":true,
+                                            "hasChild":true,
+                                            "compId":437,
+                                            "child":[
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,pwd",
+                                                    "props":{"visible":false,"skin":"images/other/pwd.png","name":"pwd","centerY":0,"centerX":0},
+                                                    "nodeParent":437,
+                                                    "label":"pwd",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":439,
+                                                    "child":[
+                                                        ]
+                                                }]
+                                        },
+                                        {
+                                            "type":"Image",
+                                            "searchKey":"Image,p1",
+                                            "props":{"y":0,"skin":"images/other/pwdBg.png","name":"p1","left":147},
+                                            "nodeParent":435,
+                                            "label":"p1",
+                                            "isOpen":false,
+                                            "isDirectory":true,
+                                            "isAniNode":true,
+                                            "hasChild":true,
+                                            "compId":440,
+                                            "child":[
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,pwd",
+                                                    "props":{"visible":false,"skin":"images/other/pwd.png","name":"pwd","centerY":0,"centerX":0},
+                                                    "nodeParent":440,
+                                                    "label":"pwd",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":441,
+                                                    "child":[
+                                                        ]
+                                                }]
+                                        },
+                                        {
+                                            "type":"Image",
+                                            "searchKey":"Image,p2",
+                                            "props":{"y":0,"skin":"images/other/pwdBg.png","name":"p2","left":294},
+                                            "nodeParent":435,
+                                            "label":"p2",
+                                            "isOpen":false,
+                                            "isDirectory":true,
+                                            "isAniNode":true,
+                                            "hasChild":true,
+                                            "compId":442,
+                                            "child":[
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,pwd",
+                                                    "props":{"visible":false,"skin":"images/other/pwd.png","name":"pwd","centerY":0,"centerX":0},
+                                                    "nodeParent":442,
+                                                    "label":"pwd",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":443,
+                                                    "child":[
+                                                        ]
+                                                }]
+                                        },
+                                        {
+                                            "type":"Image",
+                                            "searchKey":"Image,p3",
+                                            "props":{"y":0,"skin":"images/other/pwdBg.png","name":"p3","left":441},
+                                            "nodeParent":435,
+                                            "label":"p3",
+                                            "isOpen":false,
+                                            "isDirectory":true,
+                                            "isAniNode":true,
+                                            "hasChild":true,
+                                            "compId":444,
+                                            "child":[
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,pwd",
+                                                    "props":{"visible":false,"skin":"images/other/pwd.png","name":"pwd","centerY":0,"centerX":0},
+                                                    "nodeParent":444,
+                                                    "label":"pwd",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":445,
+                                                    "child":[
+                                                        ]
+                                                }]
+                                        },
+                                        {
+                                            "type":"Image",
+                                            "searchKey":"Image,p4",
+                                            "props":{"y":0,"skin":"images/other/pwdBg.png","name":"p4","left":588},
+                                            "nodeParent":435,
+                                            "label":"p4",
+                                            "isOpen":false,
+                                            "isDirectory":true,
+                                            "isAniNode":true,
+                                            "hasChild":true,
+                                            "compId":446,
+                                            "child":[
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,pwd",
+                                                    "props":{"visible":false,"skin":"images/other/pwd.png","name":"pwd","centerY":0,"centerX":0},
+                                                    "nodeParent":446,
+                                                    "label":"pwd",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":447,
+                                                    "child":[
+                                                        ]
+                                                }]
+                                        },
+                                        {
+                                            "type":"Image",
+                                            "searchKey":"Image,p5",
+                                            "props":{"y":0,"skin":"images/other/pwdBg.png","name":"p5","left":735},
+                                            "nodeParent":435,
+                                            "label":"p5",
+                                            "isOpen":false,
+                                            "isDirectory":true,
+                                            "isAniNode":true,
+                                            "hasChild":true,
+                                            "compId":448,
+                                            "child":[
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,pwd",
+                                                    "props":{"visible":false,"skin":"images/other/pwd.png","name":"pwd","centerY":0,"centerX":0},
+                                                    "nodeParent":448,
+                                                    "label":"pwd",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":449,
+                                                    "child":[
+                                                        ]
+                                                }]
+                                        }]
+                                },
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,line",
+                                    "props":{"y":0,"x":0,"skin":"images/other/fgline.png","right":0,"name":"line","left":0,"bottom":0},
+                                    "nodeParent":434,
+                                    "label":"line",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":450,
+                                    "child":[
+                                        ]
+                                }]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,keyboardView",
+                            "props":{"top":390,"right":15,"name":"keyboardView","left":15,"bottom":25},
+                            "nodeParent":428,
+                            "label":"keyboardView",
+                            "isOpen":false,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":451,
+                            "child":[
+                                {
+                                    "type":"List",
+                                    "searchKey":"List,list",
+                                    "props":{"top":0,"spaceY":15,"spaceX":18,"right":0,"name":"list","left":0,"bottom":0},
+                                    "nodeParent":451,
+                                    "label":"list",
+                                    "isOpen":true,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":453,
+                                    "child":[
+                                        {
+                                            "type":"Box",
+                                            "searchKey":"Box,render",
+                                            "props":{"y":0,"x":0,"width":393,"name":"render","height":141},
+                                            "nodeParent":453,
+                                            "label":"render",
+                                            "isOpen":true,
+                                            "isDirectory":true,
+                                            "isAniNode":false,
+                                            "hasChild":true,
+                                            "compId":455,
+                                            "child":[
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,numBg",
+                                                    "props":{"skin":"images/other/numBg.png","name":"numBg"},
+                                                    "nodeParent":455,
+                                                    "label":"numBg",
+                                                    "isOpen":true,
+                                                    "isDirectory":true,
+                                                    "isAniNode":false,
+                                                    "hasChild":true,
+                                                    "compId":456,
+                                                    "child":[
+                                                        {
+                                                            "type":"Image",
+                                                            "searchKey":"Image,text",
+                                                            "props":{"name":"text","centerY":0,"centerX":0},
+                                                            "nodeParent":456,
+                                                            "label":"text",
+                                                            "isDirectory":false,
+                                                            "isAniNode":false,
+                                                            "hasChild":false,
+                                                            "compId":457,
+                                                            "child":[
+                                                                ]
+                                                        }]
+                                                }]
+                                        }]
+                                }]
+                        }],
+                    "$HIDDEN":true
                 }]
         }],
     "animations":[

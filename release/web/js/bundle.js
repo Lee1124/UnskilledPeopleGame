@@ -1,245 +1,6 @@
 (function () {
     'use strict';
 
-    class MyCenter {
-        req(key, fn) {
-            this.keepList = [];
-            this.keepList = [{ key: key, fn: fn }];
-        }
-        send(key, val) {
-            this.keepList.forEach(item => {
-                if (key == item.key) {
-                    item.fn(val);
-                }
-            });
-        }
-        InitGameUIData(thisObj) {
-            this.GameUIObj = thisObj;
-        }
-        InitGameData(thisObj) {
-            this.GameControlObj = thisObj;
-        }
-    }
-    var MyCenter$1 = new MyCenter();
-
-    class NetClient extends Laya.Script{
-    	constructor(url){
-    		super();
-    		this.connectUrl = url;  //链接地址
-    		this.valid = false;
-    		this.connecting = false;
-    		this.socketOpen = false;
-    		this.socketMsgQueue = [];
-    		this.debug = false;
-    		this.intervalId = 0;
-    		this.RpcId = 100;
-    		this.RpcIdMap = new Map();
-
-    		console.log("【WebSocket】new NetClient() " + url);
-
-    		this.url = "ws://localhost:8989";
-    		//用于读取消息缓存数据
-    		this.byte = new Laya.Byte();
-    		//这里我们采用小端
-    		this.byte.endian = Laya.Byte.LITTLE_ENDIAN;
-    		this.socket = new Laya.Socket();
-    		//这里我们采用小端
-    		this.socket.endian = Laya.Byte.LITTLE_ENDIAN;
-
-    		//建立连接
-    		this.socket.on(Laya.Event.OPEN, this, this.openHandler);
-    		this.socket.on(Laya.Event.MESSAGE, this, this.receiveHandler);
-    		this.socket.on(Laya.Event.CLOSE, this, this.closeHandler);
-    		this.socket.on(Laya.Event.ERROR, this, this.errorHandler);
-
-    		//socket开始连接事件
-    		this.onStartConnect=function(){console.log("【WebSocket】开始连接");};
-    		//链接成功事件,此处可用来初始化数据
-    		this.onConnectSucc=function(){ console.log("【WebSocket】链接成功");};
-    		//接收消息封装,请外部自己实现
-    		this.onMessage=function(data){
-    			console.log("【WebSocket】收到消息(请自己实现消息处理)："+data);
-    		};
-    	}
-
-    	//正确建立连接
-    	openHandler(event){
-    		this.connecting = false;
-    		this.socketOpen = true;
-    		console.log('【WebSocket】连接已打开！');
-    		this.onConnectSucc();
-    		
-    		for (var i = 0; i < this.socketMsgQueue.length; i++) {
-    			this.sendBinary(this.socketMsgQueue[i]);
-    		}
-    		this.socketMsgQueue = [];		
-    	}
-     
-    	//关闭事件
-    	closeHandler(e){
-    		this.connecting = false;
-    		this.socketOpen = false;
-    		console.log('【WebSocket】已关闭！', e);
-    		this.socket.close();		
-    	}
-
-    	//连接出错
-    	errorHandler(e){
-    		this.connecting = false;
-    		this.socketOpen = false;
-    		console.log('【WebSocket】连接打开失败，请检查！' + e);
-    		this.socket.close();
-    	}
-     
-    	Log(msg){
-    		if(this.debug)
-    			console.log(msg);
-    	}
-    	//重连
-    	reconnect(){
-    		console.log("【WebSocket】开始重连");
-    		this.open();
-    	}
-
-    	getSocket() {
-    		if(!this.socketOpen && !this.connecting&&this.valid) { 
-    			this.socket.close();
-    			this.onStartConnect();
-    			this.connecting = true;
-    			this.socketOpen = false;
-
-    			console.log("【WebSocket】开始连接 ",this.connectUrl);
-    			this.socket.connectByUrl(this.connectUrl);
-    	 
-    			return null;
-    		}
-
-    		return this.socketOpen ? this.socket : null;
-    	}
-    	open(){
-    		this.close();
-    		
-    		this.valid = true;
-    		this.getSocket();
-    		this.intervalId = setInterval(()=>{
-    			//心跳
-    			this.sendHeart();
-    		},5000);
-    	}
-    	//发送心跳消息
-    	sendHeart()
-    	{
-    		var _socket = this.getSocket();
-    		if(_socket!=null)
-    		{
-    			this.byte.clear();
-    			this.byte.writeInt32(0);
-    			this.socket.send(this.byte.buffer);
-    		}
-    	}
-    	close() {
-    		this.valid = false;
-    		this.socket.close();
-    		clearInterval(this.intervalId);	
-    		
-    		console.log("【WebSocket】关闭连接" + this.connectUrl);
-    	}
-    	
-    	stringSource(s) {
-    		var i = 0;
-    		return function () {
-    			return i < s.length ? s.charCodeAt(i++) : null;
-    		};
-    	}
-    	
-    	send(msg){
-    		if(!this.valid) {
-    			console.log("【WebSocket】请先调用 open() 开启网络");
-    			return;
-    		}
-    		
-    		if(this.debug)
-    			console.log("【WebSocket】发送消息 " , msg);
-    		
-    		if( msg.callback != null)
-    		{
-    			msg.data.RpcId = ++this.RpcId;
-    			this.RpcIdMap.set(msg.data.RpcId,msg.callback);
-    			// console.log("注册RPC回调 ["+msg.data.RpcId+"][" +msg.name +"]" +msg.callback);
-    		}	
-
-    		this.byte.clear();
-    		this.byte.pos = 4;
-    		//1. 写协议名字（自动写入2字节头长度）
-    		this.byte.writeUTFString(msg.name);
-    		//2. 写协议内容（自动写入2字节头长度）
-    		this.byte.writeUTFString(JSON.stringify(msg.data));
-
-    		//0. 写协议总长度
-    		var len = this.byte.pos;
-    		this.byte.pos = 0;
-    		this.byte.writeInt32(len);
-
-    		// 发送二进制消息
-    		this.sendBinary(this.byte.buffer);
-    		// 清空数据,下次使用
-    		this.byte.clear();
-    	}
-     	
-    	//发送消息：协议名字,协议内容
-    	sendBinary(binaryMsg){
-    		var _socket = this.getSocket();
-    		if(_socket==null){
-    			this.socketMsgQueue.push(binaryMsg);
-    			return;
-    		}
-    		
-    		this.socket.send(binaryMsg);
-    	}
-
-    	receiveHandler(_msg){
-    		this.byte.clear();
-    		this.byte.writeArrayBuffer(_msg);
-    		this.byte.pos = 0;
-
-    		let msgLen = this.byte.getInt32();
-    		let protocolNameLen = this.byte.getUint8();
-     
-    		var tmpByte = new Laya.Byte();
-    		tmpByte.endian = Laya.Byte.LITTLE_ENDIAN;
-    		let offset = 4;
-    		let name;
-    		let msg;
-
-    		//协议名字
-    		{
-    			this.byte.pos = 4;
-    			name = this.byte.readUTFString();
-    		}
-
-    		//协议内容
-    		{
-    			let json = this.byte.readUTFString();
-    			msg = JSON.parse(json);
-    		}
-
-    		if(this.debug)
-    			console.log("收到消息: " , msg);
-
-    		if(msg.RpcId > 100 && this.RpcIdMap.has(msg.RpcId))
-    		{
-    			let call = this.RpcIdMap.get(msg.RpcId);
-    			if(call!=null)
-    				call(name,msg);
-    			this.RpcIdMap.delete(msg.RpcId);
-    			
-    			return;
-    		}
-    		else
-    			this.onMessage(name,msg);
-    	}
-    }
-
     class SuspensionTips extends Laya.Script {
         constructor() {
             super();
@@ -388,6 +149,7 @@
                 mePlay: 100,
                 otherPlay: 50,
                 changePage: 200,
+                openDiaLogSpeed: 200
             };
             this.sign = {
                 signOut: 1,
@@ -405,7 +167,7 @@
                 { id: 5, src: 'res/img/me/me_text5.png' },
                 { id: 6, src: 'res/img/me/me_text6.png' }
             ];
-            this.loadScene = ['Game.scene', 'TabPages.scene', 'Register.scene', 'Set.scene', 'Shop.scene', 'RealTimeResult.scene'];
+            this.loadScene = ['Game.scene', 'TabPages.scene', 'Register.scene', 'Set.scene', 'Shop.scene', 'RealTimeResult.scene', 'Friends.scene'];
             this.loadSceneResourcesArr = [];
             this.openSceneViewArr = [];
             this.hall = {
@@ -813,6 +575,373 @@
         }
     }
     var Main$1 = new Main();
+
+    class Friends2 extends Laya.Scene {
+        constructor() {
+            super(...arguments);
+            this.openedData = 1;
+        }
+        onAwake() {
+        }
+        onOpened(options) {
+            Main$1.$LOG('亲友圈二级页面所收到得值：', options);
+            this.openedData = options ? options : 1;
+            this.setTitle();
+        }
+        setTitle() {
+            this['title_1'].visible = this.openedData == 1 ? true : false;
+            this['title_2'].visible = this.openedData == 2 ? true : false;
+            this['title_3'].visible = this.openedData == 3 ? true : false;
+            this['view1'].visible = this.openedData == 1 ? true : false;
+            this['view2'].visible = this.openedData == 2 ? true : false;
+            this['view3'].visible = this.openedData == 3 ? true : false;
+        }
+        setUI() {
+        }
+    }
+
+    class SetSceneWH extends Laya.Script {
+        constructor() {
+            super();
+            this.intType = 1000;
+            this.numType = 1000;
+            this.strType = "hello laya";
+            this.boolType = true;
+        }
+        onEnable() {
+            this.setSceneWH();
+        }
+        setSceneWH() {
+            this.owner['width'] = Laya.stage.width;
+            this.owner['height'] = Laya.stage.height;
+        }
+    }
+
+    class Back extends Laya.Script {
+        constructor() {
+            super(...arguments);
+            this.backType = 0;
+            this.backMode = 0;
+            this.backScene = '';
+            this.backData = null;
+            this.removeNode = null;
+        }
+        initBack(backType, backMode, backScene, backData, node, updatePage) {
+            this.backType = backType ? backType : 0;
+            this.backMode = backMode ? backMode : 0;
+            this.backScene = backScene ? backScene : '';
+            this.backData = backData ? backData : null;
+            this.removeNode = node ? node : null;
+        }
+        onEnable() {
+            this.initBack();
+            this.bindEvent();
+        }
+        bindEvent() {
+            this.owner.on(Laya.Event.CLICK, this, this.back);
+        }
+        back() {
+            let thisScene = this.owner.scene;
+            let moveXY;
+            switch (this.backMode) {
+                case 0:
+                    moveXY = { x: Laya.stage.width };
+                    break;
+                case 1:
+                    moveXY = { x: -Laya.stage.width };
+                    break;
+                case 2:
+                    moveXY = { y: Laya.stage.height };
+                    break;
+            }
+            if (this.backType == 0) {
+                Laya.Tween.to(thisScene, moveXY, Main$1.Speed['changePage'], null, Laya.Handler.create(this, () => {
+                    thisScene.removeSelf();
+                }));
+            }
+            else if (this.backType == 1) {
+                Laya.Scene.open(this.backScene, false, this.backData, Laya.Handler.create(this, (res) => {
+                    Laya.Tween.to(thisScene, moveXY, Main$1.Speed['changePage'], null, Laya.Handler.create(this, () => {
+                        thisScene.removeSelf();
+                    }));
+                }));
+            }
+            if (this.removeNode) {
+                Laya.Browser.document.body.removeChild(this.removeNode);
+            }
+        }
+    }
+
+    class Friends2$1 extends Laya.Script {
+        onStart() {
+            this.setBack();
+            this.registerEvent();
+        }
+        setBack() {
+            let backJS = this.owner['back_btn'].getComponent(Back);
+            console.log(backJS);
+            backJS.initBack();
+        }
+        registerEvent() {
+            this.owner['tab_title']._children.forEach((item, index) => {
+                item.on(Laya.Event.CLICK, this, this.selectThisTab, [item, index + 1]);
+            });
+        }
+        reloadNavSelectZT() {
+            this.owner['v2_tab_select']._children.forEach((item, index) => {
+                item.visible = false;
+            });
+        }
+        selectThisTab(itemObj, pageNum) {
+            this.reloadNavSelectZT();
+            this.owner['v2_tab_select'].getChildByName('s' + pageNum).visible = true;
+        }
+    }
+
+    class setHd extends Laya.Script {
+        onEnable() {
+            console.log(this);
+        }
+    }
+
+    class MyCenter {
+        req(key, fn) {
+            this.keepList = [];
+            this.keepList = [{ key: key, fn: fn }];
+        }
+        send(key, val) {
+            this.keepList.forEach(item => {
+                if (key == item.key) {
+                    item.fn(val);
+                }
+            });
+        }
+        InitGameUIData(thisObj) {
+            this.GameUIObj = thisObj;
+        }
+        InitGameData(thisObj) {
+            this.GameControlObj = thisObj;
+        }
+    }
+    var MyCenter$1 = new MyCenter();
+
+    class NetClient extends Laya.Script{
+    	constructor(url){
+    		super();
+    		this.connectUrl = url;  //链接地址
+    		this.valid = false;
+    		this.connecting = false;
+    		this.socketOpen = false;
+    		this.socketMsgQueue = [];
+    		this.debug = false;
+    		this.intervalId = 0;
+    		this.RpcId = 100;
+    		this.RpcIdMap = new Map();
+
+    		console.log("【WebSocket】new NetClient() " + url);
+
+    		this.url = "ws://localhost:8989";
+    		//用于读取消息缓存数据
+    		this.byte = new Laya.Byte();
+    		//这里我们采用小端
+    		this.byte.endian = Laya.Byte.LITTLE_ENDIAN;
+    		this.socket = new Laya.Socket();
+    		//这里我们采用小端
+    		this.socket.endian = Laya.Byte.LITTLE_ENDIAN;
+
+    		//建立连接
+    		this.socket.on(Laya.Event.OPEN, this, this.openHandler);
+    		this.socket.on(Laya.Event.MESSAGE, this, this.receiveHandler);
+    		this.socket.on(Laya.Event.CLOSE, this, this.closeHandler);
+    		this.socket.on(Laya.Event.ERROR, this, this.errorHandler);
+
+    		//socket开始连接事件
+    		this.onStartConnect=function(){console.log("【WebSocket】开始连接");};
+    		//链接成功事件,此处可用来初始化数据
+    		this.onConnectSucc=function(){ console.log("【WebSocket】链接成功");};
+    		//接收消息封装,请外部自己实现
+    		this.onMessage=function(data){
+    			console.log("【WebSocket】收到消息(请自己实现消息处理)："+data);
+    		};
+    	}
+
+    	//正确建立连接
+    	openHandler(event){
+    		this.connecting = false;
+    		this.socketOpen = true;
+    		console.log('【WebSocket】连接已打开！');
+    		this.onConnectSucc();
+    		
+    		for (var i = 0; i < this.socketMsgQueue.length; i++) {
+    			this.sendBinary(this.socketMsgQueue[i]);
+    		}
+    		this.socketMsgQueue = [];		
+    	}
+     
+    	//关闭事件
+    	closeHandler(e){
+    		this.connecting = false;
+    		this.socketOpen = false;
+    		console.log('【WebSocket】已关闭！', e);
+    		this.socket.close();		
+    	}
+
+    	//连接出错
+    	errorHandler(e){
+    		this.connecting = false;
+    		this.socketOpen = false;
+    		console.log('【WebSocket】连接打开失败，请检查！' + e);
+    		this.socket.close();
+    	}
+     
+    	Log(msg){
+    		if(this.debug)
+    			console.log(msg);
+    	}
+    	//重连
+    	reconnect(){
+    		console.log("【WebSocket】开始重连");
+    		this.open();
+    	}
+
+    	getSocket() {
+    		if(!this.socketOpen && !this.connecting&&this.valid) { 
+    			this.socket.close();
+    			this.onStartConnect();
+    			this.connecting = true;
+    			this.socketOpen = false;
+
+    			console.log("【WebSocket】开始连接 ",this.connectUrl);
+    			this.socket.connectByUrl(this.connectUrl);
+    	 
+    			return null;
+    		}
+
+    		return this.socketOpen ? this.socket : null;
+    	}
+    	open(){
+    		this.close();
+    		
+    		this.valid = true;
+    		this.getSocket();
+    		this.intervalId = setInterval(()=>{
+    			//心跳
+    			this.sendHeart();
+    		},5000);
+    	}
+    	//发送心跳消息
+    	sendHeart()
+    	{
+    		var _socket = this.getSocket();
+    		if(_socket!=null)
+    		{
+    			this.byte.clear();
+    			this.byte.writeInt32(0);
+    			this.socket.send(this.byte.buffer);
+    		}
+    	}
+    	close() {
+    		this.valid = false;
+    		this.socket.close();
+    		clearInterval(this.intervalId);	
+    		
+    		console.log("【WebSocket】关闭连接" + this.connectUrl);
+    	}
+    	
+    	stringSource(s) {
+    		var i = 0;
+    		return function () {
+    			return i < s.length ? s.charCodeAt(i++) : null;
+    		};
+    	}
+    	
+    	send(msg){
+    		if(!this.valid) {
+    			console.log("【WebSocket】请先调用 open() 开启网络");
+    			return;
+    		}
+    		
+    		if(this.debug)
+    			console.log("【WebSocket】发送消息 " , msg);
+    		
+    		if( msg.callback != null)
+    		{
+    			msg.data.RpcId = ++this.RpcId;
+    			this.RpcIdMap.set(msg.data.RpcId,msg.callback);
+    			// console.log("注册RPC回调 ["+msg.data.RpcId+"][" +msg.name +"]" +msg.callback);
+    		}	
+
+    		this.byte.clear();
+    		this.byte.pos = 4;
+    		//1. 写协议名字（自动写入2字节头长度）
+    		this.byte.writeUTFString(msg.name);
+    		//2. 写协议内容（自动写入2字节头长度）
+    		this.byte.writeUTFString(JSON.stringify(msg.data));
+
+    		//0. 写协议总长度
+    		var len = this.byte.pos;
+    		this.byte.pos = 0;
+    		this.byte.writeInt32(len);
+
+    		// 发送二进制消息
+    		this.sendBinary(this.byte.buffer);
+    		// 清空数据,下次使用
+    		this.byte.clear();
+    	}
+     	
+    	//发送消息：协议名字,协议内容
+    	sendBinary(binaryMsg){
+    		var _socket = this.getSocket();
+    		if(_socket==null){
+    			this.socketMsgQueue.push(binaryMsg);
+    			return;
+    		}
+    		
+    		this.socket.send(binaryMsg);
+    	}
+
+    	receiveHandler(_msg){
+    		this.byte.clear();
+    		this.byte.writeArrayBuffer(_msg);
+    		this.byte.pos = 0;
+
+    		let msgLen = this.byte.getInt32();
+    		let protocolNameLen = this.byte.getUint8();
+     
+    		var tmpByte = new Laya.Byte();
+    		tmpByte.endian = Laya.Byte.LITTLE_ENDIAN;
+    		let offset = 4;
+    		let name;
+    		let msg;
+
+    		//协议名字
+    		{
+    			this.byte.pos = 4;
+    			name = this.byte.readUTFString();
+    		}
+
+    		//协议内容
+    		{
+    			let json = this.byte.readUTFString();
+    			msg = JSON.parse(json);
+    		}
+
+    		if(this.debug)
+    			console.log("收到消息: " , msg);
+
+    		if(msg.RpcId > 100 && this.RpcIdMap.has(msg.RpcId))
+    		{
+    			let call = this.RpcIdMap.get(msg.RpcId);
+    			if(call!=null)
+    				call(name,msg);
+    			this.RpcIdMap.delete(msg.RpcId);
+    			
+    			return;
+    		}
+    		else
+    			this.onMessage(name,msg);
+    	}
+    }
 
     class websketSend {
         constructor() {
@@ -3079,7 +3208,7 @@
         }
     }
 
-    class SetSceneWH extends Laya.Script {
+    class SetSceneWH$1 extends Laya.Script {
         constructor() {
             super();
             this.intType = 1000;
@@ -3427,78 +3556,6 @@
         }
     }
 
-    class SetSceneWH$1 extends Laya.Script {
-        constructor() {
-            super();
-            this.intType = 1000;
-            this.numType = 1000;
-            this.strType = "hello laya";
-            this.boolType = true;
-        }
-        onEnable() {
-            this.setSceneWH();
-        }
-        setSceneWH() {
-            this.owner['width'] = Laya.stage.width;
-            this.owner['height'] = Laya.stage.height;
-        }
-    }
-
-    class Back extends Laya.Script {
-        constructor() {
-            super(...arguments);
-            this.backType = 0;
-            this.backMode = 0;
-            this.backScene = '';
-            this.backData = null;
-            this.removeNode = null;
-        }
-        initBack(backType, backMode, backScene, backData, node, updatePage) {
-            this.backType = backType ? backType : 0;
-            this.backMode = backMode ? backMode : 0;
-            this.backScene = backScene ? backScene : '';
-            this.backData = backData ? backData : null;
-            this.removeNode = node ? node : null;
-        }
-        onEnable() {
-            this.initBack();
-            this.bindEvent();
-        }
-        bindEvent() {
-            this.owner.on(Laya.Event.CLICK, this, this.back);
-        }
-        back() {
-            let thisScene = this.owner.scene;
-            let moveXY;
-            switch (this.backMode) {
-                case 0:
-                    moveXY = { x: Laya.stage.width };
-                    break;
-                case 1:
-                    moveXY = { x: -Laya.stage.width };
-                    break;
-                case 2:
-                    moveXY = { y: Laya.stage.height };
-                    break;
-            }
-            if (this.backType == 0) {
-                Laya.Tween.to(thisScene, moveXY, Main$1.Speed['changePage'], null, Laya.Handler.create(this, () => {
-                    thisScene.removeSelf();
-                }));
-            }
-            else if (this.backType == 1) {
-                Laya.Scene.open(this.backScene, false, this.backData, Laya.Handler.create(this, (res) => {
-                    Laya.Tween.to(thisScene, moveXY, Main$1.Speed['changePage'], null, Laya.Handler.create(this, () => {
-                        thisScene.removeSelf();
-                    }));
-                }));
-            }
-            if (this.removeNode) {
-                Laya.Browser.document.body.removeChild(this.removeNode);
-            }
-        }
-    }
-
     class zhanji extends Laya.Script {
         onStart() {
             let that = this;
@@ -3709,12 +3766,6 @@
         }
         comfirmRegisterOrChange() {
             this._RegisterJS.comfirmRegisterOrChange();
-        }
-    }
-
-    class setHd extends Laya.Script {
-        onEnable() {
-            console.log(this);
         }
     }
 
@@ -3936,6 +3987,7 @@
             }
         }
         onLoading() {
+            this.addDiaLog();
             Main$1.beforeReloadResources(this, (res) => {
                 this.dealWithBeforeLoadScene(res);
             });
@@ -3944,6 +3996,9 @@
             Main$1.createTipBox();
             Main$1.createDiaLog();
             this.loadArrLength = Main$1.loadScene.length;
+        }
+        addDiaLog() {
+            Laya.stage.addChild(this.owner['diaLog']);
         }
         dealWithBeforeLoadScene(res) {
             let progress = this.owner['progressBg'].getChildByName('progress');
@@ -3956,6 +4011,130 @@
                 setTimeout(() => {
                     Laya.Scene.open('Login.scene', true);
                 }, 500);
+            }
+        }
+    }
+
+    class OutDiaLog extends Laya.Script {
+        constructor() {
+            super(...arguments);
+            this.maskAlpha = 0;
+        }
+        onAwake() {
+            console.log(this);
+            this.init1();
+        }
+        onStart() {
+        }
+        init1() {
+            this.owner['visible'] = false;
+            let mask = this.owner.getChildByName('diaLogMask');
+            mask.alpha = this.maskAlpha;
+            let pwdkeyboard = this.owner.getChildByName('pwdkeyboard');
+            pwdkeyboard.bottom = -pwdkeyboard.height;
+            this.registerEVENT('pwdkeyboard');
+        }
+        registerEVENT(nodeName) {
+            let mask = this.owner.getChildByName('diaLogMask');
+            mask.off(Laya.Event.CLICK);
+            mask.on(Laya.Event.CLICK, this, this.clickMask, [nodeName]);
+        }
+        clickMask(nodeName) {
+            switch (nodeName) {
+                case 'pwdkeyboard':
+                    let pwdkeyboard = this.owner.getChildByName('pwdkeyboard');
+                    this.moveCoomon(false, pwdkeyboard, 'bottom', -pwdkeyboard.height);
+                    break;
+            }
+        }
+        open1() {
+            this.owner['visible'] = true;
+            let pwdkeyboard = this.owner.getChildByName('pwdkeyboard');
+            this.moveCoomon(true, pwdkeyboard, 'bottom', 0);
+        }
+        moveCoomon(isOpen, moveNode, moveXYType, moveNum) {
+            let moveType;
+            switch (moveXYType) {
+                case 'x':
+                    moveType = { left: moveNum };
+                    break;
+                case 'bottom':
+                    moveType = { bottom: moveNum };
+                    break;
+            }
+            Laya.Tween.to(moveNode, moveType, Main$1.Speed['openDiaLogSpeed'], null, Laya.Handler.create(this, () => {
+                if (!isOpen)
+                    this.owner['visible'] = false;
+            }));
+        }
+    }
+
+    class PwdKeyBoard extends Laya.Script {
+        constructor() {
+            super(...arguments);
+            this.pwd = '';
+        }
+        init(that, fn) {
+            this.that = that;
+            this.callback = fn;
+            this.pwd = '';
+            this.showPwd();
+        }
+        onAwake() {
+            this.setKeyBoard();
+        }
+        setKeyBoard() {
+            let list = this.owner.getChildByName('keyboardView').getChildByName('list');
+            list.array = [
+                { id: 1, icon: 'res/img/keyBoard/1.png' },
+                { id: 2, icon: 'res/img/keyBoard/2.png' },
+                { id: 3, icon: 'res/img/keyBoard/3.png' },
+                { id: 4, icon: 'res/img/keyBoard/4.png' },
+                { id: 5, icon: 'res/img/keyBoard/5.png' },
+                { id: 6, icon: 'res/img/keyBoard/6.png' },
+                { id: 7, icon: 'res/img/keyBoard/7.png' },
+                { id: 8, icon: 'res/img/keyBoard/8.png' },
+                { id: 9, icon: 'res/img/keyBoard/9.png' },
+                { id: 10, icon: 'res/img/keyBoard/qc.png' },
+                { id: 0, icon: 'res/img/keyBoard/0.png' },
+                { id: 11, icon: 'res/img/keyBoard/return.png' },
+            ];
+            list.renderHandler = new Laya.Handler(this, this.listRender);
+            list.mouseHandler = new Laya.Handler(this, this.listClick);
+        }
+        listRender(cell, index) {
+            let text = cell.getChildByName('numBg').getChildByName('text');
+            text.skin = cell.dataSource.icon;
+        }
+        listClick(Event) {
+            if (Event.type == 'click') {
+                let clickId = Event.target.dataSource.id;
+                if (clickId != 10 && clickId != 11 && this.pwd.length < 6) {
+                    this.pwd += clickId;
+                    this.showPwd();
+                }
+                if (clickId == 10) {
+                    this.pwd = '';
+                    this.showPwd();
+                }
+                if (clickId == 11) {
+                    this.pwd = this.pwd.substr(0, this.pwd.length - 1);
+                    this.showPwd();
+                }
+            }
+        }
+        showPwd() {
+            let pwdView = this.owner.getChildByName('pwdView').getChildByName('box');
+            for (let i = 0; i < 6; i++) {
+                let pwdIcon = pwdView.getChildAt(i).getChildByName('pwd');
+                pwdIcon.visible = false;
+            }
+            for (let i = 0; i < this.pwd.length; i++) {
+                let pwdIcon = pwdView.getChildAt(i).getChildByName('pwd');
+                pwdIcon.visible = true;
+            }
+            if (this.callback && this.pwd.length >= 6) {
+                this.callback.call(this.that, this.pwd);
             }
         }
     }
@@ -4374,7 +4553,6 @@
             this.allowMoney = 0;
             this.isSetPwd = false;
             this.outType = 0;
-            this.outPwd = 111111;
         }
         onStart() {
         }
@@ -4496,19 +4674,25 @@
                 Main$1.showDiaLog('提现金额不能大于可用提现金额!');
                 return false;
             }
-            let data = {
-                uid: Main$1.userInfo.userId,
-                psw: this.outPwd,
-                money: outPrice,
-                type: this.outType,
-                username: name,
-                cardnumber: cardNum,
-                bankname: bankName
-            };
-            HttpReqContent.reqOutMoney(this, data, (res) => {
-                Main$1.$LOG('提现申请：', res);
-                Main$1.showDiaLog('提现申请成功!', 1, () => {
-                    this.setView2Data();
+            let diaLogJS = Laya.stage.getChildByName('diaLog').getComponent(OutDiaLog);
+            diaLogJS.open1();
+            let keyboardJS = Laya.stage.getChildByName('diaLog').getChildByName('pwdkeyboard').getComponent(PwdKeyBoard);
+            keyboardJS.init(this, (val) => {
+                let data = {
+                    uid: Main$1.userInfo.userId,
+                    psw: val,
+                    money: outPrice,
+                    type: this.outType,
+                    username: name,
+                    cardnumber: cardNum,
+                    bankname: bankName
+                };
+                HttpReqContent.reqOutMoney(this, data, (res) => {
+                    Main$1.$LOG('提现申请：', res);
+                    diaLogJS.clickMask('pwdkeyboard');
+                    Main$1.showDiaLog('提现申请成功!', 1, () => {
+                        this.setView2Data();
+                    });
                 });
             });
         }
@@ -4570,7 +4754,7 @@
                     c4.text = '申请中';
                     break;
                 case 1:
-                    c4.text = '申请中';
+                    c4.text = '审核中';
                     break;
                 case 2:
                     c4.text = '已提现';
@@ -4581,20 +4765,38 @@
 
     class Friends extends Laya.Script {
         onStart() {
+            this.initOpenView();
         }
         onAwake() {
+            this.registerEvent();
         }
         openThisPage() {
             if (this.owner['visible']) {
                 console.log('进来亲友圈friends', this);
             }
         }
+        initOpenView() {
+            let OpenViewJS1 = this.owner.scene.xq1.getComponent(openView);
+            OpenViewJS1.initOpen(0, 'Friends.scene', false, 1, 0);
+            let OpenViewJS2 = this.owner.scene.xq2.getComponent(openView);
+            OpenViewJS2.initOpen(0, 'Friends.scene', false, 2, 0);
+            let OpenViewJS3 = this.owner.scene.xq3.getComponent(openView);
+            OpenViewJS3.initOpen(0, 'Friends.scene', false, 3, 0);
+        }
+        registerEvent() {
+            this.owner.scene.tqhlBtn.on(Laya.Event.CLICK, this, this.tqhl);
+        }
+        tqhl() {
+            Main$1.showDiaLog('提取红利', 2, () => {
+                console.log('确认');
+            });
+        }
     }
 
     class TabPageUI extends Laya.Scene {
         onAwake() {
             this.registerEvent();
-            this.defaultPage = Main$1.pages.page4;
+            this.defaultPage = Main$1.pages.page3;
         }
         onOpened(options) {
             Main$1.$LOG('tab页面所收到的值：', options);
@@ -4653,8 +4855,13 @@
         }
         static init() {
             var reg = Laya.ClassUtils.regClass;
+            reg("game/pages/TabPages/Friends/Friends2/Friends2UI.ts", Friends2);
+            reg("game/common/SetSceneWH.ts", SetSceneWH);
+            reg("game/pages/TabPages/Friends/Friends2/Friends2.ts", Friends2$1);
+            reg("game/common/setHd.ts", setHd);
+            reg("game/common/Back.ts", Back);
             reg("game/GameCenter/GameUI.ts", GameUI);
-            reg("game/common/setSceneWH.ts", SetSceneWH);
+            reg("game/common/setSceneWH.ts", SetSceneWH$1);
             reg("game/GameCenter/GameControl.ts", GameControl);
             reg("game/common/openView.ts", openView);
             reg("game/GameCenter/seat.ts", seat);
@@ -4663,18 +4870,17 @@
             reg("game/common/SlideSelect.ts", SlideSelect);
             reg("game/common/MyClickSelect.ts", MyClickSelect);
             reg("game/pages/Login/LoginUI.ts", Login);
-            reg("game/common/SetSceneWH.ts", SetSceneWH$1);
             reg("game/pages/Login/Login.ts", login);
             reg("game/pages/shishizhanji/ZhanJiGet.ts", zhanji);
-            reg("game/common/Back.ts", Back);
             reg("game/pages/Register/RegisterUI.ts", RegisterUI$1);
             reg("game/pages/Register/Register.ts", RegisterUI);
-            reg("game/common/setHd.ts", setHd);
             reg("game/pages/Set/Set.ts", Set);
             reg("game/common/MySwitch.ts", MySwitch);
             reg("game/pages/Shop/ShopUI.ts", ShopUI);
             reg("game/pages/Shop/Shop.ts", Shop);
             reg("game/Fuction/Start.ts", sliderSelect);
+            reg("game/common/openOutDiaLog.ts", OutDiaLog);
+            reg("game/common/outPwdKeyBoard.ts", PwdKeyBoard);
             reg("game/pages/TabPages/TabPageUI.ts", TabPageUI);
             reg("game/pages/TabPages/Me/Me.ts", Me);
             reg("game/pages/TabPages/GameHall/GameHall.ts", GameHall);

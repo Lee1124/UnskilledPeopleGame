@@ -68,6 +68,7 @@ class Main {
         mePlay: 100,//‘我’出牌的速度
         otherPlay: 50,//‘其他’出牌的速度
         changePage: 200,//切换页面速度
+        openDiaLogSpeed:200//打开弹框的速度
     }
     //跳转划出界面标志
     sign: any = {
@@ -94,7 +95,7 @@ class Main {
         { id: 6, src: 'res/img/me/me_text6.png' }
     ]
     //预加载的场景
-    loadScene: any[] = ['Game.scene', 'TabPages.scene', 'Register.scene', 'Set.scene', 'Shop.scene', 'RealTimeResult.scene']
+    loadScene: any[] = ['Game.scene', 'TabPages.scene', 'Register.scene', 'Set.scene', 'Shop.scene', 'RealTimeResult.scene', 'Friends.scene']
     loadSceneResourcesArr: any[] = []
     openSceneViewArr: any[] = []
     //预加载指向

@@ -87,6 +87,7 @@ export default class sliderSelect extends Laya.Script {
     }
 
     onLoading() {
+        this.addDiaLog();
         Main.beforeReloadResources(this, (res:any) => {
             this.dealWithBeforeLoadScene(res);
         });
@@ -97,6 +98,13 @@ export default class sliderSelect extends Laya.Script {
         // Main.getStatusHeight();
         Main.createDiaLog();
         this.loadArrLength = Main.loadScene.length;
+    }
+
+    /**
+     * 向舞台中添加自制弹框
+     */
+    addDiaLog(){
+        Laya.stage.addChild(this.owner['diaLog']);
     }
 
     dealWithBeforeLoadScene(res:any) {

@@ -3,14 +3,14 @@
  */
 import Main from '../../../common/Main';
 import HTTP from '../../../common/HttpRequest';
+import OpenView from '../../../common/openView';
 export default class Friends extends Laya.Script {
     onStart(): void {
-
+        this.initOpenView();
     }
     onAwake(): void {
         // this.pageList = this.owner.scene.hall_list;
-        // this.registerEvent();
-     
+        this.registerEvent();
     }
     openThisPage() {
         if (this.owner['visible']) {
@@ -22,14 +22,35 @@ export default class Friends extends Laya.Script {
         }
     }
 
-    // /**
-    //  * 注册点击事件
-    //  */
-    // registerEvent() {
-    //     this.owner.scene.wallet_nav_bg._children.forEach((item: any, index: number) => {
-    //         item.on(Laya.Event.CLICK, this, this.selectThisTab, [item, index + 1])
-    //     });
-    // }
+    initOpenView(): void {
+        //我的玩家详情
+        let OpenViewJS1 = this.owner.scene.xq1.getComponent(OpenView);
+        OpenViewJS1.initOpen(0, 'Friends.scene', false, 1, 0);
+
+        //我的玩家详情
+        let OpenViewJS2 = this.owner.scene.xq2.getComponent(OpenView);
+        OpenViewJS2.initOpen(0, 'Friends.scene', false, 2, 0);
+
+        //我的玩家详情
+        let OpenViewJS3 = this.owner.scene.xq3.getComponent(OpenView);
+        OpenViewJS3.initOpen(0, 'Friends.scene', false, 3, 0);
+    }
+
+    /**
+     * 注册点击事件
+     */
+    registerEvent() {
+        this.owner.scene.tqhlBtn.on(Laya.Event.CLICK, this, this.tqhl)
+    }
+
+    /**
+     * 提取红利
+     */
+    tqhl():void{
+        Main.showDiaLog('提取红利',2,()=>{
+            console.log('确认')
+        });
+    }
 
     // /**
     //  * 重置选中状态

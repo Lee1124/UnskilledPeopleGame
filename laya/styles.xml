@@ -23,4 +23,7 @@
    <item name="images/Chat/textinput.png" type="TextInput" compress="0" pack="0" quality="80" props="sizeGrid=0,18,0,18" picType="0" scale="0"/>
    <item name="images/wallet/inputBox.png" type="Sprite" compress="0" pack="0" quality="80" props="sizeGrid=0,70,0,70" picType="0" scale="0"/>
    <item name="images/wallet/search_bg.png" type="Sprite" compress="0" pack="0" quality="80" props="sizeGrid=174,29,64,40" picType="0" scale="0"/>
+   <item name="images/friends/f_view.png" type="Sprite" compress="0" pack="0" quality="80" props="sizeGrid=50,44,50,46" picType="0" scale="0"/>
+   <item name="images/wallet/title_selected.png" type="Sprite" compress="0" pack="0" quality="80" props="sizeGrid=60,160,60,160" picType="0" scale="0"/>
+   <item name="images/other/jpbg.png" type="Sprite" compress="0" pack="0" quality="80" props="sizeGrid=30,60,30,60" picType="0" scale="0"/>
 </res>

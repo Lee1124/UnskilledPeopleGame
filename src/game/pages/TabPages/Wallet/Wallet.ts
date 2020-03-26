@@ -3,6 +3,8 @@
  */
 import Main from '../../../common/Main';
 import HttpReqContent from '../../../common/HttpReqContent';
+import openOutDiaLog from '../../../common/openOutDiaLog';
+import outPwdKeyBoard from '../../../common/outPwdKeyBoard';
 export default class Wallet extends Laya.Script {
     //选中的类型,默认充值
     private _selectNavType: number = 1;
@@ -12,8 +14,8 @@ export default class Wallet extends Laya.Script {
     private isSetPwd: boolean = false;
     //提现类型 0=银行卡 1=支付宝 2=微信
     private outType: number = 0;
-    //提现密码
-    private outPwd: number = 111111;
+    // //提现密码
+    // private outPwd: number = 111111;
     onStart(): void {
 
     }
@@ -169,19 +171,27 @@ export default class Wallet extends Laya.Script {
             Main.showDiaLog('提现金额不能大于可用提现金额!');
             return false;
         }
-        let data: any = {
-            uid: Main.userInfo.userId,
-            psw: this.outPwd,
-            money: outPrice,
-            type: this.outType,
-            username: name,
-            cardnumber: cardNum,
-            bankname: bankName
-        }
-        HttpReqContent.reqOutMoney(this, data, (res: any) => {
-            Main.$LOG('提现申请：', res);
-            Main.showDiaLog('提现申请成功!', 1, () => {
-                this.setView2Data();
+        
+
+        let diaLogJS: any = Laya.stage.getChildByName('diaLog').getComponent(openOutDiaLog);
+        diaLogJS.open1();
+        let keyboardJS = Laya.stage.getChildByName('diaLog').getChildByName('pwdkeyboard').getComponent(outPwdKeyBoard);
+        keyboardJS.init(this, (val: any) => {
+            let data: any = {
+                uid: Main.userInfo.userId,
+                psw: val,
+                money: outPrice,
+                type: this.outType,
+                username: name,
+                cardnumber: cardNum,
+                bankname: bankName
+            }
+            HttpReqContent.reqOutMoney(this, data, (res: any) => {
+                Main.$LOG('提现申请：', res);
+                diaLogJS.clickMask('pwdkeyboard');
+                Main.showDiaLog('提现申请成功!', 1, () => {
+                    this.setView2Data();
+                })
             })
         })
     }

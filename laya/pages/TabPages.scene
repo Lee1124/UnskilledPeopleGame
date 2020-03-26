@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":163,
-    "selecteID":232,
+    "selectedBox":316,
+    "selecteID":317,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/pages/TabPages/TabPageUI.ts","height":2208},
     "nodeParent":-1,
-    "maxID":254,
+    "maxID":324,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -284,13 +284,14 @@
                     "props":{"y":0,"x":0,"visible":false,"var":"MePage","top":0,"right":0,"name":"MePage","left":0,"bottom":0},
                     "nodeParent":6,
                     "label":"MePage",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":23,
                     "child":[
                         {
+                            "x":45,
                             "type":"Script",
                             "switchAble":true,
                             "source":"src/game/pages/TabPages/Me/Me.ts",
@@ -307,21 +308,23 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,list_bg,me_content",
-                            "props":{"var":"me_content","top":135,"skin":"images/common/bg2.png","right":50,"name":"list_bg","left":50,"height":1380},
+                            "props":{"var":"me_content","top":135,"skin":"images/common/bg2.png","right":50,"name":"list_bg","left":50,"height":1570},
                             "nodeParent":23,
                             "label":"list_bg",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":24,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,personal_information",
-                                    "props":{"y":50,"x":38,"width":1000,"top":50,"name":"personal_information","height":330,"centerX":0},
+                                    "props":{"width":1000,"top":40,"name":"personal_information","height":560,"centerX":0},
                                     "nodeParent":24,
                                     "label":"personal_information",
                                     "isOpen":true,
@@ -331,12 +334,13 @@
                                     "compId":25,
                                     "child":[
                                         {
+                                            "x":75,
                                             "type":"Image",
-                                            "searchKey":"Image,head,headView",
-                                            "props":{"width":327,"var":"headView","top":0,"skin":"images/common/headBox.png","name":"head","left":0,"height":327},
+                                            "searchKey":"Image,headBg,headView",
+                                            "props":{"width":294,"var":"headView","top":0,"skin":"images/common/headBox.png","name":"headBg","height":294,"centerX":0},
                                             "nodeParent":25,
-                                            "label":"head",
-                                            "isOpen":true,
+                                            "label":"headBg",
+                                            "isOpen":false,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
@@ -344,11 +348,11 @@
                                             "child":[
                                                 {
                                                     "type":"Image",
-                                                    "searchKey":"Image,headBg,headImg",
-                                                    "props":{"width":310,"var":"headImg","name":"headBg","height":310,"centerY":0,"centerX":0},
+                                                    "searchKey":"Image,head,headImg",
+                                                    "props":{"y":7,"x":7,"width":280,"var":"headImg","name":"head","height":280,"centerY":0,"centerX":0},
                                                     "nodeParent":26,
-                                                    "label":"headBg",
-                                                    "isOpen":true,
+                                                    "label":"head",
+                                                    "isOpen":false,
                                                     "isDirectory":true,
                                                     "isAniNode":true,
                                                     "hasChild":true,
@@ -357,10 +361,10 @@
                                                         {
                                                             "type":"Sprite",
                                                             "searchKey":"Sprite,headMask",
-                                                            "props":{"y":0,"x":0,"width":310,"renderType":"mask","name":"headMask","height":310},
+                                                            "props":{"y":0,"x":0,"width":280,"renderType":"mask","name":"headMask","height":280},
                                                             "nodeParent":132,
                                                             "label":"headMask",
-                                                            "isOpen":false,
+                                                            "isOpen":true,
                                                             "isDirectory":true,
                                                             "isAniNode":true,
                                                             "hasChild":true,
@@ -369,7 +373,7 @@
                                                                 {
                                                                     "type":"Circle",
                                                                     "searchKey":"Circle",
-                                                                    "props":{"y":155,"x":155,"radius":155,"lineWidth":0,"fillColor":"#ff0000"},
+                                                                    "props":{"y":140,"x":140,"radius":140,"lineWidth":0,"fillColor":"#ff0000"},
                                                                     "nodeParent":130,
                                                                     "label":"Circle",
                                                                     "isDirectory":false,
@@ -378,7 +382,8 @@
                                                                     "compId":131,
                                                                     "child":[
                                                                         ]
-                                                                }]
+                                                                }],
+                                                            "$HIDDEN":false
                                                         }]
                                                 },
                                                 {
@@ -411,124 +416,148 @@
                                                 }]
                                         },
                                         {
+                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,name",
-                                            "props":{"right":0,"name":"name","left":400,"height":60,"centerY":-90},
+                                            "props":{"top":319,"skin":"images/me/name_label.png","name":"name","left":250},
                                             "nodeParent":25,
                                             "label":"name",
-                                            "isOpen":false,
+                                            "isOpen":true,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
                                             "compId":31,
                                             "child":[
                                                 {
-                                                    "type":"Image",
-                                                    "searchKey":"Image,label",
-                                                    "props":{"top":0,"skin":"images/me/name_label.png","name":"label","left":0},
+                                                    "x":90,
+                                                    "type":"Label",
+                                                    "searchKey":"Label,text,userNameValue",
+                                                    "props":{"var":"userNameValue","text":"---","overflow":"hidden","name":"text","left":160,"height":60,"fontSize":58,"color":"#FFE68C","centerY":4},
                                                     "nodeParent":31,
-                                                    "label":"label",
-                                                    "isDirectory":false,
+                                                    "label":"text",
+                                                    "isOpen":true,
+                                                    "isDirectory":true,
                                                     "isAniNode":true,
-                                                    "hasChild":false,
-                                                    "compId":32,
-                                                    "child":[
-                                                        ]
-                                                },
-                                                {
-                                                    "type":"Text",
-                                                    "searchKey":"Text,nameValue,userNameValue",
-                                                    "props":{"y":0,"x":168,"width":554,"var":"userNameValue","text":"- - -","name":"nameValue","height":60,"fontSize":60,"color":"#FFE68C"},
-                                                    "nodeParent":31,
-                                                    "label":"nameValue",
-                                                    "isDirectory":false,
-                                                    "isAniNode":true,
-                                                    "hasChild":false,
+                                                    "hasChild":true,
                                                     "compId":33,
                                                     "child":[
-                                                        ]
+                                                        {
+                                                            "x":105,
+                                                            "type":"Image",
+                                                            "searchKey":"Image,editBtn",
+                                                            "props":{"width":100,"right":-110,"name":"editBtn","height":60,"centerY":0},
+                                                            "nodeParent":33,
+                                                            "label":"editBtn",
+                                                            "isOpen":false,
+                                                            "isDirectory":true,
+                                                            "isAniNode":true,
+                                                            "hasChild":true,
+                                                            "compId":321,
+                                                            "child":[
+                                                                {
+                                                                    "type":"Image",
+                                                                    "searchKey":"Image,icon",
+                                                                    "props":{"skin":"images/me/me_edit.png","name":"icon","centerY":0,"centerX":0},
+                                                                    "nodeParent":321,
+                                                                    "label":"icon",
+                                                                    "isDirectory":false,
+                                                                    "isAniNode":true,
+                                                                    "hasChild":false,
+                                                                    "compId":319,
+                                                                    "child":[
+                                                                        ],
+                                                                    "$HIDDEN":false
+                                                                }]
+                                                        }]
                                                 }]
                                         },
                                         {
+                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,ID",
-                                            "props":{"x":0,"right":0,"name":"ID","left":400,"height":60,"centerY":0},
+                                            "props":{"top":400,"skin":"images/me/id_label.png","name":"ID","left":250},
                                             "nodeParent":25,
                                             "label":"ID",
                                             "isOpen":false,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
-                                            "compId":34,
+                                            "compId":314,
                                             "child":[
                                                 {
-                                                    "type":"Image",
-                                                    "searchKey":"Image,label",
-                                                    "props":{"skin":"images/me/id_label.png","name":"label","left":0,"centerY":0},
-                                                    "nodeParent":34,
-                                                    "label":"label",
+                                                    "type":"Label",
+                                                    "searchKey":"Label,text,userIDValue",
+                                                    "props":{"width":220,"var":"userIDValue","text":"---","overflow":"hidden","name":"text","left":95,"height":60,"fontSize":60,"color":"#FFE68C","centerY":2},
+                                                    "nodeParent":314,
+                                                    "label":"text",
                                                     "isDirectory":false,
                                                     "isAniNode":true,
                                                     "hasChild":false,
-                                                    "compId":35,
-                                                    "child":[
-                                                        ]
-                                                },
-                                                {
-                                                    "type":"Text",
-                                                    "searchKey":"Text,IDValue,userIDValue",
-                                                    "props":{"y":0,"x":105,"width":615,"var":"userIDValue","text":"- - -","name":"IDValue","height":60,"fontSize":60,"color":"#FFE68C"},
-                                                    "nodeParent":34,
-                                                    "label":"IDValue",
-                                                    "isDirectory":false,
-                                                    "isAniNode":true,
-                                                    "hasChild":false,
-                                                    "compId":36,
+                                                    "compId":315,
                                                     "child":[
                                                         ]
                                                 }]
                                         },
                                         {
+                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,score",
-                                            "props":{"x":0,"right":0,"name":"score","left":400,"height":60,"centerY":90},
+                                            "props":{"top":460,"skin":"images/me/icon_label.png","name":"score","left":250},
                                             "nodeParent":25,
                                             "label":"score",
                                             "isOpen":true,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
-                                            "compId":37,
+                                            "compId":316,
                                             "child":[
                                                 {
-                                                    "type":"Image",
-                                                    "searchKey":"Image,icon",
-                                                    "props":{"x":0,"skin":"images/me/icon_label.png","name":"icon","centerY":0},
-                                                    "nodeParent":37,
-                                                    "label":"icon",
-                                                    "isDirectory":false,
+                                                    "x":90,
+                                                    "type":"Label",
+                                                    "searchKey":"Label,text,userScoreValue",
+                                                    "props":{"wordWrap":false,"var":"userScoreValue","text":"0","overflow":"hidden","name":"text","left":120,"height":60,"fontSize":60,"color":"#FFE68C","centerY":2},
+                                                    "nodeParent":316,
+                                                    "label":"text",
+                                                    "isOpen":true,
+                                                    "isDirectory":true,
                                                     "isAniNode":true,
-                                                    "hasChild":false,
-                                                    "compId":38,
+                                                    "hasChild":true,
+                                                    "compId":317,
                                                     "child":[
-                                                        ]
-                                                },
-                                                {
-                                                    "type":"Text",
-                                                    "searchKey":"Text,scoreValue,userScoreValue",
-                                                    "props":{"y":0,"x":150,"width":572,"var":"userScoreValue","text":"0","name":"scoreValue","height":60,"fontSize":60,"color":"#FFE68C"},
-                                                    "nodeParent":37,
-                                                    "label":"scoreValue",
-                                                    "isDirectory":false,
-                                                    "isAniNode":true,
-                                                    "hasChild":false,
-                                                    "compId":39,
-                                                    "child":[
-                                                        ]
+                                                        {
+                                                            "x":105,
+                                                            "type":"Image",
+                                                            "searchKey":"Image,addBtn",
+                                                            "props":{"y":0,"x":0,"width":100,"right":-110,"name":"addBtn","height":80,"centerY":0},
+                                                            "nodeParent":317,
+                                                            "label":"addBtn",
+                                                            "isOpen":true,
+                                                            "isDirectory":true,
+                                                            "isAniNode":true,
+                                                            "hasChild":true,
+                                                            "compId":322,
+                                                            "child":[
+                                                                {
+                                                                    "x":120,
+                                                                    "type":"Image",
+                                                                    "searchKey":"Image,icon",
+                                                                    "props":{"skin":"images/me/me_add.png","name":"icon","centerY":0,"centerX":0},
+                                                                    "nodeParent":322,
+                                                                    "label":"icon",
+                                                                    "isDirectory":false,
+                                                                    "isAniNode":true,
+                                                                    "hasChild":false,
+                                                                    "compId":323,
+                                                                    "child":[
+                                                                        ],
+                                                                    "$HIDDEN":false
+                                                                }]
+                                                        }]
                                                 }]
                                         }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,list_bg2",
                                     "props":{"width":1032,"skin":"images/me/bg.png","right":55,"name":"list_bg2","left":55,"height":900,"bottom":55},
@@ -594,7 +623,7 @@
                                         }]
                                 }]
                         }],
-                    "$HIDDEN":true
+                    "$HIDDEN":false
                 },
                 {
                     "x":30,
@@ -1496,8 +1525,10 @@
                                                                     "child":[
                                                                         ]
                                                                 }]
-                                                        }]
-                                                }]
+                                                        }],
+                                                    "$HIDDEN":true
+                                                }],
+                                            "$HIDDEN":false
                                         },
                                         {
                                             "type":"Image",
@@ -1525,14 +1556,13 @@
                     "props":{"var":"WalletPage","top":0,"right":0,"name":"WalletPage","left":0,"bottom":0},
                     "nodeParent":6,
                     "label":"WalletPage",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":134,
                     "child":[
                         {
-                            "x":45,
                             "type":"Script",
                             "switchAble":true,
                             "source":"src/game/pages/TabPages/Wallet/Wallet.ts",
@@ -1549,7 +1579,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,hd",
                             "props":{"y":0,"x":0,"top":0,"skin":"images/common/top.png","right":0.1,"name":"hd","left":0.1,"height":195},
@@ -1605,7 +1634,6 @@
                                 }]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,content",
                             "props":{"top":220,"right":0,"name":"content","left":0,"bottom":220},
@@ -1618,20 +1646,18 @@
                             "compId":141,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,nav_bg,wallet_nav_bg",
                                     "props":{"var":"wallet_nav_bg","top":0,"skin":"images/common/bg2.png","right":45,"name":"nav_bg","left":45,"height":165},
                                     "nodeParent":141,
                                     "label":"nav_bg",
-                                    "isOpen":true,
+                                    "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
                                     "compId":142,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,select_box1",
                                             "props":{"width":370,"name":"select_box1","left":22,"height":148,"centerY":-3},
@@ -1685,7 +1711,6 @@
                                                 }]
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,select_box2",
                                             "props":{"y":6,"x":391,"width":370,"name":"select_box2","height":148,"centerY":-3,"centerX":0},
@@ -1739,7 +1764,6 @@
                                                 }]
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,select_box3",
                                             "props":{"y":0,"width":370,"right":22,"name":"select_box3","height":148,"centerY":-3},
@@ -1794,7 +1818,6 @@
                                         }]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,view_bg,wallet_view_bg",
                                     "props":{"x":0,"var":"wallet_view_bg","top":175,"skin":"images/common/bg2.png","right":45,"name":"view_bg","left":45,"bottom":0},
@@ -1807,7 +1830,6 @@
                                     "compId":145,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,view1,wallets_view1",
                                             "props":{"var":"wallets_view1","top":50,"right":50,"name":"view1","left":50,"bottom":50},
@@ -1993,7 +2015,6 @@
                                             "$HIDDEN":true
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,view2,wallets_view2",
                                             "props":{"y":0,"x":0,"var":"wallets_view2","top":50,"right":50,"name":"view2","left":50,"bottom":50},
@@ -2439,7 +2460,6 @@
                                             "$HIDDEN":true
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,view3,wallets_view3",
                                             "props":{"y":0,"x":0,"var":"wallets_view3","top":50,"skin":"images/wallet/search_bg.png","right":50,"name":"view3","left":50,"bottom":50},
@@ -2452,7 +2472,6 @@
                                             "compId":163,
                                             "child":[
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,theadView",
                                                     "props":{"y":0,"width":1052,"right":0,"name":"theadView","left":0,"height":130},
@@ -2570,20 +2589,18 @@
                                                         }]
                                                 },
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,tbodyView",
                                                     "props":{"x":0,"width":1052,"top":140,"right":0,"name":"tbodyView","left":0,"height":130,"bottom":20},
                                                     "nodeParent":163,
                                                     "label":"tbodyView",
-                                                    "isOpen":true,
+                                                    "isOpen":false,
                                                     "isDirectory":true,
                                                     "isAniNode":true,
                                                     "hasChild":true,
                                                     "compId":232,
                                                     "child":[
                                                         {
-                                                            "x":105,
                                                             "type":"List",
                                                             "searchKey":"List,v3List",
                                                             "props":{"visible":false,"top":0,"right":0,"name":"v3List","left":0,"elasticEnabled":true,"bottom":0},
@@ -2596,7 +2613,6 @@
                                                             "compId":242,
                                                             "child":[
                                                                 {
-                                                                    "x":120,
                                                                     "type":"Box",
                                                                     "searchKey":"Box,v3Box",
                                                                     "props":{"y":0,"right":0,"renderType":"render","name":"v3Box","left":0,"height":100},
@@ -2609,7 +2625,6 @@
                                                                     "compId":243,
                                                                     "child":[
                                                                         {
-                                                                            "x":135,
                                                                             "type":"Label",
                                                                             "searchKey":"Label,c1",
                                                                             "props":{"width":263,"valign":"middle","top":0,"overflow":"hidden","name":"c1","fontSize":42,"color":"#FFFFFF","bottom":0,"align":"center"},
@@ -2623,7 +2638,6 @@
                                                                                 ]
                                                                         },
                                                                         {
-                                                                            "x":135,
                                                                             "type":"Label",
                                                                             "searchKey":"Label,c2",
                                                                             "props":{"width":263,"valign":"middle","top":0,"overflow":"hidden","name":"c2","left":263,"fontSize":42,"color":"#FFFFFF","bottom":0,"align":"center"},
@@ -2637,7 +2651,6 @@
                                                                                 ]
                                                                         },
                                                                         {
-                                                                            "x":135,
                                                                             "type":"Label",
                                                                             "searchKey":"Label,c3",
                                                                             "props":{"wordWrap":true,"width":263,"valign":"middle","top":0,"text":"2020/01/01 12:00:00","overflow":"hidden","name":"c3","left":526,"fontSize":42,"color":"#FFFFFF","bottom":0,"align":"center"},
@@ -2651,7 +2664,6 @@
                                                                                 ]
                                                                         },
                                                                         {
-                                                                            "x":135,
                                                                             "type":"Label",
                                                                             "searchKey":"Label,c4",
                                                                             "props":{"width":263,"valign":"middle","top":0,"overflow":"hidden","name":"c4","left":789,"fontSize":42,"color":"#FFFFFF","bottom":0,"align":"center"},
@@ -2686,6 +2698,22 @@
                     "hasChild":true,
                     "compId":248,
                     "child":[
+                        {
+                            "type":"Script",
+                            "switchAble":true,
+                            "source":"src/game/pages/TabPages/Friends/Friends.ts",
+                            "searchKey":"Script,Friends",
+                            "removeAble":true,
+                            "props":{"y":0,"x":0},
+                            "nodeParent":248,
+                            "label":"Friends",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":253,
+                            "child":[
+                                ]
+                        },
                         {
                             "type":"Image",
                             "searchKey":"Image,hd",
@@ -2729,7 +2757,7 @@
                                         {
                                             "type":"Image",
                                             "searchKey":"Image,title",
-                                            "props":{"skin":"images/common/title_wallet.png","name":"title","centerY":0,"centerX":0},
+                                            "props":{"skin":"images/common/title_friends.png","name":"title","centerY":0,"centerX":0},
                                             "nodeParent":251,
                                             "label":"title",
                                             "isDirectory":false,
@@ -2742,21 +2770,679 @@
                                 }]
                         },
                         {
-                            "type":"Script",
-                            "switchAble":true,
-                            "source":"src/game/pages/TabPages/Friends/Friends.ts",
-                            "searchKey":"Script,Friends",
-                            "removeAble":true,
-                            "props":{},
+                            "type":"Image",
+                            "searchKey":"Image,content",
+                            "props":{"top":240,"right":45,"name":"content","left":45,"bottom":300},
                             "nodeParent":248,
-                            "label":"Friends",
-                            "isDirectory":false,
+                            "label":"content",
+                            "isOpen":true,
+                            "isDirectory":true,
                             "isAniNode":true,
-                            "hasChild":false,
-                            "compId":253,
+                            "hasChild":true,
+                            "compId":254,
                             "child":[
-                                ]
-                        }]
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,f_view1",
+                                    "props":{"skin":"images/common/bg2.png","right":0,"name":"f_view1","left":0,"height":560},
+                                    "nodeParent":254,
+                                    "label":"f_view1",
+                                    "isOpen":false,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":255,
+                                    "child":[
+                                        {
+                                            "type":"Image",
+                                            "searchKey":"Image,viewBox",
+                                            "props":{"top":55,"skin":"images/friends/f_view.png","right":55,"name":"viewBox","left":55,"bottom":55},
+                                            "nodeParent":255,
+                                            "label":"viewBox",
+                                            "isOpen":true,
+                                            "isDirectory":true,
+                                            "isAniNode":true,
+                                            "hasChild":true,
+                                            "compId":262,
+                                            "child":[
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,title",
+                                                    "props":{"y":22,"skin":"images/friends/f_hlye.png","name":"title","centerX":0},
+                                                    "nodeParent":262,
+                                                    "label":"title",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":265,
+                                                    "child":[
+                                                        ],
+                                                    "$HIDDEN":false
+                                                },
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,hlsm",
+                                                    "props":{"top":18,"skin":"images/friends/f_hlsm.png","right":18,"name":"hlsm"},
+                                                    "nodeParent":262,
+                                                    "label":"hlsm",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":267,
+                                                    "child":[
+                                                        ]
+                                                },
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,hlShow",
+                                                    "props":{"width":720,"top":134,"name":"hlShow","height":90,"centerX":0},
+                                                    "nodeParent":262,
+                                                    "label":"hlShow",
+                                                    "isOpen":false,
+                                                    "isDirectory":true,
+                                                    "isAniNode":true,
+                                                    "hasChild":true,
+                                                    "compId":268,
+                                                    "child":[
+                                                        {
+                                                            "type":"Image",
+                                                            "searchKey":"Image,num0",
+                                                            "props":{"width":70,"top":0,"skin":"images/friends/f_gz.png","name":"num0","bottom":0},
+                                                            "nodeParent":268,
+                                                            "label":"num0",
+                                                            "isOpen":true,
+                                                            "isDirectory":true,
+                                                            "isAniNode":true,
+                                                            "hasChild":true,
+                                                            "compId":269,
+                                                            "child":[
+                                                                {
+                                                                    "type":"Label",
+                                                                    "searchKey":"Label,val",
+                                                                    "props":{"width":66,"valign":"middle","text":"0","name":"val","height":80,"fontSize":60,"color":"#ffffff","centerY":0,"centerX":0,"align":"center"},
+                                                                    "nodeParent":269,
+                                                                    "label":"val",
+                                                                    "isDirectory":false,
+                                                                    "isAniNode":true,
+                                                                    "hasChild":false,
+                                                                    "compId":270,
+                                                                    "child":[
+                                                                        ]
+                                                                }]
+                                                        },
+                                                        {
+                                                            "type":"Image",
+                                                            "searchKey":"Image,num1",
+                                                            "props":{"width":70,"top":0,"skin":"images/friends/f_gz.png","name":"num1","left":108,"bottom":0},
+                                                            "nodeParent":268,
+                                                            "label":"num1",
+                                                            "isOpen":true,
+                                                            "isDirectory":true,
+                                                            "isAniNode":true,
+                                                            "hasChild":true,
+                                                            "compId":271,
+                                                            "child":[
+                                                                {
+                                                                    "type":"Label",
+                                                                    "searchKey":"Label,val",
+                                                                    "props":{"width":66,"valign":"middle","text":"0","name":"val","height":80,"fontSize":60,"color":"#ffffff","centerY":0,"centerX":0,"align":"center"},
+                                                                    "nodeParent":271,
+                                                                    "label":"val",
+                                                                    "isDirectory":false,
+                                                                    "isAniNode":true,
+                                                                    "hasChild":false,
+                                                                    "compId":272,
+                                                                    "child":[
+                                                                        ]
+                                                                }]
+                                                        },
+                                                        {
+                                                            "type":"Image",
+                                                            "searchKey":"Image,num2",
+                                                            "props":{"width":70,"top":0,"skin":"images/friends/f_gz.png","name":"num2","left":216,"bottom":0},
+                                                            "nodeParent":268,
+                                                            "label":"num2",
+                                                            "isOpen":true,
+                                                            "isDirectory":true,
+                                                            "isAniNode":true,
+                                                            "hasChild":true,
+                                                            "compId":273,
+                                                            "child":[
+                                                                {
+                                                                    "type":"Label",
+                                                                    "searchKey":"Label,val",
+                                                                    "props":{"width":66,"valign":"middle","text":"0","name":"val","height":80,"fontSize":60,"color":"#ffffff","centerY":0,"centerX":0,"align":"center"},
+                                                                    "nodeParent":273,
+                                                                    "label":"val",
+                                                                    "isDirectory":false,
+                                                                    "isAniNode":true,
+                                                                    "hasChild":false,
+                                                                    "compId":274,
+                                                                    "child":[
+                                                                        ]
+                                                                }]
+                                                        },
+                                                        {
+                                                            "type":"Image",
+                                                            "searchKey":"Image,num3",
+                                                            "props":{"width":70,"top":0,"skin":"images/friends/f_gz.png","name":"num3","left":324,"bottom":0},
+                                                            "nodeParent":268,
+                                                            "label":"num3",
+                                                            "isOpen":true,
+                                                            "isDirectory":true,
+                                                            "isAniNode":true,
+                                                            "hasChild":true,
+                                                            "compId":275,
+                                                            "child":[
+                                                                {
+                                                                    "type":"Label",
+                                                                    "searchKey":"Label,val",
+                                                                    "props":{"width":66,"valign":"middle","text":"0","name":"val","height":80,"fontSize":60,"color":"#ffffff","centerY":0,"centerX":0,"align":"center"},
+                                                                    "nodeParent":275,
+                                                                    "label":"val",
+                                                                    "isDirectory":false,
+                                                                    "isAniNode":true,
+                                                                    "hasChild":false,
+                                                                    "compId":276,
+                                                                    "child":[
+                                                                        ]
+                                                                }]
+                                                        },
+                                                        {
+                                                            "type":"Image",
+                                                            "searchKey":"Image,num4",
+                                                            "props":{"width":70,"top":0,"skin":"images/friends/f_gz.png","name":"num4","left":432,"bottom":0},
+                                                            "nodeParent":268,
+                                                            "label":"num4",
+                                                            "isOpen":true,
+                                                            "isDirectory":true,
+                                                            "isAniNode":true,
+                                                            "hasChild":true,
+                                                            "compId":277,
+                                                            "child":[
+                                                                {
+                                                                    "type":"Label",
+                                                                    "searchKey":"Label,val",
+                                                                    "props":{"width":66,"valign":"middle","text":"0","name":"val","height":80,"fontSize":60,"color":"#ffffff","centerY":0,"centerX":0,"align":"center"},
+                                                                    "nodeParent":277,
+                                                                    "label":"val",
+                                                                    "isDirectory":false,
+                                                                    "isAniNode":true,
+                                                                    "hasChild":false,
+                                                                    "compId":278,
+                                                                    "child":[
+                                                                        ]
+                                                                }]
+                                                        },
+                                                        {
+                                                            "type":"Image",
+                                                            "searchKey":"Image,num5",
+                                                            "props":{"width":70,"top":0,"skin":"images/friends/f_gz.png","name":"num5","left":540,"bottom":0},
+                                                            "nodeParent":268,
+                                                            "label":"num5",
+                                                            "isOpen":true,
+                                                            "isDirectory":true,
+                                                            "isAniNode":true,
+                                                            "hasChild":true,
+                                                            "compId":279,
+                                                            "child":[
+                                                                {
+                                                                    "type":"Label",
+                                                                    "searchKey":"Label,val",
+                                                                    "props":{"width":66,"valign":"middle","text":"0","name":"val","height":80,"fontSize":60,"color":"#ffffff","centerY":0,"centerX":0,"align":"center"},
+                                                                    "nodeParent":279,
+                                                                    "label":"val",
+                                                                    "isDirectory":false,
+                                                                    "isAniNode":true,
+                                                                    "hasChild":false,
+                                                                    "compId":280,
+                                                                    "child":[
+                                                                        ]
+                                                                }]
+                                                        },
+                                                        {
+                                                            "type":"Image",
+                                                            "searchKey":"Image,num6",
+                                                            "props":{"width":70,"top":0,"skin":"images/friends/f_gz.png","name":"num6","left":648,"bottom":0},
+                                                            "nodeParent":268,
+                                                            "label":"num6",
+                                                            "isOpen":true,
+                                                            "isDirectory":true,
+                                                            "isAniNode":true,
+                                                            "hasChild":true,
+                                                            "compId":281,
+                                                            "child":[
+                                                                {
+                                                                    "type":"Label",
+                                                                    "searchKey":"Label,val",
+                                                                    "props":{"width":66,"valign":"middle","text":"0","name":"val","height":80,"fontSize":60,"color":"#ffffff","centerY":0,"centerX":0,"align":"center"},
+                                                                    "nodeParent":281,
+                                                                    "label":"val",
+                                                                    "isDirectory":false,
+                                                                    "isAniNode":true,
+                                                                    "hasChild":false,
+                                                                    "compId":282,
+                                                                    "child":[
+                                                                        ]
+                                                                }]
+                                                        }]
+                                                },
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,ljtx",
+                                                    "props":{"y":250,"x":161,"skin":"images/friends/f_ljtx.png","name":"ljtx"},
+                                                    "nodeParent":262,
+                                                    "label":"ljtx",
+                                                    "isOpen":false,
+                                                    "isDirectory":true,
+                                                    "isAniNode":true,
+                                                    "hasChild":true,
+                                                    "compId":283,
+                                                    "child":[
+                                                        {
+                                                            "type":"Label",
+                                                            "searchKey":"Label,val",
+                                                            "props":{"valign":"middle","text":"0","name":"val","left":150,"fontSize":40,"color":"#ffffff","centerY":3,"align":"center"},
+                                                            "nodeParent":283,
+                                                            "label":"val",
+                                                            "isDirectory":false,
+                                                            "isAniNode":true,
+                                                            "hasChild":false,
+                                                            "compId":285,
+                                                            "child":[
+                                                                ]
+                                                        }]
+                                                },
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,tqhlBtn,tqhlBtn",
+                                                    "props":{"y":307,"var":"tqhlBtn","skin":"images/friends/f_tqhlBtn.png","name":"tqhlBtn","centerX":0},
+                                                    "nodeParent":262,
+                                                    "label":"tqhlBtn",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":286,
+                                                    "child":[
+                                                        ]
+                                                }]
+                                        }]
+                                },
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,f_view2",
+                                    "props":{"top":571,"skin":"images/common/bg2.png","right":0,"name":"f_view2","left":0,"bottom":0},
+                                    "nodeParent":254,
+                                    "label":"f_view2",
+                                    "isOpen":true,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":257,
+                                    "child":[
+                                        {
+                                            "type":"Image",
+                                            "searchKey":"Image,v2_box1",
+                                            "props":{"y":0,"x":0,"top":55,"skin":"images/friends/f_view.png","right":55,"name":"v2_box1","left":55,"height":300},
+                                            "nodeParent":257,
+                                            "label":"v2_box1",
+                                            "isOpen":true,
+                                            "isDirectory":true,
+                                            "isAniNode":true,
+                                            "hasChild":true,
+                                            "compId":264,
+                                            "child":[
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,title",
+                                                    "props":{"top":30,"skin":"images/friends/f_wdwj.png","name":"title","left":64},
+                                                    "nodeParent":264,
+                                                    "label":"title",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":288,
+                                                    "child":[
+                                                        ]
+                                                },
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,xqBtn,xq1",
+                                                    "props":{"width":180,"var":"xq1","top":0,"right":0,"name":"xqBtn","height":120},
+                                                    "nodeParent":264,
+                                                    "label":"xqBtn",
+                                                    "isOpen":true,
+                                                    "isDirectory":true,
+                                                    "isAniNode":true,
+                                                    "hasChild":true,
+                                                    "compId":289,
+                                                    "child":[
+                                                        {
+                                                            "type":"Image",
+                                                            "searchKey":"Image,text",
+                                                            "props":{"top":20,"skin":"images/friends/f_xqBtn.png","name":"text","centerX":0},
+                                                            "nodeParent":289,
+                                                            "label":"text",
+                                                            "isDirectory":false,
+                                                            "isAniNode":true,
+                                                            "hasChild":false,
+                                                            "compId":290,
+                                                            "child":[
+                                                                ]
+                                                        },
+                                                        {
+                                                            "type":"Script",
+                                                            "switchAble":true,
+                                                            "source":"src/game/common/openView.ts",
+                                                            "searchKey":"Script,openView",
+                                                            "removeAble":true,
+                                                            "props":{},
+                                                            "nodeParent":289,
+                                                            "label":"openView",
+                                                            "isDirectory":false,
+                                                            "isAniNode":true,
+                                                            "hasChild":false,
+                                                            "compId":311,
+                                                            "child":[
+                                                                ]
+                                                        }]
+                                                },
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,zs",
+                                                    "props":{"x":64,"skin":"images/friends/f_zs.png","name":"zs","bottom":50},
+                                                    "nodeParent":264,
+                                                    "label":"zs",
+                                                    "isOpen":false,
+                                                    "isDirectory":true,
+                                                    "isAniNode":true,
+                                                    "hasChild":true,
+                                                    "compId":291,
+                                                    "child":[
+                                                        {
+                                                            "type":"Label",
+                                                            "searchKey":"Label,val",
+                                                            "props":{"y":0,"text":"0","name":"val","left":130,"fontSize":54,"color":"#C1AC41","bold":false},
+                                                            "nodeParent":291,
+                                                            "label":"val",
+                                                            "isDirectory":false,
+                                                            "isAniNode":true,
+                                                            "hasChild":false,
+                                                            "compId":293,
+                                                            "child":[
+                                                                ]
+                                                        }]
+                                                },
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,jrxz",
+                                                    "props":{"x":560,"skin":"images/friends/f_jrxz.png","name":"jrxz","bottom":50},
+                                                    "nodeParent":264,
+                                                    "label":"jrxz",
+                                                    "isOpen":false,
+                                                    "isDirectory":true,
+                                                    "isAniNode":true,
+                                                    "hasChild":true,
+                                                    "compId":292,
+                                                    "child":[
+                                                        {
+                                                            "type":"Label",
+                                                            "searchKey":"Label,val",
+                                                            "props":{"y":0,"text":"0","name":"val","left":225,"fontSize":54,"color":"#C1AC41","bold":false},
+                                                            "nodeParent":292,
+                                                            "label":"val",
+                                                            "isDirectory":false,
+                                                            "isAniNode":true,
+                                                            "hasChild":false,
+                                                            "compId":294,
+                                                            "child":[
+                                                                ]
+                                                        }]
+                                                }]
+                                        },
+                                        {
+                                            "type":"Image",
+                                            "searchKey":"Image,v2_box2",
+                                            "props":{"x":0,"top":395,"skin":"images/friends/f_view.png","right":55,"name":"v2_box2","left":55,"height":300},
+                                            "nodeParent":257,
+                                            "label":"v2_box2",
+                                            "isOpen":true,
+                                            "isDirectory":true,
+                                            "isAniNode":true,
+                                            "hasChild":true,
+                                            "compId":295,
+                                            "child":[
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,title",
+                                                    "props":{"top":30,"skin":"images/friends/f_wdsy.png","name":"title","left":64},
+                                                    "nodeParent":295,
+                                                    "label":"title",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":296,
+                                                    "child":[
+                                                        ]
+                                                },
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,xqBtn,xq2",
+                                                    "props":{"x":900,"width":180,"var":"xq2","top":0,"right":0,"name":"xqBtn","height":120},
+                                                    "nodeParent":295,
+                                                    "label":"xqBtn",
+                                                    "isOpen":true,
+                                                    "isDirectory":true,
+                                                    "isAniNode":true,
+                                                    "hasChild":true,
+                                                    "compId":297,
+                                                    "child":[
+                                                        {
+                                                            "type":"Image",
+                                                            "searchKey":"Image,text",
+                                                            "props":{"top":20,"skin":"images/friends/f_xqBtn.png","name":"text","centerX":0},
+                                                            "nodeParent":297,
+                                                            "label":"text",
+                                                            "isDirectory":false,
+                                                            "isAniNode":true,
+                                                            "hasChild":false,
+                                                            "compId":298,
+                                                            "child":[
+                                                                ]
+                                                        },
+                                                        {
+                                                            "type":"Script",
+                                                            "switchAble":true,
+                                                            "source":"src/game/common/openView.ts",
+                                                            "searchKey":"Script,openView",
+                                                            "removeAble":true,
+                                                            "props":{},
+                                                            "nodeParent":297,
+                                                            "label":"openView",
+                                                            "isDirectory":false,
+                                                            "isAniNode":true,
+                                                            "hasChild":false,
+                                                            "compId":312,
+                                                            "child":[
+                                                                ]
+                                                        }]
+                                                },
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,ljsy",
+                                                    "props":{"x":64,"skin":"images/friends/f_ljsy.png","name":"ljsy","bottom":50},
+                                                    "nodeParent":295,
+                                                    "label":"ljsy",
+                                                    "isOpen":true,
+                                                    "isDirectory":true,
+                                                    "isAniNode":true,
+                                                    "hasChild":true,
+                                                    "compId":299,
+                                                    "child":[
+                                                        {
+                                                            "type":"Label",
+                                                            "searchKey":"Label,val",
+                                                            "props":{"y":0,"text":"0","name":"val","left":225,"fontSize":54,"color":"#C1AC41","bold":false},
+                                                            "nodeParent":299,
+                                                            "label":"val",
+                                                            "isDirectory":false,
+                                                            "isAniNode":true,
+                                                            "hasChild":false,
+                                                            "compId":300,
+                                                            "child":[
+                                                                ]
+                                                        }]
+                                                },
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,jrxz",
+                                                    "props":{"x":560,"skin":"images/friends/f_jrxz.png","name":"jrxz","bottom":50},
+                                                    "nodeParent":295,
+                                                    "label":"jrxz",
+                                                    "isOpen":true,
+                                                    "isDirectory":true,
+                                                    "isAniNode":true,
+                                                    "hasChild":true,
+                                                    "compId":301,
+                                                    "child":[
+                                                        {
+                                                            "type":"Label",
+                                                            "searchKey":"Label,val",
+                                                            "props":{"y":0,"text":"0","name":"val","left":225,"fontSize":54,"color":"#C1AC41","bold":false},
+                                                            "nodeParent":301,
+                                                            "label":"val",
+                                                            "isDirectory":false,
+                                                            "isAniNode":true,
+                                                            "hasChild":false,
+                                                            "compId":302,
+                                                            "child":[
+                                                                ]
+                                                        }]
+                                                }]
+                                        },
+                                        {
+                                            "type":"Image",
+                                            "searchKey":"Image,v2_box3",
+                                            "props":{"x":0,"top":735,"skin":"images/friends/f_view.png","right":55,"name":"v2_box3","left":55,"height":300},
+                                            "nodeParent":257,
+                                            "label":"v2_box3",
+                                            "isOpen":true,
+                                            "isDirectory":true,
+                                            "isAniNode":true,
+                                            "hasChild":true,
+                                            "compId":303,
+                                            "child":[
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,title",
+                                                    "props":{"top":30,"skin":"images/friends/f_hljl.png","name":"title","left":64},
+                                                    "nodeParent":303,
+                                                    "label":"title",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":304,
+                                                    "child":[
+                                                        ]
+                                                },
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,xqBtn,xq3",
+                                                    "props":{"x":900,"width":180,"var":"xq3","top":0,"right":0,"name":"xqBtn","height":120},
+                                                    "nodeParent":303,
+                                                    "label":"xqBtn",
+                                                    "isOpen":true,
+                                                    "isDirectory":true,
+                                                    "isAniNode":true,
+                                                    "hasChild":true,
+                                                    "compId":305,
+                                                    "child":[
+                                                        {
+                                                            "type":"Image",
+                                                            "searchKey":"Image,text",
+                                                            "props":{"top":20,"skin":"images/friends/f_xqBtn.png","name":"text","centerX":0},
+                                                            "nodeParent":305,
+                                                            "label":"text",
+                                                            "isDirectory":false,
+                                                            "isAniNode":true,
+                                                            "hasChild":false,
+                                                            "compId":306,
+                                                            "child":[
+                                                                ]
+                                                        },
+                                                        {
+                                                            "type":"Script",
+                                                            "switchAble":true,
+                                                            "source":"src/game/common/openView.ts",
+                                                            "searchKey":"Script,openView",
+                                                            "removeAble":true,
+                                                            "props":{},
+                                                            "nodeParent":305,
+                                                            "label":"openView",
+                                                            "isDirectory":false,
+                                                            "isAniNode":true,
+                                                            "hasChild":false,
+                                                            "compId":313,
+                                                            "child":[
+                                                                ]
+                                                        }]
+                                                },
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,sqzje",
+                                                    "props":{"x":64,"skin":"images/friends/f_sqzsy.png","name":"sqzje","bottom":50},
+                                                    "nodeParent":303,
+                                                    "label":"sqzje",
+                                                    "isOpen":true,
+                                                    "isDirectory":true,
+                                                    "isAniNode":true,
+                                                    "hasChild":true,
+                                                    "compId":307,
+                                                    "child":[
+                                                        {
+                                                            "type":"Label",
+                                                            "searchKey":"Label,val",
+                                                            "props":{"y":0,"text":"0","name":"val","left":285,"fontSize":54,"color":"#C1AC41","bold":false},
+                                                            "nodeParent":307,
+                                                            "label":"val",
+                                                            "isDirectory":false,
+                                                            "isAniNode":true,
+                                                            "hasChild":false,
+                                                            "compId":308,
+                                                            "child":[
+                                                                ]
+                                                        }]
+                                                },
+                                                {
+                                                    "type":"Image",
+                                                    "searchKey":"Image,sbje",
+                                                    "props":{"x":560,"skin":"images/friends/f_sbje.png","name":"sbje","bottom":50},
+                                                    "nodeParent":303,
+                                                    "label":"sbje",
+                                                    "isOpen":true,
+                                                    "isDirectory":true,
+                                                    "isAniNode":true,
+                                                    "hasChild":true,
+                                                    "compId":309,
+                                                    "child":[
+                                                        {
+                                                            "type":"Label",
+                                                            "searchKey":"Label,val",
+                                                            "props":{"y":0,"text":"0","name":"val","left":225,"fontSize":54,"color":"#C1AC41","bold":false},
+                                                            "nodeParent":309,
+                                                            "label":"val",
+                                                            "isDirectory":false,
+                                                            "isAniNode":true,
+                                                            "hasChild":false,
+                                                            "compId":310,
+                                                            "child":[
+                                                                ]
+                                                        }]
+                                                }]
+                                        }]
+                                }]
+                        }],
+                    "$HIDDEN":true
                 }]
         }],
     "animations":[

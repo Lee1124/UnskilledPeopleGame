@@ -52,12 +52,30 @@ P 00481823 tab_notice.png
 P 5D6928D8 text_register.png
 P 3DAFB2BD textinput.png
 P AE2A4A1A title_change.png
+P F1584604 title_friends.png
 P 0EDDF982 title_hall.png
 P 70995EAA title_notice.png
 P A5E1E804 title_set.png
 P A6FB34FB title_shop.png
 P E9F2A5D6 title_wallet.png
 R E6EBA664 top.png
+D images/friends
+P 0B879B99 f_gz.png
+P 29368A1F f_hljl.png
+P A9D4C8AC f_hlsm.png
+P 0D598924 f_hlye.png
+P B1C425A1 f_jrxz.png
+P A5D3386C f_ljsy.png
+P 243BB9EC f_ljtx.png
+P 65A075FC f_sbje.png
+P 755927FE f_sqzsy.png
+P E8BD457C f_tqhlBtn.png
+P 05FEB862 f_view.png
+P 362CA525 f_wdsy.png
+P 42A88F94 f_wdwj.png
+P F060EC3C f_xqBtn.png
+P A4CC6188 f_zs.png
+P F1584604 title_friends.png
 D images/game
 S 5210B1C1 deskBg.jpg
 P 4102CD84 icon_chat.png
@@ -116,10 +134,19 @@ R 41790D6F bobo_tiao.png
 P D80DF0AE bobo_title.png
 D images/me
 P 012BD0A1 bg.png
-P D67AF844 icon_label.png
+P 1CAE3DD6 icon_label.png
 P 8C5A086B id_label.png
+P A7ECE59F me_add.png
+P 920315D5 me_edit.png
 P 93DD7863 me_text1.png
 P 5B4606F5 name_label.png
+D images/other
+P 749C1399 fgline.png
+P 1D0FCA36 jpbg.png
+P F5B10612 numBg.png
+P 4C1C180A pwd.png
+P EE523248 pwdBg.png
+P D6E33B9D tip.png
 D images/poker
 P 76153516 -1.png
 D images/register
@@ -174,6 +201,30 @@ P 1265943B title_1.png
 P 4B1F5A9E title_2.png
 P 134149A4 title_3.png
 P 23C0998C title_selected.png
+D images/friends/friends_view2
+P 4406BDCE bdsj.png
+P 43C1B5B7 dlzt.png
+P 59E28836 dqrs.png
+P 550DE115 ejsy.png
+P AF0CB13E hltxjl.png
+P 327D2BAA hlye.png
+P 5CBC8FF2 id.png
+P CF554249 jrgx.png
+P E4922104 jrxzwj.png
+P 8382D9F7 ljgx.png
+P 426F04D1 ljzgx.png
+P 6AFA28B9 name.png
+P 82F7BC38 nc.png
+P 8CFD67E3 nmqwj.png
+P 20CCAE98 sj.png
+P 9937BAB0 sjwjID.png
+P 167C8580 time.png
+P 4735A840 wdsy.png
+P FE1B614B wdwj.png
+P 8E21DE26 wjjrgx.png
+P C29B3D95 yj.png
+P 1EED5C71 zss.png
+P 142E2781 zt.png
 D images/GIF/expression
 P 737504E6 0_0.png
 P 7C2642E7 0_1.png
