@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":316,
-    "selecteID":317,
+    "selectedBox":317,
+    "selecteID":322,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/pages/TabPages/TabPageUI.ts","height":2208},
     "nodeParent":-1,
-    "maxID":324,
+    "maxID":338,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -52,20 +52,19 @@
             "props":{"zOrder":2,"y":0,"x":0,"var":"tabNav","skin":"images/common/bottom.png","right":0,"name":"tabNav","left":0,"bottom":0},
             "nodeParent":2,
             "label":"tabNav",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":5,
             "child":[
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,NoticePage,tab_notice",
                     "props":{"width":220,"var":"tab_notice","top":0,"name":"NoticePage","height":147,"centerX":-440},
                     "nodeParent":5,
                     "label":"NoticePage",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
@@ -73,17 +72,17 @@
                     "child":[
                         {
                             "type":"Image",
-                            "searchKey":"Image,icon0,notice",
-                            "props":{"y":49,"visible":false,"var":"notice","skin":"images/common/tab_1.png","name":"icon0","centerY":0,"centerX":0},
+                            "searchKey":"Image,icon0",
+                            "props":{"y":-47,"visible":false,"skin":"images/common/faguang.png","scaleY":0.9,"scaleX":0.9,"name":"icon0","centerY":-8,"centerX":0},
                             "nodeParent":8,
                             "label":"icon0",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
-                            "compId":9,
+                            "compId":337,
                             "child":[
                                 ],
-                            "$HIDDEN":true
+                            "$HIDDEN":false
                         },
                         {
                             "type":"Image",
@@ -100,13 +99,12 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,FriendsPage,tab_friends",
                     "props":{"width":220,"var":"tab_friends","top":0,"name":"FriendsPage","height":147,"centerX":-220},
                     "nodeParent":5,
                     "label":"FriendsPage",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
@@ -115,16 +113,16 @@
                         {
                             "type":"Image",
                             "searchKey":"Image,icon0",
-                            "props":{"y":49,"x":0,"visible":false,"skin":"images/common/tab_2.png","name":"icon0","centerY":0,"centerX":0},
+                            "props":{"y":-47,"visible":false,"skin":"images/common/faguang.png","scaleY":0.9,"scaleX":0.9,"name":"icon0","centerY":-8,"centerX":0},
                             "nodeParent":11,
                             "label":"icon0",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
-                            "compId":12,
+                            "compId":336,
                             "child":[
                                 ],
-                            "$HIDDEN":true
+                            "$HIDDEN":false
                         },
                         {
                             "type":"Image",
@@ -141,13 +139,12 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,HallPage,tab_hall",
-                    "props":{"y":0,"width":220,"var":"tab_hall","top":0,"name":"HallPage","height":147,"centerX":0},
+                    "props":{"width":220,"var":"tab_hall","top":0,"name":"HallPage","height":147,"centerX":0},
                     "nodeParent":5,
                     "label":"HallPage",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
@@ -156,16 +153,16 @@
                         {
                             "type":"Image",
                             "searchKey":"Image,icon0",
-                            "props":{"y":49,"x":0,"visible":false,"skin":"images/common/tab_3.png","name":"icon0","centerY":0,"centerX":0},
+                            "props":{"y":-47,"visible":false,"skin":"images/common/faguang.png","scaleY":0.9,"scaleX":0.9,"name":"icon0","centerY":-8,"centerX":0},
                             "nodeParent":14,
                             "label":"icon0",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
-                            "compId":15,
+                            "compId":335,
                             "child":[
                                 ],
-                            "$HIDDEN":true
+                            "$HIDDEN":false
                         },
                         {
                             "type":"Image",
@@ -182,13 +179,12 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,WalletPage,tab_data",
                     "props":{"width":220,"var":"tab_data","top":0,"name":"WalletPage","height":147,"centerX":220},
                     "nodeParent":5,
                     "label":"WalletPage",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
@@ -197,16 +193,16 @@
                         {
                             "type":"Image",
                             "searchKey":"Image,icon0",
-                            "props":{"y":49,"x":0,"visible":false,"skin":"images/common/tab_4.png","name":"icon0","centerY":0,"centerX":0},
+                            "props":{"y":-47,"visible":false,"skin":"images/common/faguang.png","scaleY":0.9,"scaleX":0.9,"name":"icon0","centerY":-8,"centerX":0},
                             "nodeParent":17,
                             "label":"icon0",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
-                            "compId":18,
+                            "compId":334,
                             "child":[
                                 ],
-                            "$HIDDEN":true
+                            "$HIDDEN":false
                         },
                         {
                             "type":"Image",
@@ -223,13 +219,12 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,MePage,tab_me",
                     "props":{"width":220,"var":"tab_me","top":0,"name":"MePage","height":147,"centerX":440},
                     "nodeParent":5,
                     "label":"MePage",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
@@ -238,16 +233,16 @@
                         {
                             "type":"Image",
                             "searchKey":"Image,icon0",
-                            "props":{"y":49,"x":0,"visible":false,"skin":"images/common/tab_5.png","name":"icon0","centerY":0,"centerX":0},
+                            "props":{"visible":false,"skin":"images/common/faguang.png","scaleY":0.9,"scaleX":0.9,"name":"icon0","centerY":-8,"centerX":0},
                             "nodeParent":20,
                             "label":"icon0",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
-                            "compId":21,
+                            "compId":333,
                             "child":[
                                 ],
-                            "$HIDDEN":true
+                            "$HIDDEN":false
                         },
                         {
                             "type":"Image",
@@ -444,8 +439,8 @@
                                                         {
                                                             "x":105,
                                                             "type":"Image",
-                                                            "searchKey":"Image,editBtn",
-                                                            "props":{"width":100,"right":-110,"name":"editBtn","height":60,"centerY":0},
+                                                            "searchKey":"Image,editBtn,me_editBtn",
+                                                            "props":{"width":100,"var":"me_editBtn","right":-110,"name":"editBtn","height":60,"centerY":0},
                                                             "nodeParent":33,
                                                             "label":"editBtn",
                                                             "isOpen":false,
@@ -467,6 +462,22 @@
                                                                     "child":[
                                                                         ],
                                                                     "$HIDDEN":false
+                                                                },
+                                                                {
+                                                                    "type":"Script",
+                                                                    "switchAble":true,
+                                                                    "source":"src/game/common/openView.ts",
+                                                                    "searchKey":"Script,openView",
+                                                                    "removeAble":true,
+                                                                    "props":{},
+                                                                    "nodeParent":321,
+                                                                    "label":"openView",
+                                                                    "isDirectory":false,
+                                                                    "isAniNode":true,
+                                                                    "hasChild":false,
+                                                                    "compId":324,
+                                                                    "child":[
+                                                                        ]
                                                                 }]
                                                         }]
                                                 }]
@@ -527,8 +538,8 @@
                                                         {
                                                             "x":105,
                                                             "type":"Image",
-                                                            "searchKey":"Image,addBtn",
-                                                            "props":{"y":0,"x":0,"width":100,"right":-110,"name":"addBtn","height":80,"centerY":0},
+                                                            "searchKey":"Image,addBtn,addCoinBtn",
+                                                            "props":{"y":0,"x":0,"width":100,"var":"addCoinBtn","right":-110,"name":"addBtn","height":80,"centerY":0},
                                                             "nodeParent":317,
                                                             "label":"addBtn",
                                                             "isOpen":true,

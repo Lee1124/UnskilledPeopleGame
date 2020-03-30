@@ -95,7 +95,10 @@ class Main {
         { id: 6, src: 'res/img/me/me_text6.png' }
     ]
     //预加载的场景
-    loadScene: any[] = ['Game.scene', 'TabPages.scene', 'Register.scene', 'Set.scene', 'Shop.scene', 'RealTimeResult.scene', 'Friends.scene']
+    loadScene: any[] = ['Game.scene', 'TabPages.scene', 'Register.scene', 'Set.scene', 
+    'CoinRecord.scene', 'RealTimeResult.scene', 'Friends.scene','EditUserNews.scene',
+    'Record.scene','Share.scene','GiftRecord.scene'
+    ]
     loadSceneResourcesArr: any[] = []
     openSceneViewArr: any[] = []
     //预加载指向
@@ -193,7 +196,7 @@ class Main {
      */
     openView(res: any): void {
         this.beforeLoadCallback.call(this.beforeLoadThat, res);
-        this.$LOG('预加载的场景', res)
+        this.$LOG('预加载的场景', res,res.url)
         this.loadSceneResourcesArr.push(res.url);
         this.openSceneViewArr.forEach((item, index) => {
             if (item.url.indexOf(res.url) != -1) {
@@ -212,13 +215,15 @@ class Main {
      * @param fn2 正在打开回调函数
      */
     $openScene(url: string, closeOther: boolean, data?: any, fn?: Function, fn2?: Function) {
+        let flag:boolean=true;
         this.loadSceneResourcesArr.forEach(item => {
-            if (item.indexOf(url) != -1) {
+            if (item===url) {
                 Laya.Scene.open(url, closeOther, data, Laya.Handler.create(this, fn));
-                return;
+                flag=false;
             }
         })
-        this.openSceneViewArr = [{ url: url, closeOther: closeOther, data: data, fn: fn, fn2: fn2 }];
+        if(flag)
+            this.openSceneViewArr = [{ url: url, closeOther: closeOther, data: data, fn: fn, fn2: fn2 }];
     }
 
     /**

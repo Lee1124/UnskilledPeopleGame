@@ -13,25 +13,25 @@ export default class TabPageUI extends Laya.Scene {
     //选中的页面
     selectedPage: any;
     //默认显示的页面
-    defaultPage:any;
+    defaultPage: any;
     onAwake(): void {
         this.registerEvent();
-        this.defaultPage=Main.pages.page3;
+        this.defaultPage = Main.pages.page3;
     }
     onOpened(options: any): void {
         Main.$LOG('tab页面所收到的值：', options);
         this.pageData = options;
         this.selectedPage = options ? options.page ? options.page : this.defaultPage : this.defaultPage;
-        this.openView(this.selectedPage);
+        this.openView(this.selectedPage, 0);
     }
 
     /**
      * 注册事件
      */
     registerEvent(): void {
-        let navList:any[]=this['tabNav']._children;
-        navList.forEach((item:any)=>{
-            item.on(Laya.Event.CLICK,this,this.openView,[item.name])
+        let navList: any[] = this['tabNav']._children;
+        navList.forEach((item: any) => {
+            item.on(Laya.Event.CLICK, this, this.openView, [item.name, 100])
         })
     }
 
@@ -45,12 +45,26 @@ export default class TabPageUI extends Laya.Scene {
         });
     }
 
-    openView(page:any): void {
+    /**
+     * 设置当前选中的tab状态
+     * @param page 选中的tab页面
+     */
+    setCurrentTab(page: any, speed: number): void {
+        let navList: any[] = this['tabNav']._children;
+        navList.forEach((item: any) => {
+            item.top = 0;
+            item.getChildByName('icon0').visible = false;
+        })
+        let thisTab: any = this['tabNav'].getChildByName(page);
+        thisTab.top = -20;
+        thisTab.getChildByName('icon0').visible = true;
+    }
+
+    openView(page: any, speed: number): void {
+        this.setCurrentTab(page, speed);
         Main.hall.allowRepuest = false;
         this.closeAllpages();
         this[page].visible = true;
-        this.reloadNavSelect();
-        this.setTabSelect(page);
         if (page === Main.pages.page5) {
             let MeJS: any = this[page].getComponent(Me);
             MeJS.openThisPage();
@@ -58,54 +72,15 @@ export default class TabPageUI extends Laya.Scene {
             Main.hall.allowRepuest = true;
             let HallJS: any = this[page].getComponent(Hall);
             HallJS.openThisPage();
-        }else if (page === Main.pages.page1) {
+        } else if (page === Main.pages.page1) {
             let NoticeJS: any = this[page].getComponent(Notice);
             NoticeJS.openThisPage();
-        }else if (page === Main.pages.page4) {
+        } else if (page === Main.pages.page4) {
             let WalleteJS: any = this[page].getComponent(Wallet);
             WalleteJS.openThisPage();
-        }else if (page === Main.pages.page2) {
+        } else if (page === Main.pages.page2) {
             let FriendsJS: any = this[page].getComponent(Friends);
             FriendsJS.openThisPage();
         }
-    }
-
-    /**
-     * 重置下面导航栏的文字样式
-     */
-    reloadNavSelect(): void {
-        // this.notice.visible = true;
-        // this.notice_selected.visible = false;
-        // this.paiju.visible = true;
-        // this.paiju_selected.visible = false;
-        // this.data.visible = true;
-        // this.data_selected.visible = false;
-        // this.me.visible = true;
-        // this.me_selected.visible = false;
-    }
-
-    /**
-    * 设置下面导航栏的选项
-    * @param {*} type 类型
-    */
-    setTabSelect(type: any): void {
-        // switch (type) {
-        //     case Main.pages.page1:
-        //         this.notice.visible = false;
-        //         this.notice_selected.visible = true;
-        //         break;
-        //     case Main.pages.page2:
-        //         this.paiju.visible = false;
-        //         this.paiju_selected.visible = true;
-        //         break;
-        //     case Main.pages.page4:
-        //         this.data.visible = false;
-        //         this.data_selected.visible = true;
-        //         break;
-        //     case Main.pages.page5:
-        //         this.me.visible = false;
-        //         this.me_selected.visible = true;
-        //         break;
-        // }
     }
 }

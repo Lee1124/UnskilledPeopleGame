@@ -1,6 +1,7 @@
 import HTTP from '../../common/HttpRequest';
 import Main from '../../common/Main';
 import OpenView from '../../common/openView';
+import myCenter from '../../common/MyCenter';
 // import AUTO from '../../common/AUTO';
 export default class login extends Laya.Script {
     //开关
@@ -19,6 +20,10 @@ export default class login extends Laya.Script {
     onStart() {
         this.initOpenView();
         this.startLoadPage();
+        myCenter.req('loginPage',()=>{
+            this.owner['loginState']=true;
+            this.startLoadPage();
+        })
         //微信小游戏背景图
         // if (Main.wxGame)
         //     this.initPage();
@@ -185,13 +190,13 @@ export default class login extends Laya.Script {
             page: Main.sign.register
         }
         let OpenViewJS1 = this.owner['register_btn'].getComponent(OpenView);
-        OpenViewJS1.initOpen(1, 'Register.scene', false, openData1, 0);
+        OpenViewJS1.initOpen(0, 'Register.scene', false, openData1, 0);
 
         //修改密码
         let openData2 = {
             page: Main.sign.changePwd
         }
         let OpenViewJS2 = this.owner['change_btn'].getComponent(OpenView);
-        OpenViewJS2.initOpen(1,'Register.scene', false, openData2, 0);
+        OpenViewJS2.initOpen(0,'Register.scene', false, openData2, 0);
     }
 }

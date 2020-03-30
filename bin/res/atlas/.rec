@@ -20,6 +20,7 @@ P C99F59AB comfirmBtn.png
 P 16A364AA defaultIcon.png
 P 3AB2A41E dialogBg.png
 P DA00E453 dialogBG1.png
+P D7F4F291 faguang.png
 R EA4DEBE2 fenge.png
 P 9FCB07EC go_icon.png
 P 4F6CC3A8 headBox.png
@@ -58,6 +59,7 @@ P 70995EAA title_notice.png
 P A5E1E804 title_set.png
 P A6FB34FB title_shop.png
 P E9F2A5D6 title_wallet.png
+P 087A9289 title_zjmx.png
 R E6EBA664 top.png
 D images/friends
 P 0B879B99 f_gz.png
@@ -316,6 +318,11 @@ P 0C170696 9_2.png
 P 0A65CADA 9_3.png
 P 0C170696 9_4.png
 P 0A65CADA 9_5.png
+D images/me/me_page
+P 3D2879C0 h1.png
+P 9F5DBF66 h2.png
+P 8180202C h3.png
+P 95C6CAE0 h4.png
 D images/poker/chang
 P F53C10C3 1.png
 P 40AF3706 10.png

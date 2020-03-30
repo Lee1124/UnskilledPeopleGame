@@ -4,6 +4,7 @@
 import Back from '../../common/Back';
 import Main from '../../common/Main';
 import HTTP from '../../common/HttpRequest';
+import myCenter from '../../common/MyCenter';
 export default class RegisterUI extends Laya.Script {
     //页面标志(2.注册 3.修改密码)
     page: number;
@@ -24,7 +25,8 @@ export default class RegisterUI extends Laya.Script {
     //初始化返回
     initBack(): void {
         let backJS:any = this.owner['back_btn'].getComponent(Back);
-        backJS.initBack(1, 0,'Login.scene', Main.sign.signOut);
+        // backJS.initBack(1, 0,'Login.scene', Main.sign.signOut);
+        backJS.initBack(null,null,null,null,null,null,'loginPage');
         return backJS;
     }
 

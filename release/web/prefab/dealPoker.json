@@ -1,1 +1,0 @@
-{"type":"Sprite","props":{"y":0,"x":0,"presetID":1,"isPresetRoot":true},"compId":110,"child":[{"type":"Sprite","props":{"texture":"images/poker/-1.png","scaleY":0.3,"scaleX":0.3,"presetID":2},"compId":111}],"loadList":["images/poker/-1.png"],"loadList3D":[]}

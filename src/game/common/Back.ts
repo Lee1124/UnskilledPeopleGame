@@ -2,6 +2,7 @@
  * 该脚本是做返回功能
  */
 import Main from '../common/Main';
+import myCenter from '../common/MyCenter';
 export default class Back extends Laya.Script {
     //返回类型 （0：表示直接返回,不需要打开场景 1：表示打开场景再返回）
     backType: number = 0;
@@ -13,6 +14,8 @@ export default class Back extends Laya.Script {
     backData: any = null;
     //需要移除的html节点
     removeNode: any = null;
+    //通知的页面key值
+    toPageKey:any;
 
     /**
      * 初始化返回参数
@@ -22,12 +25,13 @@ export default class Back extends Laya.Script {
      * @param {*} backData 返回场景所传参数
      * @param {*} node 需要移除的节点
      */
-    initBack(backType?: number, backMode?: number, backScene?: string, backData?: any, node?: any, updatePage?: any): void {
+    initBack(backType?: number, backMode?: number, backScene?: string, backData?: any, node?: any, updatePage?: any,pageKey?:any): void {
         this.backType = backType ? backType : 0;
         this.backMode = backMode ? backMode : 0;
         this.backScene = backScene ? backScene : '';
         this.backData = backData ? backData : null;
         this.removeNode = node ? node : null;
+        this.toPageKey = pageKey ? pageKey : null;
     }
     onEnable() {
         this.initBack();
@@ -37,6 +41,7 @@ export default class Back extends Laya.Script {
         this.owner.on(Laya.Event.CLICK, this, this.back);
     }
     back() {
+        myCenter.send(this.toPageKey,true);
         //所属场景
         let thisScene = this.owner.scene;
         let moveXY: any;

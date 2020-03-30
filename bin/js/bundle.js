@@ -1,6 +1,23 @@
 (function () {
     'use strict';
 
+    class SetSceneWH extends Laya.Script {
+        constructor() {
+            super();
+            this.intType = 1000;
+            this.numType = 1000;
+            this.strType = "hello laya";
+            this.boolType = true;
+        }
+        onEnable() {
+            this.setSceneWH();
+        }
+        setSceneWH() {
+            this.owner['width'] = Laya.stage.width;
+            this.owner['height'] = Laya.stage.height;
+        }
+    }
+
     class SuspensionTips extends Laya.Script {
         constructor() {
             super();
@@ -167,7 +184,10 @@
                 { id: 5, src: 'res/img/me/me_text5.png' },
                 { id: 6, src: 'res/img/me/me_text6.png' }
             ];
-            this.loadScene = ['Game.scene', 'TabPages.scene', 'Register.scene', 'Set.scene', 'Shop.scene', 'RealTimeResult.scene', 'Friends.scene'];
+            this.loadScene = ['Game.scene', 'TabPages.scene', 'Register.scene', 'Set.scene',
+                'CoinRecord.scene', 'RealTimeResult.scene', 'Friends.scene', 'EditUserNews.scene',
+                'Record.scene', 'Share.scene', 'GiftRecord.scene'
+            ];
             this.loadSceneResourcesArr = [];
             this.openSceneViewArr = [];
             this.hall = {
@@ -239,7 +259,7 @@
         }
         openView(res) {
             this.beforeLoadCallback.call(this.beforeLoadThat, res);
-            this.$LOG('预加载的场景', res);
+            this.$LOG('预加载的场景', res, res.url);
             this.loadSceneResourcesArr.push(res.url);
             this.openSceneViewArr.forEach((item, index) => {
                 if (item.url.indexOf(res.url) != -1) {
@@ -250,13 +270,15 @@
             });
         }
         $openScene(url, closeOther, data, fn, fn2) {
+            let flag = true;
             this.loadSceneResourcesArr.forEach(item => {
-                if (item.indexOf(url) != -1) {
+                if (item === url) {
                     Laya.Scene.open(url, closeOther, data, Laya.Handler.create(this, fn));
-                    return;
+                    flag = false;
                 }
             });
-            this.openSceneViewArr = [{ url: url, closeOther: closeOther, data: data, fn: fn, fn2: fn2 }];
+            if (flag)
+                this.openSceneViewArr = [{ url: url, closeOther: closeOther, data: data, fn: fn, fn2: fn2 }];
         }
         changeNodeZOrder(jsonArr) {
             jsonArr.forEach(item => {
@@ -576,46 +598,26 @@
     }
     var Main$1 = new Main();
 
-    class Friends2 extends Laya.Scene {
-        constructor() {
-            super(...arguments);
-            this.openedData = 1;
+    class MyCenter {
+        req(key, fn) {
+            this.keepList = [];
+            this.keepList = [{ key: key, fn: fn }];
         }
-        onAwake() {
+        send(key, val) {
+            this.keepList.forEach(item => {
+                if (key == item.key) {
+                    item.fn(val);
+                }
+            });
         }
-        onOpened(options) {
-            Main$1.$LOG('亲友圈二级页面所收到得值：', options);
-            this.openedData = options ? options : 1;
-            this.setTitle();
+        InitGameUIData(thisObj) {
+            this.GameUIObj = thisObj;
         }
-        setTitle() {
-            this['title_1'].visible = this.openedData == 1 ? true : false;
-            this['title_2'].visible = this.openedData == 2 ? true : false;
-            this['title_3'].visible = this.openedData == 3 ? true : false;
-            this['view1'].visible = this.openedData == 1 ? true : false;
-            this['view2'].visible = this.openedData == 2 ? true : false;
-            this['view3'].visible = this.openedData == 3 ? true : false;
-        }
-        setUI() {
+        InitGameData(thisObj) {
+            this.GameControlObj = thisObj;
         }
     }
-
-    class SetSceneWH extends Laya.Script {
-        constructor() {
-            super();
-            this.intType = 1000;
-            this.numType = 1000;
-            this.strType = "hello laya";
-            this.boolType = true;
-        }
-        onEnable() {
-            this.setSceneWH();
-        }
-        setSceneWH() {
-            this.owner['width'] = Laya.stage.width;
-            this.owner['height'] = Laya.stage.height;
-        }
-    }
+    var myCenter = new MyCenter();
 
     class Back extends Laya.Script {
         constructor() {
@@ -626,12 +628,13 @@
             this.backData = null;
             this.removeNode = null;
         }
-        initBack(backType, backMode, backScene, backData, node, updatePage) {
+        initBack(backType, backMode, backScene, backData, node, updatePage, pageKey) {
             this.backType = backType ? backType : 0;
             this.backMode = backMode ? backMode : 0;
             this.backScene = backScene ? backScene : '';
             this.backData = backData ? backData : null;
             this.removeNode = node ? node : null;
+            this.toPageKey = pageKey ? pageKey : null;
         }
         onEnable() {
             this.initBack();
@@ -641,6 +644,7 @@
             this.owner.on(Laya.Event.CLICK, this, this.back);
         }
         back() {
+            myCenter.send(this.toPageKey, true);
             let thisScene = this.owner.scene;
             let moveXY;
             switch (this.backMode) {
@@ -672,6 +676,41 @@
         }
     }
 
+    class setHd extends Laya.Script {
+        onEnable() {
+            console.log(this);
+        }
+    }
+
+    class CoinRecord extends Laya.Script {
+        onStart() {
+        }
+    }
+
+    class Friends2 extends Laya.Scene {
+        constructor() {
+            super(...arguments);
+            this.openedData = 1;
+        }
+        onAwake() {
+        }
+        onOpened(options) {
+            Main$1.$LOG('亲友圈二级页面所收到得值：', options);
+            this.openedData = options ? options : 1;
+            this.setTitle();
+        }
+        setTitle() {
+            this['title_1'].visible = this.openedData == 1 ? true : false;
+            this['title_2'].visible = this.openedData == 2 ? true : false;
+            this['title_3'].visible = this.openedData == 3 ? true : false;
+            this['view1'].visible = this.openedData == 1 ? true : false;
+            this['view2'].visible = this.openedData == 2 ? true : false;
+            this['view3'].visible = this.openedData == 3 ? true : false;
+        }
+        setUI() {
+        }
+    }
+
     class Friends2$1 extends Laya.Script {
         onStart() {
             this.setBack();
@@ -697,33 +736,6 @@
             this.owner['v2_tab_select'].getChildByName('s' + pageNum).visible = true;
         }
     }
-
-    class setHd extends Laya.Script {
-        onEnable() {
-            console.log(this);
-        }
-    }
-
-    class MyCenter {
-        req(key, fn) {
-            this.keepList = [];
-            this.keepList = [{ key: key, fn: fn }];
-        }
-        send(key, val) {
-            this.keepList.forEach(item => {
-                if (key == item.key) {
-                    item.fn(val);
-                }
-            });
-        }
-        InitGameUIData(thisObj) {
-            this.GameUIObj = thisObj;
-        }
-        InitGameData(thisObj) {
-            this.GameControlObj = thisObj;
-        }
-    }
-    var MyCenter$1 = new MyCenter();
 
     class NetClient extends Laya.Script{
     	constructor(url){
@@ -948,7 +960,7 @@
             this.soketConnetNum = 0;
         }
         open() {
-            this.conThis = MyCenter$1.GameControlObj;
+            this.conThis = myCenter.GameControlObj;
             this.netClient = new NetClient("ws://" + Main$1.websoketApi);
             this.onConnect();
         }
@@ -1168,7 +1180,7 @@
             this.userIndex = 0;
             this.pokerIndex = 0;
             this.timerNum = 0;
-            this.players = MyCenter$1.GameControlObj.players;
+            this.players = myCenter.GameControlObj.players;
             this.init();
             this.userPokerData0 = data.players;
             this.userPokerData = [];
@@ -1191,7 +1203,7 @@
         init() {
             if (this.meDealView)
                 this.meDealView.removeChildren();
-            MyCenter$1.GameUIObj.dealSeat.zOrder = 0;
+            myCenter.GameUIObj.dealSeat.zOrder = 0;
             this.players.forEach((item) => {
                 let getDealPokerSeat = item.owner.getChildByName('getDealPokerSeat');
                 getDealPokerSeat.bottom = item.IsMe ? Main$1.deal['meBottom'] : Main$1.deal['otherBottom'];
@@ -1200,8 +1212,8 @@
         }
         MovePoker() {
             let dealPlayerData = this.userPokerData[this.userIndex];
-            let dealSeat = MyCenter$1.GameUIObj.dealSeat;
-            let dealPoker = Laya.Pool.getItemByCreateFun("dealPoker", MyCenter$1.GameControlObj.dealPoker.create, MyCenter$1.GameControlObj.dealPoker);
+            let dealSeat = myCenter.GameUIObj.dealSeat;
+            let dealPoker = Laya.Pool.getItemByCreateFun("dealPoker", myCenter.GameControlObj.dealPoker.create, myCenter.GameControlObj.dealPoker);
             dealPoker.name = String(this.timerNum);
             dealPoker.alpha = 0;
             dealPoker.pos(0, 0);
@@ -1210,8 +1222,8 @@
                 if (item.userId == dealPlayerData.userId) {
                     let getDealPokerSeat = item.owner.getChildByName('getDealPokerSeat');
                     let getDealPokerSeatXY = getDealPokerSeat.parent.localToGlobal(new Laya.Point(getDealPokerSeat.x, getDealPokerSeat.y));
-                    let x = getDealPokerSeatXY.x - MyCenter$1.GameUIObj.dealPokerSeatXY.x;
-                    let y = getDealPokerSeatXY.y - MyCenter$1.GameUIObj.dealPokerSeatXY.y;
+                    let x = getDealPokerSeatXY.x - myCenter.GameUIObj.dealPokerSeatXY.x;
+                    let y = getDealPokerSeatXY.y - myCenter.GameUIObj.dealPokerSeatXY.y;
                     let moveObj = dealSeat.getChildByName(String(this.timerNum));
                     Laya.Tween.to(moveObj, { alpha: 0.8, x: x, y: y }, Main$1.Speed['dealPoker'] * 0.8, null, Laya.Handler.create(this, () => {
                         if (item.IsMe) {
@@ -1262,7 +1274,7 @@
                         }
                         if (this.timerNum >= 20 * 3) {
                             Laya.timer.clear(this, this.MovePoker);
-                            MyCenter$1.GameUIObj.dealSeat.zOrder = 2;
+                            myCenter.GameUIObj.dealSeat.zOrder = 2;
                             this.dealPokerEnd();
                         }
                         else {
@@ -1363,7 +1375,7 @@
         }
         mePlayPoker(pokerObj) {
             let pokerObjSeatXY = pokerObj.parent.localToGlobal(new Laya.Point(pokerObj.x, pokerObj.y));
-            let showMePlayPoker = MyCenter$1.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
+            let showMePlayPoker = myCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
             let showMePlayPokerXY = showMePlayPoker.parent.localToGlobal(new Laya.Point(showMePlayPoker.x, showMePlayPoker.y));
             let startX = pokerObjSeatXY.x - showMePlayPokerXY.x + showMePlayPoker.width;
             let startY = pokerObjSeatXY.y - showMePlayPokerXY.y + showMePlayPoker.height / 2;
@@ -1442,7 +1454,7 @@
 
     class DiuPoker {
         open(data) {
-            this.players = MyCenter$1.GameControlObj.players;
+            this.players = myCenter.GameControlObj.players;
             let diuPokerData = data;
             this.players.forEach((item, index) => {
                 let diuView = item.owner.getChildByName('diu' + item.SeatId);
@@ -1487,7 +1499,7 @@
 
     class ShowHanldePoker {
         open() {
-            this.players = MyCenter$1.GameControlObj.players;
+            this.players = myCenter.GameControlObj.players;
             let showData = [
                 { userId: 123450, data: [{ data: [1, 1, 1] }, { data: [2, 2, 2] }, { data: [2, 2, 2] }, { data: [2, 2, 2] }, { data: [2, 2, 2] }, { data: [2, 2, 2] }, { data: [2, 2, 2] }, { data: [2, 2, 2] }, { data: [2, 2, 2] }, { data: [2, 2, 2] }] },
                 { userId: 123451, data: [{ data: [1, 1, 1] }, { data: [2, 2, 2] }, { data: [2, 2, 2] }, { data: [2, 2, 2] }, { data: [2, 2, 2] }, { data: [2, 2, 2] }, { data: [2, 2, 2] }, { data: [2, 2, 2] }] },
@@ -1558,9 +1570,9 @@
 
     class FeelPoker {
         feel() {
-            this.players = MyCenter$1.GameControlObj.players;
-            this.feelStartSeatXY = MyCenter$1.GameUIObj.feelPokerSeatXY;
-            this.feelObj = MyCenter$1.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
+            this.players = myCenter.GameControlObj.players;
+            this.feelStartSeatXY = myCenter.GameUIObj.feelPokerSeatXY;
+            this.feelObj = myCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
             this.initParam(true);
             let data = {
                 userId: '12345' + parseInt(String(Math.random() * 3)),
@@ -1625,7 +1637,7 @@
             this.feelObj.pos(this.feelObj.width / 2, this.feelObj.height / 2);
         }
         initParam2(item) {
-            let dealSeat_feelPoker = MyCenter$1.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
+            let dealSeat_feelPoker = myCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
             this.feelPoker = item.owner.getChildByName('feelView').getChildByName('feelPoker');
             this.feelPoker.alpha = 0;
             this.feelPoker.skin = 'res/img/poker/chang/-1.png';
@@ -1730,7 +1742,7 @@
 
     class ReloadData {
         init() {
-            this.players = MyCenter$1.GameControlObj.players;
+            this.players = myCenter.GameControlObj.players;
             this.players.forEach((itemJS, index) => {
                 itemJS.userId = null;
                 itemJS.SeatId = index;
@@ -1740,8 +1752,8 @@
             });
         }
         setNodes(itemJS, Index) {
-            console.log(MyCenter$1.GameUIObj.startSeatXY[Index].x);
-            itemJS.owner.pos(MyCenter$1.GameUIObj.startSeatXY[Index].x, MyCenter$1.GameUIObj.startSeatXY[Index].y);
+            console.log(myCenter.GameUIObj.startSeatXY[Index].x);
+            itemJS.owner.pos(myCenter.GameUIObj.startSeatXY[Index].x, myCenter.GameUIObj.startSeatXY[Index].y);
             let seatNode = itemJS.owner;
             let head = seatNode.getChildByName('head');
             head.skin = '';
@@ -1854,7 +1866,7 @@
             sendTextView.text = '';
             let textShowView = thisUI.chat.getChildByName('textChatView').getChildByName('textShowView');
             textShowView.vScrollBarSkin = "";
-            let deskChatView = MyCenter$1.GameUIObj.deskView.getChildByName('chatView');
+            let deskChatView = myCenter.GameUIObj.deskView.getChildByName('chatView');
             Laya.Tween.to(deskChatView, { alpha: 0.6 }, 200);
             deskChatView.vScrollBarSkin = "";
             this.textChatList.forEach((item, index) => {
@@ -1892,7 +1904,7 @@
             this.initTextChatContent(this.thisUI);
         }
         initClickSelect(thisUI) {
-            let MeArr = MyCenter$1.GameControlObj.players.filter((item) => item.IsMe);
+            let MeArr = myCenter.GameControlObj.players.filter((item) => item.IsMe);
             this.selectedNum = MeArr.length > 0 ? this.selectedNum : 1;
             let selectJS = thisUI.chat.getChildByName('selectView').getComponent(MyClickSelect);
             selectJS.MySelect(this, this.selectedNum, (val) => {
@@ -1929,9 +1941,9 @@
         }
         expressionListOnClick(Event) {
             if (Event.type == 'click') {
-                let MeArr = MyCenter$1.GameControlObj.players.filter((item) => item.IsMe);
+                let MeArr = myCenter.GameControlObj.players.filter((item) => item.IsMe);
                 if (MeArr.length > 0) {
-                    let chatJS = MyCenter$1.GameControlObj.owner['chat'].getComponent(OpenDiaLog);
+                    let chatJS = myCenter.GameControlObj.owner['chat'].getComponent(OpenDiaLog);
                     chatJS.close();
                     let ID = Event.target.dataSource.id;
                     websoket.chatReq(1, String(ID), ID);
@@ -1989,11 +2001,11 @@
             this.InitGameData();
         }
         InitGameData() {
-            MyCenter$1.InitGameData(this);
+            myCenter.InitGameData(this);
         }
         KeepSeatObj() {
             let that = this;
-            MyCenter$1.req('seat', (res) => {
+            myCenter.req('seat', (res) => {
                 that.players.push(res);
                 InitGameData$1.Init(res, this);
                 this.Index++;
@@ -2821,8 +2833,8 @@
         }
         diaLogState(show = true, thisPlayer, type) {
             this.addCoinType = type ? type : 1;
-            let makeUpBOBO = MyCenter$1.GameControlObj.owner['makeUpCoin'].getComponent(OpenDiaLog);
-            let slideJS = MyCenter$1.GameControlObj.owner['makeUpCoin'].getChildByName('sliderView').getComponent(SlideSelect);
+            let makeUpBOBO = myCenter.GameControlObj.owner['makeUpCoin'].getComponent(OpenDiaLog);
+            let slideJS = myCenter.GameControlObj.owner['makeUpCoin'].getChildByName('sliderView').getComponent(SlideSelect);
             switch (show) {
                 case true:
                     this.openedMakeUpCoin();
@@ -2893,18 +2905,18 @@
         }
         openedMakeUpCoin() {
             this.getPlayerUsableScore(() => {
-                let useScoreBox = MyCenter$1.GameControlObj.owner.bobo_trueScore;
+                let useScoreBox = myCenter.GameControlObj.owner.bobo_trueScore;
                 useScoreBox.text = this.useScore;
             });
-            let IDBox = MyCenter$1.GameControlObj.owner.bobo_ID;
+            let IDBox = myCenter.GameControlObj.owner.bobo_ID;
             IDBox.text = Main$1.userInfo.userId;
-            let startdairuScore = MyCenter$1.GameControlObj.GameNews ? MyCenter$1.GameControlObj.GameNews.option.dairu : 0;
+            let startdairuScore = myCenter.GameControlObj.GameNews ? myCenter.GameControlObj.GameNews.option.dairu : 0;
             this.dairuScoreFn(startdairuScore);
         }
         dairuScoreFn(dairuScore) {
-            let dairujifenBox = MyCenter$1.GameControlObj.owner.bobo_daiRuScore;
+            let dairujifenBox = myCenter.GameControlObj.owner.bobo_daiRuScore;
             dairujifenBox.text = dairuScore;
-            let fuwufeiBox = MyCenter$1.GameControlObj.owner.bobo_fuwufei;
+            let fuwufeiBox = myCenter.GameControlObj.owner.bobo_fuwufei;
             fuwufeiBox.text = dairujifenBox.text * (1 / 10);
             this.dairuScore = dairujifenBox.text;
         }
@@ -2930,13 +2942,13 @@
             });
         }
         registerEvent() {
-            let dairuBtn = MyCenter$1.GameControlObj.owner.makeUpCoin.getChildByName('confirmDaiRuBtn');
+            let dairuBtn = myCenter.GameControlObj.owner.makeUpCoin.getChildByName('confirmDaiRuBtn');
             dairuBtn.on(Laya.Event.CLICK, this, () => {
                 websoket.comfirmIntoScore(this.seatIndex, this.dairuScore, this.addCoinType, true);
             });
         }
         closeEvent() {
-            let dairuBtn = MyCenter$1.GameControlObj.owner.makeUpCoin.getChildByName('confirmDaiRuBtn');
+            let dairuBtn = myCenter.GameControlObj.owner.makeUpCoin.getChildByName('confirmDaiRuBtn');
             dairuBtn.off(Laya.Event.CLICK);
         }
     }
@@ -2947,7 +2959,7 @@
             this.selectScore = 150;
         }
         open() {
-            this.liuzuoJS = MyCenter$1.GameControlObj.owner['LiuZuo'].getComponent(OpenDiaLog);
+            this.liuzuoJS = myCenter.GameControlObj.owner['LiuZuo'].getComponent(OpenDiaLog);
             this.initLiuZuoList();
             this.initSelect();
             this.registerEvent(true);
@@ -3045,8 +3057,8 @@
         }
         menuListOnClick(Event) {
             if (Event.type == 'click') {
-                let menuJS = MyCenter$1.GameControlObj.owner['menu'].getComponent(OpenDiaLog);
-                let isMeArr = MyCenter$1.GameControlObj.players.filter((item) => item.IsMe);
+                let menuJS = myCenter.GameControlObj.owner['menu'].getComponent(OpenDiaLog);
+                let isMeArr = myCenter.GameControlObj.players.filter((item) => item.IsMe);
                 let clicId = Event.target.id;
                 let onlyColseSelf = (clicId == 3 || clicId == 4) && isMeArr.length > 0 ? true : false;
                 menuJS.close(onlyColseSelf);
@@ -3129,7 +3141,7 @@
                     res.x = -Laya.stage.width;
                     res.zOrder = 10;
                     Laya.Tween.to(res, { x: 0 }, Main$1.Speed['changePage'], null, Laya.Handler.create(this, () => {
-                        MyCenter$1.send('sceneUrl', this.openSceneUrl);
+                        myCenter.send('sceneUrl', this.openSceneUrl);
                         if (this.openType == 1)
                             this.selfScene['removeSelf']();
                     }));
@@ -3156,7 +3168,7 @@
         }
         InitGameUIData() {
             this.GameControlJS = this.getComponent(GameControl);
-            MyCenter$1.InitGameUIData(this);
+            myCenter.InitGameUIData(this);
         }
         initJS() {
             let RealTimeResultJS = this['btnView'].getChildByName('btn_look1').getComponent(openView);
@@ -3195,13 +3207,13 @@
             });
         }
         openMenu() {
-            let menu = MyCenter$1.GameControlObj.owner['menu'].getComponent(OpenDiaLog);
+            let menu = myCenter.GameControlObj.owner['menu'].getComponent(OpenDiaLog);
             menu.init(3, 0, this, null, null, () => {
                 menu.open();
             });
         }
         openChat() {
-            let chatJS = MyCenter$1.GameControlObj.owner['chat'].getComponent(OpenDiaLog);
+            let chatJS = myCenter.GameControlObj.owner['chat'].getComponent(OpenDiaLog);
             chatJS.init(4, 0, this, null, null, () => {
                 chatJS.open();
             });
@@ -3236,9 +3248,9 @@
             this.selectSeatIndex = thisObj.Index;
             this.selectSeatId = thisObj.SeatId;
             this.seatIndexArr = [0, 1, 2];
-            this.playerSeatArr = MyCenter$1.GameControlObj.players;
-            this.playerSeatXYArr = MyCenter$1.GameUIObj.startSeatXY;
-            this.playerFeelSeatXYArr = MyCenter$1.GameUIObj.startFeelSeatXY;
+            this.playerSeatArr = myCenter.GameControlObj.players;
+            this.playerSeatXYArr = myCenter.GameUIObj.startSeatXY;
+            this.playerFeelSeatXYArr = myCenter.GameUIObj.startFeelSeatXY;
             console.log(this.playerSeatArr);
             if (thisObj.userId == '' || !thisObj.userId) {
                 websoket.seatAt(thisObj.SeatId, this, (res) => {
@@ -3329,7 +3341,7 @@
             this.owner.on(Laya.Event.CLICK, this, this.CLICK_SEAT);
         }
         Send() {
-            MyCenter$1.send('seat', this);
+            myCenter.send('seat', this);
         }
         CLICK_SEAT(Event) {
             ChangeSeat$1.change(Event, this);
@@ -3398,6 +3410,10 @@
         onStart() {
             this.initOpenView();
             this.startLoadPage();
+            myCenter.req('loginPage', () => {
+                this.owner['loginState'] = true;
+                this.startLoadPage();
+            });
         }
         initPage() {
         }
@@ -3528,12 +3544,12 @@
                 page: Main$1.sign.register
             };
             let OpenViewJS1 = this.owner['register_btn'].getComponent(openView);
-            OpenViewJS1.initOpen(1, 'Register.scene', false, openData1, 0);
+            OpenViewJS1.initOpen(0, 'Register.scene', false, openData1, 0);
             let openData2 = {
                 page: Main$1.sign.changePwd
             };
             let OpenViewJS2 = this.owner['change_btn'].getComponent(openView);
-            OpenViewJS2.initOpen(1, 'Register.scene', false, openData2, 0);
+            OpenViewJS2.initOpen(0, 'Register.scene', false, openData2, 0);
         }
     }
 
@@ -3562,7 +3578,7 @@
             Main$1.$LOG('组件信息：', this);
             this.initJS();
             console.log(this.owner.scene.url);
-            MyCenter$1.req('sceneUrl', (res) => {
+            myCenter.req('sceneUrl', (res) => {
                 if (res == this.owner.scene.url)
                     that.getPageData();
             });
@@ -3577,7 +3593,7 @@
                 url: '/M.Games.YDR.Ext/YDRRecord/RealTimeRecord',
                 data: {
                     uid: Main$1.userInfo.userId,
-                    roomid: MyCenter$1.GameControlObj.roomId
+                    roomid: myCenter.GameControlObj.roomId
                 },
                 success(res) {
                     console.log(res);
@@ -3668,7 +3684,7 @@
         }
         initBack() {
             let backJS = this.owner['back_btn'].getComponent(Back);
-            backJS.initBack(1, 0, 'Login.scene', Main$1.sign.signOut);
+            backJS.initBack(null, null, null, null, null, null, 'loginPage');
             return backJS;
         }
         comfirmRegisterOrChange() {
@@ -3865,91 +3881,6 @@
             SwitchJS.initSwitch(this, isOpened, (bool) => {
                 let isOpen = bool ? 1 : 0;
                 localStorage.setItem('gameMusic', isOpen);
-            });
-        }
-    }
-
-    class ShopUI extends Laya.Scene {
-        onAwake() {
-        }
-        onOpened(options) {
-            this.openedData = options;
-        }
-        setUI() {
-        }
-    }
-
-    class Shop extends Laya.Script {
-        constructor() {
-            super(...arguments);
-            this.isTabPage = true;
-        }
-        onStart() {
-            this.setBack();
-            this.getPageData();
-        }
-        initPage() {
-        }
-        setBack() {
-            this.isTabPage = this.owner['openedData'] ? this.owner['openedData'].isTabPage : true;
-            let backJS = this.owner['shop_back_btn'].getComponent(Back);
-            if (this.isTabPage) {
-                backJS.initBack(1, 0, 'TabPages.scene', { page: Main$1.pages.page5 });
-            }
-            else {
-                backJS.initBack();
-            }
-        }
-        getPageData() {
-            HTTP.$request({
-                that: this,
-                url: '/M.Shop/GetShopInfo',
-                data: {
-                    uid: Main$1.userInfo.userId
-                },
-                success(res) {
-                    if (res.data.ret.type == 0) {
-                        this.setList(res.data.shopList._v[0].shopTemplates);
-                    }
-                }
-            });
-        }
-        setList(data) {
-            let list = this.owner['s_list'];
-            data.forEach((item) => {
-                item.text = 'res/img/shop/' + item.score + '.png';
-                item.btn = 'res/img/shop/' + item.money + '_btn.png';
-            });
-            list.array = data;
-            list.vScrollBarSkin = "";
-            list.renderHandler = new Laya.Handler(this, this.listRender);
-        }
-        listRender(cell, index) {
-            let text = cell.getChildByName('text');
-            let btn = cell.getChildByName('btn').getChildByName('value');
-            text.skin = cell.dataSource.text;
-            btn.skin = cell.dataSource.btn;
-            this.bindEvent(btn, cell);
-        }
-        bindEvent(btn, value) {
-            btn.on(Laya.Event.CLICK, this, this.clickBtn, [value]);
-        }
-        clickBtn(cell) {
-            Main$1.showDiaLog('您确认充值' + cell.dataSource.score + '积分?', 1, () => {
-                HTTP.$request({
-                    that: this,
-                    url: '/M.Shop/PlayerRecharge',
-                    data: {
-                        uid: Main$1.userInfo.userId,
-                        shopId: cell.dataSource.shopId,
-                        shopType: 1000
-                    },
-                    success(res) {
-                        if (res.data.ret.type == 0) {
-                            Main$1.showDiaLog(res.data.ret.msg);
-                        }
-                    }
-                });
             });
         }
     }
@@ -4234,12 +4165,25 @@
             this.toScene = this.owner.scene;
             this.meList = this.owner.getChildByName('list_bg').getChildByName('list_bg2').getChildByName('me_list');
             this.setPage();
+            myCenter.req('mePage', (res) => {
+                if (res)
+                    this.requestPageData();
+            });
         }
         openThisPage() {
             if (this.owner['visible']) {
                 this.UI = this.owner.scene;
                 this.requestPageData();
+                this.initOpenView();
             }
+        }
+        initOpenView() {
+            let OpenEditJS = this.owner.scene.me_editBtn.getComponent(openView);
+            OpenEditJS.initOpen(0, 'EditUserNews.scene', false, null, 0);
+            this.owner.scene.addCoinBtn.on(Laya.Event.CLICK, this, () => {
+                console.log('进来了');
+                window.open('http://baidu.com');
+            });
         }
         setPage() {
             this.meList.array = Main$1.meListData;
@@ -4257,10 +4201,18 @@
         meListOnClick(e) {
             if (e.type == 'click') {
                 let clickId = e.target.dataSource.id;
-                console.log(clickId);
                 switch (clickId) {
                     case 1:
-                        this.goShop();
+                        this.goRecord();
+                        break;
+                    case 2:
+                        this.goCoinRecord();
+                        break;
+                    case 3:
+                        this.goShare();
+                        break;
+                    case 4:
+                        this.goGiftRecord();
                         break;
                     case 5:
                         this.goSet();
@@ -4271,17 +4223,23 @@
                 }
             }
         }
-        goShop() {
-            Main$1.$openScene('Shop.scene', false, null, (res) => {
-                res.x = Laya.stage.width;
-                res.zOrder = 10;
-                Laya.Tween.to(res, { x: 0 }, Main$1.Speed['changePage'], null, Laya.Handler.create(this, () => {
-                    this.toScene.removeSelf();
-                }));
-            });
+        goRecord() {
+            this.goPageCoomon('Record.scene');
+        }
+        goShare() {
+            this.goPageCoomon('Share.scene');
+        }
+        goGiftRecord() {
+            this.goPageCoomon('GiftRecord.scene');
+        }
+        goCoinRecord() {
+            this.goPageCoomon('CoinRecord.scene');
         }
         goSet() {
-            Main$1.$openScene('Set.scene', false, null, (res) => {
+            this.goPageCoomon('Set.scene');
+        }
+        goPageCoomon(url) {
+            Main$1.$openScene(url, false, null, (res) => {
                 res.x = Laya.stage.width;
                 res.zOrder = 10;
                 Laya.Tween.to(res, { x: 0 }, Main$1.Speed['changePage']);
@@ -4802,12 +4760,12 @@
             Main$1.$LOG('tab页面所收到的值：', options);
             this.pageData = options;
             this.selectedPage = options ? options.page ? options.page : this.defaultPage : this.defaultPage;
-            this.openView(this.selectedPage);
+            this.openView(this.selectedPage, 0);
         }
         registerEvent() {
             let navList = this['tabNav']._children;
             navList.forEach((item) => {
-                item.on(Laya.Event.CLICK, this, this.openView, [item.name]);
+                item.on(Laya.Event.CLICK, this, this.openView, [item.name, 100]);
             });
         }
         closeAllpages() {
@@ -4816,12 +4774,21 @@
                 item.visible = false;
             });
         }
-        openView(page) {
+        setCurrentTab(page, speed) {
+            let navList = this['tabNav']._children;
+            navList.forEach((item) => {
+                item.top = 0;
+                item.getChildByName('icon0').visible = false;
+            });
+            let thisTab = this['tabNav'].getChildByName(page);
+            thisTab.top = -20;
+            thisTab.getChildByName('icon0').visible = true;
+        }
+        openView(page, speed) {
+            this.setCurrentTab(page, speed);
             Main$1.hall.allowRepuest = false;
             this.closeAllpages();
             this[page].visible = true;
-            this.reloadNavSelect();
-            this.setTabSelect(page);
             if (page === Main$1.pages.page5) {
                 let MeJS = this[page].getComponent(Me);
                 MeJS.openThisPage();
@@ -4844,10 +4811,6 @@
                 FriendsJS.openThisPage();
             }
         }
-        reloadNavSelect() {
-        }
-        setTabSelect(type) {
-        }
     }
 
     class GameConfig {
@@ -4855,11 +4818,12 @@
         }
         static init() {
             var reg = Laya.ClassUtils.regClass;
-            reg("game/pages/TabPages/Friends/Friends2/Friends2UI.ts", Friends2);
             reg("game/common/SetSceneWH.ts", SetSceneWH);
-            reg("game/pages/TabPages/Friends/Friends2/Friends2.ts", Friends2$1);
-            reg("game/common/setHd.ts", setHd);
             reg("game/common/Back.ts", Back);
+            reg("game/common/setHd.ts", setHd);
+            reg("game/pages/TabPages/CoinRecord/CoinRecord.ts", CoinRecord);
+            reg("game/pages/TabPages/Friends/Friends2/Friends2UI.ts", Friends2);
+            reg("game/pages/TabPages/Friends/Friends2/Friends2.ts", Friends2$1);
             reg("game/GameCenter/GameUI.ts", GameUI);
             reg("game/common/setSceneWH.ts", SetSceneWH$1);
             reg("game/GameCenter/GameControl.ts", GameControl);
@@ -4876,8 +4840,6 @@
             reg("game/pages/Register/Register.ts", RegisterUI);
             reg("game/pages/Set/Set.ts", Set);
             reg("game/common/MySwitch.ts", MySwitch);
-            reg("game/pages/Shop/ShopUI.ts", ShopUI);
-            reg("game/pages/Shop/Shop.ts", Shop);
             reg("game/Fuction/Start.ts", sliderSelect);
             reg("game/common/openOutDiaLog.ts", OutDiaLog);
             reg("game/common/outPwdKeyBoard.ts", PwdKeyBoard);
