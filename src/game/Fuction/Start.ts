@@ -23,10 +23,18 @@ export default class sliderSelect extends Laya.Script {
         // /**===测试=== */
         // if (!Main.AUTO)
         //     this.getUserInfo();
+
+        this.getShareUserId();
         this.hideLoadingView();
-        
     }
 
+    /**
+     * 获取要加入的玩家id(比如扫码进入游戏的有分享人的Id)
+     */
+    getShareUserId():void{
+        let joinUserId:any=Main.GetUrlString('joinUserId');
+        Main.familyRoomInfo.joinUserId=joinUserId?joinUserId:100000;
+    }
 
     /**初始化页面(加载背景) */
     initPage() {

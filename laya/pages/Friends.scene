@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":21,
-    "selecteID":22,
+    "selectedBox":56,
+    "selecteID":57,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/pages/TabPages/Friends/Friends2/Friends2UI.ts","height":2208},
     "nodeParent":-1,
@@ -540,7 +540,7 @@
                                         }]
                                 }]
                         }],
-                    "$HIDDEN":false
+                    "$HIDDEN":true
                 },
                 {
                     "x":30,
@@ -549,25 +549,27 @@
                     "props":{"x":0,"var":"view2","top":0,"right":0,"name":"view2","left":0,"bottom":0},
                     "nodeParent":21,
                     "label":"view2",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":23,
                     "child":[
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,view2_1",
                             "props":{"y":0,"x":0,"width":1152,"skin":"images/common/bg2.png","right":0,"name":"view2_1","left":0,"height":200},
                             "nodeParent":23,
                             "label":"view2_1",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":56,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,tab_select,v2_tab_select",
                                     "props":{"y":16,"x":20,"var":"v2_tab_select","top":16,"right":20,"name":"tab_select","left":20,"bottom":20},
@@ -580,9 +582,10 @@
                                     "compId":108,
                                     "child":[
                                         {
+                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,s1",
-                                            "props":{"width":370,"top":0,"name":"s1","left":0,"height":164,"bottom":0},
+                                            "props":{"width":370,"visible":false,"top":0,"name":"s1","left":0,"height":164,"bottom":0},
                                             "nodeParent":108,
                                             "label":"s1",
                                             "isOpen":false,
@@ -607,6 +610,7 @@
                                             "$HIDDEN":false
                                         },
                                         {
+                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,s2",
                                             "props":{"y":0,"width":370,"visible":false,"top":0,"name":"s2","centerX":0,"bottom":0},
@@ -633,6 +637,7 @@
                                                 }]
                                         },
                                         {
+                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,s3",
                                             "props":{"y":0,"width":370,"visible":false,"top":0,"right":0,"name":"s3","bottom":0},
@@ -662,6 +667,7 @@
                                     "$HIDDEN":false
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,tab_title,tab_title",
                                     "props":{"var":"tab_title","top":16,"right":20,"name":"tab_title","left":20,"bottom":20},
@@ -679,7 +685,7 @@
                                             "props":{"width":370,"top":0,"name":"tab1","left":0,"bottom":0},
                                             "nodeParent":57,
                                             "label":"tab1",
-                                            "isOpen":false,
+                                            "isOpen":true,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
@@ -700,8 +706,8 @@
                                                 },
                                                 {
                                                     "type":"Label",
-                                                    "searchKey":"Label,val",
-                                                    "props":{"text":"0%","name":"val","fontSize":48,"color":"#ffffff","centerX":0,"bottom":25},
+                                                    "searchKey":"Label,val,title_income1",
+                                                    "props":{"var":"title_income1","text":"0%","name":"val","fontSize":48,"color":"#ffffff","centerX":0,"bottom":25},
                                                     "nodeParent":58,
                                                     "label":"val",
                                                     "isDirectory":false,
@@ -718,7 +724,7 @@
                                             "props":{"y":0,"width":370,"top":0,"name":"tab2","centerX":0,"bottom":0},
                                             "nodeParent":57,
                                             "label":"tab2",
-                                            "isOpen":false,
+                                            "isOpen":true,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
@@ -739,8 +745,8 @@
                                                 },
                                                 {
                                                     "type":"Label",
-                                                    "searchKey":"Label,val",
-                                                    "props":{"text":"0%","name":"val","fontSize":48,"color":"#ffffff","centerX":0,"bottom":25},
+                                                    "searchKey":"Label,val,title_income2",
+                                                    "props":{"var":"title_income2","text":"0%","name":"val","fontSize":48,"color":"#ffffff","centerX":0,"bottom":25},
                                                     "nodeParent":105,
                                                     "label":"val",
                                                     "isDirectory":false,
@@ -757,7 +763,7 @@
                                             "props":{"y":0,"width":370,"top":0,"right":0,"name":"tab3","bottom":0},
                                             "nodeParent":57,
                                             "label":"tab3",
-                                            "isOpen":false,
+                                            "isOpen":true,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
@@ -778,8 +784,8 @@
                                                 },
                                                 {
                                                     "type":"Label",
-                                                    "searchKey":"Label,val",
-                                                    "props":{"text":"0%","name":"val","fontSize":48,"color":"#ffffff","centerX":0,"bottom":25},
+                                                    "searchKey":"Label,val,title_income3",
+                                                    "props":{"var":"title_income3","text":"0%","name":"val","fontSize":48,"color":"#ffffff","centerX":0,"bottom":25},
                                                     "nodeParent":102,
                                                     "label":"val",
                                                     "isDirectory":false,
@@ -794,6 +800,7 @@
                                 }]
                         },
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,view2_2",
                             "props":{"width":1152,"top":200,"skin":"images/common/bg2.png","right":0,"name":"view2_2","left":0,"height":1439,"bottom":280},
@@ -811,7 +818,7 @@
                                     "props":{"y":0,"x":0,"top":55,"skin":"images/wallet/search_bg.png","right":55,"name":"view2_2_box","left":55,"bottom":55},
                                     "nodeParent":133,
                                     "label":"view2_2_box",
-                                    "isOpen":true,
+                                    "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
@@ -823,7 +830,7 @@
                                             "props":{"y":0,"width":1042,"right":0,"name":"thead","left":0,"height":130},
                                             "nodeParent":173,
                                             "label":"thead",
-                                            "isOpen":true,
+                                            "isOpen":false,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
@@ -948,8 +955,8 @@
                                             "child":[
                                                 {
                                                     "type":"List",
-                                                    "searchKey":"List,list",
-                                                    "props":{"top":0,"right":0,"name":"list","left":0,"elasticEnabled":true,"bottom":0},
+                                                    "searchKey":"List,list,incomeList",
+                                                    "props":{"var":"incomeList","top":0,"right":0,"name":"list","left":0,"elasticEnabled":true,"bottom":0},
                                                     "nodeParent":183,
                                                     "label":"list",
                                                     "isOpen":true,
@@ -1028,6 +1035,7 @@
                                 }]
                         },
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,view2_3",
                             "props":{"width":1152,"skin":"images/common/bg2.png","right":0,"name":"view2_3","left":0,"height":280,"bottom":0},
@@ -1045,7 +1053,7 @@
                                     "props":{"top":55,"skin":"images/friends/f_view.png","right":55,"name":"view2_3_box","left":55,"bottom":55},
                                     "nodeParent":165,
                                     "label":"view2_3_box",
-                                    "isOpen":false,
+                                    "isOpen":true,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
@@ -1065,8 +1073,8 @@
                                             "child":[
                                                 {
                                                     "type":"Label",
-                                                    "searchKey":"Label,val",
-                                                    "props":{"text":"0","name":"val","left":212,"fontSize":48,"color":"#ffffff","centerY":5},
+                                                    "searchKey":"Label,val,nowPersonNumVal",
+                                                    "props":{"var":"nowPersonNumVal","text":"0","name":"val","left":212,"fontSize":48,"color":"#ffffff","centerY":5},
                                                     "nodeParent":167,
                                                     "label":"val",
                                                     "isDirectory":false,
@@ -1092,8 +1100,8 @@
                                             "child":[
                                                 {
                                                     "type":"Label",
-                                                    "searchKey":"Label,val",
-                                                    "props":{"text":"0","name":"val","left":212,"fontSize":48,"color":"#ffffff","centerY":5},
+                                                    "searchKey":"Label,val,todayGXVal",
+                                                    "props":{"var":"todayGXVal","text":"0","name":"val","left":212,"fontSize":48,"color":"#ffffff","centerY":5},
                                                     "nodeParent":190,
                                                     "label":"val",
                                                     "isDirectory":false,
@@ -1119,8 +1127,8 @@
                                             "child":[
                                                 {
                                                     "type":"Label",
-                                                    "searchKey":"Label,val",
-                                                    "props":{"text":"0","name":"val","left":260,"fontSize":48,"color":"#ffffff","centerY":5},
+                                                    "searchKey":"Label,val,totalGXVal",
+                                                    "props":{"var":"totalGXVal","text":"0","name":"val","left":260,"fontSize":48,"color":"#ffffff","centerY":5},
                                                     "nodeParent":192,
                                                     "label":"val",
                                                     "isDirectory":false,
@@ -1134,7 +1142,7 @@
                                         }]
                                 }]
                         }],
-                    "$HIDDEN":true
+                    "$HIDDEN":false
                 },
                 {
                     "x":30,
@@ -1191,7 +1199,7 @@
                                                     "props":{"y":0,"width":280,"name":"th","left":0,"height":130},
                                                     "nodeParent":196,
                                                     "label":"th",
-                                                    "isOpen":false,
+                                                    "isOpen":true,
                                                     "isDirectory":true,
                                                     "isAniNode":true,
                                                     "hasChild":true,
@@ -1200,7 +1208,7 @@
                                                         {
                                                             "type":"Image",
                                                             "searchKey":"Image,text",
-                                                            "props":{"skin":"images/friends/friends_view2/nc.png","name":"text","centerY":0,"centerX":0},
+                                                            "props":{"skin":"images/friends/friends_view2/v3_time.png","name":"text","centerY":0,"centerX":0},
                                                             "nodeParent":197,
                                                             "label":"text",
                                                             "isDirectory":false,
@@ -1217,7 +1225,7 @@
                                                     "props":{"y":0,"width":480,"name":"th","height":130,"centerX":0},
                                                     "nodeParent":196,
                                                     "label":"th",
-                                                    "isOpen":false,
+                                                    "isOpen":true,
                                                     "isDirectory":true,
                                                     "isAniNode":true,
                                                     "hasChild":true,
@@ -1226,7 +1234,7 @@
                                                         {
                                                             "type":"Image",
                                                             "searchKey":"Image,text",
-                                                            "props":{"skin":"images/friends/friends_view2/ljgx.png","name":"text","centerY":0,"centerX":0},
+                                                            "props":{"skin":"images/friends/friends_view2/v3_hlje.png","name":"text","centerY":0,"centerX":0},
                                                             "nodeParent":201,
                                                             "label":"text",
                                                             "isDirectory":false,
@@ -1243,7 +1251,7 @@
                                                     "props":{"y":0,"x":0,"width":280,"right":0,"name":"th","height":130},
                                                     "nodeParent":196,
                                                     "label":"th",
-                                                    "isOpen":false,
+                                                    "isOpen":true,
                                                     "isDirectory":true,
                                                     "isAniNode":true,
                                                     "hasChild":true,
@@ -1252,7 +1260,7 @@
                                                         {
                                                             "type":"Image",
                                                             "searchKey":"Image,text",
-                                                            "props":{"skin":"images/friends/friends_view2/dlzt.png","name":"text","centerY":0,"centerX":0},
+                                                            "props":{"skin":"images/friends/friends_view2/v3_state.png","name":"text","centerY":0,"centerX":0},
                                                             "nodeParent":203,
                                                             "label":"text",
                                                             "isDirectory":false,
@@ -1278,8 +1286,8 @@
                                             "child":[
                                                 {
                                                     "type":"List",
-                                                    "searchKey":"List,list",
-                                                    "props":{"top":0,"right":0,"name":"list","left":0,"elasticEnabled":true,"bottom":0},
+                                                    "searchKey":"List,list,outRecordList",
+                                                    "props":{"var":"outRecordList","top":0,"right":0,"name":"list","left":0,"elasticEnabled":true,"bottom":0},
                                                     "nodeParent":205,
                                                     "label":"list",
                                                     "isOpen":true,
@@ -1291,7 +1299,7 @@
                                                         {
                                                             "type":"Box",
                                                             "searchKey":"Box,render",
-                                                            "props":{"y":0,"right":0,"name":"render","left":0,"height":80},
+                                                            "props":{"y":0,"right":0,"name":"render","left":0,"height":100},
                                                             "nodeParent":206,
                                                             "label":"render",
                                                             "isOpen":true,
@@ -1303,7 +1311,7 @@
                                                                 {
                                                                     "type":"Label",
                                                                     "searchKey":"Label,c1",
-                                                                    "props":{"width":280,"valign":"middle","top":0,"name":"c1","fontSize":42,"color":"#ffffff","bottom":0,"align":"center"},
+                                                                    "props":{"wordWrap":true,"width":280,"valign":"middle","top":0,"name":"c1","fontSize":42,"color":"#ffffff","bottom":0,"align":"center"},
                                                                     "nodeParent":207,
                                                                     "label":"c1",
                                                                     "isDirectory":false,
@@ -1315,10 +1323,10 @@
                                                                 },
                                                                 {
                                                                     "type":"Label",
-                                                                    "searchKey":"Label,c3",
-                                                                    "props":{"y":0,"width":480,"valign":"middle","top":0,"name":"c3","fontSize":42,"color":"#ffffff","centerX":0,"bottom":0,"align":"center"},
+                                                                    "searchKey":"Label,c2",
+                                                                    "props":{"y":0,"width":480,"valign":"middle","top":0,"name":"c2","fontSize":42,"color":"#ffffff","centerX":0,"bottom":0,"align":"center"},
                                                                     "nodeParent":207,
-                                                                    "label":"c3",
+                                                                    "label":"c2",
                                                                     "isDirectory":false,
                                                                     "isAniNode":false,
                                                                     "hasChild":false,
@@ -1328,10 +1336,10 @@
                                                                 },
                                                                 {
                                                                     "type":"Label",
-                                                                    "searchKey":"Label,c4",
-                                                                    "props":{"y":0,"width":280,"valign":"middle","top":0,"right":0,"name":"c4","fontSize":42,"color":"#ffffff","bottom":0,"align":"center"},
+                                                                    "searchKey":"Label,c3",
+                                                                    "props":{"y":0,"width":280,"valign":"middle","top":0,"right":0,"name":"c3","fontSize":42,"color":"#ffffff","bottom":0,"align":"center"},
                                                                     "nodeParent":207,
-                                                                    "label":"c4",
+                                                                    "label":"c3",
                                                                     "isDirectory":false,
                                                                     "isAniNode":false,
                                                                     "hasChild":false,

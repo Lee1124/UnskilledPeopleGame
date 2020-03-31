@@ -54,8 +54,10 @@ P 5D6928D8 text_register.png
 P 3DAFB2BD textinput.png
 P AE2A4A1A title_change.png
 P F1584604 title_friends.png
+P EE526BC0 title_giveCoin.png
 P 0EDDF982 title_hall.png
 P 70995EAA title_notice.png
+P 47A9639F title_record.png
 P A5E1E804 title_set.png
 P A6FB34FB title_shop.png
 P E9F2A5D6 title_wallet.png
@@ -86,6 +88,13 @@ P 9250EBF2 icon_look2.png
 P 31B5D074 icon_menu.png
 P 8667F84D zuoweiBg.png
 D images/GIF
+D images/giveCoin
+P 3D2879C0 c1.png
+P 9F5DBF66 c2.png
+P 8180202C c3.png
+P 95C6CAE0 c4.png
+P 082D3F11 giveBtn.png
+P 64D48B13 inputBg.png
 D images/hall
 P 1816C380 h_bg.png
 P FA6BD6D8 h_da_0.png
@@ -151,6 +160,16 @@ P EE523248 pwdBg.png
 P D6E33B9D tip.png
 D images/poker
 P 76153516 -1.png
+D images/record
+P D0F5E159 c1.png
+P FE08B2C0 c2.png
+P 95C6CAE0 c3.png
+P 651EFDE4 c4.png
+P 927514AB select1.png
+P CF82DEA9 select2.png
+P 038FCBE1 select3.png
+P CCF1D80C small1.png
+P FC3C4404 small2.png
 D images/register
 R EBBCB0C3 btnBox.png
 P 5DC0C47F btnRigisterText.png
@@ -221,6 +240,9 @@ P 8CFD67E3 nmqwj.png
 P 20CCAE98 sj.png
 P 9937BAB0 sjwjID.png
 P 167C8580 time.png
+P 327D2BAA v3_hlje.png
+P 142E2781 v3_state.png
+P 167C8580 v3_time.png
 P 4735A840 wdsy.png
 P FE1B614B wdwj.png
 P 8E21DE26 wjjrgx.png

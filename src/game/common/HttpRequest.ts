@@ -54,7 +54,7 @@ class HttpRequest {
                 }
             }
         }
-        xhr.http.timeout = 10000;//设置超时时间;
+        xhr.http.timeout = 20000;//设置超时时间;
         xhr.http.ontimeout = function () {
             Main.showLoading(false);
             Main.showDiaLog('请求超时,稍后再试!');

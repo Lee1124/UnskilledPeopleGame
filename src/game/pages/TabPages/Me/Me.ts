@@ -12,18 +12,21 @@ export default class Me extends Laya.Script {
     UI: any;
     //所属场景
     toScene: any;
+    //内容区原始高度
+    ctHeight:number;
     onStart(): void {
         this.toScene = this.owner.scene;
         this.meList = this.owner.getChildByName('list_bg').getChildByName('list_bg2').getChildByName('me_list');
-        this.setPage();
         myCenter.req('mePage', (res: boolean) => {
             if (res)
                 this.requestPageData();
         })
+        this.ctHeight=this.owner.scene.me_content.height;
     }
     openThisPage() {
         if (this.owner['visible']) {
             this.UI = this.owner.scene;
+            this.setPage();
             this.requestPageData();
             this.initOpenView();
         }
@@ -35,22 +38,29 @@ export default class Me extends Laya.Script {
 
         //进入充值页面
         this.owner.scene.addCoinBtn.on(Laya.Event.CLICK,this,()=>{
-            console.log('进来了')
             window.open('http://baidu.com');
         })
     }
     /**设置页面数据 */
     setPage(): void {
-        this.meList.array = Main.meListData;
+        Main.$LOG('我的页面==Main.familyRoomInfo.IsProm：',Main.familyRoomInfo, this.ctHeight);
+        Main.meListData.forEach((item:any)=>{
+            if(item.id==3){
+                item.isShow=Main.familyRoomInfo.IsProm?true:false;
+                if(item.isShow)
+                    this.owner.scene.me_content.height= this.ctHeight;
+                else
+                    this.owner.scene.me_content.height= this.ctHeight-130;
+            }
+        })
+        this.meList.array = Main.meListData.filter((item:any)=>item.isShow);
         this.meList.renderHandler = new Laya.Handler(this, this.meListOnRender);
         this.meList.mouseHandler = new Laya.Handler(this, this.meListOnClick);
     }
 
     meListOnRender(cell: any, index: number): void {
-        if (index == Main.meListData.length - 1) {
-            let line: any = cell.getChildByName("line");
-            line.visible = false;
-        }
+        let line: any = cell.getChildByName("line");
+        line.visible = cell.dataSource.id==6?false:true;
         let textImg: any = cell.getChildByName("textImg");
         textImg.skin = cell.dataSource.src;
     }
@@ -70,7 +80,7 @@ export default class Me extends Laya.Script {
                     this.goShare();
                     break;
                 case 4:// 赠送/受赠记录
-                    this.goGiftRecord();
+                    this.goGive();
                     break;
                 case 5:///设置
                     this.goSet();
@@ -90,8 +100,8 @@ export default class Me extends Laya.Script {
         this.goPageCoomon('Share.scene');
     }
     // 赠送/受赠记录
-    goGiftRecord(): void {
-        this.goPageCoomon('GiftRecord.scene');
+    goGive(): void {
+        this.goPageCoomon('Give.scene');
     }
     //金币流向
     goCoinRecord(): void {
@@ -106,7 +116,9 @@ export default class Me extends Laya.Script {
         Main.$openScene(url, false, null, (res: any) => {
             res.x = Laya.stage.width;
             res.zOrder = 10;
-            Laya.Tween.to(res, { x: 0 }, Main.Speed['changePage']);
+            Laya.Tween.to(res, { x: 0 }, Main.Speed['changePage'],null,Laya.Handler.create(this,()=>{
+                myCenter.send('meOpen',url);
+            }));
         })
     }
 

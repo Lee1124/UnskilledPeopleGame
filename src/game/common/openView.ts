@@ -49,6 +49,7 @@ export default class openView extends Laya.Script {
                 res.x = Laya.stage.width;
                 res.zOrder = 10;
                 Laya.Tween.to(res, { x: 0 }, Main.Speed['changePage'], null, Laya.Handler.create(this, () => {
+                    MyCenter.send('sceneUrl1', this.openSceneUrl);
                     if (this.openType == 1)
                         this.selfScene['removeSelf']();
                 }));

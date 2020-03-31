@@ -3,6 +3,14 @@
  */
 import TIP from '../common/SuspensionTips';
 class Main {
+    //亲友圈信息
+    familyRoomInfo: any = {
+        joinUserId: null,//要加入的玩家id
+        IsRoot: false,//是否是第一个创建的推广员
+        IsSuper: false,//是否是盟主
+        IsJoin: false,//是否加入了某个推广员（即加入了亲友团）
+        IsProm: false,//是否是推广员
+    }
     //手机信息
     phoneNews: any = {
         statusHeight: 0,//手机系统栏的高度
@@ -10,10 +18,15 @@ class Main {
     }
     //是否自动测试环境
     AUTO: boolean = false;
-    // //websoket请求地址
+    // websoket请求地址
     websoketApi: string = '132.232.34.32:8092';
-    //http请求的地址
+    // http请求的地址
     requestApi: string = 'http://132.232.34.32:8091';
+
+    // websoket请求地址
+    // websoketApi: string = '132.232.34.32:8092';
+    // http请求的地址
+    // requestApi: string = 'http://192.168.101.109:8081';
 
     //websoket请求地址
     //  websoketApi: string = '132.232.34.32:8082';
@@ -68,7 +81,7 @@ class Main {
         mePlay: 100,//‘我’出牌的速度
         otherPlay: 50,//‘其他’出牌的速度
         changePage: 200,//切换页面速度
-        openDiaLogSpeed:200//打开弹框的速度
+        openDiaLogSpeed: 200//打开弹框的速度
     }
     //跳转划出界面标志
     sign: any = {
@@ -87,17 +100,17 @@ class Main {
     loadMenuImgArr: any[] = ['res/img/menu/menu_1.png', 'res/img/menu/menu_2.png', 'res/img/menu/menu_3.png', 'res/img/menu/menu_4.png', 'res/img/menu/menu_5.png', 'res/img/menu/menu_6.png'];
     //‘我的’页面列表数据
     meListData: any[] = [
-        { id: 1, src: 'res/img/me/me_text1.png' },
-        { id: 2, src: 'res/img/me/me_text2.png' },
-        { id: 3, src: 'res/img/me/me_text3.png' },
-        { id: 4, src: 'res/img/me/me_text4.png' },
-        { id: 5, src: 'res/img/me/me_text5.png' },
-        { id: 6, src: 'res/img/me/me_text6.png' }
+        { id: 1, src: 'res/img/me/me_text1.png', isShow: true },
+        { id: 2, src: 'res/img/me/me_text2.png', isShow: true },
+        { id: 3, src: 'res/img/me/me_text3.png', isShow: false },
+        { id: 4, src: 'res/img/me/me_text4.png', isShow: true },
+        { id: 5, src: 'res/img/me/me_text5.png', isShow: true },
+        { id: 6, src: 'res/img/me/me_text6.png', isShow: true }
     ]
     //预加载的场景
-    loadScene: any[] = ['Game.scene', 'TabPages.scene', 'Register.scene', 'Set.scene', 
-    'CoinRecord.scene', 'RealTimeResult.scene', 'Friends.scene','EditUserNews.scene',
-    'Record.scene','Share.scene','GiftRecord.scene'
+    loadScene: any[] = ['Game.scene', 'TabPages.scene', 'Register.scene', 'Set.scene',
+        'CoinRecord.scene', 'RealTimeResult.scene', 'Friends.scene', 'EditUserNews.scene',
+        'Record.scene', 'Share.scene', 'Give.scene'
     ]
     loadSceneResourcesArr: any[] = []
     openSceneViewArr: any[] = []
@@ -196,7 +209,7 @@ class Main {
      */
     openView(res: any): void {
         this.beforeLoadCallback.call(this.beforeLoadThat, res);
-        this.$LOG('预加载的场景', res,res.url)
+        this.$LOG('预加载的场景', res, res.url)
         this.loadSceneResourcesArr.push(res.url);
         this.openSceneViewArr.forEach((item, index) => {
             if (item.url.indexOf(res.url) != -1) {
@@ -215,14 +228,14 @@ class Main {
      * @param fn2 正在打开回调函数
      */
     $openScene(url: string, closeOther: boolean, data?: any, fn?: Function, fn2?: Function) {
-        let flag:boolean=true;
+        let flag: boolean = true;
         this.loadSceneResourcesArr.forEach(item => {
-            if (item===url) {
+            if (item === url) {
                 Laya.Scene.open(url, closeOther, data, Laya.Handler.create(this, fn));
-                flag=false;
+                flag = false;
             }
         })
-        if(flag)
+        if (flag)
             this.openSceneViewArr = [{ url: url, closeOther: closeOther, data: data, fn: fn, fn2: fn2 }];
     }
 
@@ -580,10 +593,10 @@ class Main {
         return (str == '' || str.trim() == '') ? true : false;
     }
 
-    getDate(format: any, timeNum: any) {
-        let _format=!format?'yyyy/mm/dd':format;
+    getDate(format: any, timeNum: any, isOnlyD?: boolean) {
+        let _format = !format ? 'yyyy/mm/dd' : format;
         let oTime: any;
-        let oDate: any = new Date(timeNum*1000);
+        let oDate: any = new Date(timeNum * 1000);
         let oYear: any = oDate.getFullYear();
         let oMonth: any = oDate.getMonth() + 1;
         let oDay: any = oDate.getDate();
@@ -591,9 +604,15 @@ class Main {
         let oMin: any = oDate.getMinutes();
         let oSec: any = oDate.getSeconds();
         if (_format == 'yyyy-mm-dd') {
-            oTime = oYear + '-' + this.getzf(oMonth) + '-' + this.getzf(oDay) + ' ' + this.getzf(oHour) + ':' + this.getzf(oMin) + ':' + this.getzf(oSec);//最后拼接时间
+            if (isOnlyD)
+                oTime = oYear + '-' + this.getzf(oMonth) + '-' + this.getzf(oDay);
+            else
+                oTime = oYear + '-' + this.getzf(oMonth) + '-' + this.getzf(oDay) + ' ' + this.getzf(oHour) + ':' + this.getzf(oMin) + ':' + this.getzf(oSec);//最后拼接时间
         } else if (_format == 'yyyy/mm/dd') {
-            oTime = oYear + '/' + this.getzf(oMonth) + '/' + this.getzf(oDay) + ' ' + this.getzf(oHour) + ':' + this.getzf(oMin) + ':' + this.getzf(oSec);//最后拼接时间
+            if (isOnlyD)
+                oTime = oYear + '/' + this.getzf(oMonth) + '/' + this.getzf(oDay);
+            else
+                oTime = oYear + '/' + this.getzf(oMonth) + '/' + this.getzf(oDay) + ' ' + this.getzf(oHour) + ':' + this.getzf(oMin) + ':' + this.getzf(oSec);//最后拼接时间
         }
         return oTime;
     }
@@ -603,6 +622,17 @@ class Main {
             num = '0' + num;
         }
         return num;
+    }
+
+    /**
+    * 获取地址栏信息
+    * @param {String} name 名称
+    */
+    GetUrlString(name: string) {
+        let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        let r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
     }
 }
 export default new Main();

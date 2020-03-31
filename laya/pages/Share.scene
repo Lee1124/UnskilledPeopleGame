@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":5,
+    "selectedBox":11,
+    "selecteID":12,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","height":2208},
     "nodeParent":-1,
-    "maxID":11,
+    "maxID":14,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -28,6 +28,23 @@
             "isAniNode":true,
             "hasChild":false,
             "compId":3,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Script",
+            "switchAble":true,
+            "source":"src/game/pages/TabPages/Share/Share.ts",
+            "searchKey":"Script,Share",
+            "removeAble":true,
+            "props":{"y":0,"x":0},
+            "nodeParent":2,
+            "label":"Share",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":13,
             "child":[
                 ]
         },
@@ -80,7 +97,7 @@
                     "props":{"width":1242,"top":0,"name":"titleBox","height":195,"centerX":0,"bottom":10},
                     "nodeParent":5,
                     "label":"titleBox",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
@@ -129,6 +146,34 @@
                                 ],
                             "$HIDDEN":false
                         }]
+                }]
+        },
+        {
+            "x":15,
+            "type":"Image",
+            "searchKey":"Image,content",
+            "props":{"top":300,"right":0,"name":"content","left":0,"bottom":220},
+            "nodeParent":2,
+            "label":"content",
+            "isOpen":true,
+            "isDirectory":true,
+            "isAniNode":true,
+            "hasChild":true,
+            "compId":11,
+            "child":[
+                {
+                    "x":30,
+                    "type":"Label",
+                    "searchKey":"Label,text,shareUrl",
+                    "props":{"var":"shareUrl","name":"text","fontSize":50,"color":"#ffffff","centerY":0,"centerX":0},
+                    "nodeParent":11,
+                    "label":"text",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":12,
+                    "child":[
+                        ]
                 }]
         }],
     "animations":[

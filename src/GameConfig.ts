@@ -14,13 +14,16 @@ import SetViewWH from "./game/common/SetViewWH"
 import OpenDiaLog from "./game/Fuction/OpenDiaLog"
 import SlideSelect from "./game/common/SlideSelect"
 import MyClickSelect from "./game/common/MyClickSelect"
+import GiveCoin from "./game/pages/TabPages/GiveCoin/GiveCoin"
 import LoginUI from "./game/pages/Login/LoginUI"
 import Login from "./game/pages/Login/Login"
 import ZhanJiGet from "./game/pages/shishizhanji/ZhanJiGet"
+import Record from "./game/pages/TabPages/Record/Record"
 import RegisterUI from "./game/pages/Register/RegisterUI"
 import Register from "./game/pages/Register/Register"
 import Set from "./game/pages/Set/Set"
 import MySwitch from "./game/common/MySwitch"
+import Share from "./game/pages/TabPages/Share/Share"
 import Start from "./game/Fuction/Start"
 import openOutDiaLog from "./game/common/openOutDiaLog"
 import outPwdKeyBoard from "./game/common/outPwdKeyBoard"
@@ -64,13 +67,16 @@ export default class GameConfig{
         reg("game/Fuction/OpenDiaLog.ts",OpenDiaLog);
         reg("game/common/SlideSelect.ts",SlideSelect);
         reg("game/common/MyClickSelect.ts",MyClickSelect);
+        reg("game/pages/TabPages/GiveCoin/GiveCoin.ts",GiveCoin);
         reg("game/pages/Login/LoginUI.ts",LoginUI);
         reg("game/pages/Login/Login.ts",Login);
         reg("game/pages/shishizhanji/ZhanJiGet.ts",ZhanJiGet);
+        reg("game/pages/TabPages/Record/Record.ts",Record);
         reg("game/pages/Register/RegisterUI.ts",RegisterUI);
         reg("game/pages/Register/Register.ts",Register);
         reg("game/pages/Set/Set.ts",Set);
         reg("game/common/MySwitch.ts",MySwitch);
+        reg("game/pages/TabPages/Share/Share.ts",Share);
         reg("game/Fuction/Start.ts",Start);
         reg("game/common/openOutDiaLog.ts",openOutDiaLog);
         reg("game/common/outPwdKeyBoard.ts",outPwdKeyBoard);

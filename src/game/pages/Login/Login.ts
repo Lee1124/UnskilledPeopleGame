@@ -2,6 +2,7 @@ import HTTP from '../../common/HttpRequest';
 import Main from '../../common/Main';
 import OpenView from '../../common/openView';
 import myCenter from '../../common/MyCenter';
+import HttpReqContent from '../../common/HttpReqContent';
 // import AUTO from '../../common/AUTO';
 export default class login extends Laya.Script {
     //开关
@@ -23,7 +24,7 @@ export default class login extends Laya.Script {
         myCenter.req('loginPage',()=>{
             this.owner['loginState']=true;
             this.startLoadPage();
-        })
+        });
         //微信小游戏背景图
         // if (Main.wxGame)
         //     this.initPage();
@@ -96,6 +97,7 @@ export default class login extends Laya.Script {
                             init: res.data.init
                         }
                         this.changeMainUserInfo(data);
+                        this.getUserInfoLogined();
                         setTimeout(()=>{
                             this.dealWithLoginedView(data);
                         },1000)
@@ -124,6 +126,33 @@ export default class login extends Laya.Script {
                 }
             })
         }
+    }
+
+    /**
+     * 获取基础信息（当用户登录后前端主动请求）
+     */
+    getUserInfoLogined():void{
+        Main.familyRoomInfo.IsJoin=Main.familyRoomInfo.IsProm=false;
+        HttpReqContent.getUserInfoLogined(this,(res:any)=>{
+            Main.$LOG('获取基础信息（当用户登录后前端主动请求）',res);
+            let datas:any=res.data.datas.filter((item:any)=>item._t==="PromUILData")[0];
+            Main.familyRoomInfo.IsJoin=datas.IsJoin;
+            Main.familyRoomInfo.IsProm=datas.IsProm;
+            if(!datas.IsJoin){//&&!datas.IsJoin
+                //http://xxx.xxx/M.Prom/JoinPromoter?uid=100002&joinuid=100001&ip=222.211.220.131&localip=192.168.101.109&system=windows
+                let data: any = {
+                    uid: Main.userInfo.userId,
+                    joinuid:Main.familyRoomInfo.joinUserId,
+                    ip:'132.232.34.32',
+                    localip:null,
+                    system:null
+                }
+                HttpReqContent.joinPromoter(this,data,(res2:any)=>{
+                    Main.$LOG('加入某个推广员（即加入亲友团）',res2);
+                    Main.familyRoomInfo.IsJoin=true;
+                })
+            }
+        })
     }
 
     /**
