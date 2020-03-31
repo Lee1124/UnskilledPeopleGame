@@ -13,7 +13,7 @@ export default class Me extends Laya.Script {
     //所属场景
     toScene: any;
     //内容区原始高度
-    ctHeight:number;
+    ctHeight: number;
     onStart(): void {
         this.toScene = this.owner.scene;
         this.meList = this.owner.getChildByName('list_bg').getChildByName('list_bg2').getChildByName('me_list');
@@ -21,7 +21,7 @@ export default class Me extends Laya.Script {
             if (res)
                 this.requestPageData();
         })
-        this.ctHeight=this.owner.scene.me_content.height;
+        this.ctHeight = this.owner.scene.me_content.height;
     }
     openThisPage() {
         if (this.owner['visible']) {
@@ -37,30 +37,30 @@ export default class Me extends Laya.Script {
         OpenEditJS.initOpen(0, 'EditUserNews.scene', false, null, 0);
 
         //进入充值页面
-        this.owner.scene.addCoinBtn.on(Laya.Event.CLICK,this,()=>{
+        this.owner.scene.addCoinBtn.on(Laya.Event.CLICK, this, () => {
             window.open('http://baidu.com');
         })
     }
     /**设置页面数据 */
     setPage(): void {
-        Main.$LOG('我的页面==Main.familyRoomInfo.IsProm：',Main.familyRoomInfo, this.ctHeight);
-        Main.meListData.forEach((item:any)=>{
-            if(item.id==3){
-                item.isShow=Main.familyRoomInfo.IsProm?true:false;
-                if(item.isShow)
-                    this.owner.scene.me_content.height= this.ctHeight;
+        Main.$LOG('我的页面==Main.familyRoomInfo.IsProm：', Main.familyRoomInfo, this.ctHeight);
+        Main.meListData.forEach((item: any) => {
+            if (item.id == 3) {
+                item.isShow = Main.familyRoomInfo.IsProm ? true : false;
+                if (item.isShow)
+                    this.owner.scene.me_content.height = this.ctHeight;
                 else
-                    this.owner.scene.me_content.height= this.ctHeight-130;
+                    this.owner.scene.me_content.height = this.ctHeight - 130;
             }
         })
-        this.meList.array = Main.meListData.filter((item:any)=>item.isShow);
+        this.meList.array = Main.meListData.filter((item: any) => item.isShow);
         this.meList.renderHandler = new Laya.Handler(this, this.meListOnRender);
         this.meList.mouseHandler = new Laya.Handler(this, this.meListOnClick);
     }
 
     meListOnRender(cell: any, index: number): void {
         let line: any = cell.getChildByName("line");
-        line.visible = cell.dataSource.id==6?false:true;
+        line.visible = cell.dataSource.id == 6 ? false : true;
         let textImg: any = cell.getChildByName("textImg");
         textImg.skin = cell.dataSource.src;
     }
@@ -116,9 +116,14 @@ export default class Me extends Laya.Script {
         Main.$openScene(url, false, null, (res: any) => {
             res.x = Laya.stage.width;
             res.zOrder = 10;
-            Laya.Tween.to(res, { x: 0 }, Main.Speed['changePage'],null,Laya.Handler.create(this,()=>{
-                myCenter.send('meOpen',url);
+            Laya.Tween.to(res, { x: 0 }, Main.Speed['changePage'], null, Laya.Handler.create(this, () => {
+                myCenter.send('meOpen', url);
             }));
+            if (url==='Share.scene') {
+                //显示二维码界面
+                const QRcode: any = document.getElementById('QRcode');
+                QRcode.classList.add('QRcodeShow');
+            }
         })
     }
 

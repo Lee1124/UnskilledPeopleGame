@@ -78,7 +78,7 @@ export default class Friends2 extends Laya.Script {
             sjwjID.text = data.JoinUid == -1 ? '暂无上级玩家' : data.JoinUid;
             xjsl.text = data.MemberCount;
             jrxz.text = data.DayAddMemberCount;
-            list.array = data.Players;//[{Uid:111,Nick:'xm',PlayTimes:100,Time:1585652083},{Uid:111,Nick:'xm',PlayTimes:100,Time:1585652083}]
+            list.array =data.Players;//[{Uid:111,Nick:'xm',PlayTimes:0,Time:1585652083},{Uid:111,Nick:'xm',PlayTimes:100,Time:1585652083}]
             list.vScrollBarSkin = '';
             list.renderHandler = new Laya.Handler(this, this.page1ListRender);
         })
@@ -90,7 +90,7 @@ export default class Friends2 extends Laya.Script {
         let c4: any = cell.getChildByName('c4');
         c1.text = cell.dataSource.Uid;
         c2.text = cell.dataSource.Nick;
-        c3.text = cell.dataSource.PlayTimes;
+        c3.text = String(cell.dataSource.PlayTimes);
         c4.text = Main.getDate(null, cell.dataSource.Time, true);
     }
 
@@ -118,8 +118,8 @@ export default class Friends2 extends Laya.Script {
         let c3: any = cell.getChildByName('c3');
         let c4: any = cell.getChildByName('c4');
         c1.text = cell.dataSource.Nick;
-        c2.text = cell.dataSource.ToadyGX;
-        c3.text = cell.dataSource.TotalGX;
+        c2.text = String(cell.dataSource.TodayGX);
+        c3.text = String(cell.dataSource.TotalGX);
         switch (cell.dataSource.State) {
             case 0:
                 c4.text = '一级玩家';
@@ -150,7 +150,7 @@ export default class Friends2 extends Laya.Script {
         let c2: any = cell.getChildByName('c2');
         let c3: any = cell.getChildByName('c3');
         c1.text = Main.getDate(null, cell.dataSource.RequestTime);
-        c2.text = cell.dataSource.Money;
+        c2.text = String(cell.dataSource.Money);
         switch (cell.dataSource.State) {
             case 0:
                 c3.text = '申请中';

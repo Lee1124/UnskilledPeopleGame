@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":533,
-    "selecteID":534,
+    "selectedBox":2,
+    "selecteID":413,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/GameCenter/GameUI.ts","height":2208},
     "nodeParent":-1,
-    "maxID":535,
+    "maxID":536,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -55,14 +55,13 @@
             "props":{"var":"deskView","top":0,"right":0,"name":"deskView","left":0,"bottom":0},
             "nodeParent":2,
             "label":"deskView",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":6,
             "child":[
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,deskBg",
                     "props":{"y":0,"x":0,"top":0,"skin":"images/game/deskBg.jpg","right":0,"name":"deskBg","left":0,"bottom":0},
@@ -167,7 +166,6 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,btnView,btnView",
                     "props":{"var":"btnView","top":0,"right":0,"name":"btnView","left":0,"bottom":0},
@@ -302,7 +300,6 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,deskOther",
                     "props":{"y":853,"width":800,"name":"deskOther","height":500,"centerX":0},
@@ -317,7 +314,6 @@
                     "$HIDDEN":true
                 },
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,seatList,seatList",
                     "props":{"zOrder":1,"var":"seatList","top":506,"right":0,"name":"seatList","left":0,"bottom":300},
@@ -1350,7 +1346,6 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,dealSeat,dealSeat",
                     "props":{"zOrder":2,"y":150,"x":589,"width":64,"var":"dealSeat","name":"dealSeat","height":225,"centerX":0},
@@ -1455,7 +1450,6 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"Panel",
                     "searchKey":"Panel,chatView",
                     "props":{"y":228,"width":350,"visible":true,"name":"chatView","left":20,"height":222,"elasticEnabled":true,"alpha":0},
@@ -2335,6 +2329,20 @@
                         }],
                     "$HIDDEN":false
                 }]
+        },
+        {
+            "x":15,
+            "type":"Sprite",
+            "searchKey":"Sprite",
+            "props":{"y":1533,"x":551,"texture":"images/game/chi.png"},
+            "nodeParent":2,
+            "label":"Sprite",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":535,
+            "child":[
+                ]
         }],
     "animations":[
         {

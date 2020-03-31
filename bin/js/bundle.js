@@ -648,13 +648,14 @@
             this.backData = null;
             this.removeNode = null;
         }
-        initBack(backType, backMode, backScene, backData, node, updatePage, pageKey) {
+        initBack(backType, backMode, backScene, backData, node, updatePage, pageKey, callback) {
             this.backType = backType ? backType : 0;
             this.backMode = backMode ? backMode : 0;
             this.backScene = backScene ? backScene : '';
             this.backData = backData ? backData : null;
             this.removeNode = node ? node : null;
             this.toPageKey = pageKey ? pageKey : null;
+            this.callback = callback ? callback : null;
         }
         onEnable() {
             this.initBack();
@@ -682,6 +683,8 @@
                 Laya.Tween.to(thisScene, moveXY, Main$1.Speed['changePage'], null, Laya.Handler.create(this, () => {
                     thisScene.removeSelf();
                 }));
+                if (this.callback)
+                    this.callback('回来了');
             }
             else if (this.backType == 1) {
                 Laya.Scene.open(this.backScene, false, this.backData, Laya.Handler.create(this, (res) => {
@@ -689,9 +692,6 @@
                         thisScene.removeSelf();
                     }));
                 }));
-            }
-            if (this.removeNode) {
-                Laya.Browser.document.body.removeChild(this.removeNode);
             }
         }
     }
@@ -1529,7 +1529,7 @@
             let c4 = cell.getChildByName('c4');
             c1.text = cell.dataSource.Uid;
             c2.text = cell.dataSource.Nick;
-            c3.text = cell.dataSource.PlayTimes;
+            c3.text = String(cell.dataSource.PlayTimes);
             c4.text = Main$1.getDate(null, cell.dataSource.Time, true);
         }
         reqPage2Data() {
@@ -1554,8 +1554,8 @@
             let c3 = cell.getChildByName('c3');
             let c4 = cell.getChildByName('c4');
             c1.text = cell.dataSource.Nick;
-            c2.text = cell.dataSource.ToadyGX;
-            c3.text = cell.dataSource.TotalGX;
+            c2.text = String(cell.dataSource.TodayGX);
+            c3.text = String(cell.dataSource.TotalGX);
             switch (cell.dataSource.State) {
                 case 0:
                     c4.text = '一级玩家';
@@ -1583,7 +1583,7 @@
             let c2 = cell.getChildByName('c2');
             let c3 = cell.getChildByName('c3');
             c1.text = Main$1.getDate(null, cell.dataSource.RequestTime);
-            c2.text = cell.dataSource.Money;
+            c2.text = String(cell.dataSource.Money);
             switch (cell.dataSource.State) {
                 case 0:
                     c3.text = '申请中';
@@ -4068,7 +4068,7 @@
             this.registerEvent();
             myCenter.req('meOpen', (res) => {
                 if (res == this.owner.scene.url)
-                    this.selectThisTab(1);
+                    this.selectThisTab(3);
             });
         }
         registerEvent() {
@@ -4313,6 +4313,14 @@
     class Notice$2 extends Laya.Script {
         onStart() {
             this.owner['shareUrl'].text = 'http://132.232.34.32/ydr/?joinUserId=' + Main$1.userInfo.userId;
+            this.initBack();
+        }
+        initBack() {
+            let backJS = this.owner['back_btn'].getComponent(Back);
+            const QRcode = document.getElementById('QRcode');
+            backJS.initBack(null, null, null, null, null, null, null, (res) => {
+                QRcode.classList.remove('QRcodeShow');
+            });
         }
     }
 
@@ -4599,6 +4607,10 @@
                 Laya.Tween.to(res, { x: 0 }, Main$1.Speed['changePage'], null, Laya.Handler.create(this, () => {
                     myCenter.send('meOpen', url);
                 }));
+                if (url === 'Share.scene') {
+                    const QRcode = document.getElementById('QRcode');
+                    QRcode.classList.add('QRcodeShow');
+                }
             });
         }
         signOut() {

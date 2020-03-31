@@ -17,6 +17,9 @@ export default class Back extends Laya.Script {
     //通知的页面key值
     toPageKey:any;
 
+    //回调
+    callback:Function
+
     /**
      * 初始化返回参数
      * @param {*} backType 返回类型（0：表示直接返回,不需要打开场景 1：表示打开场景再返回）
@@ -25,13 +28,14 @@ export default class Back extends Laya.Script {
      * @param {*} backData 返回场景所传参数
      * @param {*} node 需要移除的节点
      */
-    initBack(backType?: number, backMode?: number, backScene?: string, backData?: any, node?: any, updatePage?: any,pageKey?:any): void {
+    initBack(backType?: number, backMode?: number, backScene?: string, backData?: any, node?: any, updatePage?: any,pageKey?:any,callback?:Function): void {
         this.backType = backType ? backType : 0;
         this.backMode = backMode ? backMode : 0;
         this.backScene = backScene ? backScene : '';
         this.backData = backData ? backData : null;
         this.removeNode = node ? node : null;
         this.toPageKey = pageKey ? pageKey : null;
+        this.callback=callback ? callback : null;
     }
     onEnable() {
         this.initBack();
@@ -59,7 +63,9 @@ export default class Back extends Laya.Script {
         if (this.backType == 0) {
             Laya.Tween.to(thisScene, moveXY, Main.Speed['changePage'], null, Laya.Handler.create(this, () => {
                 thisScene.removeSelf();
-            }))
+            }));
+            if(this.callback)
+                this.callback('回来了');
         } else if (this.backType == 1) {
             Laya.Scene.open(this.backScene, false, this.backData, Laya.Handler.create(this, (res: any) => {
                 Laya.Tween.to(thisScene, moveXY, Main.Speed['changePage'], null, Laya.Handler.create(this, () => {
@@ -67,8 +73,8 @@ export default class Back extends Laya.Script {
                 }))
             }))
         }
-        if (this.removeNode) {
-            Laya.Browser.document.body.removeChild(this.removeNode)
-        }
+        // if (this.removeNode) {
+        //     Laya.Browser.document.body.removeChild(this.removeNode)
+        // }
     }
 }

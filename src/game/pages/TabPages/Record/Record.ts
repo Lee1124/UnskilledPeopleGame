@@ -9,7 +9,7 @@ export default class Notice extends Laya.Script {
         this.registerEvent();
         MyCenter.req('meOpen',(res:any)=>{
             if(res==this.owner.scene.url)
-                this.selectThisTab(1);
+                this.selectThisTab(3);
         })
     }
 

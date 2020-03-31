@@ -193,7 +193,7 @@
             ];
             this.loadScene = ['Game.scene', 'TabPages.scene', 'Register.scene', 'Set.scene',
                 'CoinRecord.scene', 'RealTimeResult.scene', 'Friends.scene', 'EditUserNews.scene',
-                'Record.scene', 'Share.scene', 'GiftRecord.scene'
+                'Record.scene', 'Share.scene', 'Give.scene'
             ];
             this.loadSceneResourcesArr = [];
             this.openSceneViewArr = [];
@@ -578,7 +578,7 @@
         strIsNull(str) {
             return (str == '' || str.trim() == '') ? true : false;
         }
-        getDate(format, timeNum) {
+        getDate(format, timeNum, isOnlyD) {
             let _format = !format ? 'yyyy/mm/dd' : format;
             let oTime;
             let oDate = new Date(timeNum * 1000);
@@ -589,10 +589,16 @@
             let oMin = oDate.getMinutes();
             let oSec = oDate.getSeconds();
             if (_format == 'yyyy-mm-dd') {
-                oTime = oYear + '-' + this.getzf(oMonth) + '-' + this.getzf(oDay) + ' ' + this.getzf(oHour) + ':' + this.getzf(oMin) + ':' + this.getzf(oSec);
+                if (isOnlyD)
+                    oTime = oYear + '-' + this.getzf(oMonth) + '-' + this.getzf(oDay);
+                else
+                    oTime = oYear + '-' + this.getzf(oMonth) + '-' + this.getzf(oDay) + ' ' + this.getzf(oHour) + ':' + this.getzf(oMin) + ':' + this.getzf(oSec);
             }
             else if (_format == 'yyyy/mm/dd') {
-                oTime = oYear + '/' + this.getzf(oMonth) + '/' + this.getzf(oDay) + ' ' + this.getzf(oHour) + ':' + this.getzf(oMin) + ':' + this.getzf(oSec);
+                if (isOnlyD)
+                    oTime = oYear + '/' + this.getzf(oMonth) + '/' + this.getzf(oDay);
+                else
+                    oTime = oYear + '/' + this.getzf(oMonth) + '/' + this.getzf(oDay) + ' ' + this.getzf(oHour) + ':' + this.getzf(oMin) + ':' + this.getzf(oSec);
             }
             return oTime;
         }
@@ -725,19 +731,753 @@
         }
     }
 
+    /*
+     * JavaScript MD5
+     * https://github.com/blueimp/JavaScript-MD5
+     *
+     * Copyright 2011, Sebastian Tschan
+     * https://blueimp.net
+     *
+     * Licensed under the MIT license:
+     * https://opensource.org/licenses/MIT
+     *
+     * Based on
+     * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
+     * Digest Algorithm, as defined in RFC 1321.
+     * Version 2.2 Copyright (C) Paul Johnston 1999 - 2009
+     * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+     * Distributed under the BSD License
+     * See http://pajhome.org.uk/crypt/md5 for more info.
+     */
+
+    /* global define */
+
+    /* eslint-disable strict */
+
+    //;(function($) {
+    //  'use strict'
+
+      /**
+       * Add integers, wrapping at 2^32.
+       * This uses 16-bit operations internally to work around bugs in interpreters.
+       *
+       * @param {number} x First integer
+       * @param {number} y Second integer
+       * @returns {number} Sum
+       */
+      function safeAdd(x, y) {
+        var lsw = (x & 0xffff) + (y & 0xffff);
+        var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+        return (msw << 16) | (lsw & 0xffff)
+      }
+
+      /**
+       * Bitwise rotate a 32-bit number to the left.
+       *
+       * @param {number} num 32-bit number
+       * @param {number} cnt Rotation count
+       * @returns {number} Rotated number
+       */
+      function bitRotateLeft(num, cnt) {
+        return (num << cnt) | (num >>> (32 - cnt))
+      }
+
+      /**
+       * Basic operation the algorithm uses.
+       *
+       * @param {number} q q
+       * @param {number} a a
+       * @param {number} b b
+       * @param {number} x x
+       * @param {number} s s
+       * @param {number} t t
+       * @returns {number} Result
+       */
+      function md5cmn(q, a, b, x, s, t) {
+        return safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b)
+      }
+      /**
+       * Basic operation the algorithm uses.
+       *
+       * @param {number} a a
+       * @param {number} b b
+       * @param {number} c c
+       * @param {number} d d
+       * @param {number} x x
+       * @param {number} s s
+       * @param {number} t t
+       * @returns {number} Result
+       */
+      function md5ff(a, b, c, d, x, s, t) {
+        return md5cmn((b & c) | (~b & d), a, b, x, s, t)
+      }
+      /**
+       * Basic operation the algorithm uses.
+       *
+       * @param {number} a a
+       * @param {number} b b
+       * @param {number} c c
+       * @param {number} d d
+       * @param {number} x x
+       * @param {number} s s
+       * @param {number} t t
+       * @returns {number} Result
+       */
+      function md5gg(a, b, c, d, x, s, t) {
+        return md5cmn((b & d) | (c & ~d), a, b, x, s, t)
+      }
+      /**
+       * Basic operation the algorithm uses.
+       *
+       * @param {number} a a
+       * @param {number} b b
+       * @param {number} c c
+       * @param {number} d d
+       * @param {number} x x
+       * @param {number} s s
+       * @param {number} t t
+       * @returns {number} Result
+       */
+      function md5hh(a, b, c, d, x, s, t) {
+        return md5cmn(b ^ c ^ d, a, b, x, s, t)
+      }
+      /**
+       * Basic operation the algorithm uses.
+       *
+       * @param {number} a a
+       * @param {number} b b
+       * @param {number} c c
+       * @param {number} d d
+       * @param {number} x x
+       * @param {number} s s
+       * @param {number} t t
+       * @returns {number} Result
+       */
+      function md5ii(a, b, c, d, x, s, t) {
+        return md5cmn(c ^ (b | ~d), a, b, x, s, t)
+      }
+
+      /**
+       * Calculate the MD5 of an array of little-endian words, and a bit length.
+       *
+       * @param {Array} x Array of little-endian words
+       * @param {number} len Bit length
+       * @returns {Array<number>} MD5 Array
+       */
+      function binlMD5(x, len) {
+        /* append padding */
+        x[len >> 5] |= 0x80 << len % 32;
+        x[(((len + 64) >>> 9) << 4) + 14] = len;
+
+        var i;
+        var olda;
+        var oldb;
+        var oldc;
+        var oldd;
+        var a = 1732584193;
+        var b = -271733879;
+        var c = -1732584194;
+        var d = 271733878;
+
+        for (i = 0; i < x.length; i += 16) {
+          olda = a;
+          oldb = b;
+          oldc = c;
+          oldd = d;
+
+          a = md5ff(a, b, c, d, x[i], 7, -680876936);
+          d = md5ff(d, a, b, c, x[i + 1], 12, -389564586);
+          c = md5ff(c, d, a, b, x[i + 2], 17, 606105819);
+          b = md5ff(b, c, d, a, x[i + 3], 22, -1044525330);
+          a = md5ff(a, b, c, d, x[i + 4], 7, -176418897);
+          d = md5ff(d, a, b, c, x[i + 5], 12, 1200080426);
+          c = md5ff(c, d, a, b, x[i + 6], 17, -1473231341);
+          b = md5ff(b, c, d, a, x[i + 7], 22, -45705983);
+          a = md5ff(a, b, c, d, x[i + 8], 7, 1770035416);
+          d = md5ff(d, a, b, c, x[i + 9], 12, -1958414417);
+          c = md5ff(c, d, a, b, x[i + 10], 17, -42063);
+          b = md5ff(b, c, d, a, x[i + 11], 22, -1990404162);
+          a = md5ff(a, b, c, d, x[i + 12], 7, 1804603682);
+          d = md5ff(d, a, b, c, x[i + 13], 12, -40341101);
+          c = md5ff(c, d, a, b, x[i + 14], 17, -1502002290);
+          b = md5ff(b, c, d, a, x[i + 15], 22, 1236535329);
+
+          a = md5gg(a, b, c, d, x[i + 1], 5, -165796510);
+          d = md5gg(d, a, b, c, x[i + 6], 9, -1069501632);
+          c = md5gg(c, d, a, b, x[i + 11], 14, 643717713);
+          b = md5gg(b, c, d, a, x[i], 20, -373897302);
+          a = md5gg(a, b, c, d, x[i + 5], 5, -701558691);
+          d = md5gg(d, a, b, c, x[i + 10], 9, 38016083);
+          c = md5gg(c, d, a, b, x[i + 15], 14, -660478335);
+          b = md5gg(b, c, d, a, x[i + 4], 20, -405537848);
+          a = md5gg(a, b, c, d, x[i + 9], 5, 568446438);
+          d = md5gg(d, a, b, c, x[i + 14], 9, -1019803690);
+          c = md5gg(c, d, a, b, x[i + 3], 14, -187363961);
+          b = md5gg(b, c, d, a, x[i + 8], 20, 1163531501);
+          a = md5gg(a, b, c, d, x[i + 13], 5, -1444681467);
+          d = md5gg(d, a, b, c, x[i + 2], 9, -51403784);
+          c = md5gg(c, d, a, b, x[i + 7], 14, 1735328473);
+          b = md5gg(b, c, d, a, x[i + 12], 20, -1926607734);
+
+          a = md5hh(a, b, c, d, x[i + 5], 4, -378558);
+          d = md5hh(d, a, b, c, x[i + 8], 11, -2022574463);
+          c = md5hh(c, d, a, b, x[i + 11], 16, 1839030562);
+          b = md5hh(b, c, d, a, x[i + 14], 23, -35309556);
+          a = md5hh(a, b, c, d, x[i + 1], 4, -1530992060);
+          d = md5hh(d, a, b, c, x[i + 4], 11, 1272893353);
+          c = md5hh(c, d, a, b, x[i + 7], 16, -155497632);
+          b = md5hh(b, c, d, a, x[i + 10], 23, -1094730640);
+          a = md5hh(a, b, c, d, x[i + 13], 4, 681279174);
+          d = md5hh(d, a, b, c, x[i], 11, -358537222);
+          c = md5hh(c, d, a, b, x[i + 3], 16, -722521979);
+          b = md5hh(b, c, d, a, x[i + 6], 23, 76029189);
+          a = md5hh(a, b, c, d, x[i + 9], 4, -640364487);
+          d = md5hh(d, a, b, c, x[i + 12], 11, -421815835);
+          c = md5hh(c, d, a, b, x[i + 15], 16, 530742520);
+          b = md5hh(b, c, d, a, x[i + 2], 23, -995338651);
+
+          a = md5ii(a, b, c, d, x[i], 6, -198630844);
+          d = md5ii(d, a, b, c, x[i + 7], 10, 1126891415);
+          c = md5ii(c, d, a, b, x[i + 14], 15, -1416354905);
+          b = md5ii(b, c, d, a, x[i + 5], 21, -57434055);
+          a = md5ii(a, b, c, d, x[i + 12], 6, 1700485571);
+          d = md5ii(d, a, b, c, x[i + 3], 10, -1894986606);
+          c = md5ii(c, d, a, b, x[i + 10], 15, -1051523);
+          b = md5ii(b, c, d, a, x[i + 1], 21, -2054922799);
+          a = md5ii(a, b, c, d, x[i + 8], 6, 1873313359);
+          d = md5ii(d, a, b, c, x[i + 15], 10, -30611744);
+          c = md5ii(c, d, a, b, x[i + 6], 15, -1560198380);
+          b = md5ii(b, c, d, a, x[i + 13], 21, 1309151649);
+          a = md5ii(a, b, c, d, x[i + 4], 6, -145523070);
+          d = md5ii(d, a, b, c, x[i + 11], 10, -1120210379);
+          c = md5ii(c, d, a, b, x[i + 2], 15, 718787259);
+          b = md5ii(b, c, d, a, x[i + 9], 21, -343485551);
+
+          a = safeAdd(a, olda);
+          b = safeAdd(b, oldb);
+          c = safeAdd(c, oldc);
+          d = safeAdd(d, oldd);
+        }
+        return [a, b, c, d]
+      }
+
+      /**
+       * Convert an array of little-endian words to a string
+       *
+       * @param {Array<number>} input MD5 Array
+       * @returns {string} MD5 string
+       */
+      function binl2rstr(input) {
+        var i;
+        var output = '';
+        var length32 = input.length * 32;
+        for (i = 0; i < length32; i += 8) {
+          output += String.fromCharCode((input[i >> 5] >>> i % 32) & 0xff);
+        }
+        return output
+      }
+
+      /**
+       * Convert a raw string to an array of little-endian words
+       * Characters >255 have their high-byte silently ignored.
+       *
+       * @param {string} input Raw input string
+       * @returns {Array<number>} Array of little-endian words
+       */
+      function rstr2binl(input) {
+        var i;
+        var output = [];
+        output[(input.length >> 2) - 1] = undefined;
+        for (i = 0; i < output.length; i += 1) {
+          output[i] = 0;
+        }
+        var length8 = input.length * 8;
+        for (i = 0; i < length8; i += 8) {
+          output[i >> 5] |= (input.charCodeAt(i / 8) & 0xff) << i % 32;
+        }
+        return output
+      }
+
+      /**
+       * Calculate the MD5 of a raw string
+       *
+       * @param {string} s Input string
+       * @returns {string} Raw MD5 string
+       */
+      function rstrMD5(s) {
+        return binl2rstr(binlMD5(rstr2binl(s), s.length * 8))
+      }
+
+      /**
+       * Calculates the HMAC-MD5 of a key and some data (raw strings)
+       *
+       * @param {string} key HMAC key
+       * @param {string} data Raw input string
+       * @returns {string} Raw MD5 string
+       */
+      function rstrHMACMD5(key, data) {
+        var i;
+        var bkey = rstr2binl(key);
+        var ipad = [];
+        var opad = [];
+        var hash;
+        ipad[15] = opad[15] = undefined;
+        if (bkey.length > 16) {
+          bkey = binlMD5(bkey, key.length * 8);
+        }
+        for (i = 0; i < 16; i += 1) {
+          ipad[i] = bkey[i] ^ 0x36363636;
+          opad[i] = bkey[i] ^ 0x5c5c5c5c;
+        }
+        hash = binlMD5(ipad.concat(rstr2binl(data)), 512 + data.length * 8);
+        return binl2rstr(binlMD5(opad.concat(hash), 512 + 128))
+      }
+
+      /**
+       * Convert a raw string to a hex string
+       *
+       * @param {string} input Raw input string
+       * @returns {string} Hex encoded string
+       */
+      function rstr2hex(input) {
+        var hexTab = '0123456789abcdef';
+        var output = '';
+        var x;
+        var i;
+        for (i = 0; i < input.length; i += 1) {
+          x = input.charCodeAt(i);
+          output += hexTab.charAt((x >>> 4) & 0x0f) + hexTab.charAt(x & 0x0f);
+        }
+        return output
+      }
+
+      /**
+       * Encode a string as UTF-8
+       *
+       * @param {string} input Input string
+       * @returns {string} UTF8 string
+       */
+      function str2rstrUTF8(input) {
+        return unescape(encodeURIComponent(input))
+      }
+
+      /**
+       * Encodes input string as raw MD5 string
+       *
+       * @param {string} s Input string
+       * @returns {string} Raw MD5 string
+       */
+      function rawMD5(s) {
+        return rstrMD5(str2rstrUTF8(s))
+      }
+      /**
+       * Encodes input string as Hex encoded string
+       *
+       * @param {string} s Input string
+       * @returns {string} Hex encoded string
+       */
+      function hexMD5(s) {
+        return rstr2hex(rawMD5(s))
+      }
+      /**
+       * Calculates the raw HMAC-MD5 for the given key and data
+       *
+       * @param {string} k HMAC key
+       * @param {string} d Input string
+       * @returns {string} Raw MD5 string
+       */
+      function rawHMACMD5(k, d) {
+        return rstrHMACMD5(str2rstrUTF8(k), str2rstrUTF8(d))
+      }
+      /**
+       * Calculates the Hex encoded HMAC-MD5 for the given key and data
+       *
+       * @param {string} k HMAC key
+       * @param {string} d Input string
+       * @returns {string} Raw MD5 string
+       */
+      function hexHMACMD5(k, d) {
+        return rstr2hex(rawHMACMD5(k, d))
+      }
+
+      /**
+       * Calculates MD5 value for a given string.
+       * If a key is provided, calculates the HMAC-MD5 value.
+       * Returns a Hex encoded string unless the raw argument is given.
+       *
+       * @param {string} string Input string
+       * @param {string} [key] HMAC key
+       * @param {boolean} [raw] Raw output switch
+       * @returns {string} MD5 output
+       */
+      function md5(string, key, raw) {
+        if (!key) {
+          if (!raw) {
+            return hexMD5(string)
+          }
+          return rawMD5(string)
+        }
+        if (!raw) {
+          return hexHMACMD5(key, string)
+        }
+        return rawHMACMD5(key, string)
+      }
+    /*
+      if (typeof define === 'function' && define.amd) {
+        define(function() {
+          return md5
+        })
+      } else if (typeof module === 'object' && module.exports) {
+        module.exports = md5
+      } else {
+        $.md5 = md5
+      }
+      */
+    //})(this)
+    function md51(str){
+        console.log(str);
+        return str;
+    }
+    var md5$1 = {
+        md5
+    };
+
+    class HttpRequest {
+        $request(obj) {
+            let that = obj.that;
+            let xhr = new Laya.HttpRequest();
+            let url = Main$1.requestApi + obj.url;
+            let dataObj = obj.data;
+            let postData = '';
+            let method = obj.method ? obj.method : 'get';
+            let dataObjArr = [];
+            if (method == 'get') {
+                var timestamp = new Date().getTime();
+                let sstr = "";
+                if (Main$1.userInfo) {
+                    sstr = Main$1.userInfo.key + '&' + timestamp;
+                }
+                for (var key in dataObj) {
+                    if (dataObj.hasOwnProperty(key)) {
+                        dataObjArr.push(key);
+                        if (dataObjArr.length == 1) {
+                            url = url + '?' + key + '=' + dataObj[key];
+                        }
+                        else {
+                            url = url + '&' + key + '=' + dataObj[key];
+                        }
+                        sstr += "&" + dataObj[key];
+                    }
+                }
+                if (Main$1.userInfo) {
+                    url += '&t=' + timestamp;
+                    Main$1.$LOG("md5：" + sstr + " key:" + Main$1.userInfo.key);
+                    url += '&sign=' + md5$1.md5(sstr);
+                }
+            }
+            else if (method == 'post') {
+                for (var key in dataObj) {
+                    if (dataObj.hasOwnProperty(key)) {
+                        dataObjArr.push(key);
+                        if (dataObjArr.length == 1) {
+                            postData = key + '=' + dataObj[key];
+                        }
+                        else {
+                            postData += '&' + key + '=' + dataObj[key];
+                        }
+                    }
+                }
+            }
+            xhr.http.timeout = 20000;
+            xhr.http.ontimeout = function () {
+                Main$1.showLoading(false);
+                Main$1.showDiaLog('请求超时,稍后再试!');
+                if (obj.timeout)
+                    obj.timeout.call(that, '请求超时,稍后再试!');
+            };
+            xhr.once(Laya.Event.COMPLETE, this, (res) => {
+                if (!res.status) {
+                    Main$1.$ERROR('冲突登录:', res);
+                    if (res.code == 1003 ||
+                        res.code == 1004) {
+                        Main$1.showDiaLog('登录失效，请重新登录', 1, () => {
+                            Main$1.hideAllLoading();
+                            Laya.Scene.open('login.scene', true, Main$1.sign.signOut);
+                        });
+                    }
+                    return;
+                }
+                obj.success.call(that, res);
+            });
+            xhr.once(Laya.Event.ERROR, this, (err) => {
+                Main$1.$ERROR('请求异常:', err);
+                Main$1.showDiaLog('网络异常');
+                Main$1.showLoading(false);
+                if (obj.fail)
+                    obj.fail.call(that, err);
+            });
+            xhr.once(Laya.Event.PROGRESS, this, (ess) => {
+                Main$1.$ERROR('PROGRESS:', ess);
+                if (obj.ess)
+                    obj.ess(ess);
+            });
+            xhr.send(url, postData, method, 'json');
+        }
+    }
+    var HTTP = new HttpRequest();
+
+    class HttpReq {
+        getUserNews(that, callback) {
+            let data = {
+                uid: Main$1.userInfo.userId,
+            };
+            HTTP.$request({
+                that: that,
+                url: '/M.User/GetInfo',
+                data: data,
+                success(res) {
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                }
+            });
+        }
+        walletSearch(that, callback) {
+            let data = {
+                uid: Main$1.userInfo.userId
+            };
+            HTTP.$request({
+                that: that,
+                url: '/M.WLT/GetWallet',
+                data: data,
+                success(res) {
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                }
+            });
+        }
+        setOutPwd(that, data, callback) {
+            HTTP.$request({
+                that: that,
+                url: '/M.WLT/SetWalletPsw',
+                data: data,
+                success(res) {
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                }
+            });
+        }
+        reqOutMoney(that, data, callback) {
+            Main$1.showLoading(true);
+            HTTP.$request({
+                that: that,
+                url: '/M.WLT/RequestWalletOut',
+                data: data,
+                success(res) {
+                    Main$1.showLoading(false);
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                }
+            });
+        }
+        searchReqOutList(that, callback) {
+            let data = {
+                uid: Main$1.userInfo.userId
+            };
+            HTTP.$request({
+                that: that,
+                url: '/M.WLT/GetWalletOutRecords',
+                data: data,
+                success(res) {
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                }
+            });
+        }
+        getUserInfoLogined(that, callback) {
+            let data = {
+                uid: Main$1.userInfo.userId
+            };
+            HTTP.$request({
+                that: that,
+                url: '/M.User/GetUserInfoLogined',
+                data: data,
+                success(res) {
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                }
+            });
+        }
+        joinPromoter(that, data, callback) {
+            HTTP.$request({
+                that: that,
+                url: '/M.Prom/JoinPromoter',
+                data: data,
+                success(res) {
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                }
+            });
+        }
+        getFriendsNew(that, callback) {
+            let data = {
+                uid: Main$1.userInfo.userId
+            };
+            HTTP.$request({
+                that: that,
+                url: '/M.Prom/GetPromoterFullInfo',
+                data: data,
+                success(res) {
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                }
+            });
+        }
+        createFamily(that, callback) {
+            let data = {
+                uid: Main$1.userInfo.userId
+            };
+            HTTP.$request({
+                that: that,
+                url: '/M.Prom/CreatePromoter',
+                data: data,
+                success(res) {
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                }
+            });
+        }
+        getMyPlayerNews(that, callback) {
+            Main$1.showLoading(true);
+            let data = {
+                uid: Main$1.userInfo.userId
+            };
+            HTTP.$request({
+                that: that,
+                url: '/M.Prom/GetMyPlayerInfos',
+                data: data,
+                success(res) {
+                    Main$1.showLoading(false);
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                }
+            });
+        }
+        getMyIncome(that, callback) {
+            Main$1.showLoading(true);
+            let data = {
+                uid: Main$1.userInfo.userId
+            };
+            HTTP.$request({
+                that: that,
+                url: '/M.Prom/GetMyIncomeInfos',
+                data: data,
+                success(res) {
+                    Main$1.showLoading(false);
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                }
+            });
+        }
+        getOutRecord(that, callback) {
+            Main$1.showLoading(true);
+            let data = {
+                uid: Main$1.userInfo.userId
+            };
+            HTTP.$request({
+                that: that,
+                url: '/M.Prom/GetPromoterOutRecords',
+                data: data,
+                success(res) {
+                    Main$1.showLoading(false);
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                }
+            });
+        }
+        reqHLOut(that, callback) {
+            Main$1.showLoading(true);
+            let data = {
+                uid: Main$1.userInfo.userId
+            };
+            HTTP.$request({
+                that: that,
+                url: '/M.Prom/RequestPromoterOut',
+                data: data,
+                success(res) {
+                    Main$1.showLoading(false);
+                    if (res.data.ret.type == 0) {
+                        callback.call(that, res);
+                    }
+                    else {
+                        Main$1.showDiaLog(res.data.ret.msg);
+                    }
+                }
+            });
+        }
+    }
+    var HttpReqContent = new HttpReq();
+
     class Friends2$1 extends Laya.Script {
         onStart() {
             this.setBack();
             this.registerEvent();
+            myCenter.req('sceneUrl1', (url) => {
+                if (url == this.owner.scene.url)
+                    this.setPage();
+            });
         }
         setBack() {
             let backJS = this.owner['back_btn'].getComponent(Back);
-            console.log(backJS);
             backJS.initBack();
         }
         registerEvent() {
             this.owner['tab_title']._children.forEach((item, index) => {
-                item.on(Laya.Event.CLICK, this, this.selectThisTab, [item, index + 1]);
+                item.on(Laya.Event.CLICK, this, this.selectThisTab, [index + 1]);
             });
         }
         reloadNavSelectZT() {
@@ -745,9 +1485,116 @@
                 item.visible = false;
             });
         }
-        selectThisTab(itemObj, pageNum) {
+        selectThisTab(pageNum) {
             this.reloadNavSelectZT();
             this.owner['v2_tab_select'].getChildByName('s' + pageNum).visible = true;
+            this.reqPage2Data();
+        }
+        setPage() {
+            switch (this.owner['openedData']) {
+                case 1:
+                    this.reqPage1Data();
+                    break;
+                case 2:
+                    this.selectThisTab(1);
+                    break;
+                case 3:
+                    this.reqPage3Data();
+                    break;
+            }
+        }
+        reqPage1Data() {
+            HttpReqContent.getMyPlayerNews(this, (res) => {
+                Main$1.$LOG('亲友圈-我的玩家', res);
+                let data = res.data;
+                let view1 = this.owner['view1'];
+                let view1_1_box = view1.getChildByName('view1_1').getChildByName('view1_1_box');
+                let view1_2_box = view1.getChildByName('view1_2').getChildByName('view1_2_box');
+                let sjwjID = view1_1_box.getChildByName('sjwjID').getChildByName('val');
+                let xjsl = view1_1_box.getChildByName('xjsl').getChildByName('val');
+                let jrxz = view1_1_box.getChildByName('jrxz').getChildByName('val');
+                let list = view1_2_box.getChildByName('tbody').getChildByName('list');
+                sjwjID.text = data.JoinUid == -1 ? '暂无上级玩家' : data.JoinUid;
+                xjsl.text = data.MemberCount;
+                jrxz.text = data.DayAddMemberCount;
+                list.array = data.Players;
+                list.vScrollBarSkin = '';
+                list.renderHandler = new Laya.Handler(this, this.page1ListRender);
+            });
+        }
+        page1ListRender(cell, index) {
+            let c1 = cell.getChildByName('c1');
+            let c2 = cell.getChildByName('c2');
+            let c3 = cell.getChildByName('c3');
+            let c4 = cell.getChildByName('c4');
+            c1.text = cell.dataSource.Uid;
+            c2.text = cell.dataSource.Nick;
+            c3.text = cell.dataSource.PlayTimes;
+            c4.text = Main$1.getDate(null, cell.dataSource.Time, true);
+        }
+        reqPage2Data() {
+            HttpReqContent.getMyIncome(this, (res) => {
+                Main$1.$LOG('亲友圈-我的收益', res);
+                let data = res.data;
+                this.owner['title_income1'].text = data.Income0;
+                this.owner['title_income2'].text = data.Income1;
+                this.owner['title_income3'].text = data.Income2;
+                this.owner['nowPersonNumVal'].text = data.MemberCount;
+                this.owner['todayGXVal'].text = data.TodayGX;
+                this.owner['totalGXVal'].text = data.TotalGX;
+                let list = this.owner['incomeList'];
+                list.array = data.PlayersGX;
+                list.vScrollBarSkin = '';
+                list.renderHandler = new Laya.Handler(this, this.page2ListRender);
+            });
+        }
+        page2ListRender(cell, index) {
+            let c1 = cell.getChildByName('c1');
+            let c2 = cell.getChildByName('c2');
+            let c3 = cell.getChildByName('c3');
+            let c4 = cell.getChildByName('c4');
+            c1.text = cell.dataSource.Nick;
+            c2.text = cell.dataSource.ToadyGX;
+            c3.text = cell.dataSource.TotalGX;
+            switch (cell.dataSource.State) {
+                case 0:
+                    c4.text = '一级玩家';
+                    break;
+                case 1:
+                    c4.text = '二级玩家';
+                    break;
+                case 2:
+                    c4.text = '三级玩家';
+                    break;
+            }
+        }
+        reqPage3Data() {
+            HttpReqContent.getOutRecord(this, (res) => {
+                Main$1.$LOG('亲友圈-提现记录', res);
+                let data = res.data;
+                let list = this.owner['outRecordList'];
+                list.array = data.records;
+                list.vScrollBarSkin = '';
+                list.renderHandler = new Laya.Handler(this, this.page3ListRender);
+            });
+        }
+        page3ListRender(cell, index) {
+            let c1 = cell.getChildByName('c1');
+            let c2 = cell.getChildByName('c2');
+            let c3 = cell.getChildByName('c3');
+            c1.text = Main$1.getDate(null, cell.dataSource.RequestTime);
+            c2.text = cell.dataSource.Money;
+            switch (cell.dataSource.State) {
+                case 0:
+                    c3.text = '申请中';
+                    break;
+                case 1:
+                    c3.text = '审核中';
+                    break;
+                case 2:
+                    c3.text = '已提现';
+                    break;
+            }
         }
     }
 
@@ -2330,501 +3177,6 @@
         }
     }
 
-    /*
-     * JavaScript MD5
-     * https://github.com/blueimp/JavaScript-MD5
-     *
-     * Copyright 2011, Sebastian Tschan
-     * https://blueimp.net
-     *
-     * Licensed under the MIT license:
-     * https://opensource.org/licenses/MIT
-     *
-     * Based on
-     * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
-     * Digest Algorithm, as defined in RFC 1321.
-     * Version 2.2 Copyright (C) Paul Johnston 1999 - 2009
-     * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
-     * Distributed under the BSD License
-     * See http://pajhome.org.uk/crypt/md5 for more info.
-     */
-
-    /* global define */
-
-    /* eslint-disable strict */
-
-    //;(function($) {
-    //  'use strict'
-
-      /**
-       * Add integers, wrapping at 2^32.
-       * This uses 16-bit operations internally to work around bugs in interpreters.
-       *
-       * @param {number} x First integer
-       * @param {number} y Second integer
-       * @returns {number} Sum
-       */
-      function safeAdd(x, y) {
-        var lsw = (x & 0xffff) + (y & 0xffff);
-        var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
-        return (msw << 16) | (lsw & 0xffff)
-      }
-
-      /**
-       * Bitwise rotate a 32-bit number to the left.
-       *
-       * @param {number} num 32-bit number
-       * @param {number} cnt Rotation count
-       * @returns {number} Rotated number
-       */
-      function bitRotateLeft(num, cnt) {
-        return (num << cnt) | (num >>> (32 - cnt))
-      }
-
-      /**
-       * Basic operation the algorithm uses.
-       *
-       * @param {number} q q
-       * @param {number} a a
-       * @param {number} b b
-       * @param {number} x x
-       * @param {number} s s
-       * @param {number} t t
-       * @returns {number} Result
-       */
-      function md5cmn(q, a, b, x, s, t) {
-        return safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b)
-      }
-      /**
-       * Basic operation the algorithm uses.
-       *
-       * @param {number} a a
-       * @param {number} b b
-       * @param {number} c c
-       * @param {number} d d
-       * @param {number} x x
-       * @param {number} s s
-       * @param {number} t t
-       * @returns {number} Result
-       */
-      function md5ff(a, b, c, d, x, s, t) {
-        return md5cmn((b & c) | (~b & d), a, b, x, s, t)
-      }
-      /**
-       * Basic operation the algorithm uses.
-       *
-       * @param {number} a a
-       * @param {number} b b
-       * @param {number} c c
-       * @param {number} d d
-       * @param {number} x x
-       * @param {number} s s
-       * @param {number} t t
-       * @returns {number} Result
-       */
-      function md5gg(a, b, c, d, x, s, t) {
-        return md5cmn((b & d) | (c & ~d), a, b, x, s, t)
-      }
-      /**
-       * Basic operation the algorithm uses.
-       *
-       * @param {number} a a
-       * @param {number} b b
-       * @param {number} c c
-       * @param {number} d d
-       * @param {number} x x
-       * @param {number} s s
-       * @param {number} t t
-       * @returns {number} Result
-       */
-      function md5hh(a, b, c, d, x, s, t) {
-        return md5cmn(b ^ c ^ d, a, b, x, s, t)
-      }
-      /**
-       * Basic operation the algorithm uses.
-       *
-       * @param {number} a a
-       * @param {number} b b
-       * @param {number} c c
-       * @param {number} d d
-       * @param {number} x x
-       * @param {number} s s
-       * @param {number} t t
-       * @returns {number} Result
-       */
-      function md5ii(a, b, c, d, x, s, t) {
-        return md5cmn(c ^ (b | ~d), a, b, x, s, t)
-      }
-
-      /**
-       * Calculate the MD5 of an array of little-endian words, and a bit length.
-       *
-       * @param {Array} x Array of little-endian words
-       * @param {number} len Bit length
-       * @returns {Array<number>} MD5 Array
-       */
-      function binlMD5(x, len) {
-        /* append padding */
-        x[len >> 5] |= 0x80 << len % 32;
-        x[(((len + 64) >>> 9) << 4) + 14] = len;
-
-        var i;
-        var olda;
-        var oldb;
-        var oldc;
-        var oldd;
-        var a = 1732584193;
-        var b = -271733879;
-        var c = -1732584194;
-        var d = 271733878;
-
-        for (i = 0; i < x.length; i += 16) {
-          olda = a;
-          oldb = b;
-          oldc = c;
-          oldd = d;
-
-          a = md5ff(a, b, c, d, x[i], 7, -680876936);
-          d = md5ff(d, a, b, c, x[i + 1], 12, -389564586);
-          c = md5ff(c, d, a, b, x[i + 2], 17, 606105819);
-          b = md5ff(b, c, d, a, x[i + 3], 22, -1044525330);
-          a = md5ff(a, b, c, d, x[i + 4], 7, -176418897);
-          d = md5ff(d, a, b, c, x[i + 5], 12, 1200080426);
-          c = md5ff(c, d, a, b, x[i + 6], 17, -1473231341);
-          b = md5ff(b, c, d, a, x[i + 7], 22, -45705983);
-          a = md5ff(a, b, c, d, x[i + 8], 7, 1770035416);
-          d = md5ff(d, a, b, c, x[i + 9], 12, -1958414417);
-          c = md5ff(c, d, a, b, x[i + 10], 17, -42063);
-          b = md5ff(b, c, d, a, x[i + 11], 22, -1990404162);
-          a = md5ff(a, b, c, d, x[i + 12], 7, 1804603682);
-          d = md5ff(d, a, b, c, x[i + 13], 12, -40341101);
-          c = md5ff(c, d, a, b, x[i + 14], 17, -1502002290);
-          b = md5ff(b, c, d, a, x[i + 15], 22, 1236535329);
-
-          a = md5gg(a, b, c, d, x[i + 1], 5, -165796510);
-          d = md5gg(d, a, b, c, x[i + 6], 9, -1069501632);
-          c = md5gg(c, d, a, b, x[i + 11], 14, 643717713);
-          b = md5gg(b, c, d, a, x[i], 20, -373897302);
-          a = md5gg(a, b, c, d, x[i + 5], 5, -701558691);
-          d = md5gg(d, a, b, c, x[i + 10], 9, 38016083);
-          c = md5gg(c, d, a, b, x[i + 15], 14, -660478335);
-          b = md5gg(b, c, d, a, x[i + 4], 20, -405537848);
-          a = md5gg(a, b, c, d, x[i + 9], 5, 568446438);
-          d = md5gg(d, a, b, c, x[i + 14], 9, -1019803690);
-          c = md5gg(c, d, a, b, x[i + 3], 14, -187363961);
-          b = md5gg(b, c, d, a, x[i + 8], 20, 1163531501);
-          a = md5gg(a, b, c, d, x[i + 13], 5, -1444681467);
-          d = md5gg(d, a, b, c, x[i + 2], 9, -51403784);
-          c = md5gg(c, d, a, b, x[i + 7], 14, 1735328473);
-          b = md5gg(b, c, d, a, x[i + 12], 20, -1926607734);
-
-          a = md5hh(a, b, c, d, x[i + 5], 4, -378558);
-          d = md5hh(d, a, b, c, x[i + 8], 11, -2022574463);
-          c = md5hh(c, d, a, b, x[i + 11], 16, 1839030562);
-          b = md5hh(b, c, d, a, x[i + 14], 23, -35309556);
-          a = md5hh(a, b, c, d, x[i + 1], 4, -1530992060);
-          d = md5hh(d, a, b, c, x[i + 4], 11, 1272893353);
-          c = md5hh(c, d, a, b, x[i + 7], 16, -155497632);
-          b = md5hh(b, c, d, a, x[i + 10], 23, -1094730640);
-          a = md5hh(a, b, c, d, x[i + 13], 4, 681279174);
-          d = md5hh(d, a, b, c, x[i], 11, -358537222);
-          c = md5hh(c, d, a, b, x[i + 3], 16, -722521979);
-          b = md5hh(b, c, d, a, x[i + 6], 23, 76029189);
-          a = md5hh(a, b, c, d, x[i + 9], 4, -640364487);
-          d = md5hh(d, a, b, c, x[i + 12], 11, -421815835);
-          c = md5hh(c, d, a, b, x[i + 15], 16, 530742520);
-          b = md5hh(b, c, d, a, x[i + 2], 23, -995338651);
-
-          a = md5ii(a, b, c, d, x[i], 6, -198630844);
-          d = md5ii(d, a, b, c, x[i + 7], 10, 1126891415);
-          c = md5ii(c, d, a, b, x[i + 14], 15, -1416354905);
-          b = md5ii(b, c, d, a, x[i + 5], 21, -57434055);
-          a = md5ii(a, b, c, d, x[i + 12], 6, 1700485571);
-          d = md5ii(d, a, b, c, x[i + 3], 10, -1894986606);
-          c = md5ii(c, d, a, b, x[i + 10], 15, -1051523);
-          b = md5ii(b, c, d, a, x[i + 1], 21, -2054922799);
-          a = md5ii(a, b, c, d, x[i + 8], 6, 1873313359);
-          d = md5ii(d, a, b, c, x[i + 15], 10, -30611744);
-          c = md5ii(c, d, a, b, x[i + 6], 15, -1560198380);
-          b = md5ii(b, c, d, a, x[i + 13], 21, 1309151649);
-          a = md5ii(a, b, c, d, x[i + 4], 6, -145523070);
-          d = md5ii(d, a, b, c, x[i + 11], 10, -1120210379);
-          c = md5ii(c, d, a, b, x[i + 2], 15, 718787259);
-          b = md5ii(b, c, d, a, x[i + 9], 21, -343485551);
-
-          a = safeAdd(a, olda);
-          b = safeAdd(b, oldb);
-          c = safeAdd(c, oldc);
-          d = safeAdd(d, oldd);
-        }
-        return [a, b, c, d]
-      }
-
-      /**
-       * Convert an array of little-endian words to a string
-       *
-       * @param {Array<number>} input MD5 Array
-       * @returns {string} MD5 string
-       */
-      function binl2rstr(input) {
-        var i;
-        var output = '';
-        var length32 = input.length * 32;
-        for (i = 0; i < length32; i += 8) {
-          output += String.fromCharCode((input[i >> 5] >>> i % 32) & 0xff);
-        }
-        return output
-      }
-
-      /**
-       * Convert a raw string to an array of little-endian words
-       * Characters >255 have their high-byte silently ignored.
-       *
-       * @param {string} input Raw input string
-       * @returns {Array<number>} Array of little-endian words
-       */
-      function rstr2binl(input) {
-        var i;
-        var output = [];
-        output[(input.length >> 2) - 1] = undefined;
-        for (i = 0; i < output.length; i += 1) {
-          output[i] = 0;
-        }
-        var length8 = input.length * 8;
-        for (i = 0; i < length8; i += 8) {
-          output[i >> 5] |= (input.charCodeAt(i / 8) & 0xff) << i % 32;
-        }
-        return output
-      }
-
-      /**
-       * Calculate the MD5 of a raw string
-       *
-       * @param {string} s Input string
-       * @returns {string} Raw MD5 string
-       */
-      function rstrMD5(s) {
-        return binl2rstr(binlMD5(rstr2binl(s), s.length * 8))
-      }
-
-      /**
-       * Calculates the HMAC-MD5 of a key and some data (raw strings)
-       *
-       * @param {string} key HMAC key
-       * @param {string} data Raw input string
-       * @returns {string} Raw MD5 string
-       */
-      function rstrHMACMD5(key, data) {
-        var i;
-        var bkey = rstr2binl(key);
-        var ipad = [];
-        var opad = [];
-        var hash;
-        ipad[15] = opad[15] = undefined;
-        if (bkey.length > 16) {
-          bkey = binlMD5(bkey, key.length * 8);
-        }
-        for (i = 0; i < 16; i += 1) {
-          ipad[i] = bkey[i] ^ 0x36363636;
-          opad[i] = bkey[i] ^ 0x5c5c5c5c;
-        }
-        hash = binlMD5(ipad.concat(rstr2binl(data)), 512 + data.length * 8);
-        return binl2rstr(binlMD5(opad.concat(hash), 512 + 128))
-      }
-
-      /**
-       * Convert a raw string to a hex string
-       *
-       * @param {string} input Raw input string
-       * @returns {string} Hex encoded string
-       */
-      function rstr2hex(input) {
-        var hexTab = '0123456789abcdef';
-        var output = '';
-        var x;
-        var i;
-        for (i = 0; i < input.length; i += 1) {
-          x = input.charCodeAt(i);
-          output += hexTab.charAt((x >>> 4) & 0x0f) + hexTab.charAt(x & 0x0f);
-        }
-        return output
-      }
-
-      /**
-       * Encode a string as UTF-8
-       *
-       * @param {string} input Input string
-       * @returns {string} UTF8 string
-       */
-      function str2rstrUTF8(input) {
-        return unescape(encodeURIComponent(input))
-      }
-
-      /**
-       * Encodes input string as raw MD5 string
-       *
-       * @param {string} s Input string
-       * @returns {string} Raw MD5 string
-       */
-      function rawMD5(s) {
-        return rstrMD5(str2rstrUTF8(s))
-      }
-      /**
-       * Encodes input string as Hex encoded string
-       *
-       * @param {string} s Input string
-       * @returns {string} Hex encoded string
-       */
-      function hexMD5(s) {
-        return rstr2hex(rawMD5(s))
-      }
-      /**
-       * Calculates the raw HMAC-MD5 for the given key and data
-       *
-       * @param {string} k HMAC key
-       * @param {string} d Input string
-       * @returns {string} Raw MD5 string
-       */
-      function rawHMACMD5(k, d) {
-        return rstrHMACMD5(str2rstrUTF8(k), str2rstrUTF8(d))
-      }
-      /**
-       * Calculates the Hex encoded HMAC-MD5 for the given key and data
-       *
-       * @param {string} k HMAC key
-       * @param {string} d Input string
-       * @returns {string} Raw MD5 string
-       */
-      function hexHMACMD5(k, d) {
-        return rstr2hex(rawHMACMD5(k, d))
-      }
-
-      /**
-       * Calculates MD5 value for a given string.
-       * If a key is provided, calculates the HMAC-MD5 value.
-       * Returns a Hex encoded string unless the raw argument is given.
-       *
-       * @param {string} string Input string
-       * @param {string} [key] HMAC key
-       * @param {boolean} [raw] Raw output switch
-       * @returns {string} MD5 output
-       */
-      function md5(string, key, raw) {
-        if (!key) {
-          if (!raw) {
-            return hexMD5(string)
-          }
-          return rawMD5(string)
-        }
-        if (!raw) {
-          return hexHMACMD5(key, string)
-        }
-        return rawHMACMD5(key, string)
-      }
-    /*
-      if (typeof define === 'function' && define.amd) {
-        define(function() {
-          return md5
-        })
-      } else if (typeof module === 'object' && module.exports) {
-        module.exports = md5
-      } else {
-        $.md5 = md5
-      }
-      */
-    //})(this)
-    function md51(str){
-        console.log(str);
-        return str;
-    }
-    var md5$1 = {
-        md5
-    };
-
-    class HttpRequest {
-        $request(obj) {
-            let that = obj.that;
-            let xhr = new Laya.HttpRequest();
-            let url = Main$1.requestApi + obj.url;
-            let dataObj = obj.data;
-            let postData = '';
-            let method = obj.method ? obj.method : 'get';
-            let dataObjArr = [];
-            if (method == 'get') {
-                var timestamp = new Date().getTime();
-                let sstr = "";
-                if (Main$1.userInfo) {
-                    sstr = Main$1.userInfo.key + '&' + timestamp;
-                }
-                for (var key in dataObj) {
-                    if (dataObj.hasOwnProperty(key)) {
-                        dataObjArr.push(key);
-                        if (dataObjArr.length == 1) {
-                            url = url + '?' + key + '=' + dataObj[key];
-                        }
-                        else {
-                            url = url + '&' + key + '=' + dataObj[key];
-                        }
-                        sstr += "&" + dataObj[key];
-                    }
-                }
-                if (Main$1.userInfo) {
-                    url += '&t=' + timestamp;
-                    Main$1.$LOG("md5：" + sstr + " key:" + Main$1.userInfo.key);
-                    url += '&sign=' + md5$1.md5(sstr);
-                }
-            }
-            else if (method == 'post') {
-                for (var key in dataObj) {
-                    if (dataObj.hasOwnProperty(key)) {
-                        dataObjArr.push(key);
-                        if (dataObjArr.length == 1) {
-                            postData = key + '=' + dataObj[key];
-                        }
-                        else {
-                            postData += '&' + key + '=' + dataObj[key];
-                        }
-                    }
-                }
-            }
-            xhr.http.timeout = 20000;
-            xhr.http.ontimeout = function () {
-                Main$1.showLoading(false);
-                Main$1.showDiaLog('请求超时,稍后再试!');
-                if (obj.timeout)
-                    obj.timeout.call(that, '请求超时,稍后再试!');
-            };
-            xhr.once(Laya.Event.COMPLETE, this, (res) => {
-                if (!res.status) {
-                    Main$1.$ERROR('冲突登录:', res);
-                    if (res.code == 1003 ||
-                        res.code == 1004) {
-                        Main$1.showDiaLog('登录失效，请重新登录', 1, () => {
-                            Main$1.hideAllLoading();
-                            Laya.Scene.open('login.scene', true, Main$1.sign.signOut);
-                        });
-                    }
-                    return;
-                }
-                obj.success.call(that, res);
-            });
-            xhr.once(Laya.Event.ERROR, this, (err) => {
-                Main$1.$ERROR('请求异常:', err);
-                Main$1.showDiaLog('网络异常');
-                Main$1.showLoading(false);
-                if (obj.fail)
-                    obj.fail.call(that, err);
-            });
-            xhr.once(Laya.Event.PROGRESS, this, (ess) => {
-                Main$1.$ERROR('PROGRESS:', ess);
-                if (obj.ess)
-                    obj.ess(ess);
-            });
-            xhr.send(url, postData, method, 'json');
-        }
-    }
-    var HTTP = new HttpRequest();
-
     class step_1_seatAtOrDown {
         constructor() {
             this.flag1 = true;
@@ -3147,6 +3499,7 @@
                     res.x = Laya.stage.width;
                     res.zOrder = 10;
                     Laya.Tween.to(res, { x: 0 }, Main$1.Speed['changePage'], null, Laya.Handler.create(this, () => {
+                        myCenter.send('sceneUrl1', this.openSceneUrl);
                         if (this.openType == 1)
                             this.selfScene['removeSelf']();
                     }));
@@ -3412,164 +3765,12 @@
         }
     }
 
-    class HttpReq {
-        getUserNews(that, callback) {
-            let data = {
-                uid: Main$1.userInfo.userId,
-            };
-            HTTP.$request({
-                that: that,
-                url: '/M.User/GetInfo',
-                data: data,
-                success(res) {
-                    if (res.data.ret.type == 0) {
-                        callback.call(that, res);
-                    }
-                    else {
-                        Main$1.showDiaLog(res.data.ret.msg);
-                    }
-                }
-            });
-        }
-        walletSearch(that, callback) {
-            let data = {
-                uid: Main$1.userInfo.userId
-            };
-            HTTP.$request({
-                that: that,
-                url: '/M.WLT/GetWallet',
-                data: data,
-                success(res) {
-                    if (res.data.ret.type == 0) {
-                        callback.call(that, res);
-                    }
-                    else {
-                        Main$1.showDiaLog(res.data.ret.msg);
-                    }
-                }
-            });
-        }
-        setOutPwd(that, data, callback) {
-            HTTP.$request({
-                that: that,
-                url: '/M.WLT/SetWalletPsw',
-                data: data,
-                success(res) {
-                    if (res.data.ret.type == 0) {
-                        callback.call(that, res);
-                    }
-                    else {
-                        Main$1.showDiaLog(res.data.ret.msg);
-                    }
-                }
-            });
-        }
-        reqOutMoney(that, data, callback) {
-            Main$1.showLoading(true);
-            HTTP.$request({
-                that: that,
-                url: '/M.WLT/RequestWalletOut',
-                data: data,
-                success(res) {
-                    Main$1.showLoading(false);
-                    if (res.data.ret.type == 0) {
-                        callback.call(that, res);
-                    }
-                    else {
-                        Main$1.showDiaLog(res.data.ret.msg);
-                    }
-                }
-            });
-        }
-        searchReqOutList(that, callback) {
-            let data = {
-                uid: Main$1.userInfo.userId
-            };
-            HTTP.$request({
-                that: that,
-                url: '/M.WLT/GetWalletOutRecords',
-                data: data,
-                success(res) {
-                    if (res.data.ret.type == 0) {
-                        callback.call(that, res);
-                    }
-                    else {
-                        Main$1.showDiaLog(res.data.ret.msg);
-                    }
-                }
-            });
-        }
-        getUserInfoLogined(that, callback) {
-            let data = {
-                uid: Main$1.userInfo.userId
-            };
-            HTTP.$request({
-                that: that,
-                url: '/M.User/GetUserInfoLogined',
-                data: data,
-                success(res) {
-                    if (res.data.ret.type == 0) {
-                        callback.call(that, res);
-                    }
-                    else {
-                        Main$1.showDiaLog(res.data.ret.msg);
-                    }
-                }
-            });
-        }
-        joinPromoter(that, data, callback) {
-            HTTP.$request({
-                that: that,
-                url: '/M.Prom/JoinPromoter',
-                data: data,
-                success(res) {
-                    if (res.data.ret.type == 0) {
-                        callback.call(that, res);
-                    }
-                    else {
-                        Main$1.showDiaLog(res.data.ret.msg);
-                    }
-                }
-            });
-        }
-        getFriendsNew(that, callback) {
-            let data = {
-                uid: Main$1.userInfo.userId
-            };
-            HTTP.$request({
-                that: that,
-                url: '/M.Prom/GetPromoterFullInfo',
-                data: data,
-                success(res) {
-                    if (res.data.ret.type == 0) {
-                        callback.call(that, res);
-                    }
-                    else {
-                        Main$1.showDiaLog(res.data.ret.msg);
-                    }
-                }
-            });
-        }
-        createFamily(that, callback) {
-            let data = {
-                uid: Main$1.userInfo.userId
-            };
-            HTTP.$request({
-                that: that,
-                url: '/M.Prom/CreatePromoter',
-                data: data,
-                success(res) {
-                    if (res.data.ret.type == 0) {
-                        callback.call(that, res);
-                    }
-                    else {
-                        Main$1.showDiaLog(res.data.ret.msg);
-                    }
-                }
+    class Notice extends Laya.Script {
+        onStart() {
+            myCenter.req('meOpen', (res) => {
             });
         }
     }
-    var HttpReqContent = new HttpReq();
 
     class login extends Laya.Script {
         constructor() {
@@ -3862,6 +4063,34 @@
         }
     }
 
+    class Notice$1 extends Laya.Script {
+        onStart() {
+            this.registerEvent();
+            myCenter.req('meOpen', (res) => {
+                if (res == this.owner.scene.url)
+                    this.selectThisTab(1);
+            });
+        }
+        registerEvent() {
+            this.owner['tab_title']._children.forEach((item, index) => {
+                item.on(Laya.Event.CLICK, this, this.selectThisTab, [index + 1]);
+            });
+        }
+        reloadNavSelectZT() {
+            this.owner['tab_select']._children.forEach((item, index) => {
+                item.visible = false;
+            });
+        }
+        selectThisTab(pageNum) {
+            this.reloadNavSelectZT();
+            this.owner['tab_select'].getChildByName('s' + pageNum).visible = true;
+            this.reqPageData(pageNum);
+        }
+        reqPageData(num) {
+            console.log(num);
+        }
+    }
+
     class RegisterUI extends Laya.Script {
         constructor() {
             super(...arguments);
@@ -4078,6 +4307,12 @@
                 let isOpen = bool ? 1 : 0;
                 localStorage.setItem('gameMusic', isOpen);
             });
+        }
+    }
+
+    class Notice$2 extends Laya.Script {
+        onStart() {
+            this.owner['shareUrl'].text = 'http://132.232.34.32/ydr/?joinUserId=' + Main$1.userInfo.userId;
         }
     }
 
@@ -4331,7 +4566,7 @@
                         this.goShare();
                         break;
                     case 4:
-                        this.goGiftRecord();
+                        this.goGive();
                         break;
                     case 5:
                         this.goSet();
@@ -4348,8 +4583,8 @@
         goShare() {
             this.goPageCoomon('Share.scene');
         }
-        goGiftRecord() {
-            this.goPageCoomon('GiftRecord.scene');
+        goGive() {
+            this.goPageCoomon('Give.scene');
         }
         goCoinRecord() {
             this.goPageCoomon('CoinRecord.scene');
@@ -4361,7 +4596,9 @@
             Main$1.$openScene(url, false, null, (res) => {
                 res.x = Laya.stage.width;
                 res.zOrder = 10;
-                Laya.Tween.to(res, { x: 0 }, Main$1.Speed['changePage']);
+                Laya.Tween.to(res, { x: 0 }, Main$1.Speed['changePage'], null, Laya.Handler.create(this, () => {
+                    myCenter.send('meOpen', url);
+                }));
             });
         }
         signOut() {
@@ -4556,7 +4793,7 @@
         }
     }
 
-    class Notice extends Laya.Script {
+    class Notice$3 extends Laya.Script {
         constructor() {
             super(...arguments);
             this._selectNavType = 0;
@@ -4841,6 +5078,10 @@
     }
 
     class Friends extends Laya.Script {
+        constructor() {
+            super(...arguments);
+            this.allHLNum = 0;
+        }
         onStart() {
             this.initOpenView();
         }
@@ -4884,14 +5125,23 @@
             this.owner.scene.tqhlBtn.on(Laya.Event.CLICK, this, this.tqhl);
         }
         tqhl() {
-            Main$1.showDiaLog('提取红利', 2, () => {
-                console.log('确认');
-            });
+            if (this.allHLNum > 0)
+                Main$1.showDiaLog('提取红利', 2, () => {
+                    HttpReqContent.reqHLOut(this, (res) => {
+                        Main$1.$LOG('红利提现申请：', res);
+                        Main$1.showDiaLog('红利成功提现至钱包', 1, () => {
+                            this.reqPageData();
+                        });
+                    });
+                });
+            else
+                Main$1.showDiaLog('红利余额必须大于0才能提取!', 1);
         }
         reqPageData() {
             HttpReqContent.getFriendsNew(this, (res) => {
                 Main$1.$LOG('获取亲友圈一级页面内容：', res);
                 let data = res.data;
+                this.allHLNum = data.Money;
                 let view1 = this.owner.scene.f_view1.getChildByName('viewBox');
                 let view2 = this.owner.scene.f_view2;
                 let hlye = view1.getChildByName('hlShow');
@@ -4903,8 +5153,9 @@
                 let sqzje = view2.getChildByName('v2_box3').getChildByName('sqzje').getChildByName('val');
                 let sbje = view2.getChildByName('v2_box3').getChildByName('sbje').getChildByName('val');
                 let Money = String(data.Money);
-                for (let i = 0; i < Money.length; i++) {
-                    hlye.getChildAt(i).getChildByName('val').text = Money.substr(i, 1);
+                for (let i = 0; i < hlye._children.length; i++) {
+                    let textVal = hlye.getChildAt(hlye._children.length - i - 1).getChildByName('val');
+                    textVal.text = Money.substr(Money.length - 1 - i, 1);
                 }
                 allOutPrice.text = data.AllOutMoney;
                 zs.text = data.MemberCount;
@@ -4965,7 +5216,7 @@
                 HallJS.openThisPage();
             }
             else if (page === Main$1.pages.page1) {
-                let NoticeJS = this[page].getComponent(Notice);
+                let NoticeJS = this[page].getComponent(Notice$3);
                 NoticeJS.openThisPage();
             }
             else if (page === Main$1.pages.page4) {
@@ -4999,20 +5250,23 @@
             reg("game/Fuction/OpenDiaLog.ts", OpenDiaLog);
             reg("game/common/SlideSelect.ts", SlideSelect);
             reg("game/common/MyClickSelect.ts", MyClickSelect);
+            reg("game/pages/TabPages/GiveCoin/GiveCoin.ts", Notice);
             reg("game/pages/Login/LoginUI.ts", Login);
             reg("game/pages/Login/Login.ts", login);
             reg("game/pages/shishizhanji/ZhanJiGet.ts", zhanji);
+            reg("game/pages/TabPages/Record/Record.ts", Notice$1);
             reg("game/pages/Register/RegisterUI.ts", RegisterUI$1);
             reg("game/pages/Register/Register.ts", RegisterUI);
             reg("game/pages/Set/Set.ts", Set);
             reg("game/common/MySwitch.ts", MySwitch);
+            reg("game/pages/TabPages/Share/Share.ts", Notice$2);
             reg("game/Fuction/Start.ts", sliderSelect);
             reg("game/common/openOutDiaLog.ts", OutDiaLog);
             reg("game/common/outPwdKeyBoard.ts", PwdKeyBoard);
             reg("game/pages/TabPages/TabPageUI.ts", TabPageUI);
             reg("game/pages/TabPages/Me/Me.ts", Me);
             reg("game/pages/TabPages/GameHall/GameHall.ts", GameHall);
-            reg("game/pages/TabPages/Notice/Notice.ts", Notice);
+            reg("game/pages/TabPages/Notice/Notice.ts", Notice$3);
             reg("game/pages/TabPages/Wallet/Wallet.ts", Wallet);
             reg("game/pages/TabPages/Friends/Friends.ts", Friends);
         }
