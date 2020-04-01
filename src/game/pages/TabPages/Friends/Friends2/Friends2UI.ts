@@ -13,7 +13,7 @@ export default class Friends2 extends Laya.Scene{
         Main.$LOG('亲友圈二级页面所收到得值：',options);
         this.openedData=options?options:1;
         this.setTitle();
-        // this.setUI();
+        this.setUI();
     }
 
     /**
@@ -29,7 +29,7 @@ export default class Friends2 extends Laya.Scene{
     }
 
     setUI() {
-        // let nodeArr = [this.shop_content]
-        // Main.setNodeTop(nodeArr);
+        let nodeArr = [this['friends2_content']]
+        Main.setNodeTop(nodeArr);
     }
 }

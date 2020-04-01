@@ -1,23 +1,6 @@
 (function () {
     'use strict';
 
-    class SetSceneWH extends Laya.Script {
-        constructor() {
-            super();
-            this.intType = 1000;
-            this.numType = 1000;
-            this.strType = "hello laya";
-            this.boolType = true;
-        }
-        onEnable() {
-            this.setSceneWH();
-        }
-        setSceneWH() {
-            this.owner['width'] = Laya.stage.width;
-            this.owner['height'] = Laya.stage.height;
-        }
-    }
-
     class SuspensionTips extends Laya.Script {
         constructor() {
             super();
@@ -245,6 +228,31 @@
         $ERROR(...data) {
             if (this.debug)
                 console.error(...data);
+        }
+        getStatusHeight() {
+            if (window['plus']) {
+                this.plusReady();
+                this.getDeviceInfo();
+            }
+            else {
+                document.addEventListener('plusready', this.plusReady, false);
+                document.addEventListener('getDeviceInfo', this.getDeviceInfo, false);
+            }
+        }
+        plusReady() {
+            var lh = window['plus'].navigator.getStatusbarHeight();
+            this.phoneNews.statusHeight = lh * window['plus'].screen.scale;
+        }
+        getDeviceInfo() {
+            this.phoneNews.deviceNews = window['plus'].os.name;
+            document.getElementById('ceshi').innerHTML = this.phoneNews.deviceNews + '====>' + this.phoneNews.statusHeight;
+        }
+        setNodeTop(nodeArr) {
+            if (this.phoneNews.deviceNews == 'Android') {
+                nodeArr.forEach((node) => {
+                    node.top = node.top + this.phoneNews.statusHeight;
+                });
+            }
         }
         beforeReloadResources(that, loadFn) {
             this.beforeLoadThat = that;
@@ -618,6 +626,33 @@
     }
     var Main$1 = new Main();
 
+    class Give extends Laya.Scene {
+        onOpened(options) {
+            this.setUI();
+        }
+        setUI() {
+            let nodeArr = [this['coinRecord_content']];
+            Main$1.setNodeTop(nodeArr);
+        }
+    }
+
+    class SetSceneWH extends Laya.Script {
+        constructor() {
+            super();
+            this.intType = 1000;
+            this.numType = 1000;
+            this.strType = "hello laya";
+            this.boolType = true;
+        }
+        onEnable() {
+            this.setSceneWH();
+        }
+        setSceneWH() {
+            this.owner['width'] = Laya.stage.width;
+            this.owner['height'] = Laya.stage.height;
+        }
+    }
+
     class MyCenter {
         req(key, fn) {
             this.keepList = [];
@@ -648,13 +683,14 @@
             this.backData = null;
             this.removeNode = null;
         }
-        initBack(backType, backMode, backScene, backData, node, updatePage, pageKey) {
+        initBack(backType, backMode, backScene, backData, node, updatePage, pageKey, callback) {
             this.backType = backType ? backType : 0;
             this.backMode = backMode ? backMode : 0;
             this.backScene = backScene ? backScene : '';
             this.backData = backData ? backData : null;
             this.removeNode = node ? node : null;
             this.toPageKey = pageKey ? pageKey : null;
+            this.callback = callback ? callback : null;
         }
         onEnable() {
             this.initBack();
@@ -682,6 +718,8 @@
                 Laya.Tween.to(thisScene, moveXY, Main$1.Speed['changePage'], null, Laya.Handler.create(this, () => {
                     thisScene.removeSelf();
                 }));
+                if (this.callback)
+                    this.callback('回来了');
             }
             else if (this.backType == 1) {
                 Laya.Scene.open(this.backScene, false, this.backData, Laya.Handler.create(this, (res) => {
@@ -690,15 +728,18 @@
                     }));
                 }));
             }
-            if (this.removeNode) {
-                Laya.Browser.document.body.removeChild(this.removeNode);
-            }
         }
     }
 
     class setHd extends Laya.Script {
         onEnable() {
-            console.log(this);
+            this.owner['zOrder'] = 20;
+            if (Main$1.phoneNews.deviceNews == 'Android') {
+                let hdStartHeight = this.owner['height'];
+                let titleBox = this.owner.getChildByName('titleBox');
+                this.owner['height'] = hdStartHeight + Main$1.phoneNews.statusHeight;
+                titleBox['top'] = titleBox['top'] + Main$1.phoneNews.statusHeight;
+            }
         }
     }
 
@@ -718,6 +759,7 @@
             Main$1.$LOG('亲友圈二级页面所收到得值：', options);
             this.openedData = options ? options : 1;
             this.setTitle();
+            this.setUI();
         }
         setTitle() {
             this['title_1'].visible = this.openedData == 1 ? true : false;
@@ -728,6 +770,8 @@
             this['view3'].visible = this.openedData == 3 ? true : false;
         }
         setUI() {
+            let nodeArr = [this['friends2_content']];
+            Main$1.setNodeTop(nodeArr);
         }
     }
 
@@ -1529,7 +1573,7 @@
             let c4 = cell.getChildByName('c4');
             c1.text = cell.dataSource.Uid;
             c2.text = cell.dataSource.Nick;
-            c3.text = cell.dataSource.PlayTimes;
+            c3.text = String(cell.dataSource.PlayTimes);
             c4.text = Main$1.getDate(null, cell.dataSource.Time, true);
         }
         reqPage2Data() {
@@ -1554,8 +1598,8 @@
             let c3 = cell.getChildByName('c3');
             let c4 = cell.getChildByName('c4');
             c1.text = cell.dataSource.Nick;
-            c2.text = cell.dataSource.ToadyGX;
-            c3.text = cell.dataSource.TotalGX;
+            c2.text = String(cell.dataSource.TodayGX);
+            c3.text = String(cell.dataSource.TotalGX);
             switch (cell.dataSource.State) {
                 case 0:
                     c4.text = '一级玩家';
@@ -1583,7 +1627,7 @@
             let c2 = cell.getChildByName('c2');
             let c3 = cell.getChildByName('c3');
             c1.text = Main$1.getDate(null, cell.dataSource.RequestTime);
-            c2.text = cell.dataSource.Money;
+            c2.text = String(cell.dataSource.Money);
             switch (cell.dataSource.State) {
                 case 0:
                     c3.text = '申请中';
@@ -3765,6 +3809,16 @@
         }
     }
 
+    class Give$1 extends Laya.Scene {
+        onOpened(options) {
+            this.setUI();
+        }
+        setUI() {
+            let nodeArr = [this['give_content']];
+            Main$1.setNodeTop(nodeArr);
+        }
+    }
+
     class Notice extends Laya.Script {
         onStart() {
             myCenter.req('meOpen', (res) => {
@@ -4063,12 +4117,22 @@
         }
     }
 
+    class Give$2 extends Laya.Scene {
+        onOpened(options) {
+            this.setUI();
+        }
+        setUI() {
+            let nodeArr = [this['record_content']];
+            Main$1.setNodeTop(nodeArr);
+        }
+    }
+
     class Notice$1 extends Laya.Script {
         onStart() {
             this.registerEvent();
             myCenter.req('meOpen', (res) => {
                 if (res == this.owner.scene.url)
-                    this.selectThisTab(1);
+                    this.selectThisTab(3);
             });
         }
         registerEvent() {
@@ -4204,9 +4268,14 @@
         }
         onOpened(options) {
             this.pageData = options;
+            this.setUI();
         }
         comfirmRegisterOrChange() {
             this._RegisterJS.comfirmRegisterOrChange();
+        }
+        setUI() {
+            let nodeArr = [this['register_list']];
+            Main$1.setNodeTop(nodeArr);
         }
     }
 
@@ -4310,9 +4379,64 @@
         }
     }
 
+    class Give$3 extends Laya.Scene {
+        onOpened(options) {
+            this.setUI();
+        }
+        setUI() {
+            let nodeArr = [this['share_content']];
+            Main$1.setNodeTop(nodeArr);
+        }
+    }
+
     class Notice$2 extends Laya.Script {
         onStart() {
-            this.owner['shareUrl'].text = 'http://132.232.34.32/ydr/?joinUserId=' + Main$1.userInfo.userId;
+            myCenter.req('meOpen', (url) => {
+                if (url == this.owner.scene.url) {
+                    Main$1.showLoading(true);
+                    const ShareView = document.getElementById('Share');
+                    ShareView.classList.add('ShareShow');
+                    Main$1.showLoading(false);
+                }
+            });
+            this.initShare();
+            this.initBack();
+        }
+        initBack() {
+            let backJS = this.owner['back_btn'].getComponent(Back);
+            const Share = document.getElementById('Share');
+            Share.classList.remove('ShareShow');
+            backJS.initBack(null, null, null, null, null, null, null, (res) => {
+                Share.classList.remove('ShareShow');
+            });
+        }
+        initShare() {
+            this.QRcodeuRL = 'http://' + Main$1.websoketApi.split(':')[0] + '/ydr/?joinUserId=' + Main$1.userInfo.userId;
+            let copyBtn = document.getElementsByClassName('copyBtn')[0];
+            let copyContent = document.getElementsByClassName('copyContent')[0];
+            copyContent.innerHTML = this.QRcodeuRL;
+            copyBtn.setAttribute('data-clipboard-text', this.QRcodeuRL);
+            copyBtn.removeEventListener('click', this.copy, false);
+            copyBtn.onclick = this.copy;
+            let QRcode = document.getElementById("QRcode");
+            QRcode.innerHTML = '';
+            this.qrcode = new QRCode(QRcode, {
+                text: this.QRcodeuRL,
+                width: (QRcode.style.width).split('px')[0],
+                height: (QRcode.style.height).split('px')[0],
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+        copy() {
+            var copyBtn = new ClipboardJS('.copyBtn');
+            copyBtn.on("success", (e) => {
+                e.clearSelection();
+            });
+            copyBtn.on("error", (e) => {
+                alert(e.action);
+            });
         }
     }
 
@@ -4361,6 +4485,7 @@
             Main$1.createLoading(Main$1.loadingType.one);
             Main$1.createLoading(Main$1.loadingType.two);
             Main$1.createTipBox();
+            Main$1.getStatusHeight();
             Main$1.createDiaLog();
             this.loadArrLength = Main$1.loadScene.length;
         }
@@ -5178,6 +5303,11 @@
             this.pageData = options;
             this.selectedPage = options ? options.page ? options.page : this.defaultPage : this.defaultPage;
             this.openView(this.selectedPage, 0);
+            this.setUI();
+        }
+        setUI() {
+            let nodeArr = [this['me_content'], this['hall_content'], this['notice_content'], this['wallet_content'], this['friends_content']];
+            Main$1.setNodeTop(nodeArr);
         }
         registerEvent() {
             let navList = this['tabNav']._children;
@@ -5235,6 +5365,7 @@
         }
         static init() {
             var reg = Laya.ClassUtils.regClass;
+            reg("game/pages/TabPages/CoinRecord/CoinRecordUI.ts", Give);
             reg("game/common/SetSceneWH.ts", SetSceneWH);
             reg("game/common/Back.ts", Back);
             reg("game/common/setHd.ts", setHd);
@@ -5250,15 +5381,18 @@
             reg("game/Fuction/OpenDiaLog.ts", OpenDiaLog);
             reg("game/common/SlideSelect.ts", SlideSelect);
             reg("game/common/MyClickSelect.ts", MyClickSelect);
+            reg("game/pages/TabPages/GiveCoin/GiveCoinUI.ts", Give$1);
             reg("game/pages/TabPages/GiveCoin/GiveCoin.ts", Notice);
             reg("game/pages/Login/LoginUI.ts", Login);
             reg("game/pages/Login/Login.ts", login);
             reg("game/pages/shishizhanji/ZhanJiGet.ts", zhanji);
+            reg("game/pages/TabPages/Record/RecordUI.ts", Give$2);
             reg("game/pages/TabPages/Record/Record.ts", Notice$1);
             reg("game/pages/Register/RegisterUI.ts", RegisterUI$1);
             reg("game/pages/Register/Register.ts", RegisterUI);
             reg("game/pages/Set/Set.ts", Set);
             reg("game/common/MySwitch.ts", MySwitch);
+            reg("game/pages/TabPages/Share/ShareUI.ts", Give$3);
             reg("game/pages/TabPages/Share/Share.ts", Notice$2);
             reg("game/Fuction/Start.ts", sliderSelect);
             reg("game/common/openOutDiaLog.ts", OutDiaLog);

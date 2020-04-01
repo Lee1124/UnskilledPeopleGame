@@ -15,10 +15,15 @@ export default class RegisterUI extends Laya.Scene {
     }
     onOpened(options:any){
         this.pageData=options;
+        this.setUI();
     }
 
     comfirmRegisterOrChange():void{
         this._RegisterJS.comfirmRegisterOrChange();
     }
-    
+
+    setUI(){
+        let nodeArr = [this['register_list']]
+        Main.setNodeTop(nodeArr);
+    }
 }

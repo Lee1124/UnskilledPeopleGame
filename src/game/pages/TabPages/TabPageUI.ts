@@ -23,6 +23,12 @@ export default class TabPageUI extends Laya.Scene {
         this.pageData = options;
         this.selectedPage = options ? options.page ? options.page : this.defaultPage : this.defaultPage;
         this.openView(this.selectedPage, 0);
+        this.setUI();
+    }
+
+    setUI():void{
+        let nodeArr = [this['me_content'],this['hall_content'],this['notice_content'],this['wallet_content'],this['friends_content']];
+        Main.setNodeTop(nodeArr);
     }
 
     /**

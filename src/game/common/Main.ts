@@ -182,6 +182,51 @@ class Main {
     ];
 
     /**
+    * 获取状态栏高度入口
+    */
+    getStatusHeight() {
+        if (window['plus']) {
+            this.plusReady();
+            this.getDeviceInfo();
+        } else {
+            document.addEventListener('plusready', this.plusReady, false);
+            document.addEventListener('getDeviceInfo', this.getDeviceInfo, false);
+        }
+    }
+
+    /**
+        * 获取状态栏高度值
+        */
+    plusReady() {
+        // 获取系统状态栏样式
+        var lh = window['plus'].navigator.getStatusbarHeight();
+        this.phoneNews.statusHeight = lh * window['plus'].screen.scale;
+    }
+
+    getDeviceInfo() {
+        this.phoneNews.deviceNews = window['plus'].os.name;
+        document.getElementById('ceshi').innerHTML=this.phoneNews.deviceNews+'====>'+this.phoneNews.statusHeight
+    }
+
+    /**
+     * 根据状态栏设置元素的top值
+     * @param nodeArr 节点对象 数组
+     */
+    setNodeTop(nodeArr:any) {
+        // console.log('手机系统：',this.phoneNews.deviceNews,this.phoneNews.statusHeight)
+        if (this.phoneNews.deviceNews == 'Android') {
+            nodeArr.forEach((node:any) => {
+                node.top = node.top + this.phoneNews.statusHeight;
+            })
+        }
+        // if (this.wxGame) {
+        //     nodeArr.forEach(node => {
+        //         node.top = node.top + 30;
+        //     })
+        // }
+    }
+
+    /**
      * 预加载数据
      */
     beforeReloadResources(that?: any, loadFn?: Function) {

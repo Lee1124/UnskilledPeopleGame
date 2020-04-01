@@ -1,10 +1,10 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":7,
-    "selecteID":10,
+    "selectedBox":2,
+    "selecteID":11,
     "searchKey":"Scene",
-    "props":{"width":1242,"sceneColor":"#000000","height":2208},
+    "props":{"width":1242,"sceneColor":"#000000","runtime":"game/pages/TabPages/Record/RecordUI.ts","height":2208},
     "nodeParent":-1,
     "maxID":115,
     "label":"Scene",
@@ -69,14 +69,13 @@
             "props":{"y":0,"x":0,"top":0,"skin":"images/common/top.png","right":0,"name":"hd","left":0,"height":195},
             "nodeParent":2,
             "label":"hd",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":5,
             "child":[
                 {
-                    "x":30,
                     "type":"Script",
                     "switchAble":true,
                     "source":"src/game/common/setHd.ts",
@@ -93,7 +92,6 @@
                         ]
                 },
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,titleBox",
                     "props":{"width":1242,"top":0,"name":"titleBox","height":195,"centerX":0,"bottom":10},
@@ -106,7 +104,6 @@
                     "compId":7,
                     "child":[
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,back_btn,back_btn",
                             "props":{"var":"back_btn","skin":"images/common/back.png","name":"back_btn","left":55,"centerY":-10},
@@ -136,7 +133,6 @@
                                 }]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,title",
                             "props":{"x":0,"visible":true,"skin":"images/common/title_record.png","name":"title","centerY":0,"centerX":0},
@@ -155,18 +151,17 @@
         {
             "x":15,
             "type":"Image",
-            "searchKey":"Image,content",
-            "props":{"x":0,"top":220,"right":0,"name":"content","left":0,"bottom":50},
+            "searchKey":"Image,content,record_content",
+            "props":{"x":0,"var":"record_content","top":220,"right":0,"name":"content","left":0,"bottom":50},
             "nodeParent":2,
             "label":"content",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":11,
             "child":[
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,nav_bg,wallet_nav_bg",
                     "props":{"var":"wallet_nav_bg","top":0,"skin":"images/common/bg2.png","right":45,"name":"nav_bg","left":45,"height":165},
@@ -179,7 +174,6 @@
                     "compId":12,
                     "child":[
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,tab_select,tab_select",
                             "props":{"y":16,"x":20,"var":"tab_select","top":16,"right":20,"name":"tab_select","left":20,"bottom":20},
@@ -192,7 +186,6 @@
                             "compId":91,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,s1",
                                     "props":{"width":370,"visible":true,"top":0,"name":"s1","left":0,"height":164,"bottom":0},
@@ -220,7 +213,6 @@
                                     "$HIDDEN":false
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,s2",
                                     "props":{"y":0,"width":370,"visible":false,"top":0,"name":"s2","centerX":0,"bottom":0},
@@ -247,7 +239,6 @@
                                         }]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,s3",
                                     "props":{"y":0,"width":370,"visible":false,"top":0,"right":0,"name":"s3","bottom":0},
@@ -277,7 +268,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,tab_title,tab_title",
                             "props":{"y":0,"x":0,"var":"tab_title","top":16,"right":20,"name":"tab_title","left":20,"bottom":20},
@@ -371,7 +361,6 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,view_bg,wallet_view_bg",
                     "props":{"x":0,"var":"wallet_view_bg","top":175,"skin":"images/common/bg2.png","right":45,"name":"view_bg","left":45,"bottom":0},
@@ -384,7 +373,6 @@
                     "compId":25,
                     "child":[
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,topView",
                             "props":{"top":30,"right":50,"name":"topView","left":50,"height":80},
@@ -397,7 +385,6 @@
                             "compId":109,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,allJS",
                                     "props":{"skin":"images/record/small1.png","name":"allJS","centerY":0},
@@ -424,7 +411,6 @@
                                         }]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,allSS",
                                     "props":{"x":135,"text":"0","right":0,"name":"allSS","fontSize":45,"color":"#ffffff","centerY":2},
@@ -452,7 +438,6 @@
                                 }]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,listView,wallets_view3",
                             "props":{"x":0,"var":"wallets_view3","top":120,"skin":"images/wallet/search_bg.png","right":50,"name":"listView","left":50,"bottom":50},

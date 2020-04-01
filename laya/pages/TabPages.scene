@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":243,
-    "selecteID":246,
+    "selectedBox":248,
+    "selecteID":254,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/pages/TabPages/TabPageUI.ts","height":2208},
     "nodeParent":-1,
@@ -307,7 +307,7 @@
                             "props":{"var":"me_content","top":135,"skin":"images/common/bg2.png","right":50,"name":"list_bg","left":50,"height":1570},
                             "nodeParent":23,
                             "label":"list_bg",
-                            "isOpen":true,
+                            "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
@@ -1329,11 +1329,11 @@
                         },
                         {
                             "type":"Image",
-                            "searchKey":"Image,content",
-                            "props":{"top":270,"right":0,"name":"content","left":0,"bottom":225},
+                            "searchKey":"Image,content,notice_content",
+                            "props":{"var":"notice_content","top":270,"right":0,"name":"content","left":0,"bottom":225},
                             "nodeParent":106,
                             "label":"content",
-                            "isOpen":true,
+                            "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
@@ -1554,14 +1554,13 @@
                     "props":{"var":"WalletPage","top":0,"right":0,"name":"WalletPage","left":0,"bottom":0},
                     "nodeParent":6,
                     "label":"WalletPage",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":134,
                     "child":[
                         {
-                            "x":45,
                             "type":"Script",
                             "switchAble":true,
                             "source":"src/game/pages/TabPages/Wallet/Wallet.ts",
@@ -1578,7 +1577,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,hd",
                             "props":{"y":0,"x":0,"top":0,"skin":"images/common/top.png","right":0.1,"name":"hd","left":0.1,"height":195},
@@ -1634,10 +1632,9 @@
                                 }]
                         },
                         {
-                            "x":45,
                             "type":"Image",
-                            "searchKey":"Image,content",
-                            "props":{"top":220,"right":0,"name":"content","left":0,"bottom":220},
+                            "searchKey":"Image,content,wallet_content",
+                            "props":{"var":"wallet_content","top":220,"right":0,"name":"content","left":0,"bottom":220},
                             "nodeParent":134,
                             "label":"content",
                             "isOpen":true,
@@ -1647,7 +1644,6 @@
                             "compId":141,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,nav_bg,wallet_nav_bg",
                                     "props":{"var":"wallet_nav_bg","top":0,"skin":"images/common/bg2.png","right":45,"name":"nav_bg","left":45,"height":165},
@@ -1820,7 +1816,6 @@
                                         }]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,view_bg,wallet_view_bg",
                                     "props":{"x":0,"var":"wallet_view_bg","top":175,"skin":"images/common/bg2.png","right":45,"name":"view_bg","left":45,"bottom":0},
@@ -1833,7 +1828,6 @@
                                     "compId":145,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,view1,wallets_view1",
                                             "props":{"var":"wallets_view1","top":50,"right":50,"name":"view1","left":50,"bottom":50},
@@ -2019,7 +2013,6 @@
                                             "$HIDDEN":true
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,view2,wallets_view2",
                                             "props":{"y":0,"x":0,"var":"wallets_view2","top":50,"right":50,"name":"view2","left":50,"bottom":50},
@@ -2465,7 +2458,6 @@
                                             "$HIDDEN":true
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,view3,wallets_view3",
                                             "props":{"y":0,"x":0,"var":"wallets_view3","top":50,"skin":"images/wallet/search_bg.png","right":50,"name":"view3","left":50,"bottom":50},
@@ -2478,7 +2470,6 @@
                                             "compId":163,
                                             "child":[
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,theadView",
                                                     "props":{"y":0,"width":1052,"right":0,"name":"theadView","left":0,"height":130},
@@ -2596,7 +2587,6 @@
                                                         }]
                                                 },
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,tbodyView",
                                                     "props":{"x":0,"width":1052,"top":140,"right":0,"name":"tbodyView","left":0,"height":130,"bottom":20},
@@ -2609,7 +2599,6 @@
                                                     "compId":232,
                                                     "child":[
                                                         {
-                                                            "x":105,
                                                             "type":"List",
                                                             "searchKey":"List,v3List",
                                                             "props":{"visible":false,"top":0,"right":0,"name":"v3List","left":0,"elasticEnabled":true,"bottom":0},
@@ -2622,7 +2611,6 @@
                                                             "compId":242,
                                                             "child":[
                                                                 {
-                                                                    "x":120,
                                                                     "type":"Box",
                                                                     "searchKey":"Box,v3Box",
                                                                     "props":{"y":0,"right":0,"renderType":"render","name":"v3Box","left":0,"height":100},
@@ -2635,7 +2623,6 @@
                                                                     "compId":243,
                                                                     "child":[
                                                                         {
-                                                                            "x":135,
                                                                             "type":"Label",
                                                                             "searchKey":"Label,c1",
                                                                             "props":{"width":263,"valign":"middle","top":0,"overflow":"hidden","name":"c1","fontSize":42,"color":"#FFFFFF","bottom":0,"align":"center"},
@@ -2649,7 +2636,6 @@
                                                                                 ]
                                                                         },
                                                                         {
-                                                                            "x":135,
                                                                             "type":"Label",
                                                                             "searchKey":"Label,c2",
                                                                             "props":{"width":263,"valign":"middle","top":0,"overflow":"hidden","name":"c2","left":263,"fontSize":42,"color":"#FFFFFF","bottom":0,"align":"center"},
@@ -2663,7 +2649,6 @@
                                                                                 ]
                                                                         },
                                                                         {
-                                                                            "x":135,
                                                                             "type":"Label",
                                                                             "searchKey":"Label,c3",
                                                                             "props":{"wordWrap":true,"width":263,"valign":"middle","top":0,"overflow":"hidden","name":"c3","left":526,"fontSize":42,"color":"#FFFFFF","bottom":0,"align":"center"},
@@ -2677,7 +2662,6 @@
                                                                                 ]
                                                                         },
                                                                         {
-                                                                            "x":135,
                                                                             "type":"Label",
                                                                             "searchKey":"Label,c4",
                                                                             "props":{"width":263,"valign":"middle","top":0,"overflow":"hidden","name":"c4","left":789,"fontSize":42,"color":"#FFFFFF","bottom":0,"align":"center"},
@@ -2697,7 +2681,7 @@
                                         }]
                                 }]
                         }],
-                    "$HIDDEN":false
+                    "$HIDDEN":true
                 },
                 {
                     "x":30,
@@ -2706,13 +2690,14 @@
                     "props":{"var":"FriendsPage","top":0,"right":0,"name":"FriendsPage","left":0,"bottom":0},
                     "nodeParent":6,
                     "label":"FriendsPage",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":248,
                     "child":[
                         {
+                            "x":45,
                             "type":"Script",
                             "switchAble":true,
                             "source":"src/game/pages/TabPages/Friends/Friends.ts",
@@ -2729,6 +2714,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,hd",
                             "props":{"y":0,"x":0,"top":0,"skin":"images/common/top.png","right":0.1,"name":"hd","left":0.1,"height":195},
@@ -2784,9 +2770,10 @@
                                 }]
                         },
                         {
+                            "x":45,
                             "type":"Image",
-                            "searchKey":"Image,content",
-                            "props":{"top":240,"right":45,"name":"content","left":45,"bottom":300},
+                            "searchKey":"Image,content,friends_content",
+                            "props":{"var":"friends_content","top":240,"right":45,"name":"content","left":45,"bottom":300},
                             "nodeParent":248,
                             "label":"content",
                             "isOpen":true,
@@ -2796,6 +2783,7 @@
                             "compId":254,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,view0,f1_view0",
                                     "props":{"y":0,"x":0,"var":"f1_view0","top":0,"right":0,"name":"view0","left":0,"bottom":0},
@@ -2835,6 +2823,7 @@
                                         }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,view1,f1_view1",
                                     "props":{"y":0,"x":0,"var":"f1_view1","top":0,"right":0,"name":"view1","left":0,"bottom":0},

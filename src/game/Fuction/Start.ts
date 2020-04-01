@@ -103,7 +103,7 @@ export default class sliderSelect extends Laya.Script {
         Main.createLoading(Main.loadingType.two);//预创建断线重连加载中的资源
         // Main.createLoading(Main.loadingType.three);//预创建带文字加载中的资源
         Main.createTipBox();
-        // Main.getStatusHeight();
+        Main.getStatusHeight();
         Main.createDiaLog();
         this.loadArrLength = Main.loadScene.length;
     }

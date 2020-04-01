@@ -119,11 +119,11 @@ export default class Me extends Laya.Script {
             Laya.Tween.to(res, { x: 0 }, Main.Speed['changePage'], null, Laya.Handler.create(this, () => {
                 myCenter.send('meOpen', url);
             }));
-            if (url==='Share.scene') {
-                //显示二维码界面
-                const QRcode: any = document.getElementById('QRcode');
-                QRcode.classList.add('QRcodeShow');
-            }
+            // if (url==='Share.scene') {
+            //     //显示二维码界面
+            //     const Share: any = document.getElementById('Share');
+            //     Share.classList.add('ShareShow');
+            // }
         })
     }
 

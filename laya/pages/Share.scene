@@ -1,10 +1,10 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":11,
+    "selectedBox":7,
+    "selecteID":10,
     "searchKey":"Scene",
-    "props":{"width":1242,"sceneColor":"#000000","height":2208},
+    "props":{"width":1242,"sceneColor":"#000000","runtime":"game/pages/TabPages/Share/ShareUI.ts","height":2208},
     "nodeParent":-1,
     "maxID":15,
     "label":"Scene",
@@ -69,13 +69,14 @@
             "props":{"y":0,"x":0,"top":0,"skin":"images/common/top.png","right":0,"name":"hd","left":0,"height":195},
             "nodeParent":2,
             "label":"hd",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":5,
             "child":[
                 {
+                    "x":30,
                     "type":"Script",
                     "switchAble":true,
                     "source":"src/game/common/setHd.ts",
@@ -92,18 +93,20 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,titleBox",
                     "props":{"width":1242,"top":0,"name":"titleBox","height":195,"centerX":0,"bottom":10},
                     "nodeParent":5,
                     "label":"titleBox",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":7,
                     "child":[
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,back_btn,back_btn",
                             "props":{"var":"back_btn","skin":"images/common/back.png","name":"back_btn","left":55,"centerY":-10},
@@ -116,6 +119,7 @@
                             "compId":8,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Script",
                                     "switchAble":true,
                                     "source":"src/game/common/Back.ts",
@@ -133,11 +137,12 @@
                                 }]
                         },
                         {
+                            "x":45,
                             "type":"Image",
-                            "searchKey":"Image,title_1,title_1",
-                            "props":{"x":0,"visible":false,"var":"title_1","skin":"images/friends/friends_view2/wdwj.png","name":"title_1","centerY":0,"centerX":0},
+                            "searchKey":"Image,title",
+                            "props":{"x":0,"skin":"images/common/title_share.png","name":"title","centerY":0,"centerX":0},
                             "nodeParent":7,
-                            "label":"title_1",
+                            "label":"title",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
@@ -151,8 +156,8 @@
         {
             "x":15,
             "type":"Image",
-            "searchKey":"Image,content",
-            "props":{"top":300,"right":0,"name":"content","left":0,"bottom":220},
+            "searchKey":"Image,content,share_content",
+            "props":{"var":"share_content","top":300,"right":0,"name":"content","left":0,"bottom":220},
             "nodeParent":2,
             "label":"content",
             "isOpen":true,
