@@ -196,10 +196,10 @@
             this.diaLogArr1 = [];
             this.diaLogArr2 = [];
             this.loadingType = {
-                one: 'Loading1',
-                two: 'Loading2',
-                three: 'Loading3',
-                four: 'Loading4',
+                one: 'loading1',
+                two: 'loading2',
+                three: 'loading3',
+                four: 'loading4',
             };
             this.loadAniArr1 = [];
             this.loadAniArr2 = [];
@@ -251,6 +251,22 @@
             if (this.phoneNews.deviceNews == 'Android') {
                 nodeArr.forEach((node) => {
                     node.top = node.top + this.phoneNews.statusHeight;
+                });
+            }
+        }
+        setNodeBOrH(nodeArr) {
+            let myHeight = 2210;
+            let stageHeight = Laya.stage.height;
+            let myHeightRate = myHeight / stageHeight;
+            if (stageHeight <= myHeight) {
+                nodeArr.forEach((item) => {
+                    console.log(item.node.height);
+                    item.node.bottom = item.node.bottom / myHeightRate;
+                });
+            }
+            else {
+                nodeArr.forEach((item) => {
+                    item.node.bottom = 'auto';
                 });
             }
         }
@@ -1246,7 +1262,7 @@
                         res.code == 1004) {
                         Main$1.showDiaLog('登录失效，请重新登录', 1, () => {
                             Main$1.hideAllLoading();
-                            Laya.Scene.open('login.scene', true, Main$1.sign.signOut);
+                            Laya.Scene.open('Login.scene', true, Main$1.sign.signOut);
                         });
                     }
                     return;
@@ -2077,8 +2093,104 @@
     class DealMePoker {
         constructor() {
             this.others = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
+            this.maxColPokerNum = 6;
             this.pokerNum = 0;
             this.timerNum = 0;
+        }
+        composeMeData(data) {
+            let newArr = [];
+            data.forEach((item, index) => {
+                let Type = parseInt(String(item / 10000));
+                let Color = parseInt(String((item % 10000) / 1000));
+                let Point = item - Type * 10000 - Color * 1000;
+                let groupP = Point > 7 ? (14 - 7) : Point;
+                newArr.push({ type: Type, Color: Color, seatPoint: groupP, Point: Point, isGrey: false, id: (index + 1) });
+            });
+            let myTypeDest = (this.group(newArr, 'type')).filter((item) => item.data.length >= 3);
+            myTypeDest.forEach((item) => {
+                newArr.forEach((item2, index2) => {
+                    item2.isGrey = (item.type == item2.type) ? true : false;
+                });
+            });
+            let myDest = this.group(newArr, 'seatPoint');
+            this.sortData(myDest);
+            let bigArr;
+            myDest.forEach((item, index) => {
+                let filterArr = item.data.filter((item2, index2) => (index2 + 1) % (this.maxColPokerNum) == 0);
+                if (filterArr.length > 0) {
+                    bigArr = this.getNewArr(item, filterArr);
+                    myDest = myDest.concat(bigArr);
+                }
+            });
+            for (let i = myDest.length - 1; i >= 0; i--) {
+                if (myDest[i].data.length > this.maxColPokerNum) {
+                    myDest.splice(i, 1);
+                }
+            }
+            myDest.forEach((item, index) => {
+                item.name = 'p' + (index + 1);
+            });
+            this.sortData(myDest);
+            return (this.beforeGroupData.map((item) => {
+                if (item.uid == Main$1.userInfo.userId) {
+                    return { uid: item.uid, banker: item.banker, pokers: myDest };
+                }
+                else {
+                    return item;
+                }
+            }));
+        }
+        getNewArr(item, filterArr) {
+            let myIndexArr = [];
+            filterArr.forEach((item0, index0) => {
+                let falg = true;
+                item.data.forEach((item2, index2) => {
+                    if ((item0.type == item2.type) && falg) {
+                        falg = false;
+                        myIndexArr.push(index2);
+                    }
+                });
+            });
+            myIndexArr.unshift(0);
+            myIndexArr.push(item.data.length);
+            let newReturnArr = [];
+            for (let i = 0; i < myIndexArr.length; i++) {
+                if (myIndexArr[i + 1]) {
+                    let myData = item.data.slice(myIndexArr[i], myIndexArr[i + 1]);
+                    newReturnArr.push({ seatPoint: myData[0].seatPoint, data: myData });
+                }
+            }
+            return newReturnArr;
+        }
+        sortData(arr) {
+            arr.forEach((item) => {
+                item.data.sort((a, b) => {
+                    return a.type - b.type;
+                });
+            });
+        }
+        group(arr, key) {
+            let map = {}, dest = [];
+            for (var i = 0; i < arr.length; i++) {
+                var ai = arr[i];
+                if (!map[ai[key]]) {
+                    dest.push({
+                        [key]: ai[key],
+                        data: [ai]
+                    });
+                    map[ai[key]] = ai;
+                }
+                else {
+                    for (var j = 0; j < dest.length; j++) {
+                        var dj = dest[j];
+                        if (dj[key] == ai[key]) {
+                            dj.data.push(ai);
+                            break;
+                        }
+                    }
+                }
+            }
+            return dest;
         }
         deal(data) {
             let mePokerArr = [];
@@ -2087,22 +2199,17 @@
             this.timerNum = 0;
             this.players = myCenter.GameControlObj.players;
             this.init();
-            this.userPokerData0 = data.players;
-            this.userPokerData = [];
-            this.userPokerData0.forEach((item) => {
-                if (item.uid == Main$1.userInfo['userId']) {
-                    item.pokers.forEach((item2) => {
-                        item2.forEach((item3, index3) => {
-                            item2[index3] = parseInt(String(item3 / 10000));
-                        });
-                        mePokerArr = mePokerArr.concat(item2);
-                    });
-                }
+            this.beforeGroupData = data;
+            this.beforeGroupData.forEach((item) => {
+                item.userId = item.uid;
+                item.pokers = item.pokers ? item.pokers : this.others;
             });
-            this.userPokerData0.forEach((item, index) => {
-                let data = item.uid == Main$1.userInfo['userId'] ? mePokerArr : this.others;
-                this.userPokerData[index] = { userId: item.uid, data: data };
-            });
+            let meData = data.filter((item) => item.uid === Main$1.userInfo.userId);
+            if (meData.length > 0) {
+                this.groupedData = this.composeMeData(meData[0].pokers);
+            }
+            console.log(this.groupedData);
+            this.players[1].userId = 100018, this.players[2].userId = 100021;
             this.MovePoker();
         }
         init() {
@@ -2116,7 +2223,7 @@
             });
         }
         MovePoker() {
-            let dealPlayerData = this.userPokerData[this.userIndex];
+            let dealPlayerData = this.beforeGroupData[this.userIndex];
             let dealSeat = myCenter.GameUIObj.dealSeat;
             let dealPoker = Laya.Pool.getItemByCreateFun("dealPoker", myCenter.GameControlObj.dealPoker.create, myCenter.GameControlObj.dealPoker);
             dealPoker.name = String(this.timerNum);
@@ -2145,13 +2252,14 @@
                                 let hh = this.meDealView.addChild(pokerCellView);
                             }
                             let mePokerObj = new Laya.Image();
+                            let pokerTypeName = parseInt(String((dealPlayerData.pokers[this.pokerIndex]) / 10000));
                             if (this.meCellIndex == 0) {
                                 mePokerObj.size(Main$1.pokerWidth, 450);
-                                mePokerObj.loadImage('res/img/poker/chang/' + dealPlayerData.data[this.pokerIndex] + '.png');
+                                mePokerObj.loadImage('res/img/poker/chang/' + pokerTypeName + '.png');
                             }
                             else {
                                 mePokerObj.size(Main$1.pokerWidth, Main$1.pokerWidth);
-                                mePokerObj.loadImage('res/img/poker/duan/' + dealPlayerData.data[this.pokerIndex] + '.png');
+                                mePokerObj.loadImage('res/img/poker/duan/' + pokerTypeName + '.png');
                             }
                             let childName = 'cellBox' + parseInt(String(this.pokerIndex / 5));
                             let pokerCellViewObj = this.meDealView.getChildByName(childName);
@@ -2205,11 +2313,9 @@
         }
         showMePokerView() {
             let mePokerData = [];
-            this.userPokerData0.forEach((item, index) => {
+            this.groupedData.forEach((item, index) => {
                 if (item.uid == Main$1.userInfo.userId) {
-                    item.pokers.forEach((item2, index2) => {
-                        mePokerData[index2] = { name: 'p' + index2, poker: item2 };
-                    });
+                    mePokerData = item.pokers;
                 }
             });
             let playerMe = this.players.filter((item) => item.IsMe);
@@ -2221,9 +2327,9 @@
                     cellObj.size(Main$1.pokerWidth, 0);
                     cellObj.x = Main$1.pokerWidth * index;
                     cellObj.bottom = 0;
-                    item.poker.forEach((item_inner, index_inner) => {
-                        let pokerObj = new Laya.Image('res/img/poker/duan/' + item_inner + '.png');
-                        if (index == 0) {
+                    item.data.forEach((item_inner, index_inner) => {
+                        let pokerObj = new Laya.Image('res/img/poker/duan/' + item_inner.type + '.png');
+                        if (item_inner.isGrey) {
                             this.changePokerColor(pokerObj, Main$1.pokerParam['color1'], 'noHanldePoker');
                         }
                         pokerObj.name = item_inner;
@@ -2231,7 +2337,7 @@
                         pokerObj.on(Laya.Event.CLICK, this, this.ClickPoker, [pokerObj]);
                         pokerObj.size(Main$1.pokerWidth, Main$1.pokerWidth);
                         pokerObj.x = 0;
-                        pokerObj.zOrder = item.poker.length - index_inner;
+                        pokerObj.zOrder = item.data.length - index_inner;
                         if (index_inner == 0)
                             pokerObj.bottom = Main$1.pokerWidth * index_inner;
                         else if (index_inner >= 1)
@@ -2599,7 +2705,7 @@
                     $y = (Laya.stage.height - this.owner['height']) / 2;
                     break;
                 case 3:
-                    $y = 0 + Main$1.phoneNews.statusHeight;
+                    $y = 0;
                     break;
                 case 4:
                     $y = Laya.stage.height - this.owner['height'];
@@ -3152,7 +3258,15 @@
         leaveRoomOpenView() {
         }
         dealPokerFn() {
-            websoket.playerSeatUpSend();
+            console.log('进来');
+            let data = [
+                { uid: 100018, banker: false, pokers: null },
+                { uid: 100021, banker: false, pokers: null },
+                { uid: 100014, banker: true, pokers: [11002, 11002, 31004, 41005, 41005, 51006, 51006, 51006,
+                        61006, 61006, 81007, 91008, 111010, 121012, 121012, 132004, 152006, 152006, 162007, 212011]
+                }
+            ];
+            DealOrPlayPoker.deal(data);
         }
         diuPoker() {
             let num = parseInt(String(Math.random() * 21)) + 1;
@@ -3576,6 +3690,7 @@
             this.initJS();
             setMenuContent.init(this);
             set_content_chat.init(this);
+            this.setUI();
         }
         InitGameUIData() {
             this.GameControlJS = this.getComponent(GameControl);
@@ -3628,6 +3743,16 @@
             chatJS.init(4, 0, this, null, null, () => {
                 chatJS.open();
             });
+        }
+        setUI() {
+            let nodeArr = [this['btnView']];
+            Main$1.setNodeTop(nodeArr);
+            if (Main$1.phoneNews.deviceNews == 'Android') {
+                let menu = this['menu'];
+                let menuList = menu.getChildByName('menuList');
+                menu.height += Main$1.phoneNews.statusHeight + 5;
+                menuList.top += Main$1.phoneNews.statusHeight + 5;
+            }
         }
     }
 
@@ -4020,6 +4145,16 @@
         }
         login(loginJS) {
             loginJS.login();
+        }
+    }
+
+    class ZhanJiGetUI extends Laya.Scene {
+        onOpened(options) {
+            this.setUI();
+        }
+        setUI() {
+            let nodeArr = [this['zhanji_content']];
+            Main$1.setNodeTop(nodeArr);
         }
     }
 
@@ -4639,7 +4774,7 @@
                 if (res)
                     this.requestPageData();
             });
-            this.ctHeight = this.owner.scene.me_content.height;
+            this.ctBotoom = this.owner.scene.me_content.bottom;
         }
         openThisPage() {
             if (this.owner['visible']) {
@@ -4657,17 +4792,18 @@
             });
         }
         setPage() {
-            Main$1.$LOG('我的页面==Main.familyRoomInfo.IsProm：', Main$1.familyRoomInfo, this.ctHeight);
+            Main$1.$LOG('我的页面==Main.familyRoomInfo.IsProm：', Main$1.familyRoomInfo, this.ctBotoom);
             Main$1.meListData.forEach((item) => {
                 if (item.id == 3) {
                     item.isShow = Main$1.familyRoomInfo.IsProm ? true : false;
                     if (item.isShow)
-                        this.owner.scene.me_content.height = this.ctHeight;
+                        this.owner.scene.me_content.bottom = this.ctBotoom;
                     else
-                        this.owner.scene.me_content.height = this.ctHeight - 130;
+                        this.owner.scene.me_content.bottom = this.ctBotoom + 130;
                 }
             });
             this.meList.array = Main$1.meListData.filter((item) => item.isShow);
+            this.meList.vScrollBarSkin = '';
             this.meList.renderHandler = new Laya.Handler(this, this.meListOnRender);
             this.meList.mouseHandler = new Laya.Handler(this, this.meListOnClick);
         }
@@ -4728,7 +4864,7 @@
         }
         signOut() {
             Main$1.showDiaLog('是否退出重新登录?', 2, () => {
-                Laya.Scene.open('login.scene', true, Main$1.sign.signOut);
+                Laya.Scene.open('Login.scene', true, Main$1.sign.signOut);
             });
         }
         requestPageData() {
@@ -5078,6 +5214,7 @@
             else {
                 let reqOutBtn = view2_2.getChildByName('btn');
                 let inputView = view2_2.getChildByName('inputView');
+                inputView.vScrollBarSkin = '';
                 let name = inputView.getChildByName('view1').getChildByName('input');
                 let cardNum = inputView.getChildByName('view2').getChildByName('input');
                 let bankName = inputView.getChildByName('view3').getChildByName('input');
@@ -5269,14 +5406,17 @@
                 this.allHLNum = data.Money;
                 let view1 = this.owner.scene.f_view1.getChildByName('viewBox');
                 let view2 = this.owner.scene.f_view2;
+                console.log(view2.height);
+                let view2_listBox = view2.getChildByName('listBox');
+                view2_listBox.vScrollBarSkin = '';
                 let hlye = view1.getChildByName('hlShow');
                 let allOutPrice = view1.getChildByName('ljtx').getChildByName('val');
-                let zs = view2.getChildByName('v2_box1').getChildByName('zs').getChildByName('val');
-                let jrxz = view2.getChildByName('v2_box1').getChildByName('jrxz').getChildByName('val');
-                let ljsy = view2.getChildByName('v2_box2').getChildByName('ljsy').getChildByName('val');
-                let jrxzM = view2.getChildByName('v2_box2').getChildByName('jrxz').getChildByName('val');
-                let sqzje = view2.getChildByName('v2_box3').getChildByName('sqzje').getChildByName('val');
-                let sbje = view2.getChildByName('v2_box3').getChildByName('sbje').getChildByName('val');
+                let zs = view2_listBox.getChildByName('v2_box1').getChildByName('zs').getChildByName('val');
+                let jrxz = view2_listBox.getChildByName('v2_box1').getChildByName('jrxz').getChildByName('val');
+                let ljsy = view2_listBox.getChildByName('v2_box2').getChildByName('ljsy').getChildByName('val');
+                let jrxzM = view2_listBox.getChildByName('v2_box2').getChildByName('jrxz').getChildByName('val');
+                let sqzje = view2_listBox.getChildByName('v2_box3').getChildByName('sqzje').getChildByName('val');
+                let sbje = view2_listBox.getChildByName('v2_box3').getChildByName('sbje').getChildByName('val');
                 let Money = String(data.Money);
                 for (let i = 0; i < hlye._children.length; i++) {
                     let textVal = hlye.getChildAt(hlye._children.length - i - 1).getChildByName('val');
@@ -5360,6 +5500,16 @@
         }
     }
 
+    class SetNodeB extends Laya.Script {
+        onEnable() {
+            let myHeight = 2210;
+            let view = this.owner;
+            let stageHeight = Laya.stage.height;
+            let myHeightRate = myHeight / stageHeight;
+            view.bottom = (stageHeight <= myHeight) ? (view.bottom / myHeightRate) : 'auto';
+        }
+    }
+
     class GameConfig {
         constructor() {
         }
@@ -5385,6 +5535,7 @@
             reg("game/pages/TabPages/GiveCoin/GiveCoin.ts", Notice);
             reg("game/pages/Login/LoginUI.ts", Login);
             reg("game/pages/Login/Login.ts", login);
+            reg("game/pages/shishizhanji/ZhanJiGetUI.ts", ZhanJiGetUI);
             reg("game/pages/shishizhanji/ZhanJiGet.ts", zhanji);
             reg("game/pages/TabPages/Record/RecordUI.ts", Give$2);
             reg("game/pages/TabPages/Record/Record.ts", Notice$1);
@@ -5399,6 +5550,7 @@
             reg("game/common/outPwdKeyBoard.ts", PwdKeyBoard);
             reg("game/pages/TabPages/TabPageUI.ts", TabPageUI);
             reg("game/pages/TabPages/Me/Me.ts", Me);
+            reg("game/common/SetNodeBottom.ts", SetNodeB);
             reg("game/pages/TabPages/GameHall/GameHall.ts", GameHall);
             reg("game/pages/TabPages/Notice/Notice.ts", Notice$3);
             reg("game/pages/TabPages/Wallet/Wallet.ts", Wallet);

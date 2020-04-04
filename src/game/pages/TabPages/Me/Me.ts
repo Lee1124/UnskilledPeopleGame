@@ -12,8 +12,8 @@ export default class Me extends Laya.Script {
     UI: any;
     //所属场景
     toScene: any;
-    //内容区原始高度
-    ctHeight: number;
+    //内容区原始top
+    ctBotoom: number;
     onStart(): void {
         this.toScene = this.owner.scene;
         this.meList = this.owner.getChildByName('list_bg').getChildByName('list_bg2').getChildByName('me_list');
@@ -21,7 +21,7 @@ export default class Me extends Laya.Script {
             if (res)
                 this.requestPageData();
         })
-        this.ctHeight = this.owner.scene.me_content.height;
+        this.ctBotoom = this.owner.scene.me_content.bottom;
     }
     openThisPage() {
         if (this.owner['visible']) {
@@ -43,17 +43,18 @@ export default class Me extends Laya.Script {
     }
     /**设置页面数据 */
     setPage(): void {
-        Main.$LOG('我的页面==Main.familyRoomInfo.IsProm：', Main.familyRoomInfo, this.ctHeight);
+        Main.$LOG('我的页面==Main.familyRoomInfo.IsProm：', Main.familyRoomInfo, this.ctBotoom);
         Main.meListData.forEach((item: any) => {
             if (item.id == 3) {
                 item.isShow = Main.familyRoomInfo.IsProm ? true : false;
                 if (item.isShow)
-                    this.owner.scene.me_content.height = this.ctHeight;
+                    this.owner.scene.me_content.bottom = this.ctBotoom;
                 else
-                    this.owner.scene.me_content.height = this.ctHeight - 130;
+                    this.owner.scene.me_content.bottom = this.ctBotoom + 130;
             }
         })
         this.meList.array = Main.meListData.filter((item: any) => item.isShow);
+        this.meList.vScrollBarSkin='';
         this.meList.renderHandler = new Laya.Handler(this, this.meListOnRender);
         this.meList.mouseHandler = new Laya.Handler(this, this.meListOnClick);
     }
@@ -130,7 +131,7 @@ export default class Me extends Laya.Script {
     //退出登录
     signOut(): void {
         Main.showDiaLog('是否退出重新登录?', 2, () => {
-            Laya.Scene.open('login.scene', true, Main.sign.signOut);
+            Laya.Scene.open('Login.scene', true, Main.sign.signOut);
         })
     }
 

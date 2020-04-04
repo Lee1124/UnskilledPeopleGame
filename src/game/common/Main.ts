@@ -23,9 +23,9 @@ class Main {
     // http请求的地址
     requestApi: string = 'http://132.232.34.32:8091';
 
-    // websoket请求地址
-    // websoketApi: string = '132.232.34.32:8092';
-    // http请求的地址
+    //websoket请求地址
+    // websoketApi: string = '192.168.101.109:8082';
+    // //http请求的地址
     // requestApi: string = 'http://192.168.101.109:8081';
 
     //websoket请求地址
@@ -142,10 +142,10 @@ class Main {
     diaLogArr2: any[] = [];
     //加载类型
     loadingType: any = {
-        one: 'Loading1',
-        two: 'Loading2',
-        three: 'Loading3',
-        four: 'Loading4',
+        one: 'loading1',
+        two: 'loading2',
+        three: 'loading3',
+        four: 'loading4',
     }
     //加载数组1
     loadAniArr1: any[] = [];
@@ -225,6 +225,28 @@ class Main {
         //     })
         // }
     }
+
+    /**
+     * 根据stage的高度设置节点的bottom值（小于2208时）或者高度（大于2208时）
+     * @param nodeArr 节点对象 数组 (包括大于2208时需要设置的高度)
+     */
+    setNodeBOrH(nodeArr:any){
+        let myHeight:number=2210;
+        let stageHeight:number=Laya.stage.height;
+        let myHeightRate:number=myHeight/stageHeight;
+        if(stageHeight<=myHeight){
+            nodeArr.forEach((item:any) => {
+                console.log(item.node.height)
+                item.node.bottom=item.node.bottom/myHeightRate;
+            })
+        }else{
+            nodeArr.forEach((item:any) => {
+                item.node.bottom='auto';
+                // item.node.height=item.height;
+                // console.log('====================',item.node,item.height)
+            })
+        }
+     }
 
     /**
      * 预加载数据

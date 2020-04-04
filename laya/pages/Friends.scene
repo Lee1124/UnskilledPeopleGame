@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":21,
+    "selectedBox":21,
+    "selecteID":22,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/pages/TabPages/Friends/Friends2/Friends2UI.ts","height":2208},
     "nodeParent":-1,
@@ -196,7 +196,7 @@
                     "props":{"var":"view1","top":0,"right":0,"name":"view1","left":0,"bottom":0},
                     "nodeParent":21,
                     "label":"view1",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
@@ -209,13 +209,14 @@
                             "props":{"y":0,"width":1152,"skin":"images/common/bg2.png","right":0,"name":"view1_1","left":0,"height":410},
                             "nodeParent":22,
                             "label":"view1_1",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":25,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,view1_1_box",
                                     "props":{"top":55,"skin":"images/friends/f_view.png","right":55,"name":"view1_1_box","left":55,"bottom":55},
@@ -306,7 +307,7 @@
                                                 }]
                                         }]
                                 }],
-                            "$HIDDEN":false
+                            "$HIDDEN":true
                         },
                         {
                             "x":45,
@@ -315,27 +316,25 @@
                             "props":{"width":1152,"top":420,"skin":"images/common/bg2.png","right":0,"name":"view1_2","left":0,"height":1494,"bottom":0},
                             "nodeParent":22,
                             "label":"view1_2",
-                            "isOpen":true,
+                            "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":27,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,view1_2_box",
                                     "props":{"y":0,"x":0,"top":55,"skin":"images/wallet/search_bg.png","right":55,"name":"view1_2_box","left":55,"bottom":55},
                                     "nodeParent":27,
                                     "label":"view1_2_box",
-                                    "isOpen":true,
+                                    "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
                                     "compId":30,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,thead",
                                             "props":{"y":0,"width":1042,"right":0,"name":"thead","left":0,"height":130},
@@ -348,7 +347,6 @@
                                             "compId":37,
                                             "child":[
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,th",
                                                     "props":{"y":0,"width":212,"name":"th","left":0,"height":130},
@@ -375,7 +373,6 @@
                                                         }]
                                                 },
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,th",
                                                     "props":{"y":0,"width":250,"name":"th","left":212,"height":130},
@@ -402,7 +399,6 @@
                                                         }]
                                                 },
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,th",
                                                     "props":{"y":0,"width":270,"right":310,"name":"th","height":130},
@@ -429,7 +425,6 @@
                                                         }]
                                                 },
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,th",
                                                     "props":{"y":0,"x":0,"width":310,"right":0,"name":"th","height":130},
@@ -457,7 +452,6 @@
                                                 }]
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,tbody",
                                             "props":{"top":130,"right":0,"name":"tbody","left":0,"bottom":10},
@@ -470,7 +464,6 @@
                                             "compId":46,
                                             "child":[
                                                 {
-                                                    "x":90,
                                                     "type":"List",
                                                     "searchKey":"List,list",
                                                     "props":{"top":0,"right":0,"name":"list","left":0,"elasticEnabled":true,"bottom":0},
@@ -483,7 +476,6 @@
                                                     "compId":52,
                                                     "child":[
                                                         {
-                                                            "x":105,
                                                             "type":"Box",
                                                             "searchKey":"Box,render",
                                                             "props":{"y":0,"right":0,"name":"render","left":0,"height":80},
@@ -496,7 +488,6 @@
                                                             "compId":51,
                                                             "child":[
                                                                 {
-                                                                    "x":120,
                                                                     "type":"Label",
                                                                     "searchKey":"Label,c1",
                                                                     "props":{"width":212,"valign":"middle","top":0,"name":"c1","fontSize":42,"color":"#ffffff","bottom":0,"align":"center"},
@@ -510,7 +501,6 @@
                                                                         ]
                                                                 },
                                                                 {
-                                                                    "x":120,
                                                                     "type":"Label",
                                                                     "searchKey":"Label,c2",
                                                                     "props":{"y":0,"width":250,"valign":"middle","top":0,"name":"c2","left":212,"fontSize":42,"color":"#ffffff","bottom":0,"align":"center"},
@@ -524,7 +514,6 @@
                                                                         ]
                                                                 },
                                                                 {
-                                                                    "x":120,
                                                                     "type":"Label",
                                                                     "searchKey":"Label,c3",
                                                                     "props":{"y":0,"width":270,"valign":"middle","top":0,"right":310,"name":"c3","fontSize":42,"color":"#ffffff","bottom":0,"align":"center"},
@@ -538,7 +527,6 @@
                                                                         ]
                                                                 },
                                                                 {
-                                                                    "x":120,
                                                                     "type":"Label",
                                                                     "searchKey":"Label,c4",
                                                                     "props":{"y":0,"width":310,"valign":"middle","top":0,"right":0,"name":"c4","fontSize":42,"color":"#ffffff","bottom":0,"align":"center"},
@@ -555,7 +543,7 @@
                                                 }]
                                         }]
                                 }],
-                            "$HIDDEN":false
+                            "$HIDDEN":true
                         }],
                     "$HIDDEN":false
                 },

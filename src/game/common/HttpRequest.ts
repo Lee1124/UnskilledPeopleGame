@@ -69,7 +69,7 @@ class HttpRequest {
                 {
                     Main.showDiaLog('登录失效，请重新登录', 1, () => {
                         Main.hideAllLoading();
-                        Laya.Scene.open('login.scene', true, Main.sign.signOut);
+                        Laya.Scene.open('Login.scene', true, Main.sign.signOut);
                     });
                 }
                 return;

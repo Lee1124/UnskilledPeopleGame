@@ -27,7 +27,7 @@ export default class TabPageUI extends Laya.Scene {
     }
 
     setUI():void{
-        let nodeArr = [this['me_content'],this['hall_content'],this['notice_content'],this['wallet_content'],this['friends_content']];
+        let nodeArr:any = [this['me_content'],this['hall_content'],this['notice_content'],this['wallet_content'],this['friends_content']];
         Main.setNodeTop(nodeArr);
     }
 

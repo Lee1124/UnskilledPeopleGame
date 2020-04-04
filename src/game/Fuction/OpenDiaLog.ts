@@ -81,7 +81,7 @@ export default class OpenDiaLog extends Laya.Script {
                 $y = (Laya.stage.height - this.owner['height']) / 2;
                 break;
             case 3:
-                $y = 0 + Main.phoneNews.statusHeight;
+                $y = 0 ;//+ Main.phoneNews.statusHeight;
                 break;
             case 4:
                 $y = Laya.stage.height - this.owner['height'];

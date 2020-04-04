@@ -3,7 +3,7 @@
 import websoket from '../Fuction/webSoketSend';
 import MyCenter from '../common/MyCenter';
 import InitGameData from '../Fuction/InitGameData';
-import DealOrPlayPoker from '../Fuction/DealOrPlayPoker';
+import DealOrPlayPoker from '../Fuction/play/DealOrPlayPoker';
 import DiuPoker from '../Fuction/diuPoker';
 import ShowHandlePoker from '../Fuction/ShowHandlePoker';
 import FeelPoker from '../Fuction/FeelPoker';
@@ -13,7 +13,7 @@ import OpenDiaLog from '../Fuction/OpenDiaLog';
 import SlideSeledct from '../common/SlideSelect';
 
 import ReloadData from '../Fuction/ReloadData';
-import step_0_initGameNews from '../Fuction/step_2_startNewGame';
+import step_0_initGameNews from '../Fuction/play/step_2_startNewGame';
 
 import set_content_chat from '../Fuction/set_content_chat';//聊天
 export default class GameControl extends Laya.Script {
@@ -130,7 +130,7 @@ export default class GameControl extends Laya.Script {
             }
 
             //带入积分坐下(或补充金币)
-            if (resData._t == "R2C_AddDairu"||resData._t=="R2C_SitDown") {
+            if (resData._t == "R2C_AddDairu" || resData._t == "R2C_SitDown") {
                 if (resData.ret.type == 0 || resData.ret.type == 4) {
                     // this.setMeMakeBOBO(resData);
                     resData.param.json.forEach((item: any) => {
@@ -171,7 +171,7 @@ export default class GameControl extends Laya.Script {
             }
 
             //聊天
-            if(resData._t == "G2C_GameChat"){
+            if (resData._t == "G2C_GameChat") {
                 if (resData.ret.type == 0) {
                     this.playerChat(resData);
                 } else {
@@ -182,7 +182,7 @@ export default class GameControl extends Laya.Script {
             //====开始游戏部分====
             if (resData._t == "G2C_StartNewWheel") {
                 this.startNewGame(resData);
-            }else if(resData._t == "G2C_DealHand"){
+            } else if (resData._t == "G2C_DealHand") {
                 this.dealPlayerPoker(resData);
             }
 
@@ -191,19 +191,19 @@ export default class GameControl extends Laya.Script {
             Main.$LOG(error)
         }
     }
-    
+
     /**
      * ========游戏部分=========
      */
 
-     /**
-      * 开始游戏
-      * @param data 
-      */
-    startNewGame(data:any):void{
-        this.players.forEach((itemJS:any)=>{
-            data.players.forEach((itemData:any)=>{
-                if(itemJS.userId==itemData.uid){
+    /**
+     * 开始游戏
+     * @param data 
+     */
+    startNewGame(data: any): void {
+        this.players.forEach((itemJS: any) => {
+            data.players.forEach((itemData: any) => {
+                if (itemJS.userId == itemData.uid) {
                     itemJS.startNewGame(data);
                 }
             })
@@ -213,7 +213,7 @@ export default class GameControl extends Laya.Script {
     /**
      * 发牌
      */
-    dealPlayerPoker(data:any):void{
+    dealPlayerPoker(data: any): void {
         DealOrPlayPoker.deal(data);
     }
 
@@ -224,7 +224,7 @@ export default class GameControl extends Laya.Script {
     leaveRoomDeal(data: any): void {
         if (data.userid == Main.userInfo.userId) {
             websoket.close();
-            Main.$openScene('TabPages.scene', true,{ page: this.owner['openData'].page });//
+            Main.$openScene('TabPages.scene', true, { page: this.owner['openData'].page });//
         } else {
             this.playerSeatUp(data);
         }
@@ -256,7 +256,7 @@ export default class GameControl extends Laya.Script {
                         JSitem.playerSeatAtFn(item);
                     } else if (item.score > 0 && item.seatAtTime <= 0) {//在座位...
                         JSitem.playerSeatDownFn(item);
-                    }else if (item.score > 0 && item.seatAtTime > 0) {//留坐中...
+                    } else if (item.score > 0 && item.seatAtTime > 0) {//留坐中...
                         JSitem.playerSeatDownFn(item);
                         JSitem.palyerLiuZuo(item);
                     }
@@ -278,7 +278,7 @@ export default class GameControl extends Laya.Script {
             this.players.forEach((item: any, index: number) => {
                 item.SeatId = NewSeatSeatArr[index];
             });
-            Main.$LOG('重置玩家为之id',this.players);
+            Main.$LOG('重置玩家为之id', this.players);
         }
     }
 
@@ -350,19 +350,19 @@ export default class GameControl extends Laya.Script {
             }
         })
     }
-    
+
     /**
      * 玩家聊天
      * @param data 数据
      */
-    playerChat(data:any):void{
-        if(data.chat.msgType==1){
+    playerChat(data: any): void {
+        if (data.chat.msgType == 1) {
             this.players.forEach((JSitem: any) => {
                 if (JSitem.userId == data.chat.sender) {
                     JSitem.playerChat(data);
                 }
             })
-        }else if(data.chat.msgType==2){
+        } else if (data.chat.msgType == 2) {
             set_content_chat.playerTextChat(data);
             // set_content_chat.playerDeskTextChat(data);
         }
@@ -381,8 +381,119 @@ export default class GameControl extends Laya.Script {
 
     /**发牌 */
     dealPokerFn() {
+        // 类型
+        console.log('进来')
+        let data: any = [
+            { uid: 100018, banker: false, pokers: null },
+            { uid: 100021, banker: false, pokers: null },
+            {uid: 100014, banker: true, pokers: [11002, 11002, 31004, 41005, 41005, 51006, 51006, 51006,
+                    61006, 61006, 81007, 91008, 111010, 121012, 121012, 132004, 152006, 152006, 162007, 212011]
+            }
+        ]
+        DealOrPlayPoker.deal(data);
 
-        websoket.playerSeatUpSend();
+        // let data = [212011, 212011, 212011, 111010, 41005, 101009, 101009, 41005, 41005, 41005, 41005, 81007, 81007, 81007, 81007, 91008, 111010, 121012, 121012, 162007];
+        // //红色1 黑色2 
+        // //类型1-21
+        // //点数
+
+        // let newArr = [];
+        // data.forEach((item, index) => {
+        //     let Type = parseInt(item / 10000);
+        //     let Color = parseInt((item % 10000) / 1000);
+        //     let Point = item - Type * 10000 - Color * 1000;
+        //     let groupP = Point > 7 ? (14 - 7) : Point;
+        //     newArr.push({ type: Type, Color: Color, seatPoint: groupP, Point: Point, id: (index + 1) })
+        //     //     console.log(item,'牌名字type：'+Type,'牌颜色Color：'+Color,'牌点数Point：'+Point);
+        // })
+
+        // // console.log(newArr)
+
+        // //进行分组
+        // var map = {},
+        //     dest = [];
+        // for (var i = 0; i < newArr.length; i++) {
+        //     var ai = newArr[i];
+        //     if (!map[ai.seatPoint]) {
+        //         dest.push({
+        //             seatPoint: ai.seatPoint,
+        //             data: [ai]
+        //         });
+        //         map[ai.seatPoint] = ai;
+        //     } else {
+        //         for (var j = 0; j < dest.length; j++) {
+        //             var dj = dest[j];
+        //             if (dj.seatPoint == ai.seatPoint) {
+        //                 dj.data.push(ai);
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
+
+        // //排序
+        // dest.sort((a, b) => {
+        //     return a.seatPoint - b.seatPoint;
+        // })
+
+        // //根据type排序
+        // dest.forEach(item => {
+        //     item.data.sort((a, b) => {
+        //         return a.type - b.type;
+        //     })
+        // })
+
+        // function getNewArr(item, filterArr) {
+        //     console.log('filterArr', filterArr)
+        //     let myIndexArr = [];
+        //     filterArr.forEach((item0, index0) => {
+        //         let falg = true;
+        //         item.data.forEach((item2, index2) => {
+        //             if ((item0.type == item2.type) && falg) {
+        //                 falg = false
+        //                 myIndexArr.push(index2);
+        //             }
+        //         })
+        //     })
+        //     myIndexArr.unshift(0);
+        //     myIndexArr.push(item.data.length);
+        //     console.log('myIndexArr', myIndexArr)
+        //     let newReturnArr = [];
+        //     for (let i = 0; i < myIndexArr.length; i++) {
+        //         if (myIndexArr[i + 1]) {
+        //             let myData = item.data.slice(myIndexArr[i], myIndexArr[i + 1]);
+        //             newReturnArr.push({ seatPoint: myData[0].seatPoint, data: myData })
+        //         }
+        //     }
+        //     return newReturnArr;
+        // }
+
+        // //每列超过6张 就另起一列 若前面有一样的牌一起跟着走
+        // let colNum = 6;//规定每列的数量
+        // let bigArr;
+        // console.log(dest)
+        // dest.forEach((item, index) => {
+        //     let filterArr = item.data.filter((item2, index2) => (index2 + 1) % colNum == 0);
+        //     if (filterArr.length > 0) {
+        //         console.log(index)
+        //         bigArr = getNewArr(item, filterArr);
+        //         for (let i = dest.length - 1; i >= 0; i--) {
+        //             if (index == i) {
+        //                 dest.splice(index, 1);
+        //             }
+        //         }
+        //         dest = dest.concat(bigArr)
+        //     }
+        // })
+        // console.log('====++', bigArr);
+
+        // //排序
+        // dest.sort((a, b) => {
+        //     return a.seatPoint - b.seatPoint;
+        // })
+        // console.log(dest);
+
+        // websoket.playerSeatUpSend();
 
         // let seatIndexArr:number[] = [0, 1, 2];
         // let NewSeatSeatArr = seatIndexArr.splice(2, seatIndexArr.length).concat(seatIndexArr.splice(0, 2 + 1));

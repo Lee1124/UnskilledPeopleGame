@@ -89,14 +89,17 @@ export default class Friends extends Laya.Script {
             this.allHLNum = data.Money;
             let view1: any = this.owner.scene.f_view1.getChildByName('viewBox');
             let view2: any = this.owner.scene.f_view2;
+            console.log(view2.height)
+            let view2_listBox:any=view2.getChildByName('listBox');
+            view2_listBox.vScrollBarSkin='';
             let hlye: any = view1.getChildByName('hlShow');
             let allOutPrice: any = view1.getChildByName('ljtx').getChildByName('val');
-            let zs: any = view2.getChildByName('v2_box1').getChildByName('zs').getChildByName('val');
-            let jrxz: any = view2.getChildByName('v2_box1').getChildByName('jrxz').getChildByName('val');
-            let ljsy: any = view2.getChildByName('v2_box2').getChildByName('ljsy').getChildByName('val');
-            let jrxzM: any = view2.getChildByName('v2_box2').getChildByName('jrxz').getChildByName('val');
-            let sqzje: any = view2.getChildByName('v2_box3').getChildByName('sqzje').getChildByName('val');
-            let sbje: any = view2.getChildByName('v2_box3').getChildByName('sbje').getChildByName('val');
+            let zs: any = view2_listBox.getChildByName('v2_box1').getChildByName('zs').getChildByName('val');
+            let jrxz: any = view2_listBox.getChildByName('v2_box1').getChildByName('jrxz').getChildByName('val');
+            let ljsy: any = view2_listBox.getChildByName('v2_box2').getChildByName('ljsy').getChildByName('val');
+            let jrxzM: any = view2_listBox.getChildByName('v2_box2').getChildByName('jrxz').getChildByName('val');
+            let sqzje: any = view2_listBox.getChildByName('v2_box3').getChildByName('sqzje').getChildByName('val');
+            let sbje: any = view2_listBox.getChildByName('v2_box3').getChildByName('sbje').getChildByName('val');
             let Money: string = String(data.Money);
             for (let i = 0; i < hlye._children.length; i++) {
                 let textVal: any = hlye.getChildAt(hlye._children.length - i - 1).getChildByName('val');

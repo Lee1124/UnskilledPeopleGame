@@ -135,6 +135,7 @@ export default class Wallet extends Laya.Script {
         } else {
             let reqOutBtn: any = view2_2.getChildByName('btn');
             let inputView: any = view2_2.getChildByName('inputView');
+            inputView.vScrollBarSkin='';
             let name: any = inputView.getChildByName('view1').getChildByName('input');
             let cardNum: any = inputView.getChildByName('view2').getChildByName('input');
             let bankName: any = inputView.getChildByName('view3').getChildByName('input');

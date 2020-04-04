@@ -19,6 +19,7 @@ import GiveCoinUI from "./game/pages/TabPages/GiveCoin/GiveCoinUI"
 import GiveCoin from "./game/pages/TabPages/GiveCoin/GiveCoin"
 import LoginUI from "./game/pages/Login/LoginUI"
 import Login from "./game/pages/Login/Login"
+import ZhanJiGetUI from "./game/pages/shishizhanji/ZhanJiGetUI"
 import ZhanJiGet from "./game/pages/shishizhanji/ZhanJiGet"
 import RecordUI from "./game/pages/TabPages/Record/RecordUI"
 import Record from "./game/pages/TabPages/Record/Record"
@@ -33,6 +34,7 @@ import openOutDiaLog from "./game/common/openOutDiaLog"
 import outPwdKeyBoard from "./game/common/outPwdKeyBoard"
 import TabPageUI from "./game/pages/TabPages/TabPageUI"
 import Me from "./game/pages/TabPages/Me/Me"
+import SetNodeBottom from "./game/common/SetNodeBottom"
 import GameHall from "./game/pages/TabPages/GameHall/GameHall"
 import Notice from "./game/pages/TabPages/Notice/Notice"
 import Wallet from "./game/pages/TabPages/Wallet/Wallet"
@@ -76,6 +78,7 @@ export default class GameConfig{
         reg("game/pages/TabPages/GiveCoin/GiveCoin.ts",GiveCoin);
         reg("game/pages/Login/LoginUI.ts",LoginUI);
         reg("game/pages/Login/Login.ts",Login);
+        reg("game/pages/shishizhanji/ZhanJiGetUI.ts",ZhanJiGetUI);
         reg("game/pages/shishizhanji/ZhanJiGet.ts",ZhanJiGet);
         reg("game/pages/TabPages/Record/RecordUI.ts",RecordUI);
         reg("game/pages/TabPages/Record/Record.ts",Record);
@@ -90,6 +93,7 @@ export default class GameConfig{
         reg("game/common/outPwdKeyBoard.ts",outPwdKeyBoard);
         reg("game/pages/TabPages/TabPageUI.ts",TabPageUI);
         reg("game/pages/TabPages/Me/Me.ts",Me);
+        reg("game/common/SetNodeBottom.ts",SetNodeBottom);
         reg("game/pages/TabPages/GameHall/GameHall.ts",GameHall);
         reg("game/pages/TabPages/Notice/Notice.ts",Notice);
         reg("game/pages/TabPages/Wallet/Wallet.ts",Wallet);

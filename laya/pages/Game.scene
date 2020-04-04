@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":413,
+    "selectedBox":6,
+    "selecteID":63,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/GameCenter/GameUI.ts","height":2208},
     "nodeParent":-1,
-    "maxID":536,
+    "maxID":558,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -55,13 +55,14 @@
             "props":{"var":"deskView","top":0,"right":0,"name":"deskView","left":0,"bottom":0},
             "nodeParent":2,
             "label":"deskView",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":6,
             "child":[
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,deskBg",
                     "props":{"y":0,"x":0,"top":0,"skin":"images/game/deskBg.jpg","right":0,"name":"deskBg","left":0,"bottom":0},
@@ -74,19 +75,7 @@
                     "compId":3,
                     "child":[
                         {
-                            "type":"Label",
-                            "searchKey":"Label,startBtn,startBtn",
-                            "props":{"width":300,"var":"startBtn","valign":"middle","text":"开始发牌","name":"startBtn","left":0,"height":80,"fontSize":60,"color":"#ffffff","bottom":0,"bgColor":"#b02b29","align":"center"},
-                            "nodeParent":3,
-                            "label":"startBtn",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":63,
-                            "child":[
-                                ]
-                        },
-                        {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,diuBtn,diuBtn",
                             "props":{"width":200,"var":"diuBtn","valign":"middle","text":"丢的牌","name":"diuBtn","left":301,"height":80,"fontSize":60,"color":"#ffffff","bottom":0,"bgColor":"#b02b29","align":"center"},
@@ -100,6 +89,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,handleBtn,handleBtn",
                             "props":{"width":269,"var":"handleBtn","valign":"middle","text":"操作的牌","name":"handleBtn","left":502,"height":80,"fontSize":60,"color":"#ffffff","bottom":0,"bgColor":"#b02b29","align":"center"},
@@ -113,6 +103,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,handleBtn2,handleBtn2",
                             "props":{"width":170,"var":"handleBtn2","valign":"middle","text":"摸牌","name":"handleBtn2","left":772,"height":80,"fontSize":60,"color":"#ffffff","bottom":0,"bgColor":"#b02b29","align":"center"},
@@ -126,6 +117,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,playBtn,playBtn",
                             "props":{"width":170,"var":"playBtn","valign":"middle","text":"出牌","name":"playBtn","left":943,"height":80,"fontSize":60,"color":"#ffffff","bottom":0,"bgColor":"#b02b29","align":"center"},
@@ -139,6 +131,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,CESHITEXT,CESHITEXT",
                             "props":{"visible":false,"var":"CESHITEXT","text":"0","name":"CESHITEXT","fontSize":50,"color":"#FF0000"},
@@ -152,6 +145,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,timeBtn,timeBtn",
                             "props":{"width":180,"var":"timeBtn","valign":"middle","text":"倒计时","name":"timeBtn","left":0,"height":80,"fontSize":60,"color":"#ffffff","bottom":84,"bgColor":"#b02b29","align":"center"},
@@ -166,6 +160,7 @@
                         }]
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,btnView,btnView",
                     "props":{"var":"btnView","top":0,"right":0,"name":"btnView","left":0,"bottom":0},
@@ -183,7 +178,7 @@
                             "props":{"y":0,"x":0,"width":230,"top":0,"name":"btn_menu","left":0,"height":220},
                             "nodeParent":440,
                             "label":"btn_menu",
-                            "isOpen":true,
+                            "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
@@ -209,7 +204,7 @@
                             "props":{"y":0,"x":0,"width":230,"top":0,"right":0,"name":"btn_look2","height":220},
                             "nodeParent":440,
                             "label":"btn_look2",
-                            "isOpen":true,
+                            "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
@@ -235,7 +230,7 @@
                             "props":{"y":0,"x":0,"width":230,"name":"btn_look1","left":0,"height":220,"bottom":0},
                             "nodeParent":440,
                             "label":"btn_look1",
-                            "isOpen":true,
+                            "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
@@ -278,7 +273,7 @@
                             "props":{"y":0,"width":230,"right":0,"name":"btn_chat","height":220,"bottom":0},
                             "nodeParent":440,
                             "label":"btn_chat",
-                            "isOpen":true,
+                            "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
@@ -300,6 +295,7 @@
                         }]
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,deskOther",
                     "props":{"y":853,"width":800,"name":"deskOther","height":500,"centerX":0},
@@ -314,6 +310,7 @@
                     "$HIDDEN":true
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,seatList,seatList",
                     "props":{"zOrder":1,"var":"seatList","top":506,"right":0,"name":"seatList","left":0,"bottom":300},
@@ -1346,6 +1343,7 @@
                         }]
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,dealSeat,dealSeat",
                     "props":{"zOrder":2,"y":150,"x":589,"width":64,"var":"dealSeat","name":"dealSeat","height":225,"centerX":0},
@@ -1450,6 +1448,7 @@
                         }]
                 },
                 {
+                    "x":30,
                     "type":"Panel",
                     "searchKey":"Panel,chatView",
                     "props":{"y":228,"width":350,"visible":true,"name":"chatView","left":20,"height":222,"elasticEnabled":true,"alpha":0},
@@ -1460,6 +1459,177 @@
                     "isAniNode":true,
                     "hasChild":false,
                     "compId":533,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Image",
+                    "searchKey":"Image,meHandleView",
+                    "props":{"right":100,"name":"meHandleView","left":100,"height":145,"bottom":500},
+                    "nodeParent":6,
+                    "label":"meHandleView",
+                    "isOpen":false,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":536,
+                    "child":[
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,kou",
+                            "props":{"visible":false,"skin":"images/game/h_kou.png","right":0,"name":"kou","centerY":0},
+                            "nodeParent":536,
+                            "label":"kou",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":537,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,pen",
+                            "props":{"visible":false,"skin":"images/game/h_pen.png","name":"pen","centerY":0,"centerX":0},
+                            "nodeParent":536,
+                            "label":"pen",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":538,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,sha",
+                            "props":{"y":0,"x":0,"visible":false,"skin":"images/game/h_sha.png","name":"sha","centerY":0,"centerX":0},
+                            "nodeParent":536,
+                            "label":"sha",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":539,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,tu",
+                            "props":{"y":0,"x":0,"visible":false,"skin":"images/game/h_tu.png","name":"tu","centerY":0,"centerX":0},
+                            "nodeParent":536,
+                            "label":"tu",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":540,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,hu",
+                            "props":{"y":0,"visible":false,"skin":"images/game/h_hu.png","name":"hu","centerY":0,"centerX":-180},
+                            "nodeParent":536,
+                            "label":"hu",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":542,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,buhu",
+                            "props":{"y":0,"visible":false,"skin":"images/game/h_buhu.png","name":"buhu","centerY":0,"centerX":180},
+                            "nodeParent":536,
+                            "label":"buhu",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":543,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,chi",
+                            "props":{"y":0,"x":0,"visible":false,"skin":"images/game/h_chi.png","name":"chi","centerY":0,"centerX":-180},
+                            "nodeParent":536,
+                            "label":"chi",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":544,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,guo",
+                            "props":{"y":0,"visible":false,"skin":"images/game/h_guo.png","name":"guo","centerY":0,"centerX":180},
+                            "nodeParent":536,
+                            "label":"guo",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":545,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,da",
+                            "props":{"y":0,"visible":false,"skin":"images/game/f_da.png","name":"da","centerY":0,"centerX":-180},
+                            "nodeParent":536,
+                            "label":"da",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":555,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,buda",
+                            "props":{"y":0,"visible":false,"skin":"images/game/h_buda.png","name":"buda","centerY":0,"centerX":180},
+                            "nodeParent":536,
+                            "label":"buda",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":556,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Image",
+                            "searchKey":"Image,tou",
+                            "props":{"y":0,"x":0,"visible":false,"skin":"images/game/h_tou.png","name":"tou","centerY":0,"centerX":-180},
+                            "nodeParent":536,
+                            "label":"tou",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":557,
+                            "child":[
+                                ]
+                        }]
+                },
+                {
+                    "x":30,
+                    "type":"Label",
+                    "searchKey":"Label,startBtn,startBtn",
+                    "props":{"width":300,"var":"startBtn","valign":"middle","text":"开始发牌","name":"startBtn","left":0,"height":80,"fontSize":60,"color":"#ffffff","bottom":0,"bgColor":"#b02b29","align":"center"},
+                    "nodeParent":6,
+                    "label":"startBtn",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":63,
                     "child":[
                         ]
                 }]
@@ -1834,7 +2004,7 @@
                             "props":{"top":20,"right":35,"name":"menuList","left":20,"bottom":35},
                             "nodeParent":445,
                             "label":"menuList",
-                            "isOpen":true,
+                            "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
@@ -2329,20 +2499,6 @@
                         }],
                     "$HIDDEN":false
                 }]
-        },
-        {
-            "x":15,
-            "type":"Sprite",
-            "searchKey":"Sprite",
-            "props":{"y":1533,"x":551,"texture":"images/game/chi.png"},
-            "nodeParent":2,
-            "label":"Sprite",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":535,
-            "child":[
-                ]
         }],
     "animations":[
         {

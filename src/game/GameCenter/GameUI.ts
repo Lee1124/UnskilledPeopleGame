@@ -4,19 +4,19 @@ import GameControl from '../GameCenter/GameControl';
 import OpenDiaLog from '../Fuction/OpenDiaLog';
 import setMenuContent from '../Fuction/set_content_menu';
 import setChatContent from '../Fuction/set_content_chat';
-
 import openView from '../common/openView';
+import Main from '../common/Main';
 export default class GameUI extends Laya.Scene {
     //打开场景所接受的参数
-    openData:any;
+    openData: any;
     //初始位置坐标
     startSeatXY: any[] = [];
     //初始摸牌的位置
-    startFeelSeatXY:any[]=[];
+    startFeelSeatXY: any[] = [];
     //发牌的位置坐标
-    dealPokerSeatXY:any;
+    dealPokerSeatXY: any;
     //摸牌的最初位置
-    feelPokerSeatXY:any;
+    feelPokerSeatXY: any;
     // //玩家自己牌的接受位置坐标
     // mePokerGetSeat:any;
     //发牌接受牌的位置坐标
@@ -27,11 +27,12 @@ export default class GameUI extends Laya.Scene {
         this.InitGameUIData();
         this.RegisterEvent();
     }
-    onOpened(options:any){
-        this.openData=options;
+    onOpened(options: any) {
+        this.openData = options;
         this.initJS();
         setMenuContent.init(this);
         setChatContent.init(this);
+        this.setUI();
     }
     /**初始化数据 */
     InitGameUIData() {
@@ -39,8 +40,8 @@ export default class GameUI extends Laya.Scene {
         this.GameControlJS = this.getComponent(GameControl);
         MyCenter.InitGameUIData(this);
     }
-    initJS():void{
-        let RealTimeResultJS:any=this['btnView'].getChildByName('btn_look1').getComponent(openView);
+    initJS(): void {
+        let RealTimeResultJS: any = this['btnView'].getChildByName('btn_look1').getComponent(openView);
         RealTimeResultJS.initOpen(0, 'RealTimeResult.scene', false, null, 2);
     }
     /**注册事件 */
@@ -68,12 +69,12 @@ export default class GameUI extends Laya.Scene {
 
 
         /**====正式==== */
-        this['btnView']._children.forEach((item:any)=>{
+        this['btnView']._children.forEach((item: any) => {
             item.on(Laya.Event.CLICK, this, () => {
-                switch(item.name){
+                switch (item.name) {
                     case 'btn_menu':
                         this.openMenu();
-                    break;
+                        break;
                     // case 'btn_look2':
 
                     // break;
@@ -82,7 +83,7 @@ export default class GameUI extends Laya.Scene {
                     // break;
                     case 'btn_chat':
                         this.openChat();
-                    break;
+                        break;
                 }
             })
         })
@@ -92,19 +93,31 @@ export default class GameUI extends Laya.Scene {
     /**
      * 设置菜单的内容
      */
-    openMenu():void{
+    openMenu(): void {
         let menu: any = MyCenter.GameControlObj.owner['menu'].getComponent(OpenDiaLog);
-        menu.init(3,0,this,null,null,()=>{
+        menu.init(3, 0, this, null, null, () => {
             menu.open();
         });
     }
     /**
      * 设置聊天菜单的内容
      */
-    openChat():void{
+    openChat(): void {
         let chatJS: any = MyCenter.GameControlObj.owner['chat'].getComponent(OpenDiaLog);
-        chatJS.init(4,0,this,null,null,()=>{
+        chatJS.init(4, 0, this, null, null, () => {
             chatJS.open();
         });
+    }
+
+    setUI(): void {
+        let nodeArr = [this['btnView']]
+        Main.setNodeTop(nodeArr);
+        //设置菜单
+        if (Main.phoneNews.deviceNews == 'Android') {
+            let menu: any = this['menu'];
+            let menuList: any = menu.getChildByName('menuList');
+            menu.height += Main.phoneNews.statusHeight + 5;
+            menuList.top += Main.phoneNews.statusHeight + 5;
+        }
     }
 }
