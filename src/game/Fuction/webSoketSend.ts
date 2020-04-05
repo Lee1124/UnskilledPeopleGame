@@ -260,5 +260,21 @@ class websketSend {
             }
         })
     }
+
+    /**
+     * 起牌 1,偷牌 2，扣牌 3，过牌 4，庄家打了一张牌 5
+     */
+    beforePlayHandle(opt:any):void{
+        this.onSend({
+            name: 'M.Games.YDR.C2G_StandPokerOpt',
+            data: {
+                roomid: this.conThis.roomId,
+                opt:opt
+            },
+            success(res:any) {
+                this.conThis.dealSoketMessage('游戏开始之后,打牌之前的等操作：', res);
+            }
+        })
+    }
 }
 export default new websketSend();

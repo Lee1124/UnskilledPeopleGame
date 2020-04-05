@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":6,
-    "selecteID":63,
+    "selectedBox":536,
+    "selecteID":558,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/GameCenter/GameUI.ts","height":2208},
     "nodeParent":-1,
-    "maxID":558,
+    "maxID":559,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -68,7 +68,7 @@
                     "props":{"y":0,"x":0,"top":0,"skin":"images/game/deskBg.jpg","right":0,"name":"deskBg","left":0,"bottom":0},
                     "nodeParent":6,
                     "label":"deskBg",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
@@ -141,20 +141,6 @@
                             "isAniNode":true,
                             "hasChild":false,
                             "compId":366,
-                            "child":[
-                                ]
-                        },
-                        {
-                            "x":45,
-                            "type":"Label",
-                            "searchKey":"Label,timeBtn,timeBtn",
-                            "props":{"width":180,"var":"timeBtn","valign":"middle","text":"倒计时","name":"timeBtn","left":0,"height":80,"fontSize":60,"color":"#ffffff","bottom":84,"bgColor":"#b02b29","align":"center"},
-                            "nodeParent":3,
-                            "label":"timeBtn",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":403,
                             "child":[
                                 ]
                         }]
@@ -328,7 +314,7 @@
                             "props":{"width":167,"skin":"images/game/zuoweiBg.png","pivotY":84,"pivotX":84,"name":"empty_seat1","height":167,"centerX":0,"bottom":0},
                             "nodeParent":7,
                             "label":"empty_seat1",
-                            "isOpen":true,
+                            "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
@@ -669,7 +655,7 @@
                             "props":{"width":167,"top":0,"skin":"images/game/zuoweiBg.png","pivotY":84,"pivotX":84,"name":"empty_seat2","left":100,"height":167},
                             "nodeParent":7,
                             "label":"empty_seat2",
-                            "isOpen":true,
+                            "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
@@ -1465,100 +1451,23 @@
                 {
                     "x":30,
                     "type":"Image",
-                    "searchKey":"Image,meHandleView",
-                    "props":{"right":100,"name":"meHandleView","left":100,"height":145,"bottom":500},
+                    "searchKey":"Image,meHandleView,meHandleView",
+                    "props":{"zOrder":99,"x":100,"visible":false,"var":"meHandleView","right":100,"name":"meHandleView","left":100,"height":0,"bottom":600},
                     "nodeParent":6,
                     "label":"meHandleView",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":536,
                     "child":[
                         {
+                            "x":45,
                             "type":"Image",
-                            "searchKey":"Image,kou",
-                            "props":{"visible":false,"skin":"images/game/h_kou.png","right":0,"name":"kou","centerY":0},
+                            "searchKey":"Image,h_1",
+                            "props":{"y":0,"x":271,"visible":false,"skin":"images/game/h_chi.png","name":"h_1","centerY":0,"centerX":-180},
                             "nodeParent":536,
-                            "label":"kou",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":537,
-                            "child":[
-                                ]
-                        },
-                        {
-                            "type":"Image",
-                            "searchKey":"Image,pen",
-                            "props":{"visible":false,"skin":"images/game/h_pen.png","name":"pen","centerY":0,"centerX":0},
-                            "nodeParent":536,
-                            "label":"pen",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":538,
-                            "child":[
-                                ]
-                        },
-                        {
-                            "type":"Image",
-                            "searchKey":"Image,sha",
-                            "props":{"y":0,"x":0,"visible":false,"skin":"images/game/h_sha.png","name":"sha","centerY":0,"centerX":0},
-                            "nodeParent":536,
-                            "label":"sha",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":539,
-                            "child":[
-                                ]
-                        },
-                        {
-                            "type":"Image",
-                            "searchKey":"Image,tu",
-                            "props":{"y":0,"x":0,"visible":false,"skin":"images/game/h_tu.png","name":"tu","centerY":0,"centerX":0},
-                            "nodeParent":536,
-                            "label":"tu",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":540,
-                            "child":[
-                                ]
-                        },
-                        {
-                            "type":"Image",
-                            "searchKey":"Image,hu",
-                            "props":{"y":0,"visible":false,"skin":"images/game/h_hu.png","name":"hu","centerY":0,"centerX":-180},
-                            "nodeParent":536,
-                            "label":"hu",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":542,
-                            "child":[
-                                ]
-                        },
-                        {
-                            "type":"Image",
-                            "searchKey":"Image,buhu",
-                            "props":{"y":0,"visible":false,"skin":"images/game/h_buhu.png","name":"buhu","centerY":0,"centerX":180},
-                            "nodeParent":536,
-                            "label":"buhu",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":543,
-                            "child":[
-                                ]
-                        },
-                        {
-                            "type":"Image",
-                            "searchKey":"Image,chi",
-                            "props":{"y":0,"x":0,"visible":false,"skin":"images/game/h_chi.png","name":"chi","centerY":0,"centerX":-180},
-                            "nodeParent":536,
-                            "label":"chi",
+                            "label":"h_1",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
@@ -1567,11 +1476,97 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Image",
-                            "searchKey":"Image,guo",
-                            "props":{"y":0,"visible":false,"skin":"images/game/h_guo.png","name":"guo","centerY":0,"centerX":180},
+                            "searchKey":"Image,h_2",
+                            "props":{"y":0,"x":451,"visible":false,"skin":"images/game/h_pen.png","name":"h_2","centerY":0,"centerX":0},
                             "nodeParent":536,
-                            "label":"guo",
+                            "label":"h_2",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":538,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Image",
+                            "searchKey":"Image,h_3",
+                            "props":{"y":0,"x":451,"visible":false,"skin":"images/game/h_sha.png","name":"h_3","centerY":0,"centerX":0},
+                            "nodeParent":536,
+                            "label":"h_3",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":539,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Image",
+                            "searchKey":"Image,h_4",
+                            "props":{"y":0,"x":451,"visible":false,"skin":"images/game/h_tu.png","name":"h_4","centerY":0,"centerX":0},
+                            "nodeParent":536,
+                            "label":"h_4",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":540,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Image",
+                            "searchKey":"Image,h_5",
+                            "props":{"y":0,"x":271,"visible":false,"skin":"images/game/h_tou.png","name":"h_5","centerY":0,"centerX":-180,"alpha":0.1},
+                            "nodeParent":536,
+                            "label":"h_5",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":557,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Image",
+                            "searchKey":"Image,h_6",
+                            "props":{"y":41,"x":309,"visible":false,"skin":"images/game/icon_chat.png","name":"h_6","centerY":0,"centerX":-180},
+                            "nodeParent":536,
+                            "label":"h_6",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":558,
+                            "child":[
+                                ],
+                            "$HIDDEN":false
+                        },
+                        {
+                            "x":45,
+                            "type":"Image",
+                            "searchKey":"Image,h_7",
+                            "props":{"visible":false,"skin":"images/game/h_kou.png","right":0,"name":"h_7","centerY":0},
+                            "nodeParent":536,
+                            "label":"h_7",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":537,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Image",
+                            "searchKey":"Image,h_8",
+                            "props":{"y":0,"x":631,"visible":false,"skin":"images/game/h_guo.png","name":"h_8","centerY":0,"centerX":180},
+                            "nodeParent":536,
+                            "label":"h_8",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
@@ -1580,41 +1575,16 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Image",
-                            "searchKey":"Image,da",
-                            "props":{"y":0,"visible":false,"skin":"images/game/f_da.png","name":"da","centerY":0,"centerX":-180},
+                            "searchKey":"Image,h_9",
+                            "props":{"y":0,"visible":false,"skin":"images/game/h_hu.png","name":"h_9","centerY":0,"centerX":-180},
                             "nodeParent":536,
-                            "label":"da",
+                            "label":"h_9",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
-                            "compId":555,
-                            "child":[
-                                ]
-                        },
-                        {
-                            "type":"Image",
-                            "searchKey":"Image,buda",
-                            "props":{"y":0,"visible":false,"skin":"images/game/h_buda.png","name":"buda","centerY":0,"centerX":180},
-                            "nodeParent":536,
-                            "label":"buda",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":556,
-                            "child":[
-                                ]
-                        },
-                        {
-                            "type":"Image",
-                            "searchKey":"Image,tou",
-                            "props":{"y":0,"x":0,"visible":false,"skin":"images/game/h_tou.png","name":"tou","centerY":0,"centerX":-180},
-                            "nodeParent":536,
-                            "label":"tou",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":557,
+                            "compId":542,
                             "child":[
                                 ]
                         }]
@@ -1630,6 +1600,20 @@
                     "isAniNode":true,
                     "hasChild":false,
                     "compId":63,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Label",
+                    "searchKey":"Label,timeBtn,timeBtn",
+                    "props":{"y":2044,"x":0,"width":180,"var":"timeBtn","valign":"middle","text":"倒计时","name":"timeBtn","left":0,"height":80,"fontSize":60,"color":"#ffffff","bottom":84,"bgColor":"#b02b29","align":"center"},
+                    "nodeParent":6,
+                    "label":"timeBtn",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":403,
                     "child":[
                         ]
                 }]

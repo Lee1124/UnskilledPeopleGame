@@ -8,20 +8,13 @@ class DealMePoker {
     others: any[] = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
     //自己发牌容器
     meDealView: any;
-    //玩家自己最终的摆牌容器
-    // mePutView: any;
-    //玩家牌的数据(处理前)
-    // userPokerData0: any[];
-    //玩家牌的数据(处理后)
-    // userPokerData: any[];
 
     //每列最多多少张牌
-    maxColPokerNum: number = 6;
+    maxColPokerNum: number = 7;
     //分组前的牌
     beforeGroupData: any[];
     //分组后的牌
     groupedData: any[];
-
 
     //玩家索引
     userIndex: number;
@@ -37,13 +30,14 @@ class DealMePoker {
     players: any;
     //发牌显示
     showDealView: any;
-
-
+    newReturnArr: any[] = [];
     /**
      * 将'我'的牌的数据进行分组组合
      * @param data 
      */
     composeMeData(data: any) {
+        //重置数据
+        this.newReturnArr = [];
         let newArr = [];
         data.forEach((item: any, index: number) => {
             let Type = parseInt(String(item / 10000));//类型（牌的名字）
@@ -53,48 +47,50 @@ class DealMePoker {
             newArr.push({ type: Type, Color: Color, seatPoint: groupP, Point: Point, isGrey: false, id: (index + 1) })
             //     console.log(item,'牌名字type：'+Type,'牌颜色Color：'+Color,'牌点数Point：'+Point);
         })
-        let myTypeDest:any=(this.group(newArr,'type')).filter((item:any)=>item.data.length>=3);
-        myTypeDest.forEach((item: any) => {
-            newArr.forEach((item2: any, index2: number) => {
-                item2.isGrey=(item.type==item2.type)?true:false;
+        let myTypeDest: any = (this.group(newArr, 'type')).filter((item: any) => item.data.length >= 3);
+        newArr.forEach((item2: any, index2: number) => {
+            item2.isGrey = false;
+            myTypeDest.forEach((item: any) => {
+                if (item.type == item2.type)
+                    item2.isGrey = true;
             })
         })
-
         //分组
-        let myDest:any = this.group(newArr,'seatPoint');
+        let myDest: any = this.group(newArr, 'seatPoint');
+        //排序
         this.sortData(myDest);
         let bigArr: any;
-        myDest.forEach((item:any, index:number) => {
-            let filterArr = item.data.filter((item2: any, index2: number) => (index2 + 1) % (this.maxColPokerNum) == 0);
+        myDest.forEach((item: any, index: number) => {
+            let filterArr = item.data.filter((item2: any, index2: number) => (index2 > 0) && (index2 % (this.maxColPokerNum) == 0));
             if (filterArr.length > 0) {
                 bigArr = this.getNewArr(item, filterArr);
-                myDest = myDest.concat(bigArr)
+                myDest = myDest.concat(bigArr);
             }
         });
-        for(let i=myDest.length-1;i>=0;i--){
-            if(myDest[i].data.length>this.maxColPokerNum){
-                myDest.splice(i,1);
+        for (let i = myDest.length - 1; i >= 0; i--) {
+            if (myDest[i].data.length > this.maxColPokerNum) {
+                myDest.splice(i, 1);
             }
         }
-        myDest.forEach((item:any,index:number) => {
-            item.name='p'+(index+1);
+        myDest.forEach((item: any, index: number) => {
+            item.name = 'p' + (index + 1);
         });
         this.sortData(myDest);
-        return (this.beforeGroupData.map((item:any)=>{
-            if(item.uid==Main.userInfo.userId){
-                return {uid:item.uid,banker:item.banker,pokers:myDest};
-            }else{
+        return (this.beforeGroupData.map((item: any) => {
+            if (item.uid == Main.userInfo.userId) {
+                return { uid: item.uid, banker: item.banker, pokers: myDest };
+            } else {
                 return item;
             }
         }));
-        // console.log(this.groupedData)//this.beforeGroupData
+        // console.log('groupedData:',this.groupedData)//this.beforeGroupData
     }
 
     getNewArr(item: any, filterArr: any) {
         let myIndexArr = [];
-        filterArr.forEach((item0:any, index0:number) => {
+        filterArr.forEach((item0: any, index0: number) => {
             let falg = true;
-            item.data.forEach((item2:any, index2:number) => {
+            item.data.forEach((item2: any, index2: number) => {
                 if ((item0.type == item2.type) && falg) {
                     falg = false
                     myIndexArr.push(index2);
@@ -103,14 +99,35 @@ class DealMePoker {
         })
         myIndexArr.unshift(0);
         myIndexArr.push(item.data.length);
-        let newReturnArr = [];
+
         for (let i = 0; i < myIndexArr.length; i++) {
             if (myIndexArr[i + 1]) {
                 let myData = item.data.slice(myIndexArr[i], myIndexArr[i + 1]);
-                newReturnArr.push({ seatPoint: myData[0].seatPoint, data: myData })
+                this.newReturnArr.push({ seatPoint: myData[0].seatPoint, data: myData })
             }
         }
-        return newReturnArr;
+
+        let filterArr_inner: any;
+        let f: boolean = false;
+        let aa: any;
+        this.newReturnArr.forEach(item => {
+            filterArr_inner = item.data.filter((item2: any, index2: number) => (index2 > 0) && (index2 % (this.maxColPokerNum) == 0));
+            aa = item;
+        })
+        // console.log('newReturnArr++',this.newReturnArr)
+        filterArr.forEach((item1: any) => {
+            filterArr_inner.forEach((item2: any) => {
+                if (item1.type != item2.type) {
+                    f = true;
+                }
+            })
+        })
+        if (filterArr_inner.length > 0 && f) {
+            return this.getNewArr(aa, filterArr_inner);
+        } else if (!f) {
+            // console.log('newReturnArr',newReturnArr)
+            return this.newReturnArr;
+        }
     }
 
     /**
@@ -129,7 +146,7 @@ class DealMePoker {
      * 根据某‘字段’进行json数据分组
      * @param arr 数组
      */
-    group(arr: any[],key:string) {
+    group(arr: any[], key: string) {
         let map = {}, dest = [];
         for (var i = 0; i < arr.length; i++) {
             var ai = arr[i];
@@ -152,8 +169,6 @@ class DealMePoker {
         return dest;
     }
 
-
-
     /**
      * 发牌
      * @param data 数据
@@ -166,38 +181,16 @@ class DealMePoker {
         this.players = MyCenter.GameControlObj.players;
         this.init();
         this.beforeGroupData = data;
-        this.beforeGroupData.forEach((item:any)=>{
-            item.userId=item.uid;
-            item.pokers=item.pokers?item.pokers:this.others;
+        this.beforeGroupData.forEach((item: any) => {
+            item.userId = item.uid;
+            item.pokers = item.pokers ? item.pokers : this.others;
         })
         let meData: any[] = data.filter((item: any) => item.uid === Main.userInfo.userId);
-        if (meData.length > 0){
+        if (meData.length > 0) {
             //将自己的牌进行分组
-            this.groupedData=this.composeMeData(meData[0].pokers);
+            this.groupedData = this.composeMeData(meData[0].pokers);
         }
-        console.log(this.groupedData)
-
-        // return
-        // this.userPokerData0 = data.players;
-        // this.userPokerData = [];
-        // this.userPokerData0.forEach((item: any) => {
-        //     if (item.uid == Main.userInfo['userId']) {
-        //         item.pokers.forEach((item2: any) => {
-        //             item2.forEach((item3: any, index3: number) => {
-        //                 item2[index3] = parseInt(String(item3 / 10000))
-        //             })
-        //             mePokerArr = mePokerArr.concat(item2);
-        //         })
-        //     }
-        // });
-        // this.userPokerData0.forEach((item: any, index: number) => {
-        //     let data: any = item.uid == Main.userInfo['userId'] ? mePokerArr : this.others;
-        //     this.userPokerData[index] = { userId: item.uid, data: data };
-        // });
-        // this.userPokerData.forEach((item, index) => {
-        //     this.pokerNum += item.data.length;
-        // });
-        this.players[1].userId=100018, this.players[2].userId=100021;
+        // this.players[1].userId=100018, this.players[2].userId=100021;
         this.MovePoker();
     }
 
@@ -254,7 +247,7 @@ class DealMePoker {
                             let hh = this.meDealView.addChild(pokerCellView);
                         }
                         let mePokerObj: Laya.Image = new Laya.Image();
-                        let pokerTypeName:any=parseInt(String((dealPlayerData.pokers[this.pokerIndex])/10000));
+                        let pokerTypeName: any = parseInt(String((dealPlayerData.pokers[this.pokerIndex]) / 10000));
                         if (this.meCellIndex == 0) {
                             mePokerObj.size(Main.pokerWidth, 450);
                             mePokerObj.loadImage('res/img/poker/chang/' + pokerTypeName + '.png');
@@ -327,10 +320,7 @@ class DealMePoker {
         let mePokerData: any[] = [];
         this.groupedData.forEach((item: any, index: number) => {
             if (item.uid == Main.userInfo.userId) {
-                // item.pokers.forEach((item2: any, index2: number) => {
-                //     mePokerData[index2] = { name: 'p' + index2, poker: item2 }
-                // })
-                mePokerData=item.pokers;
+                mePokerData = item.pokers;
             }
         })
         let playerMe: any = this.players.filter((item: any) => item.IsMe);

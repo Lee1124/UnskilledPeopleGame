@@ -120,8 +120,8 @@
                 deviceNews: '',
             };
             this.AUTO = false;
-            this.websoketApi = '132.232.34.32:8092';
-            this.requestApi = 'http://132.232.34.32:8091';
+            this.websoketApi = '192.168.101.109:8082';
+            this.requestApi = 'http://192.168.101.109:8081';
             this.userInfo = null;
             this.debug = true;
             this.pokerWidth = 128;
@@ -2069,6 +2069,18 @@
                 }
             });
         }
+        beforePlayHandle(opt) {
+            this.onSend({
+                name: 'M.Games.YDR.C2G_StandPokerOpt',
+                data: {
+                    roomid: this.conThis.roomId,
+                    opt: opt
+                },
+                success(res) {
+                    this.conThis.dealSoketMessage('游戏开始之后,打牌之前的等操作：', res);
+                }
+            });
+        }
     }
     var websoket = new websketSend();
 
@@ -2093,11 +2105,13 @@
     class DealMePoker {
         constructor() {
             this.others = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
-            this.maxColPokerNum = 6;
+            this.maxColPokerNum = 7;
             this.pokerNum = 0;
             this.timerNum = 0;
+            this.newReturnArr = [];
         }
         composeMeData(data) {
+            this.newReturnArr = [];
             let newArr = [];
             data.forEach((item, index) => {
                 let Type = parseInt(String(item / 10000));
@@ -2107,16 +2121,18 @@
                 newArr.push({ type: Type, Color: Color, seatPoint: groupP, Point: Point, isGrey: false, id: (index + 1) });
             });
             let myTypeDest = (this.group(newArr, 'type')).filter((item) => item.data.length >= 3);
-            myTypeDest.forEach((item) => {
-                newArr.forEach((item2, index2) => {
-                    item2.isGrey = (item.type == item2.type) ? true : false;
+            newArr.forEach((item2, index2) => {
+                item2.isGrey = false;
+                myTypeDest.forEach((item) => {
+                    if (item.type == item2.type)
+                        item2.isGrey = true;
                 });
             });
             let myDest = this.group(newArr, 'seatPoint');
             this.sortData(myDest);
             let bigArr;
             myDest.forEach((item, index) => {
-                let filterArr = item.data.filter((item2, index2) => (index2 + 1) % (this.maxColPokerNum) == 0);
+                let filterArr = item.data.filter((item2, index2) => (index2 > 0) && (index2 % (this.maxColPokerNum) == 0));
                 if (filterArr.length > 0) {
                     bigArr = this.getNewArr(item, filterArr);
                     myDest = myDest.concat(bigArr);
@@ -2153,14 +2169,32 @@
             });
             myIndexArr.unshift(0);
             myIndexArr.push(item.data.length);
-            let newReturnArr = [];
             for (let i = 0; i < myIndexArr.length; i++) {
                 if (myIndexArr[i + 1]) {
                     let myData = item.data.slice(myIndexArr[i], myIndexArr[i + 1]);
-                    newReturnArr.push({ seatPoint: myData[0].seatPoint, data: myData });
+                    this.newReturnArr.push({ seatPoint: myData[0].seatPoint, data: myData });
                 }
             }
-            return newReturnArr;
+            let filterArr_inner;
+            let f = false;
+            let aa;
+            this.newReturnArr.forEach(item => {
+                filterArr_inner = item.data.filter((item2, index2) => (index2 > 0) && (index2 % (this.maxColPokerNum) == 0));
+                aa = item;
+            });
+            filterArr.forEach((item1) => {
+                filterArr_inner.forEach((item2) => {
+                    if (item1.type != item2.type) {
+                        f = true;
+                    }
+                });
+            });
+            if (filterArr_inner.length > 0 && f) {
+                return this.getNewArr(aa, filterArr_inner);
+            }
+            else if (!f) {
+                return this.newReturnArr;
+            }
         }
         sortData(arr) {
             arr.forEach((item) => {
@@ -2208,8 +2242,6 @@
             if (meData.length > 0) {
                 this.groupedData = this.composeMeData(meData[0].pokers);
             }
-            console.log(this.groupedData);
-            this.players[1].userId = 100018, this.players[2].userId = 100021;
             this.MovePoker();
         }
         init() {
@@ -3132,6 +3164,9 @@
                 else if (resData._t == "G2C_DealHand") {
                     this.dealPlayerPoker(resData);
                 }
+                else if (resData._t == "G2C_StandPoker") {
+                    this.player_standPoker(resData);
+                }
             }
             catch (error) {
                 Main$1.$LOG(error);
@@ -3147,7 +3182,22 @@
             });
         }
         dealPlayerPoker(data) {
-            DealOrPlayPoker.deal(data);
+            DealOrPlayPoker.deal(data.players);
+        }
+        player_standPoker(data) {
+            this.players.forEach((itemJS) => {
+                if (data.uid == itemJS.userId) {
+                    let isAllow = data.pokers.length > 0 ? true : false;
+                    if (data.pokers.length == 0) {
+                        data.handle = [{ h: 7, opt: 3, o: false }];
+                    }
+                    else {
+                        data.handle = [{ h: 6, opt: 1, o: isAllow }, { h: 8, opt: 4, o: true }];
+                    }
+                    itemJS.playerHandle(data);
+                    itemJS.playerCountDown(true, data);
+                }
+            });
         }
         leaveRoomDeal(data) {
             if (data.userid == Main$1.userInfo.userId) {
@@ -3258,12 +3308,11 @@
         leaveRoomOpenView() {
         }
         dealPokerFn() {
-            console.log('进来');
             let data = [
                 { uid: 100018, banker: false, pokers: null },
                 { uid: 100021, banker: false, pokers: null },
-                { uid: 100014, banker: true, pokers: [11002, 11002, 31004, 41005, 41005, 51006, 51006, 51006,
-                        61006, 61006, 81007, 91008, 111010, 121012, 121012, 132004, 152006, 152006, 162007, 212011]
+                { uid: 100014, banker: true, pokers: [21003, 21003, 21003, 31004, 31004, 31004, 41005, 41005,
+                        51006, 51006, 71007, 91008, 111010, 121012, 132004, 132004, 132004, 152006, 192009, 192009]
                 }
             ];
             DealOrPlayPoker.deal(data);
@@ -3286,10 +3335,9 @@
             DealOrPlayPoker.otherPlay(this.num2);
         }
         countDown() {
-            let index = parseInt(String(Math.random() * 3));
-            this.players[index].playerCountDown(true, {
-                startTime: Math.round(new Date().getTime() / 1000),
-                endTime: Math.round(new Date().getTime() / 1000) + 20
+            this.players[0].playerCountDown(true, {
+                ttime: 20,
+                time: 10
             });
         }
     }
@@ -3813,25 +3861,28 @@
         open(seatThis, data) {
             seatThis.conutDownData = data;
             let conutDown = seatThis.owner.getChildByName("conutDown");
-            conutDown.visible = true;
             seatThis._imgNode = conutDown.getChildByName('timeMask');
             seatThis._imgNode.loadImage('res/img/common/progress1.png', Laya.Handler.create(this, () => {
                 Laya.timer.frameLoop(1, seatThis, seatThis.seat_drawPie);
             }));
-            seatThis._allTime = data.endTime - data.startTime - 2;
-            seatThis._rotation = 360 * (((new Date().getTime() / 1000 - data.startTime)) / seatThis._allTime) + 2;
+            seatThis._allTime = data.ttime;
+            seatThis._startTime = new Date().getTime() / 1000;
+            seatThis._rotation = 360 * ((seatThis.conutDownData.ttime - seatThis.conutDownData.time) / seatThis._allTime) + 2;
             seatThis.timeText = conutDown.getChildByName("timeText");
             seatThis.timeText.text = `${seatThis._allTime}s`;
             seatThis._timeOutFlag = true;
+            seatThis.seat_drawPie();
+            conutDown.visible = true;
         }
         drawPie(seatThis) {
-            let time = seatThis._allTime - parseInt(String(((new Date().getTime() / 1000 - seatThis.conutDownData.startTime))));
+            let time = seatThis._allTime - parseInt(String(((new Date().getTime() / 1000 - seatThis._startTime)))) - (seatThis.conutDownData.ttime - seatThis.conutDownData.time);
             seatThis.timeText.text = time + 's';
             if (time == 5 && seatThis.IsMe && seatThis._timeOutFlag) {
                 seatThis._timeOutFlag = false;
                 seatThis._imgNode.loadImage('res/img/common/progress2.png');
             }
-            seatThis._rotation = 360 * (((new Date().getTime() / 1000 - seatThis.conutDownData.startTime)) / seatThis._allTime);
+            let endS = ((new Date().getTime() / 1000 - seatThis._startTime)) + (seatThis.conutDownData.ttime - seatThis.conutDownData.time);
+            seatThis._rotation = 360 * (endS / seatThis._allTime);
             if (seatThis._rotation >= 360) {
                 seatThis._rotation = 360;
                 Laya.timer.clear(seatThis, seatThis.seat_drawPie);
@@ -3858,6 +3909,55 @@
         }
     }
     var step_2_startNewGame$1 = new step_2_startNewGame();
+
+    class step_x_playerHandle {
+        show(that, data) {
+            this.data = data;
+            if (that.userId == Main$1.userInfo.userId) {
+                this.showMeHandleView(that, data);
+            }
+        }
+        hide(isAll = false) {
+            let meHandleView = myCenter.GameUIObj.meHandleView;
+            if (isAll) {
+                meHandleView.visible = false;
+            }
+            else {
+                meHandleView._children.forEach((item) => {
+                    item.off(Laya.Event.CLICK);
+                    if (item.name != 'h_7') {
+                        item.visible = false;
+                    }
+                    else {
+                        item.on(Laya.Event.CLICK, this, this.clickHandle, [7]);
+                    }
+                });
+            }
+        }
+        showMeHandleView(that, data) {
+            let meHandleView = myCenter.GameUIObj.meHandleView;
+            meHandleView.visible = true;
+            let handle = data.handle;
+            meHandleView._children.forEach((item) => {
+                item.visible = false;
+                handle.forEach((item2) => {
+                    if (item.name == 'h_' + item2.h) {
+                        item.alpha = item2.o ? 1 : 0.5;
+                        item.visible = true;
+                        item.zOrder = 10;
+                        item.off(Laya.Event.CLICK);
+                        if (item2.o)
+                            item.on(Laya.Event.CLICK, this, this.clickHandle, [item2]);
+                    }
+                });
+            });
+        }
+        clickHandle(item2) {
+            console.log('操作id：', item2);
+            websoket.beforePlayHandle(item2.opt);
+        }
+    }
+    var step_x_playerHandle$1 = new step_x_playerHandle();
 
     class seat extends Laya.Script {
         constructor() {
@@ -3913,9 +4013,6 @@
         playerChat(data) {
             set_content_chat.playerChat(this, data);
         }
-        startNewGame(data) {
-            step_2_startNewGame$1.start(this, data);
-        }
         playerCountDown(isShow, data) {
             if (isShow)
                 countDown.open(this, data);
@@ -3924,6 +4021,12 @@
         }
         seat_drawPie() {
             countDown.drawPie(this);
+        }
+        startNewGame(data) {
+            step_2_startNewGame$1.start(this, data);
+        }
+        playerHandle(data) {
+            step_x_playerHandle$1.show(this, data);
         }
     }
 

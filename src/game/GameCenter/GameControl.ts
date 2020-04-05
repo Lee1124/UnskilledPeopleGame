@@ -184,8 +184,9 @@ export default class GameControl extends Laya.Script {
                 this.startNewGame(resData);
             } else if (resData._t == "G2C_DealHand") {
                 this.dealPlayerPoker(resData);
+            }else if(resData._t == "G2C_StandPoker"){//玩家起牌
+                this.player_standPoker(resData);
             }
-
 
         } catch (error) {
             Main.$LOG(error)
@@ -214,7 +215,26 @@ export default class GameControl extends Laya.Script {
      * 发牌
      */
     dealPlayerPoker(data: any): void {
-        DealOrPlayPoker.deal(data);
+        DealOrPlayPoker.deal(data.players);
+    }
+
+    //玩家起牌
+    player_standPoker(data:any):void{
+        this.players.forEach((itemJS:any)=>{
+            if(data.uid==itemJS.userId){
+                let isAllow:boolean=data.pokers.length>0?true:false;
+                /**
+                * opt：起牌 1,偷牌 2，扣牌 3，过牌 4，庄家打了一张牌 5
+                */
+               if(data.pokers.length==0){//包子
+                data.handle=[{h:7,opt:3,o:false}];
+               }else{
+                data.handle=[{h:6,opt:1,o:isAllow},{h:8,opt:4,o:true}];
+               }
+                itemJS.playerHandle(data);
+                itemJS.playerCountDown(true,data);
+            }
+        })  
     }
 
     /**
@@ -382,12 +402,21 @@ export default class GameControl extends Laya.Script {
     /**发牌 */
     dealPokerFn() {
         // 类型
-        console.log('进来')
+        // console.log('进来');
+        // let data:any={uid:Main.userInfo.userId,handle:[1,2,8,7]};
+        // this.players.forEach((item:any)=>{
+        //     if(data.uid==item.userId){
+        //         item.playerHandle(data);
+        //     }
+        // })  
+
+        // this.players[0].playerCountDown(false);
+
         let data: any = [
             { uid: 100018, banker: false, pokers: null },
             { uid: 100021, banker: false, pokers: null },
-            {uid: 100014, banker: true, pokers: [11002, 11002, 31004, 41005, 41005, 51006, 51006, 51006,
-                    61006, 61006, 81007, 91008, 111010, 121012, 121012, 132004, 152006, 152006, 162007, 212011]
+            {uid: 100014, banker: true, pokers:[21003, 21003, 21003, 31004, 31004, 31004, 41005, 41005, 
+                51006, 51006, 71007, 91008, 111010, 121012, 132004, 132004, 132004, 152006, 192009, 192009]
             }
         ]
         DealOrPlayPoker.deal(data);
@@ -546,13 +575,10 @@ export default class GameControl extends Laya.Script {
      */
     countDown() {
         // countDown.open();
-        let index = parseInt(String(Math.random() * 3));
-        this.players[index].playerCountDown(true, {
-            startTime: Math.round(new Date().getTime() / 1000),
-            endTime: Math.round(new Date().getTime() / 1000) + 20
+        // let index = parseInt(String(Math.random() * 3));
+        this.players[0].playerCountDown(true, {
+            ttime:20,
+            time: 10
         });
     }
-
-
-
 }

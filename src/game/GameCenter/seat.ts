@@ -1,9 +1,10 @@
 /**位置脚本 */
 import MyCenter from '../common/MyCenter';//中转站
 import ChangeSeat from '../Fuction/ChangeSeat';//切换位置
-import countDown from '../Fuction/CountDown';//倒计时
+import countDown from '../Fuction/play/CountDown';//倒计时
 import step_1_seatAtOrDown from '../Fuction/step_1_seatAtOrDown';//第一步
 import step_2_startNewGame from '../Fuction/play/step_2_startNewGame';//第二步(开始一局新游戏)
+import step_x_playerHandle from '../Fuction/play/step_x_playerHandle';//第x步(玩家操作显示及操作)
 import set_content_liuzuo from '../Fuction/set_content_liuzuo';//留坐
 import set_content_chat from '../Fuction/set_content_chat';//表情聊天
 export default class seat extends Laya.Script {
@@ -133,14 +134,7 @@ export default class seat extends Laya.Script {
     /**
      * =====游戏部分=============================
      */
-    startNewGame(data:any):void{
-        step_2_startNewGame.start(this,data);
-    }
-
-
-    //==============正式===============
-
-    /**
+     /**
      * ===关于玩家位置上倒计时===
      * @param isShow {boolean} 是否显示时间
      * @param data {object} 数据
@@ -151,8 +145,20 @@ export default class seat extends Laya.Script {
         else
             countDown.close(this);
     }
-
+    //接上
     seat_drawPie():void{
         countDown.drawPie(this);
     }
+
+    startNewGame(data:any):void{
+        step_2_startNewGame.start(this,data);
+    }
+
+    /**玩家操作 */
+    playerHandle(data:any):void{
+        step_x_playerHandle.show(this,data);
+    }
+
+    //==============正式===============
+    
 }
