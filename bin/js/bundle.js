@@ -127,15 +127,9 @@
             this.pokerWidth = 128;
             this.count = 105;
             this.pokerParam = {
-                alpha: 0.7,
-                bgColor1: [
-                    0.6, 0.5, 0.5, 0.2, 0,
-                    0.6, 0.5, 0.5, 0.2, 0,
-                    0.6, 0.5, 0.5, 0.2, 0,
-                    1, 1, 1, 1, 1,
-                ],
                 color1: 'res/img/common/1.png',
-                color2: 'res/img/common/2.png'
+                color2: 'res/img/common/2.png',
+                color3: 'res/img/common/2.png'
             };
             this.deal = {
                 otherBottom: -220,
@@ -670,6 +664,9 @@
     }
 
     class MyCenter {
+        constructor() {
+            this.play = false;
+        }
         req(key, fn) {
             this.keepList = [];
             this.keepList = [{ key: key, fn: fn }];
@@ -686,6 +683,12 @@
         }
         InitGameData(thisObj) {
             this.GameControlObj = thisObj;
+        }
+        keep(key, bool) {
+            this[key] = bool;
+        }
+        getKeep(key) {
+            return this[key];
         }
     }
     var myCenter = new MyCenter();
@@ -2102,6 +2105,13 @@
     }
     var InitGameData$1 = new InitGameData();
 
+    var pokerColor;
+    (function (pokerColor) {
+        pokerColor[pokerColor["none"] = 0] = "none";
+        pokerColor[pokerColor["ban"] = 1] = "ban";
+        pokerColor[pokerColor["bu"] = 2] = "bu";
+        pokerColor[pokerColor["da"] = 3] = "da";
+    })(pokerColor || (pokerColor = {}));
     class DealMePoker {
         constructor() {
             this.others = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
@@ -2110,7 +2120,8 @@
             this.timerNum = 0;
             this.newReturnArr = [];
         }
-        composeMeData(data) {
+        composeMeData(data, buData) {
+            let buPoker;
             this.newReturnArr = [];
             let newArr = [];
             data.forEach((item, index) => {
@@ -2118,16 +2129,21 @@
                 let Color = parseInt(String((item % 10000) / 1000));
                 let Point = item - Type * 10000 - Color * 1000;
                 let groupP = Point > 7 ? (14 - 7) : Point;
-                newArr.push({ type: Type, Color: Color, seatPoint: groupP, Point: Point, isGrey: false, id: (index + 1) });
+                newArr.push({ type: Type, Color: Color, seatPoint: groupP, Point: Point, isGrey: pokerColor.none, id: (index + 1) });
             });
             let myTypeDest = (this.group(newArr, 'type')).filter((item) => item.data.length >= 3);
             newArr.forEach((item2, index2) => {
-                item2.isGrey = false;
+                item2.isGrey = pokerColor.none;
                 myTypeDest.forEach((item) => {
                     if (item.type == item2.type)
-                        item2.isGrey = true;
+                        item2.isGrey = pokerColor.ban;
                 });
+                if (buData && item2.type == parseInt(String(buData.poker / 10000))) {
+                    buPoker = item2;
+                }
             });
+            if (buPoker)
+                buPoker.isGrey = pokerColor.bu;
             let myDest = this.group(newArr, 'seatPoint');
             this.sortData(myDest);
             let bigArr;
@@ -2175,13 +2191,16 @@
                     this.newReturnArr.push({ seatPoint: myData[0].seatPoint, data: myData });
                 }
             }
-            let filterArr_inner;
+            let filterArr_inner = [];
             let f = false;
             let aa;
-            this.newReturnArr.forEach(item => {
-                filterArr_inner = item.data.filter((item2, index2) => (index2 > 0) && (index2 % (this.maxColPokerNum) == 0));
-                aa = item;
-            });
+            for (let i = 0; i < this.newReturnArr.length; i++) {
+                if (this.newReturnArr[i].data.length > (this.maxColPokerNum)) {
+                    filterArr_inner = this.newReturnArr[i].data.filter((item2, index2) => (index2 > 0) && ((index2) % (this.maxColPokerNum) == 0));
+                    aa = this.newReturnArr[i];
+                    break;
+                }
+            }
             filterArr.forEach((item1) => {
                 filterArr_inner.forEach((item2) => {
                     if (item1.type != item2.type) {
@@ -2240,9 +2259,23 @@
             });
             let meData = data.filter((item) => item.uid === Main$1.userInfo.userId);
             if (meData.length > 0) {
-                this.groupedData = this.composeMeData(meData[0].pokers);
+                this.groupedData = this.composeMeData(meData[0].pokers, null);
             }
             this.MovePoker();
+        }
+        buPoker(data) {
+            let bankerUid = myCenter.getKeep('bankerUid') ? myCenter.getKeep('bankerUid') : 100014;
+            if (data)
+                this.beforeGroupData.forEach((item) => {
+                    if (item.uid == bankerUid) {
+                        item.pokers.push(data.poker);
+                    }
+                });
+            let meData = this.beforeGroupData.filter((item) => item.uid === Main$1.userInfo.userId);
+            if (meData.length > 0) {
+                this.groupedData = this.composeMeData(meData[0].pokers, data);
+            }
+            this.showMePokerView();
         }
         init() {
             if (this.meDealView)
@@ -2336,14 +2369,14 @@
                 let childNode = this.meDealView.getChildAt(i);
                 Laya.Tween.to(childNode, { x: cellMoveX }, Main$1.Speed['dealPoker2'], null, Laya.Handler.create(this, () => {
                     if (i >= numChildren - 1) {
-                        this.meDealView.removeChildren();
-                        this.meDealView.width = Main$1.pokerWidth;
-                        this.showMePokerView();
+                        this.showMePokerView(true);
                     }
                 }));
             }
         }
-        showMePokerView() {
+        showMePokerView(isFrist) {
+            this.meDealView.removeChildren();
+            this.meDealView.width = Main$1.pokerWidth;
             let mePokerData = [];
             this.groupedData.forEach((item, index) => {
                 if (item.uid == Main$1.userInfo.userId) {
@@ -2361,8 +2394,11 @@
                     cellObj.bottom = 0;
                     item.data.forEach((item_inner, index_inner) => {
                         let pokerObj = new Laya.Image('res/img/poker/duan/' + item_inner.type + '.png');
-                        if (item_inner.isGrey) {
-                            this.changePokerColor(pokerObj, Main$1.pokerParam['color1'], 'noHanldePoker');
+                        if (item_inner.isGrey == pokerColor.ban) {
+                            this.changePokerColor(pokerObj, Main$1.pokerParam['color' + pokerColor.ban], 'noHanldePoker');
+                        }
+                        else if (item_inner.isGrey == pokerColor.bu) {
+                            this.changePokerColor(pokerObj, Main$1.pokerParam['color' + pokerColor.bu], 'noHanldePoker');
                         }
                         pokerObj.name = item_inner;
                         pokerObj.sizeGrid = "85,0,10,0";
@@ -2378,6 +2414,11 @@
                     });
                     this.meDealView.addChild(cellObj);
                 });
+            }
+            console.log('发牌结束===');
+            if (isFrist) {
+                myCenter.send('qiPoker', true);
+                myCenter.keep('showHandle', true);
             }
         }
         ClickPoker(pokerObj, e) {
@@ -2610,83 +2651,6 @@
         }
     }
     var ShowHandlePoker = new ShowHanldePoker();
-
-    class FeelPoker {
-        feel() {
-            this.players = myCenter.GameControlObj.players;
-            this.feelStartSeatXY = myCenter.GameUIObj.feelPokerSeatXY;
-            this.feelObj = myCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
-            this.initParam(true);
-            let data = {
-                userId: '12345' + parseInt(String(Math.random() * 3)),
-                poker: parseInt(String(Math.random() * 21)) + 1
-            };
-            this.players.forEach((item, index) => {
-                if (item.userId == data.userId) {
-                    this.moveFeelPoker(item, data);
-                }
-            });
-        }
-        moveFeelPoker(item, data) {
-            this.initParam2(item);
-            let feelSeat = item.owner.getChildByName('feelView');
-            let feelSeatXY = feelSeat.parent.localToGlobal(new Laya.Point(feelSeat.x, feelSeat.y));
-            let moveX = (feelSeatXY.x - this.feelStartSeatXY.x) + feelSeat.width / 2;
-            let moveY = (feelSeatXY.y - this.feelStartSeatXY.y) + feelSeat.height / 2;
-            let alpha = 1;
-            if (item.IsMe) {
-                let changeArr = [{ nodeName: item.owner, val: 2 }];
-                Main$1.changeNodeZOrder(changeArr);
-            }
-            Laya.Tween.to(this.feelObj, { x: moveX, y: moveY, alpha: alpha }, Main$1.Speed['feelPoker'], null, Laya.Handler.create(this, () => {
-                if (item.IsMe) {
-                    Laya.Tween.to(this.feelObj, { scaleX: 0 }, Main$1.Speed['feelFan'], null, Laya.Handler.create(this, () => {
-                        this.feelPoker.skin = 'res/img/poker/chang/' + data.poker + '.png';
-                        this.initParam(false);
-                        Laya.Tween.to(this.feelPoker, { scaleX: 1, alpha: 0.7 }, Main$1.Speed['feelFan']);
-                        if (this.t1)
-                            clearTimeout(this.t1);
-                        this.t1 = setTimeout(() => {
-                            this.clearFeelPoker();
-                        }, 1000);
-                    }));
-                }
-                else {
-                    Laya.Tween.to(this.feelObj, { scaleX: 0 }, Main$1.Speed['feelFan'], null, Laya.Handler.create(this, () => {
-                        this.feelPoker.skin = 'res/img/poker/chang/' + data.poker + '.png';
-                        this.initParam(false);
-                        Laya.Tween.to(this.feelPoker, { scaleX: 1, alpha: 0.7 }, Main$1.Speed['feelFan']);
-                        if (this.t2)
-                            clearTimeout(this.t2);
-                        this.t2 = setTimeout(() => {
-                            this.clearFeelPoker();
-                        }, 1000);
-                    }));
-                }
-            }));
-        }
-        clearFeelPoker() {
-            this.players.forEach((item, index) => {
-                this.initParam2(item);
-                if (item.IsMe) {
-                    let changeArr = [{ nodeName: item.owner, val: 0 }];
-                    Main$1.changeNodeZOrder(changeArr);
-                }
-            });
-        }
-        initParam(isShow = true) {
-            this.feelObj.alpha = 0;
-            this.feelObj.scale(1, 1);
-            this.feelObj.pos(this.feelObj.width / 2, this.feelObj.height / 2);
-        }
-        initParam2(item) {
-            let dealSeat_feelPoker = myCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
-            this.feelPoker = item.owner.getChildByName('feelView').getChildByName('feelPoker');
-            this.feelPoker.alpha = 0;
-            this.feelPoker.skin = 'res/img/poker/chang/-1.png';
-        }
-    }
-    var FeelPoker$1 = new FeelPoker();
 
     class OpenDiaLog extends Laya.Script {
         constructor() {
@@ -3027,6 +2991,20 @@
     }
     var set_content_chat = new setChat();
 
+    var handleBtn;
+    (function (handleBtn) {
+        handleBtn[handleBtn["none"] = 0] = "none";
+        handleBtn[handleBtn["qi"] = 1] = "qi";
+        handleBtn[handleBtn["tou"] = 2] = "tou";
+        handleBtn[handleBtn["kou"] = 3] = "kou";
+        handleBtn[handleBtn["guo"] = 4] = "guo";
+        handleBtn[handleBtn["play"] = 5] = "play";
+        handleBtn[handleBtn["chi"] = 6] = "chi";
+        handleBtn[handleBtn["pen"] = 7] = "pen";
+        handleBtn[handleBtn["sha"] = 8] = "sha";
+        handleBtn[handleBtn["tu"] = 9] = "tu";
+        handleBtn[handleBtn["hu"] = 10] = "hu";
+    })(handleBtn || (handleBtn = {}));
     class GameControl extends Laya.Script {
         constructor() {
             super(...arguments);
@@ -3063,113 +3041,122 @@
         }
         dealSoketMessage(sign, resData) {
             Main$1.$LOG(sign, resData);
-            try {
-                if (resData._t == 'R2C_IntoRoom') {
-                    if (resData.ret.type == 0) {
-                        this.requestRoomUpdateData(resData);
-                    }
-                    else {
-                        Main$1.showTip(resData.ret.msg);
-                        this.leaveRoomOpenView();
-                    }
+            if (resData._t == 'R2C_IntoRoom') {
+                if (resData.ret.type == 0) {
+                    this.requestRoomUpdateData(resData);
                 }
-                if (resData._t == 'R2C_UpdateRoom') {
-                    Main$1.showLoading(false, Main$1.loadingType.two);
-                    if (resData.ret.type == 0) {
-                        ReloadData$1.init();
-                        resData.param.json.forEach((item) => {
-                            if (item._t == "YDRIntoRoom") {
-                                this.getGameNews(item);
-                                this.updateRoomData(item, resData);
-                            }
-                            else if (item._t == "UpdateRoomData") {
-                            }
-                        });
-                    }
-                    else {
-                        Main$1.showTip(resData.ret.msg);
-                    }
-                }
-                if (resData._t == 'R2C_SeatUp') {
-                    if (resData.ret.type == 0) {
-                        this.playerSeatUp(resData);
-                    }
-                    else {
-                        Main$1.showTip(resData.ret.msg);
-                    }
-                }
-                if (resData._t == 'R2C_SeatAt') {
-                    if (resData.ret.type == 0) {
-                        resData.param.json.forEach((item) => {
-                            if (item._t == "YDRSeatAt") {
-                                this.playerSeatAt(item);
-                            }
-                            else if (item._t == "YDRSitDown") {
-                                this.playerSeatDown(item);
-                            }
-                        });
-                    }
-                    else {
-                        Main$1.showTip(resData.ret.msg);
-                    }
-                }
-                if (resData._t == "R2C_AddDairu" || resData._t == "R2C_SitDown") {
-                    if (resData.ret.type == 0 || resData.ret.type == 4) {
-                        resData.param.json.forEach((item) => {
-                            if (item._t == "YDRAddBobo") {
-                                this.playerDairu(item);
-                            }
-                        });
-                    }
-                    if (resData.ret.type != 0) {
-                        Main$1.showTip(resData.ret.msg);
-                        let makeUpBOBO = this.owner['makeUpCoin'].getComponent(OpenDiaLog);
-                        makeUpBOBO.close();
-                    }
-                }
-                if (resData._t == "R2C_Reservation") {
-                    if (resData.ret.type == 0) {
-                        resData.param.json.forEach((item) => {
-                            if (item._t == "YDRSeatReservation") {
-                                this.palyerLiuZuo(item);
-                            }
-                            else if (item._t == "YDRSitDown") {
-                                this.playerReturnSeat(item);
-                            }
-                        });
-                    }
-                    else {
-                        Main$1.showTip(resData.ret.msg);
-                    }
-                }
-                if (resData._t == "R2C_LeaveRoom") {
-                    if (resData.ret.type == 4) {
-                        Main$1.showTip(resData.ret.msg);
-                    }
-                    else {
-                        this.leaveRoomDeal(resData);
-                    }
-                }
-                if (resData._t == "G2C_GameChat") {
-                    if (resData.ret.type == 0) {
-                        this.playerChat(resData);
-                    }
-                    else {
-                        Main$1.showTip(resData.ret.msg);
-                    }
-                }
-                if (resData._t == "G2C_StartNewWheel") {
-                    this.startNewGame(resData);
-                }
-                else if (resData._t == "G2C_DealHand") {
-                    this.dealPlayerPoker(resData);
-                }
-                else if (resData._t == "G2C_StandPoker") {
-                    this.player_standPoker(resData);
+                else {
+                    Main$1.showTip(resData.ret.msg);
+                    this.leaveRoomOpenView();
                 }
             }
-            catch (error) {
-                Main$1.$LOG(error);
+            if (resData._t == 'R2C_UpdateRoom') {
+                Main$1.showLoading(false, Main$1.loadingType.two);
+                if (resData.ret.type == 0) {
+                    ReloadData$1.init();
+                    resData.param.json.forEach((item) => {
+                        if (item._t == "YDRIntoRoom") {
+                            this.getGameNews(item);
+                            this.updateRoomData(item, resData);
+                        }
+                        else if (item._t == "UpdateRoomData") {
+                        }
+                    });
+                }
+                else {
+                    Main$1.showTip(resData.ret.msg);
+                }
+            }
+            if (resData._t == 'R2C_SeatUp') {
+                if (resData.ret.type == 0) {
+                    this.playerSeatUp(resData);
+                }
+                else {
+                    Main$1.showTip(resData.ret.msg);
+                }
+            }
+            if (resData._t == 'R2C_SeatAt') {
+                if (resData.ret.type == 0) {
+                    resData.param.json.forEach((item) => {
+                        if (item._t == "YDRSeatAt") {
+                            this.playerSeatAt(item);
+                        }
+                        else if (item._t == "YDRSitDown") {
+                            this.playerSeatDown(item);
+                        }
+                    });
+                }
+                else {
+                    Main$1.showTip(resData.ret.msg);
+                }
+            }
+            if (resData._t == "R2C_AddDairu" || resData._t == "R2C_SitDown") {
+                if (resData.ret.type == 0 || resData.ret.type == 4) {
+                    resData.param.json.forEach((item) => {
+                        if (item._t == "YDRAddBobo") {
+                            this.playerDairu(item);
+                        }
+                    });
+                }
+                if (resData.ret.type != 0) {
+                    Main$1.showTip(resData.ret.msg);
+                    let makeUpBOBO = this.owner['makeUpCoin'].getComponent(OpenDiaLog);
+                    makeUpBOBO.close();
+                }
+            }
+            if (resData._t == "R2C_Reservation") {
+                if (resData.ret.type == 0) {
+                    resData.param.json.forEach((item) => {
+                        if (item._t == "YDRSeatReservation") {
+                            this.palyerLiuZuo(item);
+                        }
+                        else if (item._t == "YDRSitDown") {
+                            this.playerReturnSeat(item);
+                        }
+                    });
+                }
+                else {
+                    Main$1.showTip(resData.ret.msg);
+                }
+            }
+            if (resData._t == "R2C_LeaveRoom") {
+                if (resData.ret.type == 4) {
+                    Main$1.showTip(resData.ret.msg);
+                }
+                else {
+                    this.leaveRoomDeal(resData);
+                }
+            }
+            if (resData._t == "G2C_GameChat") {
+                if (resData.ret.type == 0) {
+                    this.playerChat(resData);
+                }
+                else {
+                    Main$1.showTip(resData.ret.msg);
+                }
+            }
+            if (resData._t == "G2C_StartNewWheel") {
+                this.startNewGame(resData);
+            }
+            else if (resData._t == "G2C_DealHand") {
+                this.dealPlayerPoker(resData);
+            }
+            else if (resData._t == "G2C_StandPoker") {
+                if (myCenter.getKeep('showHandle'))
+                    this.player_standPoker(resData);
+                else
+                    myCenter.req('qiPoker', () => {
+                        this.player_standPoker(resData);
+                    });
+            }
+            else if (resData._t == "G2C_BuBankerPoker") {
+                this.player_buPoker(resData);
+            }
+            else if (resData._t == "G2C_StandPokerOpt") {
+                this.player_standPokerOpt(resData);
+            }
+            else if (resData._t == "G2C_StealPokerOpts") {
+                this.player_stealPokerOpt(resData);
             }
         }
         startNewGame(data) {
@@ -3185,17 +3172,86 @@
             DealOrPlayPoker.deal(data.players);
         }
         player_standPoker(data) {
+            data.userId = data.uid;
+            this.showTime(data, true);
+            let opt = [];
+            if (data.pokers.length == 0 && data.baozi) {
+                opt = [{ h: handleBtn.kou, o: 1 }];
+            }
+            else if (data.pokers.length == 0 && !data.baozi) {
+                opt = [{ h: handleBtn.kou, o: 1 }, { h: handleBtn.guo, o: 1 }];
+            }
+            else if (data.pokers.length >= 0) {
+                opt = [{ h: handleBtn.qi, o: 1 }, { h: handleBtn.guo, o: 1 }];
+            }
+            this.showHandle(data, opt);
+        }
+        player_buPoker(data) {
+            data.userId = data.uid;
+            this.feelPoker(data);
+            DealOrPlayPoker.buPoker(data);
+            this.onlyShowKouBtn(data);
+        }
+        player_standPokerOpt(data) {
+            data.userId = data.uid;
+            this.showTime(data, false);
+            this.showHandle(data, []);
+        }
+        player_stealPokerOpt(data) {
+            data.userId = data.uid;
+            this.showTime(data, true);
+            let opts = this.setOptData(data.opts);
+            let touArr = opts.filter((item) => item.h == handleBtn.tou);
+            if (touArr.length == 0) {
+                opts.push({ h: handleBtn.tou, o: 0.4 });
+            }
+            this.showHandle(data, opts);
+            DealOrPlayPoker.buPoker(null);
+            this.playerHideFeel(data);
+        }
+        setOptData(data) {
+            let opts = [];
+            data.forEach((item) => {
+                opts.push({ h: item, o: 1 });
+            });
+            return opts;
+        }
+        addKou(data) {
+            data.push({ h: handleBtn.kou, o: 1 });
+        }
+        showHandle(data, opts) {
             this.players.forEach((itemJS) => {
-                if (data.uid == itemJS.userId) {
-                    let isAllow = data.pokers.length > 0 ? true : false;
-                    if (data.pokers.length == 0) {
-                        data.handle = [{ h: 7, opt: 3, o: false }];
-                    }
-                    else {
-                        data.handle = [{ h: 6, opt: 1, o: isAllow }, { h: 8, opt: 4, o: true }];
-                    }
-                    itemJS.playerHandle(data);
-                    itemJS.playerCountDown(true, data);
+                if (itemJS.userId == data.userId) {
+                    console.log('opts=====玩家偷牌', opts);
+                    itemJS.playerHandle(opts);
+                }
+            });
+        }
+        onlyShowKouBtn(data) {
+            this.players.forEach((itemJS) => {
+                if (itemJS.userId == data.userId) {
+                    let opts = [{ h: handleBtn.kou, o: 1 }];
+                    itemJS.playerHandle(opts);
+                }
+            });
+        }
+        showTime(data, show) {
+            this.players.forEach((itemJS) => {
+                if (itemJS.userId == data.userId)
+                    itemJS.playerCountDown(show, data);
+            });
+        }
+        feelPoker(data) {
+            this.players.forEach((itemJS) => {
+                if (itemJS.userId == data.userId) {
+                    itemJS.playerFeel(data);
+                }
+            });
+        }
+        playerHideFeel(data) {
+            this.players.forEach((itemJS) => {
+                if (itemJS.userId == data.userId) {
+                    itemJS.playerHideFeel();
                 }
             });
         }
@@ -3308,14 +3364,6 @@
         leaveRoomOpenView() {
         }
         dealPokerFn() {
-            let data = [
-                { uid: 100018, banker: false, pokers: null },
-                { uid: 100021, banker: false, pokers: null },
-                { uid: 100014, banker: true, pokers: [21003, 21003, 21003, 31004, 31004, 31004, 41005, 41005,
-                        51006, 51006, 71007, 91008, 111010, 121012, 132004, 132004, 132004, 152006, 192009, 192009]
-                }
-            ];
-            DealOrPlayPoker.deal(data);
         }
         diuPoker() {
             let num = parseInt(String(Math.random() * 21)) + 1;
@@ -3326,9 +3374,6 @@
         }
         handlePoker() {
             ShowHandlePoker.open();
-        }
-        feelPoker() {
-            FeelPoker$1.feel();
         }
         otherPlay() {
             this.num2++;
@@ -3905,59 +3950,107 @@
             let meDealView = JSthis.owner.getChildByName('mePokerView');
             meDealView.removeChildren();
             let banker = JSthis.owner.getChildByName('banker');
-            banker.visible = data.bankerId == JSthis.userId ? true : false;
+            banker.visible = data.bankerUid == JSthis.userId ? true : false;
+            myCenter.keep('bankerUid', data.bankerUid);
+            myCenter.keep('showHandle', false);
         }
     }
     var step_2_startNewGame$1 = new step_2_startNewGame();
 
     class step_x_playerHandle {
-        show(that, data) {
-            this.data = data;
+        show(that, opts) {
+            this.data = opts;
             if (that.userId == Main$1.userInfo.userId) {
-                this.showMeHandleView(that, data);
+                this.showMeHandleView(that, opts);
             }
         }
-        hide(isAll = false) {
+        showMeHandleView(that, opt) {
             let meHandleView = myCenter.GameUIObj.meHandleView;
-            if (isAll) {
-                meHandleView.visible = false;
-            }
-            else {
-                meHandleView._children.forEach((item) => {
-                    item.off(Laya.Event.CLICK);
-                    if (item.name != 'h_7') {
-                        item.visible = false;
-                    }
-                    else {
-                        item.on(Laya.Event.CLICK, this, this.clickHandle, [7]);
-                    }
-                });
-            }
-        }
-        showMeHandleView(that, data) {
-            let meHandleView = myCenter.GameUIObj.meHandleView;
-            meHandleView.visible = true;
-            let handle = data.handle;
             meHandleView._children.forEach((item) => {
                 item.visible = false;
-                handle.forEach((item2) => {
+                opt.forEach((item2) => {
                     if (item.name == 'h_' + item2.h) {
-                        item.alpha = item2.o ? 1 : 0.5;
+                        item.alpha = item2.o;
                         item.visible = true;
                         item.zOrder = 10;
                         item.off(Laya.Event.CLICK);
-                        if (item2.o)
-                            item.on(Laya.Event.CLICK, this, this.clickHandle, [item2]);
+                        if (item2.o == 1)
+                            item.on(Laya.Event.CLICK, this, this.clickHandle, [item2.h]);
                     }
                 });
             });
         }
-        clickHandle(item2) {
-            console.log('操作id：', item2);
-            websoket.beforePlayHandle(item2.opt);
+        clickHandle(handleId) {
+            console.log('操作id：', handleId);
+            websoket.beforePlayHandle(handleId);
+            myCenter.GameControlObj.showTime({ userId: Main$1.userInfo.userId }, false);
+            if (!myCenter.getKeep('play'))
+                myCenter.GameControlObj.showHandle({ userId: Main$1.userInfo.userId }, []);
+            else
+                myCenter.GameControlObj.onlyShowKouBtn({ userId: Main$1.userInfo.userId });
         }
     }
     var step_x_playerHandle$1 = new step_x_playerHandle();
+
+    class FeelPoker {
+        feel(that, data) {
+            this.players = myCenter.GameControlObj.players;
+            this.feelStartSeatXY = myCenter.GameUIObj.feelPokerSeatXY;
+            this.feelObj = myCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
+            this.initParam(true);
+            this.moveFeelPoker(that, data);
+        }
+        hideFeelPoker(that) {
+            this.initParam2(that);
+            if (that.IsMe) {
+                let changeArr = [{ nodeName: that.owner, val: 0 }];
+                Main$1.changeNodeZOrder(changeArr);
+            }
+        }
+        moveFeelPoker(seatItem, data) {
+            this.initParam2(seatItem);
+            let feelSeat = seatItem.owner.getChildByName('feelView');
+            let feelSeatXY = feelSeat.parent.localToGlobal(new Laya.Point(feelSeat.x, feelSeat.y));
+            let moveX = (feelSeatXY.x - this.feelStartSeatXY.x) + feelSeat.width / 2;
+            let moveY = (feelSeatXY.y - this.feelStartSeatXY.y) + feelSeat.height / 2;
+            let alpha = 1;
+            if (seatItem.IsMe) {
+                let changeArr = [{ nodeName: seatItem.owner, val: 2 }];
+                Main$1.changeNodeZOrder(changeArr);
+            }
+            Laya.Tween.to(this.feelObj, { x: moveX, y: moveY, alpha: alpha }, Main$1.Speed['feelPoker'], null, Laya.Handler.create(this, () => {
+                let pokerName = parseInt(String(data.poker / 10000));
+                if (seatItem.IsMe) {
+                    Laya.Tween.to(this.feelObj, { scaleX: 0 }, Main$1.Speed['feelFan'], null, Laya.Handler.create(this, () => {
+                        this.feelPoker.skin = 'res/img/poker/chang/' + pokerName + '.png';
+                        this.initParam(false);
+                        Laya.Tween.to(this.feelPoker, { scaleX: 1, alpha: 0.7 }, Main$1.Speed['feelFan']);
+                    }));
+                }
+                else {
+                    Laya.Tween.to(this.feelObj, { scaleX: 0 }, Main$1.Speed['feelFan'], null, Laya.Handler.create(this, () => {
+                        this.feelPoker.skin = 'res/img/poker/chang/' + pokerName + '.png';
+                        this.initParam(false);
+                        Laya.Tween.to(this.feelPoker, { scaleX: 1, alpha: 0.7 }, Main$1.Speed['feelFan']);
+                    }));
+                }
+            }));
+        }
+        clearFeelPoker() {
+        }
+        initParam(isShow = true) {
+            this.feelObj.alpha = 0;
+            this.feelObj.scale(1, 1);
+            this.feelObj.pos(this.feelObj.width / 2, this.feelObj.height / 2);
+        }
+        initParam2(item) {
+            let dealSeat_feelPoker = myCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
+            this.feelPoker = item.owner.getChildByName('feelView').getChildByName('feelPoker');
+            this.feelPoker.alpha = 0;
+            this.feelPoker.skin = 'res/img/poker/chang/-1.png';
+        }
+    }
+    var step_x_playerFeelPoker = new FeelPoker();
 
     class seat extends Laya.Script {
         constructor() {
@@ -4025,8 +4118,14 @@
         startNewGame(data) {
             step_2_startNewGame$1.start(this, data);
         }
-        playerHandle(data) {
-            step_x_playerHandle$1.show(this, data);
+        playerHandle(opt) {
+            step_x_playerHandle$1.show(this, opt);
+        }
+        playerFeel(data) {
+            step_x_playerFeelPoker.feel(this, data);
+        }
+        playerHideFeel() {
+            step_x_playerFeelPoker.hideFeelPoker(this);
         }
     }
 

@@ -3,6 +3,15 @@
  */
 import MyCenter from '../../common/MyCenter';
 import Main from '../../common/Main';
+
+//牌的颜色
+enum pokerColor{
+    none,
+    ban,
+    bu,
+    da
+}
+
 class DealMePoker {
     //====正式====
     others: any[] = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
@@ -35,8 +44,9 @@ class DealMePoker {
      * 将'我'的牌的数据进行分组组合
      * @param data 
      */
-    composeMeData(data: any) {
-        //重置数据
+    composeMeData(data: any,buData:any) {
+        //补的牌
+        let buPoker:any;
         this.newReturnArr = [];
         let newArr = [];
         data.forEach((item: any, index: number) => {
@@ -44,17 +54,22 @@ class DealMePoker {
             let Color = parseInt(String((item % 10000) / 1000));//颜色（1 红色  2黑色）
             let Point = item - Type * 10000 - Color * 1000;//点数
             let groupP = Point > 7 ? (14 - 7) : Point;//分在位置的点数（1-7点位置）
-            newArr.push({ type: Type, Color: Color, seatPoint: groupP, Point: Point, isGrey: false, id: (index + 1) })
+            newArr.push({ type: Type, Color: Color, seatPoint: groupP, Point: Point, isGrey: pokerColor.none, id: (index + 1) })
             //     console.log(item,'牌名字type：'+Type,'牌颜色Color：'+Color,'牌点数Point：'+Point);
         })
         let myTypeDest: any = (this.group(newArr, 'type')).filter((item: any) => item.data.length >= 3);
         newArr.forEach((item2: any, index2: number) => {
-            item2.isGrey = false;
+            item2.isGrey = pokerColor.none;
             myTypeDest.forEach((item: any) => {
                 if (item.type == item2.type)
-                    item2.isGrey = true;
+                    item2.isGrey = pokerColor.ban;
             })
+            if(buData&&item2.type==parseInt(String(buData.poker/10000))){
+                buPoker = item2;
+            }
         })
+        if(buPoker)
+            buPoker.isGrey=pokerColor.bu;
         //分组
         let myDest: any = this.group(newArr, 'seatPoint');
         //排序
@@ -107,13 +122,22 @@ class DealMePoker {
             }
         }
 
-        let filterArr_inner: any;
+        let filterArr_inner: any=[];
         let f: boolean = false;
         let aa: any;
-        this.newReturnArr.forEach(item => {
-            filterArr_inner = item.data.filter((item2: any, index2: number) => (index2 > 0) && (index2 % (this.maxColPokerNum) == 0));
-            aa = item;
-        })
+
+        for(let i=0;i<this.newReturnArr.length;i++){
+            if(this.newReturnArr[i].data.length>(this.maxColPokerNum)){
+                filterArr_inner=this.newReturnArr[i].data.filter((item2:any,index2:number)=>(index2>0)&&((index2)%(this.maxColPokerNum)==0));
+                aa=this.newReturnArr[i];
+                break;
+            }
+        }
+        // this.newReturnArr.forEach(item => {
+        //     filterArr_inner = item.data.filter((item2: any, index2: number) => (index2 > 0) && (index2 % (this.maxColPokerNum) == 0));
+        //     aa = item;
+        // })
+
         // console.log('newReturnArr++',this.newReturnArr)
         filterArr.forEach((item1: any) => {
             filterArr_inner.forEach((item2: any) => {
@@ -188,10 +212,30 @@ class DealMePoker {
         let meData: any[] = data.filter((item: any) => item.uid === Main.userInfo.userId);
         if (meData.length > 0) {
             //将自己的牌进行分组
-            this.groupedData = this.composeMeData(meData[0].pokers);
+            this.groupedData = this.composeMeData(meData[0].pokers,null);
         }
         // this.players[1].userId=100018, this.players[2].userId=100021;
         this.MovePoker();
+    }
+
+    /**
+     * 补牌
+     * @param data 数据为空时解除补牌标志
+     */
+    buPoker(data:any){
+        let bankerUid=MyCenter.getKeep('bankerUid')?MyCenter.getKeep('bankerUid'):100014;
+        if(data)
+        this.beforeGroupData.forEach((item:any)=>{
+            if(item.uid==bankerUid){
+                item.pokers.push(data.poker);
+            }
+        })
+        let meData: any[] = this.beforeGroupData.filter((item: any) => item.uid === Main.userInfo.userId);
+        if (meData.length > 0) {
+            //将自己的牌进行分组
+            this.groupedData = this.composeMeData(meData[0].pokers,data);
+        }
+        this.showMePokerView();
     }
 
     /**
@@ -305,9 +349,9 @@ class DealMePoker {
             //计算
             Laya.Tween.to(childNode, { x: cellMoveX }, Main.Speed['dealPoker2'], null, Laya.Handler.create(this, () => {
                 if (i >= numChildren - 1) {
-                    this.meDealView.removeChildren();
-                    this.meDealView.width = Main.pokerWidth;
-                    this.showMePokerView();
+                    // this.meDealView.removeChildren();
+                    // this.meDealView.width = Main.pokerWidth;
+                    this.showMePokerView(true);
                 }
             }));
         }
@@ -316,7 +360,9 @@ class DealMePoker {
     /**
      * 合牌,移动每列牌到中间消失一系列动作结束(接下来就是显示切好的牌)
      */
-    showMePokerView(): void {//mePokerData: any
+    showMePokerView(isFrist?:boolean): void {//mePokerData: any
+        this.meDealView.removeChildren();
+        this.meDealView.width = Main.pokerWidth;
         let mePokerData: any[] = [];
         this.groupedData.forEach((item: any, index: number) => {
             if (item.uid == Main.userInfo.userId) {
@@ -336,8 +382,10 @@ class DealMePoker {
                 cellObj.bottom = 0;
                 item.data.forEach((item_inner: any, index_inner: number) => {
                     let pokerObj = new Laya.Image('res/img/poker/duan/' + item_inner.type + '.png');
-                    if (item_inner.isGrey) {
-                        this.changePokerColor(pokerObj, Main.pokerParam['color1'], 'noHanldePoker');
+                    if (item_inner.isGrey==pokerColor.ban) {
+                        this.changePokerColor(pokerObj, Main.pokerParam['color'+pokerColor.ban], 'noHanldePoker');
+                    }else if(item_inner.isGrey==pokerColor.bu){
+                        this.changePokerColor(pokerObj, Main.pokerParam['color'+pokerColor.bu], 'noHanldePoker');
                     }
                     pokerObj.name = item_inner;
                     pokerObj.sizeGrid = "85,0,10,0";
@@ -353,6 +401,11 @@ class DealMePoker {
                 })
                 this.meDealView.addChild(cellObj);
             })
+        }
+        console.log('发牌结束===')
+        if(isFrist){
+            MyCenter.send('qiPoker',true);
+            MyCenter.keep('showHandle',true);
         }
     }
     /**

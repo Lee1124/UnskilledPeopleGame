@@ -5,6 +5,7 @@ import countDown from '../Fuction/play/CountDown';//倒计时
 import step_1_seatAtOrDown from '../Fuction/step_1_seatAtOrDown';//第一步
 import step_2_startNewGame from '../Fuction/play/step_2_startNewGame';//第二步(开始一局新游戏)
 import step_x_playerHandle from '../Fuction/play/step_x_playerHandle';//第x步(玩家操作显示及操作)
+import step_x_playerFeelPoker from '../Fuction/play/step_x_playerFeelPoker';//第x步(玩家摸牌)
 import set_content_liuzuo from '../Fuction/set_content_liuzuo';//留坐
 import set_content_chat from '../Fuction/set_content_chat';//表情聊天
 export default class seat extends Laya.Script {
@@ -155,8 +156,31 @@ export default class seat extends Laya.Script {
     }
 
     /**玩家操作 */
-    playerHandle(data:any):void{
-        step_x_playerHandle.show(this,data);
+    // playerHandle(show1:boolean,show2:boolean,data?:any):void{
+    //     // step_x_playerHandle.show(this,data,show1,show2);
+
+    //     step_x_playerHandle.show(this,data,show1,show2);
+    // }
+
+    playerHandle(opt:any):void{
+        // step_x_playerHandle.show(this,data,show1,show2);
+
+        step_x_playerHandle.show(this,opt);
+    }
+
+    /**
+     * 玩家摸牌
+     * @param data 
+     */
+    playerFeel(data:any){
+        step_x_playerFeelPoker.feel(this,data);
+    }
+
+    /**
+     * 隐藏玩家的摸牌
+     */
+    playerHideFeel(){
+        step_x_playerFeelPoker.hideFeelPoker(this);
     }
 
     //==============正式===============

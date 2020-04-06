@@ -8,7 +8,9 @@ class step_2_startNewGame {
         let meDealView:any = JSthis.owner.getChildByName('mePokerView');
         meDealView.removeChildren();
         let banker:any=JSthis.owner.getChildByName('banker');
-        banker.visible=data.bankerId==JSthis.userId?true:false;
+        banker.visible=data.bankerUid==JSthis.userId?true:false;
+        MyCenter.keep('bankerUid',data.bankerUid);
+        MyCenter.keep('showHandle',false);
     }
 }
 export default new step_2_startNewGame();

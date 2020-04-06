@@ -3,6 +3,7 @@
  */
 import TIP from '../common/SuspensionTips';
 class Main {
+
     //亲友圈信息
     familyRoomInfo: any = {
         joinUserId: null,//要加入的玩家id
@@ -49,15 +50,16 @@ class Main {
     serviceUrl: string;
     //关于牌的参数
     pokerParam: any = {
-        alpha: 0.7,
-        bgColor1: [
-            0.6, 0.5, 0.5, 0.2, 0, //R
-            0.6, 0.5, 0.5, 0.2, 0, //G
-            0.6, 0.5, 0.5, 0.2, 0, //B
-            1, 1, 1, 1, 1, //A
-        ],
+        // alpha: 0.7,
+        // bgColor1: [
+        //     0.6, 0.5, 0.5, 0.2, 0, //R
+        //     0.6, 0.5, 0.5, 0.2, 0, //G
+        //     0.6, 0.5, 0.5, 0.2, 0, //B
+        //     1, 1, 1, 1, 1, //A
+        // ],
         color1: 'res/img/common/1.png',
-        color2: 'res/img/common/2.png'
+        color2: 'res/img/common/2.png',
+        color3: 'res/img/common/2.png'
     }
     //关于发牌的时候的接受牌的参数
     deal: object = {

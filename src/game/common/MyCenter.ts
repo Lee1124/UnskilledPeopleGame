@@ -1,5 +1,11 @@
 /**中转站 */
 class MyCenter{
+    //是否是打牌阶段
+    play:boolean=false;
+    //显示操作
+    showHandle:boolean;
+    //庄家id
+    bankerUid:any;
     //保存数据
     keepList:any[];
     //gameUI对象
@@ -26,6 +32,12 @@ class MyCenter{
     /**初始化游戏控制中心的部分数据 */
     InitGameData(thisObj:any){
         this.GameControlObj=thisObj;
+    }
+    keep(key:string,bool:boolean){
+        this[key]=bool;
+    }
+    getKeep(key:string){
+        return this[key]
     }
 }
 export default new MyCenter();

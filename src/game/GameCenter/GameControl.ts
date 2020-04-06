@@ -6,7 +6,7 @@ import InitGameData from '../Fuction/InitGameData';
 import DealOrPlayPoker from '../Fuction/play/DealOrPlayPoker';
 import DiuPoker from '../Fuction/diuPoker';
 import ShowHandlePoker from '../Fuction/ShowHandlePoker';
-import FeelPoker from '../Fuction/FeelPoker';
+// import FeelPoker from '../Fuction/FeelPoker';
 import Main from '../common/Main';
 
 import OpenDiaLog from '../Fuction/OpenDiaLog';
@@ -16,6 +16,67 @@ import ReloadData from '../Fuction/ReloadData';
 import step_0_initGameNews from '../Fuction/play/step_2_startNewGame';
 
 import set_content_chat from '../Fuction/set_content_chat';//聊天
+
+// //打牌之前的操作
+// enum playBeforeH {
+//     qi = 1,
+//     tou,
+//     kou,
+//     guo,
+//     frist
+// }
+
+// //打牌之后的操作 (1-吃  2-碰  3-杀/杠  4-吐火  5-偷  6-起牌 7-扣牌 8-过  9-胡牌)
+// enum playAfterH {
+//     none,
+//     da,
+//     chi,
+//     pen,
+//     sha,
+//     tu,
+//     kou,
+//     guo,
+//     hu,
+// }
+
+//   //无
+//   None = 0,
+//   //起牌
+//   Stand,1
+//   //偷牌
+//   Steal,2
+//   //扣牌
+//   Kou,3
+//   //过牌
+//   Guo,4
+//   //玩家出一张牌
+//   Play,5
+//   //吃牌
+//   Eat,6
+//   //碰牌
+//   Touch,7
+//   //杀/杠牌
+//   Kill,8
+//   //吐火
+//   SpitFire,9
+//   //胡牌
+//   Hu,10
+
+//操作按钮的类型
+enum handleBtn {
+    none,
+    qi,
+    tou,
+    kou,
+    guo,
+    play,
+    chi,
+    pen,
+    sha,
+    tu,
+    hu
+}
+
 export default class GameControl extends Laya.Script {
     /** @prop {name:dealPoker,tips:"发牌的牌",type:Prefab}*/
     //房间密钥
@@ -78,123 +139,134 @@ export default class GameControl extends Laya.Script {
     */
     dealSoketMessage(sign: any, resData: any): void {
         Main.$LOG(sign, resData);
-        try {
-            if (resData._t == 'R2C_IntoRoom') {
-                if (resData.ret.type == 0) {
-                    this.requestRoomUpdateData(resData);
-                } else {
-                    Main.showTip(resData.ret.msg);
-                    this.leaveRoomOpenView();
-                }
+        // try {
+        if (resData._t == 'R2C_IntoRoom') {
+            if (resData.ret.type == 0) {
+                this.requestRoomUpdateData(resData);
+            } else {
+                Main.showTip(resData.ret.msg);
+                this.leaveRoomOpenView();
             }
-
-            //更新数据
-            if (resData._t == 'R2C_UpdateRoom') {
-                Main.showLoading(false, Main.loadingType.two);
-                if (resData.ret.type == 0) {
-                    ReloadData.init();
-                    resData.param.json.forEach((item: any) => {
-                        if (item._t == "YDRIntoRoom") {
-                            this.getGameNews(item);//获取游戏信息
-                            this.updateRoomData(item, resData);
-                        } else if (item._t == "UpdateRoomData") {
-                            // this.updateCurData(item, resData);//更新当前数据
-                        }
-                    })
-                } else {
-                    Main.showTip(resData.ret.msg);
-                }
-            }
-
-            // 起立
-            if (resData._t == 'R2C_SeatUp') {
-                if (resData.ret.type == 0) {
-                    this.playerSeatUp(resData);
-                } else {
-                    Main.showTip(resData.ret.msg);
-                }
-            }
-
-            if (resData._t == 'R2C_SeatAt') {
-                if (resData.ret.type == 0) {
-                    resData.param.json.forEach((item: any) => {
-                        if (item._t == "YDRSeatAt") {//占位
-                            this.playerSeatAt(item);
-                        } else if (item._t == "YDRSitDown") {//坐下
-                            this.playerSeatDown(item);
-                        }
-                    })
-                } else {
-                    Main.showTip(resData.ret.msg);
-                }
-            }
-
-            //带入积分坐下(或补充金币)
-            if (resData._t == "R2C_AddDairu" || resData._t == "R2C_SitDown") {
-                if (resData.ret.type == 0 || resData.ret.type == 4) {
-                    // this.setMeMakeBOBO(resData);
-                    resData.param.json.forEach((item: any) => {
-                        if (item._t == "YDRAddBobo") {
-                            this.playerDairu(item);
-                        }
-                    })
-                }
-                if (resData.ret.type != 0) {
-                    Main.showTip(resData.ret.msg);
-                    let makeUpBOBO: any = this.owner['makeUpCoin'].getComponent(OpenDiaLog);
-                    makeUpBOBO.close();
-                }
-            }
-
-            //留坐
-            if (resData._t == "R2C_Reservation") {
-                if (resData.ret.type == 0) {
-                    resData.param.json.forEach((item: any) => {
-                        if (item._t == "YDRSeatReservation") {//留坐
-                            this.palyerLiuZuo(item);
-                        } else if (item._t == "YDRSitDown") {//回到座位上
-                            this.playerReturnSeat(item);
-                        }
-                    })
-                } else {
-                    Main.showTip(resData.ret.msg);
-                }
-            }
-
-            //离开房间
-            if (resData._t == "R2C_LeaveRoom") {
-                if (resData.ret.type == 4) {
-                    Main.showTip(resData.ret.msg);
-                } else {
-                    this.leaveRoomDeal(resData);
-                }
-            }
-
-            //聊天
-            if (resData._t == "G2C_GameChat") {
-                if (resData.ret.type == 0) {
-                    this.playerChat(resData);
-                } else {
-                    Main.showTip(resData.ret.msg);
-                }
-            }
-
-            //====开始游戏部分====
-            if (resData._t == "G2C_StartNewWheel") {
-                this.startNewGame(resData);
-            } else if (resData._t == "G2C_DealHand") {
-                this.dealPlayerPoker(resData);
-            }else if(resData._t == "G2C_StandPoker"){//玩家起牌
-                this.player_standPoker(resData);
-            }
-
-        } catch (error) {
-            Main.$LOG(error)
         }
+
+        //更新数据
+        if (resData._t == 'R2C_UpdateRoom') {
+            Main.showLoading(false, Main.loadingType.two);
+            if (resData.ret.type == 0) {
+                ReloadData.init();
+                resData.param.json.forEach((item: any) => {
+                    if (item._t == "YDRIntoRoom") {
+                        this.getGameNews(item);//获取游戏信息
+                        this.updateRoomData(item, resData);
+                    } else if (item._t == "UpdateRoomData") {
+                        // this.updateCurData(item, resData);//更新当前数据
+                    }
+                })
+            } else {
+                Main.showTip(resData.ret.msg);
+            }
+        }
+
+        // 起立
+        if (resData._t == 'R2C_SeatUp') {
+            if (resData.ret.type == 0) {
+                this.playerSeatUp(resData);
+            } else {
+                Main.showTip(resData.ret.msg);
+            }
+        }
+
+        if (resData._t == 'R2C_SeatAt') {
+            if (resData.ret.type == 0) {
+                resData.param.json.forEach((item: any) => {
+                    if (item._t == "YDRSeatAt") {//占位
+                        this.playerSeatAt(item);
+                    } else if (item._t == "YDRSitDown") {//坐下
+                        this.playerSeatDown(item);
+                    }
+                })
+            } else {
+                Main.showTip(resData.ret.msg);
+            }
+        }
+
+        //带入积分坐下(或补充金币)
+        if (resData._t == "R2C_AddDairu" || resData._t == "R2C_SitDown") {
+            if (resData.ret.type == 0 || resData.ret.type == 4) {
+                // this.setMeMakeBOBO(resData);
+                resData.param.json.forEach((item: any) => {
+                    if (item._t == "YDRAddBobo") {
+                        this.playerDairu(item);
+                    }
+                })
+            }
+            if (resData.ret.type != 0) {
+                Main.showTip(resData.ret.msg);
+                let makeUpBOBO: any = this.owner['makeUpCoin'].getComponent(OpenDiaLog);
+                makeUpBOBO.close();
+            }
+        }
+
+        //留坐
+        if (resData._t == "R2C_Reservation") {
+            if (resData.ret.type == 0) {
+                resData.param.json.forEach((item: any) => {
+                    if (item._t == "YDRSeatReservation") {//留坐
+                        this.palyerLiuZuo(item);
+                    } else if (item._t == "YDRSitDown") {//回到座位上
+                        this.playerReturnSeat(item);
+                    }
+                })
+            } else {
+                Main.showTip(resData.ret.msg);
+            }
+        }
+
+        //离开房间
+        if (resData._t == "R2C_LeaveRoom") {
+            if (resData.ret.type == 4) {
+                Main.showTip(resData.ret.msg);
+            } else {
+                this.leaveRoomDeal(resData);
+            }
+        }
+
+        //聊天
+        if (resData._t == "G2C_GameChat") {
+            if (resData.ret.type == 0) {
+                this.playerChat(resData);
+            } else {
+                Main.showTip(resData.ret.msg);
+            }
+        }
+
+        //====开始游戏部分====
+        if (resData._t == "G2C_StartNewWheel") {
+            this.startNewGame(resData);
+        } else if (resData._t == "G2C_DealHand") {
+            this.dealPlayerPoker(resData);
+        } else if (resData._t == "G2C_StandPoker") {//玩家起牌  
+            if (MyCenter.getKeep('showHandle'))
+                this.player_standPoker(resData);
+            else
+                MyCenter.req('qiPoker', () => {
+                    this.player_standPoker(resData);
+                })
+        }else if(resData._t=="G2C_BuBankerPoker"){//玩家起牌
+            this.player_buPoker(resData);
+        }else if(resData._t=="G2C_StandPokerOpt"){//起牌处操作结果
+            this.player_standPokerOpt(resData);
+        }else if(resData._t=="G2C_StealPokerOpts"){//偷牌
+            this.player_stealPokerOpt(resData);
+        }
+
+        // } catch (error) {
+        //     Main.$LOG(error)
+        // }
     }
 
     /**
-     * ========游戏部分=========
+     * 正式========游戏部分============================
      */
 
     /**
@@ -219,23 +291,132 @@ export default class GameControl extends Laya.Script {
     }
 
     //玩家起牌
-    player_standPoker(data:any):void{
-        this.players.forEach((itemJS:any)=>{
-            if(data.uid==itemJS.userId){
-                let isAllow:boolean=data.pokers.length>0?true:false;
-                /**
-                * opt：起牌 1,偷牌 2，扣牌 3，过牌 4，庄家打了一张牌 5
-                */
-               if(data.pokers.length==0){//包子
-                data.handle=[{h:7,opt:3,o:false}];
-               }else{
-                data.handle=[{h:6,opt:1,o:isAllow},{h:8,opt:4,o:true}];
-               }
-                itemJS.playerHandle(data);
-                itemJS.playerCountDown(true,data);
-            }
-        })  
+    player_standPoker(data: any): void {
+        data.userId = data.uid;
+        this.showTime(data, true);
+        let opt:any=[];
+        if (data.pokers.length == 0 && data.baozi) {//包子,只有扣
+            opt=[{ h: handleBtn.kou, o: 1 }];
+        } else if (data.pokers.length == 0 && !data.baozi) {//不是包子，可以过，不能起牌
+            opt=[{ h: handleBtn.kou, o: 1 },{ h: handleBtn.guo, o: 1 }];
+        } else if (data.pokers.length >= 0) {//可以起牌
+            opt=[{ h: handleBtn.qi, o: 1 },{ h: handleBtn.guo, o: 1 }];
+        }
+        this.showHandle(data, opt);
     }
+
+    //玩家补牌
+    player_buPoker(data:any){
+        data.userId=data.uid;
+        this.feelPoker(data);
+        DealOrPlayPoker.buPoker(data);
+        this.onlyShowKouBtn(data);//补牌的时候就显示扣按钮
+    }
+
+    //玩家起牌处返回的结果
+    player_standPokerOpt(data:any){
+        data.userId=data.uid;
+        this.showTime(data,false);
+        this.showHandle(data,[]);
+    }
+
+    //玩家偷牌
+    player_stealPokerOpt(data:any){
+        data.userId=data.uid;
+        this.showTime(data,true);
+        let opts:any=this.setOptData(data.opts);
+        // this.addKou(opts);
+        let touArr:any=opts.filter((item:any)=>item.h==handleBtn.tou);
+        if(touArr.length==0){
+            opts.push({h:handleBtn.tou,o:0.4});
+        }
+        this.showHandle(data, opts);
+        DealOrPlayPoker.buPoker(null);
+        this.playerHideFeel(data);
+    }
+
+    //设置opt数据
+    setOptData(data:any){
+        let opts:any=[];
+        data.forEach((item:any) => {
+            opts.push({h:item,o:1})
+        });
+        return opts;
+    }
+
+    addKou(data:any){
+        data.push({h:handleBtn.kou,o:1});
+    }
+
+    /**
+     * 显示玩家的操作按钮
+     * @param data 数据
+     * @param opts 操作按钮的数据
+     */
+    showHandle(data: any,opts:any) {
+        this.players.forEach((itemJS: any) => {
+            if (itemJS.userId == data.userId) {
+                console.log('opts=====玩家偷牌',opts)
+                itemJS.playerHandle(opts);
+            }
+        })
+    }
+
+    /**
+     * 只显示扣按钮
+     * @param data 数据
+     */
+    onlyShowKouBtn(data: any){
+        this.players.forEach((itemJS: any) => {
+            if (itemJS.userId == data.userId) {
+                // itemJS.playerHandle(show1, show2, data);
+                let opts:any=[{h:handleBtn.kou,o:1}]
+                itemJS.playerHandle(opts);
+            }
+        })
+    }
+
+    /**
+     * 显示玩家的倒计时
+     * @param data 数据
+     * @param show 是否显示时间
+     */
+    showTime(data: any, show: boolean) {
+        this.players.forEach((itemJS: any) => {
+            if (itemJS.userId == data.userId)
+                itemJS.playerCountDown(show, data);
+        })
+    }
+
+
+    /**摸牌 */
+    feelPoker(data:any) {
+        // FeelPoker.feel();
+        // this.players[1].userId=100011;this.players[2].userId=100012;
+        // let data={userId:100012,poker:51006}
+        this.players.forEach((itemJS: any) => {
+            if (itemJS.userId == data.userId){
+                itemJS.playerFeel(data);
+                // setTimeout(()=>{
+                //     itemJS.playerHideFeel();
+                // },2000)
+            }
+        })
+
+    }
+
+    /** 隐藏摸得牌*/
+
+    playerHideFeel(data:any){
+        this.players.forEach((itemJS: any) => {
+            if (itemJS.userId == data.userId){
+                itemJS.playerHideFeel();
+            }
+        })
+    }
+
+
+    //正式========游戏部分============================
 
     /**
      * 离开房间处理
@@ -401,6 +582,30 @@ export default class GameControl extends Laya.Script {
 
     /**发牌 */
     dealPokerFn() {
+
+        // this.showHandle({userId:100014},null,null);
+
+
+//         let data={
+//             ttime: 10,
+// time: 5,
+// uid: 100010,
+// opts:  [4, 3]
+//         }
+//         this.setHandleData(data);
+        // let data={
+        //     ttime: 18,
+        //     time: 9,
+        //     uid: 100010,
+        //     pokers: [111010,111010,132004,132004],
+        //     baozi: false,
+        //     userId: 100010,
+        // }
+        // this.player_standPoker(data);
+
+        // setTimeout(()=>{
+        //     this.showHandle(data, false, false);
+        // },2000)
         // 类型
         // console.log('进来');
         // let data:any={uid:Main.userInfo.userId,handle:[1,2,8,7]};
@@ -411,15 +616,31 @@ export default class GameControl extends Laya.Script {
         // })  
 
         // this.players[0].playerCountDown(false);
+        // this.players[0].
+        // let data: any = [
+        //     { uid: 100018, banker: false, pokers: null },
+        //     { uid: 100021, banker: false, pokers: null },
+        //     {
+        //         uid: 100014, banker: true, pokers: [11002, 31004, 51006, 61006, 61006, 71007, 91008, 101009, 111010, 111010, 121012, 162007,
+        //             162007, 172008, 172008, 172008, 182008, 192009, 202010, 212011]
+        //     }
+        // ]
+        // DealOrPlayPoker.deal(data);
 
-        let data: any = [
-            { uid: 100018, banker: false, pokers: null },
-            { uid: 100021, banker: false, pokers: null },
-            {uid: 100014, banker: true, pokers:[21003, 21003, 21003, 31004, 31004, 31004, 41005, 41005, 
-                51006, 51006, 71007, 91008, 111010, 121012, 132004, 132004, 132004, 152006, 192009, 192009]
-            }
-        ]
-        DealOrPlayPoker.deal(data);
+        // setTimeout(()=>{
+        //     // data.forEach((item:any)=>{
+        //     //     if(item.uid==100014){
+        //     //         item.pokers.push(212011);
+        //     //     }
+        //     // })
+        //     let data={
+        //         poker:212011
+        //     }
+        //     DealOrPlayPoker.buPoker(data);
+        //     setTimeout(()=>{
+        //         DealOrPlayPoker.buPoker(null);
+        //     },2000)
+        // },2000)
 
         // let data = [212011, 212011, 212011, 111010, 41005, 101009, 101009, 41005, 41005, 41005, 41005, 81007, 81007, 81007, 81007, 91008, 111010, 121012, 121012, 162007];
         // //红色1 黑色2 
@@ -561,10 +782,10 @@ export default class GameControl extends Laya.Script {
     handlePoker() {
         ShowHandlePoker.open();
     }
-    /**摸牌 */
-    feelPoker() {
-        FeelPoker.feel();
-    }
+    // /**摸牌 */
+    // feelPoker() {
+    //     FeelPoker.feel();
+    // }
     /**非自己玩家出牌 */
     otherPlay() {
         this.num2++;
@@ -577,7 +798,7 @@ export default class GameControl extends Laya.Script {
         // countDown.open();
         // let index = parseInt(String(Math.random() * 3));
         this.players[0].playerCountDown(true, {
-            ttime:20,
+            ttime: 20,
             time: 10
         });
     }
