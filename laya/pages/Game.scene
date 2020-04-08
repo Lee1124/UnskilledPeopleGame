@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":536,
-    "selecteID":542,
+    "selectedBox":11,
+    "selecteID":481,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/GameCenter/GameUI.ts","height":2208},
     "nodeParent":-1,
-    "maxID":572,
+    "maxID":588,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -84,19 +84,6 @@
                             "isAniNode":true,
                             "hasChild":false,
                             "compId":88,
-                            "child":[
-                                ]
-                        },
-                        {
-                            "type":"Label",
-                            "searchKey":"Label,handleBtn,handleBtn",
-                            "props":{"width":269,"var":"handleBtn","valign":"middle","text":"操作的牌","name":"handleBtn","left":502,"height":80,"fontSize":60,"color":"#ffffff","bottom":0,"bgColor":"#b02b29","align":"center"},
-                            "nodeParent":3,
-                            "label":"handleBtn",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":307,
                             "child":[
                                 ]
                         },
@@ -284,13 +271,14 @@
                     "props":{"zOrder":1,"var":"seatList","top":506,"right":0,"name":"seatList","left":0,"bottom":300},
                     "nodeParent":6,
                     "label":"seatList",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":7,
                     "child":[
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,empty_seat1",
                             "props":{"width":167,"skin":"images/game/zuoweiBg.png","pivotY":84,"pivotX":84,"name":"empty_seat1","height":167,"centerX":0,"bottom":0},
@@ -607,7 +595,7 @@
                                 {
                                     "type":"Image",
                                     "searchKey":"Image,banker",
-                                    "props":{"visible":false,"skin":"images/common/banker.png","name":"banker","left":-15,"bottom":0},
+                                    "props":{"zOrder":-1,"visible":false,"skin":"images/common/banker.png","name":"banker","left":-15,"bottom":0},
                                     "nodeParent":9,
                                     "label":"banker",
                                     "isDirectory":false,
@@ -629,9 +617,50 @@
                                     "compId":511,
                                     "child":[
                                         ]
+                                },
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,handleAniBox",
+                                    "props":{"width":400,"visible":false,"pivotY":100,"pivotX":200,"name":"handleAniBox","height":200,"centerX":0,"bottom":300},
+                                    "nodeParent":9,
+                                    "label":"handleAniBox",
+                                    "isOpen":true,
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":572,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,pokerCount",
+                                    "props":{"zOrder":-1,"y":122,"width":60,"visible":false,"name":"pokerCount","left":166,"height":50},
+                                    "nodeParent":9,
+                                    "label":"pokerCount",
+                                    "isOpen":false,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":579,
+                                    "child":[
+                                        {
+                                            "type":"Label",
+                                            "searchKey":"Label,val",
+                                            "props":{"top":0,"text":"0","right":0,"name":"val","left":0,"fontSize":48,"color":"#ffffff","bottom":0,"align":"center"},
+                                            "nodeParent":579,
+                                            "label":"val",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":580,
+                                            "child":[
+                                                ]
+                                        }]
                                 }]
                         },
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,empty_seat2",
                             "props":{"width":167,"top":0,"skin":"images/game/zuoweiBg.png","pivotY":84,"pivotX":84,"name":"empty_seat2","left":100,"height":167},
@@ -842,7 +871,7 @@
                                     "props":{"width":115,"visible":true,"pivotY":203,"pivotX":58,"name":"feelView","left":150,"height":405,"centerY":0},
                                     "nodeParent":10,
                                     "label":"feelView",
-                                    "isOpen":false,
+                                    "isOpen":true,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
@@ -946,7 +975,7 @@
                                 {
                                     "type":"Image",
                                     "searchKey":"Image,banker",
-                                    "props":{"y":0,"visible":false,"skin":"images/common/banker.png","name":"banker","left":-15,"bottom":0},
+                                    "props":{"zOrder":-1,"y":0,"visible":false,"skin":"images/common/banker.png","name":"banker","left":-15,"bottom":0},
                                     "nodeParent":10,
                                     "label":"banker",
                                     "isDirectory":false,
@@ -968,21 +997,63 @@
                                     "compId":512,
                                     "child":[
                                         ]
+                                },
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,handleAniBox",
+                                    "props":{"width":400,"visible":false,"pivotY":100,"pivotX":200,"name":"handleAniBox","left":150,"height":200,"centerY":0},
+                                    "nodeParent":10,
+                                    "label":"handleAniBox",
+                                    "isOpen":true,
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":573,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "type":"Image",
+                                    "searchKey":"Image,pokerCount",
+                                    "props":{"zOrder":-1,"y":122,"x":0,"width":60,"visible":false,"name":"pokerCount","left":166,"height":50},
+                                    "nodeParent":10,
+                                    "label":"pokerCount",
+                                    "isOpen":false,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":581,
+                                    "child":[
+                                        {
+                                            "type":"Label",
+                                            "searchKey":"Label,val",
+                                            "props":{"top":0,"text":"0","right":0,"name":"val","left":0,"fontSize":48,"color":"#ffffff","bottom":0,"align":"center"},
+                                            "nodeParent":581,
+                                            "label":"val",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":582,
+                                            "child":[
+                                                ]
+                                        }]
                                 }]
                         },
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,empty_seat3",
                             "props":{"y":84,"x":1059,"width":167,"top":0,"skin":"images/game/zuoweiBg.png","right":100,"pivotY":84,"pivotX":84,"name":"empty_seat3","height":167},
                             "nodeParent":7,
                             "label":"empty_seat3",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":11,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Script",
                                     "switchAble":true,
                                     "source":"src/game/GameCenter/seat.ts",
@@ -999,6 +1070,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,score",
                                     "props":{"y":0,"x":0,"wordWrap":true,"width":165,"visible":false,"valign":"middle","top":167,"text":"0","padding":"6,6,6,6","name":"score","fontSize":36,"color":"#FFFFFF","centerX":0,"bgColor":"#232323","align":"center"},
@@ -1012,6 +1084,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,name",
                                     "props":{"y":0,"x":0,"wordWrap":false,"width":210,"visible":false,"valign":"middle","padding":"6,6,6,6","overflow":"hidden","name":"name","height":46,"fontSize":34,"color":"#FFFFFF","centerX":0,"bottom":167,"align":"center"},
@@ -1025,6 +1098,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,head",
                                     "props":{"y":-1,"x":-1,"width":170,"visible":false,"name":"head","height":170,"centerY":0,"centerX":0},
@@ -1064,6 +1138,7 @@
                                         }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu0",
                                     "props":{"x":-130,"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":220,"name":"diu0","height":0},
@@ -1078,6 +1153,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu1",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"name":"diu1","left":240,"height":0},
@@ -1092,6 +1168,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu2",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":240,"name":"diu2","height":0},
@@ -1106,6 +1183,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show0",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"name":"show0","left":240,"height":300},
@@ -1120,6 +1198,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show1",
                                     "props":{"y":0,"x":0,"width":512,"visible":false,"top":300,"scaleY":0.6,"scaleX":0.6,"name":"show1","height":300,"centerX":-10},
@@ -1134,6 +1213,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show2",
                                     "props":{"y":0,"width":512,"visible":false,"top":300,"scaleY":0.6,"scaleX":0.6,"name":"show2","height":300,"centerX":10},
@@ -1148,6 +1228,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,mePokerView",
                                     "props":{"y":-93,"x":26,"width":128,"visible":false,"scaleY":0.9,"scaleX":0.9,"pivotY":450,"name":"mePokerView","height":450,"centerX":0,"bottom":260},
@@ -1163,6 +1244,7 @@
                                     "$HIDDEN":false
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,feelView",
                                     "props":{"width":115,"visible":true,"right":150,"pivotY":203,"pivotX":58,"name":"feelView","height":405,"centerY":0},
@@ -1189,6 +1271,7 @@
                                         }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,getDealPokerSeat",
                                     "props":{"y":0,"x":64,"width":128,"scaleY":0.3,"scaleX":0.3,"name":"getDealPokerSeat","height":450,"centerX":0,"bottom":-220},
@@ -1202,6 +1285,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,conutDown",
                                     "props":{"y":8,"x":8,"width":160,"visible":false,"name":"conutDown","height":160,"centerY":0,"centerX":0},
@@ -1244,6 +1328,7 @@
                                     "$HIDDEN":true
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,liuzuo",
                                     "props":{"y":0,"visible":false,"top":0,"right":1,"name":"liuzuo","left":1,"bottom":0},
@@ -1256,6 +1341,7 @@
                                     "compId":475,
                                     "child":[
                                         {
+                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,sign",
                                             "props":{"width":150,"skin":"images/liuzuo/l_sign.png","name":"sign","height":90,"centerY":0,"centerX":0},
@@ -1269,6 +1355,7 @@
                                                 ]
                                         },
                                         {
+                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,returnSeatBtn",
                                             "props":{"y":-37.5,"x":140,"skin":"images/liuzuo/l_return.png","name":"returnSeatBtn"},
@@ -1283,9 +1370,10 @@
                                         }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,banker",
-                                    "props":{"y":0,"visible":false,"skin":"images/common/banker.png","name":"banker","left":-15,"bottom":0},
+                                    "props":{"zOrder":-1,"y":0,"visible":false,"skin":"images/common/banker.png","name":"banker","left":-15,"bottom":0},
                                     "nodeParent":11,
                                     "label":"banker",
                                     "isDirectory":false,
@@ -1296,6 +1384,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,gifBox",
                                     "props":{"y":0,"x":0,"visible":false,"top":0,"right":0,"name":"gifBox","left":0,"bottom":0},
@@ -1307,6 +1396,49 @@
                                     "compId":513,
                                     "child":[
                                         ]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Image",
+                                    "searchKey":"Image,handleAniBox",
+                                    "props":{"y":0,"width":400,"visible":false,"right":150,"pivotY":100,"pivotX":200,"name":"handleAniBox","height":200,"centerY":0},
+                                    "nodeParent":11,
+                                    "label":"handleAniBox",
+                                    "isOpen":true,
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":574,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Image",
+                                    "searchKey":"Image,pokerCount",
+                                    "props":{"zOrder":-1,"y":122,"x":0,"width":60,"visible":false,"name":"pokerCount","left":166,"height":50},
+                                    "nodeParent":11,
+                                    "label":"pokerCount",
+                                    "isOpen":true,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":583,
+                                    "child":[
+                                        {
+                                            "x":75,
+                                            "type":"Label",
+                                            "searchKey":"Label,val",
+                                            "props":{"top":0,"text":"0","right":0,"name":"val","left":0,"fontSize":48,"color":"#ffffff","bottom":0,"align":"center"},
+                                            "nodeParent":583,
+                                            "label":"val",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":584,
+                                            "child":[
+                                                ]
+                                        }]
                                 }]
                         }]
                 },
@@ -1437,14 +1569,13 @@
                     "props":{"zOrder":99,"x":100,"visible":true,"var":"meHandleView","right":100,"name":"meHandleView","left":100,"height":0,"bottom":600},
                     "nodeParent":6,
                     "label":"meHandleView",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":536,
                     "child":[
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,h_1",
                             "props":{"y":-61,"x":276,"visible":false,"skin":"images/game/icon_chat.png","name":"h_1","centerY":0,"centerX":-180},
@@ -1459,7 +1590,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,h_2",
                             "props":{"y":-72,"x":271,"visible":false,"skin":"images/game/h_tou.png","name":"h_2","centerY":0,"centerX":-180},
@@ -1474,7 +1604,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,h_3",
                             "props":{"y":-72,"x":271,"visible":false,"skin":"images/game/h_kou.png","right":0,"name":"h_3","centerY":0},
@@ -1489,7 +1618,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,h_4",
                             "props":{"y":-72,"x":631,"visible":false,"skin":"images/game/h_guo.png","name":"h_4","centerY":0,"centerX":180},
@@ -1504,7 +1632,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,h_6",
                             "props":{"y":-72,"x":271,"visible":false,"skin":"images/game/h_chi.png","name":"h_6","centerY":0,"centerX":-180},
@@ -1520,7 +1647,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,h_7",
                             "props":{"y":-72,"x":451,"visible":false,"skin":"images/game/h_pen.png","name":"h_7","centerY":0,"centerX":0},
@@ -1535,7 +1661,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,h_8",
                             "props":{"y":-72,"x":451,"visible":false,"skin":"images/game/h_sha.png","name":"h_8","centerY":0,"centerX":0},
@@ -1550,7 +1675,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,h_9",
                             "props":{"y":-72,"x":451,"visible":false,"skin":"images/game/h_tu.png","name":"h_9","centerY":0,"centerX":0},
@@ -1565,7 +1689,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,h_10",
                             "props":{"y":-72,"x":271,"visible":false,"skin":"images/game/h_hu.png","name":"h_10","centerY":0,"centerX":-180},
@@ -1579,6 +1702,20 @@
                                 ],
                             "$HIDDEN":false
                         }]
+                },
+                {
+                    "x":30,
+                    "type":"Image",
+                    "searchKey":"Image,mePlayTip,mePlayTip",
+                    "props":{"width":216,"visible":false,"var":"mePlayTip","skin":"images/game/chupaiTip.jpg","right":200,"name":"mePlayTip","height":66,"bottom":800},
+                    "nodeParent":6,
+                    "label":"mePlayTip",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":586,
+                    "child":[
+                        ]
                 },
                 {
                     "x":30,
@@ -1619,6 +1756,20 @@
                     "isAniNode":true,
                     "hasChild":false,
                     "compId":340,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Label",
+                    "searchKey":"Label,handleBtn,handleBtn",
+                    "props":{"y":2128,"x":502,"width":269,"var":"handleBtn","valign":"middle","text":"操作的牌","name":"handleBtn","left":502,"height":80,"fontSize":60,"color":"#ffffff","bottom":0,"bgColor":"#b02b29","align":"center"},
+                    "nodeParent":6,
+                    "label":"handleBtn",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":307,
                     "child":[
                         ]
                 }]

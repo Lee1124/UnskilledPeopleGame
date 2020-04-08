@@ -27,14 +27,14 @@ class ChangeSeat {
         this.playerFeelSeatXYArr = MyCenter.GameUIObj.startFeelSeatXY;
         console.log(this.playerSeatArr)
         if (thisObj.userId == '' || !thisObj.userId) {
-            websoket.seatAt(thisObj.SeatId,this,(res:any)=>{
+            websoket.seatAt(thisObj.Index,this,(res:any)=>{
                 if (res.ret.type == 0) {
                     //选中时预设的位置索引重新排序
                     let NewSeatIndexArr = that.seatIndexArr.splice(that.selectSeatIndex, that.seatIndexArr.length).concat(that.seatIndexArr.splice(0, that.selectSeatIndex + 1));
                     // console.log(NewSeatIndexArr)
                     NewSeatIndexArr.forEach((item: number, index: number) => {
                         // that.playerSeatArr[index].IsMe = false;
-                        // that.playerSeatArr[item].SeatId = index;
+                        that.playerSeatArr[index].SeatId = item;
                         Laya.Tween.to(that.playerSeatArr[item].owner, { x: that.playerSeatXYArr[index].x, y: that.playerSeatXYArr[index].y }, Main.Speed['changeSeat']);
                         that.changeSeatNodeParam(that.playerSeatArr[item].owner, index);
                     })
@@ -82,6 +82,10 @@ class ChangeSeat {
         //重置摸牌的位置
         let feelPokerNode = seatObj.getChildByName('feelView');
         feelPokerNode.pos(this.playerFeelSeatXYArr[index].x, this.playerFeelSeatXYArr[index].y);
+        //玩家播放动画的位置
+        let handleAniSeat = seatObj.getChildByName('handleAniBox');
+        let handleAniSeatXY=MyCenter.getKeep('handleAniSeat');
+        handleAniSeat.pos(handleAniSeatXY[index].x, handleAniSeatXY[index].y);
     }
 }
 export default new ChangeSeat();

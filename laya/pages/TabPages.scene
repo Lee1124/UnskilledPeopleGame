@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":212,
-    "selecteID":211,
+    "selectedBox":2,
+    "selecteID":248,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/pages/TabPages/TabPageUI.ts","height":2208},
     "nodeParent":-1,
@@ -1568,14 +1568,13 @@
                     "props":{"var":"WalletPage","top":0,"right":0,"name":"WalletPage","left":0,"bottom":0},
                     "nodeParent":6,
                     "label":"WalletPage",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":134,
                     "child":[
                         {
-                            "x":45,
                             "type":"Script",
                             "switchAble":true,
                             "source":"src/game/pages/TabPages/Wallet/Wallet.ts",
@@ -1592,7 +1591,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,hd",
                             "props":{"y":0,"x":0,"top":0,"skin":"images/common/top.png","right":0.1,"name":"hd","left":0.1,"height":195},
@@ -1648,20 +1646,18 @@
                                 }]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,content,wallet_content",
                             "props":{"var":"wallet_content","top":220,"right":0,"name":"content","left":0,"bottom":220},
                             "nodeParent":134,
                             "label":"content",
-                            "isOpen":true,
+                            "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":141,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,nav_bg,wallet_nav_bg",
                                     "props":{"var":"wallet_nav_bg","top":0,"skin":"images/common/bg2.png","right":45,"name":"nav_bg","left":45,"height":165},
@@ -1834,7 +1830,6 @@
                                         }]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,view_bg,wallet_view_bg",
                                     "props":{"x":0,"var":"wallet_view_bg","top":175,"skin":"images/common/bg2.png","right":45,"name":"view_bg","left":45,"bottom":0},
@@ -1847,7 +1842,6 @@
                                     "compId":145,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,view1,wallets_view1",
                                             "props":{"var":"wallets_view1","top":50,"right":50,"name":"view1","left":50,"bottom":50},
@@ -2033,7 +2027,6 @@
                                             "$HIDDEN":true
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,view2,wallets_view2",
                                             "props":{"y":0,"x":0,"var":"wallets_view2","top":50,"right":50,"name":"view2","left":50,"bottom":50},
@@ -2046,7 +2039,6 @@
                                             "compId":162,
                                             "child":[
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,view2_1",
                                                     "props":{"y":0,"x":0,"visible":false,"top":0,"right":0,"name":"view2_1","left":0,"bottom":0},
@@ -2152,7 +2144,6 @@
                                                     "$HIDDEN":true
                                                 },
                                                 {
-                                                    "x":90,
                                                     "type":"Image",
                                                     "searchKey":"Image,view2_2",
                                                     "props":{"visible":false,"top":0,"right":0,"name":"view2_2","left":0,"bottom":0},
@@ -2165,7 +2156,6 @@
                                                     "compId":212,
                                                     "child":[
                                                         {
-                                                            "x":105,
                                                             "type":"Image",
                                                             "searchKey":"Image,outCoin",
                                                             "props":{"y":0,"x":0,"right":0,"name":"outCoin","left":0,"height":120},
@@ -2270,7 +2260,6 @@
                                                                 }]
                                                         },
                                                         {
-                                                            "x":105,
                                                             "type":"Image",
                                                             "searchKey":"Image,allowOut",
                                                             "props":{"y":140,"x":20,"skin":"images/wallet/allowOutLabel.png","name":"allowOut","left":20},
@@ -2297,7 +2286,6 @@
                                                                 }]
                                                         },
                                                         {
-                                                            "x":105,
                                                             "type":"Panel",
                                                             "searchKey":"Panel,inputView",
                                                             "props":{"y":310,"x":0,"width":1050,"top":310,"name":"inputView","elasticEnabled":true,"bottom":390},
@@ -2483,7 +2471,6 @@
                                                                 }]
                                                         },
                                                         {
-                                                            "x":105,
                                                             "type":"Image",
                                                             "searchKey":"Image,btn",
                                                             "props":{"x":228,"skin":"images/wallet/outBtn.png","name":"btn","centerX":0,"bottom":150},
@@ -2517,7 +2504,6 @@
                                             "$HIDDEN":false
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,view3,wallets_view3",
                                             "props":{"y":0,"x":0,"var":"wallets_view3","top":50,"skin":"images/wallet/search_bg.png","right":50,"name":"view3","left":50,"bottom":50},
@@ -2741,7 +2727,7 @@
                                         }]
                                 }]
                         }],
-                    "$HIDDEN":false
+                    "$HIDDEN":true
                 },
                 {
                     "x":30,
@@ -2750,13 +2736,14 @@
                     "props":{"var":"FriendsPage","top":0,"right":0,"name":"FriendsPage","left":0,"bottom":0},
                     "nodeParent":6,
                     "label":"FriendsPage",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":248,
                     "child":[
                         {
+                            "x":45,
                             "type":"Script",
                             "switchAble":true,
                             "source":"src/game/pages/TabPages/Friends/Friends.ts",
@@ -2773,6 +2760,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,hd",
                             "props":{"y":0,"x":0,"top":0,"skin":"images/common/top.png","right":0.1,"name":"hd","left":0.1,"height":195},
@@ -2828,6 +2816,7 @@
                                 }]
                         },
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,content,friends_content",
                             "props":{"var":"friends_content","top":240,"right":45,"name":"content","left":45,"bottom":300},
@@ -2840,6 +2829,7 @@
                             "compId":254,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,view0,f1_view0",
                                     "props":{"y":0,"x":0,"var":"f1_view0","top":0,"right":0,"name":"view0","left":0,"bottom":0},
@@ -2880,6 +2870,7 @@
                                     "$HIDDEN":true
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,view1,f1_view1",
                                     "props":{"y":0,"x":0,"var":"f1_view1","top":0,"right":0,"name":"view1","left":0,"bottom":0},
@@ -2892,6 +2883,7 @@
                                     "compId":339,
                                     "child":[
                                         {
+                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,f_view1,f_view1",
                                             "props":{"y":0,"x":0,"var":"f_view1","skin":"images/common/bg2.png","right":0,"name":"f_view1","left":0,"height":560},
@@ -3179,6 +3171,7 @@
                                                 }]
                                         },
                                         {
+                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,f_view2,f_view2",
                                             "props":{"x":0,"var":"f_view2","top":571,"skin":"images/common/bg2.png","right":0,"name":"f_view2","left":0,"bottom":0},
@@ -3191,6 +3184,7 @@
                                             "compId":257,
                                             "child":[
                                                 {
+                                                    "x":90,
                                                     "type":"Panel",
                                                     "searchKey":"Panel,listBox",
                                                     "props":{"top":55,"right":55,"name":"listBox","left":55,"elasticEnabled":true,"bottom":55},
@@ -3203,18 +3197,20 @@
                                                     "compId":342,
                                                     "child":[
                                                         {
+                                                            "x":105,
                                                             "type":"Image",
                                                             "searchKey":"Image,v2_box1,xq1",
                                                             "props":{"var":"xq1","top":0,"skin":"images/friends/f_view.png","right":0,"name":"v2_box1","left":0,"height":300},
                                                             "nodeParent":342,
                                                             "label":"v2_box1",
-                                                            "isOpen":false,
+                                                            "isOpen":true,
                                                             "isDirectory":true,
                                                             "isAniNode":true,
                                                             "hasChild":true,
                                                             "compId":264,
                                                             "child":[
                                                                 {
+                                                                    "x":120,
                                                                     "type":"Image",
                                                                     "searchKey":"Image,title",
                                                                     "props":{"top":30,"skin":"images/friends/f_wdwj.png","name":"title","left":64},
@@ -3228,6 +3224,7 @@
                                                                         ]
                                                                 },
                                                                 {
+                                                                    "x":120,
                                                                     "type":"Image",
                                                                     "searchKey":"Image,xqBtn",
                                                                     "props":{"width":180,"top":0,"right":0,"name":"xqBtn","height":120},
@@ -3254,6 +3251,7 @@
                                                                         }]
                                                                 },
                                                                 {
+                                                                    "x":120,
                                                                     "type":"Image",
                                                                     "searchKey":"Image,zs",
                                                                     "props":{"x":64,"skin":"images/friends/f_zs.png","name":"zs","bottom":50},
@@ -3280,6 +3278,7 @@
                                                                         }]
                                                                 },
                                                                 {
+                                                                    "x":120,
                                                                     "type":"Image",
                                                                     "searchKey":"Image,jrxz",
                                                                     "props":{"x":560,"skin":"images/friends/f_jrxz.png","name":"jrxz","bottom":50},
@@ -3306,6 +3305,7 @@
                                                                         }]
                                                                 },
                                                                 {
+                                                                    "x":120,
                                                                     "type":"Script",
                                                                     "switchAble":true,
                                                                     "source":"src/game/common/openView.ts",
@@ -3323,6 +3323,7 @@
                                                                 }]
                                                         },
                                                         {
+                                                            "x":105,
                                                             "type":"Image",
                                                             "searchKey":"Image,v2_box2,xq2",
                                                             "props":{"var":"xq2","top":340,"skin":"images/friends/f_view.png","right":0,"name":"v2_box2","left":0,"height":300},
@@ -3443,6 +3444,7 @@
                                                                 }]
                                                         },
                                                         {
+                                                            "x":105,
                                                             "type":"Image",
                                                             "searchKey":"Image,v2_box3,xq3",
                                                             "props":{"var":"xq3","top":680,"skin":"images/friends/f_view.png","right":0,"name":"v2_box3","left":0,"height":300},
@@ -3567,6 +3569,7 @@
                                     "$HIDDEN":false
                                 },
                                 {
+                                    "x":60,
                                     "type":"Script",
                                     "switchAble":true,
                                     "source":"src/game/common/SetNodeBottom.ts",
@@ -3583,7 +3586,7 @@
                                         ]
                                 }]
                         }],
-                    "$HIDDEN":true
+                    "$HIDDEN":false
                 }]
         }],
     "animations":[

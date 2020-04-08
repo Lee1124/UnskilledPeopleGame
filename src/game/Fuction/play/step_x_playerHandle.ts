@@ -1,6 +1,8 @@
 import Main from "../../common/Main";
 import myCenter from '../../common/MyCenter';
 import websoket from '../../Fuction/webSoketSend';
+import MyCenter from "../../common/MyCenter";
+
 /**
  * 玩家操作
  */
@@ -59,7 +61,7 @@ class step_x_playerHandle {
                item.visible = true;
                item.zOrder = 10;
                item.off(Laya.Event.CLICK);
-               if (item2.o==1)
+               if (item2.o == 1)
                   item.on(Laya.Event.CLICK, this, this.clickHandle, [item2.h])
             }
          })
@@ -85,12 +87,23 @@ class step_x_playerHandle {
    /**玩家操作 */
    clickHandle(handleId: any) {
       console.log('操作id：', handleId);
-      websoket.beforePlayHandle(handleId);
-      myCenter.GameControlObj.showTime({userId:Main.userInfo.userId},false);//隐藏时间
-      if(!myCenter.getKeep('play'))
-         myCenter.GameControlObj.showHandle({userId:Main.userInfo.userId},[]);//打牌之前隐藏操作按钮
+      console.log('play:', myCenter.getKeep('play'))
+      console.log('isAction:', myCenter.getKeep('isAction'))
+      if (myCenter.getKeep('isAction')) {
+         let chiList: any = [];
+         // if (handleId!=myCenter.GameControlObj.handleBtn.chi)
+         //    chiList = [];
+         // else
+         //    chiList = [];//=======================后加
+         websoket.afterPlayHandle(handleId, chiList);
+      } else {
+         websoket.beforePlayHandle(handleId);
+      }
+      myCenter.GameControlObj.showTime({ userId: Main.userInfo.userId }, false);//隐藏时间
+      if (!myCenter.getKeep('play'))
+         myCenter.GameControlObj.showHandle({ userId: Main.userInfo.userId }, []);//打牌之前隐藏操作按钮
       else
-         myCenter.GameControlObj.onlyShowKouBtn({userId:Main.userInfo.userId});//打牌之后隐藏操作按钮
+         myCenter.GameControlObj.onlyShowKouBtn({ userId: Main.userInfo.userId });//打牌之后隐藏操作按钮
    }
 }
 export default new step_x_playerHandle();

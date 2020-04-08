@@ -5,7 +5,7 @@ import MyCenter from '../common/MyCenter';
 import InitGameData from '../Fuction/InitGameData';
 import DealOrPlayPoker from '../Fuction/play/DealOrPlayPoker';
 import DiuPoker from '../Fuction/diuPoker';
-import ShowHandlePoker from '../Fuction/ShowHandlePoker';
+// import ShowHandlePoker from '../Fuction/play/step_x_showHandlePoker';
 // import FeelPoker from '../Fuction/FeelPoker';
 import Main from '../common/Main';
 
@@ -252,12 +252,24 @@ export default class GameControl extends Laya.Script {
                 MyCenter.req('qiPoker', () => {
                     this.player_standPoker(resData);
                 })
-        }else if(resData._t=="G2C_BuBankerPoker"){//玩家起牌
+        } else if (resData._t == "G2C_BuBankerPoker") {//玩家起牌
             this.player_buPoker(resData);
-        }else if(resData._t=="G2C_StandPokerOpt"){//起牌处操作结果
+        } else if (resData._t == "G2C_StandPokerOpt") {//起牌处操作结果
             this.player_standPokerOpt(resData);
-        }else if(resData._t=="G2C_StealPokerOpts"){//偷牌
-            this.player_stealPokerOpt(resData);
+        } else if (resData._t == "G2C_StealPokerOpts") {//偷牌
+            // MyCenter.req('allowTouHandle',(res:any)=>{
+                this.player_stealPokerOpt(resData);
+            // })
+        } else if (resData._t == "G2C_StealPokerResult") {//偷牌返回的结果
+            this.player_stealPokerResult(resData);
+        }else if(resData._t=="G2C_NoticePlayAPoker"){//开始打牌
+            this.player_noticePlayAPoker(resData);
+        }else if(resData._t=="S2C_PlayAPoker"){//非自己玩家打牌之后
+            this.palyer_playAPoker(resData);
+        }else if(resData._t=="G2C_ActionPokerOpts"){//玩家出牌后的操作
+            this.palyer_actionPokerOpts(resData);
+        }else if(resData._t=="G2C_FlopAPoker"){//玩家翻牌
+            this.palyer_flopAPoker(resData);
         }
 
         // } catch (error) {
@@ -287,65 +299,222 @@ export default class GameControl extends Laya.Script {
      * 发牌
      */
     dealPlayerPoker(data: any): void {
-        DealOrPlayPoker.deal(data.players);
+        MyCenter.keep('dealPCount',data.players.length);
+        this.players.forEach((itemJS:any)=>{
+            data.players.forEach((item:any)=>{
+                if(itemJS.userId==item.uid){
+                    itemJS.dealPoker(item);
+                }
+            })
+        })
     }
 
     //玩家起牌
     player_standPoker(data: any): void {
         data.userId = data.uid;
         this.showTime(data, true);
-        let opt:any=[];
+        let opt: any = [];
         if (data.pokers.length == 0 && data.baozi) {//包子,只有扣
-            opt=[{ h: handleBtn.kou, o: 1 }];
+            opt = [{ h: handleBtn.kou, o: 1 }];
         } else if (data.pokers.length == 0 && !data.baozi) {//不是包子，可以过，不能起牌
-            opt=[{ h: handleBtn.kou, o: 1 },{ h: handleBtn.guo, o: 1 }];
+            opt = [{ h: handleBtn.kou, o: 1 }, { h: handleBtn.guo, o: 1 }];
         } else if (data.pokers.length >= 0) {//可以起牌
-            opt=[{ h: handleBtn.qi, o: 1 },{ h: handleBtn.guo, o: 1 }];
+            opt = [{ h: handleBtn.qi, o: 1 }, { h: handleBtn.guo, o: 1 }];
         }
         this.showHandle(data, opt);
     }
 
     //玩家补牌
-    player_buPoker(data:any){
-        data.userId=data.uid;
+    player_buPoker(data: any) {
+        MyCenter.keep('play',true);
+        data.userId = data.uid;
+        //玩家摸牌效果显示
         this.feelPoker(data);
-        DealOrPlayPoker.buPoker(data);
+        // DealOrPlayPoker.buPoker(buPokerArr);
+        //庄家补牌
+        this.bankerBuPoker(data);
         this.onlyShowKouBtn(data);//补牌的时候就显示扣按钮
     }
 
+    //庄家补牌
+    bankerBuPoker(data:any):void{
+        let buPokerArr: any[] = data.poker?[data.poker]:[];
+        this.players.forEach((itemJS:any)=>{
+            if(itemJS.userId==data.userId){
+                itemJS.buPoker(buPokerArr);
+            }
+        })
+    }
+
     //玩家起牌处返回的结果
-    player_standPokerOpt(data:any){
-        data.userId=data.uid;
-        this.showTime(data,false);
-        this.showHandle(data,[]);
+    player_standPokerOpt(data: any) {
+        data.userId = data.uid;
+        this.showTime(data, false);
+        this.showHandle(data, []);
     }
 
     //玩家偷牌
-    player_stealPokerOpt(data:any){
-        data.userId=data.uid;
-        this.showTime(data,true);
-        let opts:any=this.setOptData(data.opts);
+    player_stealPokerOpt(data: any) {
+        data.userId = data.uid;
+        this.showTime(data, true);
+        let opts: any = this.setOptData(data.opts);
         // this.addKou(opts);
-        let touArr:any=opts.filter((item:any)=>item.h==handleBtn.tou);
-        if(touArr.length==0){
-            opts.push({h:handleBtn.tou,o:0.4});
+        let touArr: any = opts.filter((item: any) => item.h == handleBtn.tou);
+        if (touArr.length == 0) {
+            opts.push({ h: handleBtn.tou, o: 0.4 });
         }
         this.showHandle(data, opts);
-        DealOrPlayPoker.buPoker(null);
+        // DealOrPlayPoker.buPoker(null);
+        //使补牌标记去掉
+        this.bankerBuPoker(data);
         this.playerHideFeel(data);
     }
 
     //设置opt数据
-    setOptData(data:any){
-        let opts:any=[];
-        data.forEach((item:any) => {
-            opts.push({h:item,o:1})
+    setOptData(data: any) {
+        let opts: any = [];
+        data.forEach((item: any) => {
+            opts.push({ h: item, o: 1 })
         });
         return opts;
     }
 
-    addKou(data:any){
-        data.push({h:handleBtn.kou,o:1});
+    addKou(data: any) {
+        data.push({ h: handleBtn.kou, o: 1 });
+    }
+
+    //偷牌返回结果
+    player_stealPokerResult(data: any) {
+        data.userId = data.uid;
+        this.stealPokerResult(data);
+    }
+
+    //偷牌返回的结果
+    stealPokerResult(data: any): void {
+        this.onlyShowKouBtn(data);//补牌的时候就显示扣按钮
+        this.players.forEach((item: any) => {
+            if (data.userId == item.userId) {
+                let touPokers: any[] = data.pokers;
+                if (touPokers.length > 0&&item.IsMe)
+                    item.buPoker(touPokers,()=>{
+                            // MyCenter.keep('allowTouHandle',true);
+                            if (data.spitfires.length > 0) {//如果开始有吐火就吐火
+                                setTimeout(()=>{
+                                    this.stealPokerResultCoomon(item,data);
+                                },1000)
+                            }
+                        
+                    })
+                else if(data.spitfires.length>0&&!item.IsMe)
+                    this.stealPokerResultCoomon(item,data);
+
+            }
+        })
+    }
+
+    //接上，公用
+    stealPokerResultCoomon(item:any,data:any){
+        let arr: any = [];
+        let obj: any = {};
+        let arr2: any = [];
+        data.spitfires.forEach(((item: any) => {
+            arr.push({ type: 3, data_inner: [item, item, item] });
+            arr2.push(item, item, item, item, item);
+        }));
+        obj = {
+            userId: data.userId,
+            data: arr
+        }
+        item.showHandleAni({opt:3});
+        this.showHandlePokerDealData(item, data,obj,arr2);
+    }
+
+    /**
+     * 显示吃碰杠吐火时候的数据处理
+     * @param item 
+     * @param data 
+     */
+    showHandlePokerDealData(item: any, data: any,concatData:any,removePokers:any): void {
+        data.concatData = concatData;
+        data.removePokers = removePokers;
+        item.showHandlePoker(data);
+    }
+    
+
+    /**
+     * 清除玩家操作的牌的显示处
+     */
+    clearHandlePoker():void{
+        this.players.forEach((itemJS: any) => {
+            itemJS.clearHandlePoker();
+        })
+    }
+
+    /**
+     * 开始打牌
+     * @param data 数据
+     */
+    player_noticePlayAPoker(data:any){
+        data.userId=data.uid;
+        this.playerPlaySet(data,true);
+    }
+
+    /**
+     * 玩家打牌设置 打和刚打过公用
+     * @param data 数据
+     * @param isMePlay 是否自己该打
+     */
+    playerPlaySet(data:any,isMePlay:boolean):void{
+        this.showTime(data, isMePlay);
+        MyCenter.keep('isMePlay',isMePlay);
+        this.players.forEach((itemJS: any) => {
+            if(itemJS.userId==data.userId){
+                itemJS.showPlayTip(isMePlay);
+            }
+        })
+    }
+
+    /**
+     * 非自己玩家打了牌之后
+     * @param data 数据
+     */
+    palyer_playAPoker(data:any){
+        data.userId=data.uid;
+        this.showTime(data, false);
+        this.players.forEach((itemJS:any)=>{
+            if(itemJS.userId==data.userId)
+                itemJS.showNoMePlayPoker(data.poker);
+        })
+    }
+
+    /**
+     * 玩家出牌后该显示的操作
+     * @param data 
+     */
+    palyer_actionPokerOpts(data:any){
+        data.userId=data.uid;
+        this.showTime(data,true);
+        this.dealWithOptData(data);
+        let opts: any = this.setOptData(data.opts);
+        this.showHandle(data,opts);
+        MyCenter.keep('isAction',true);
+    }
+    /**
+     * 玩家出牌后该显示的操作数据处理
+     * @param data 
+     */
+    dealWithOptData(data:any){
+        console.log('玩家出牌后该显示的操作数据处理:',data)
+    }
+
+    /**
+     * 玩家翻牌
+     * @param data 数据
+     */
+    palyer_flopAPoker(data:any){
+        data.userId=data.uid;
+        this.playerHideFeel(data,true);
+        this.feelPoker(data);
     }
 
     /**
@@ -353,10 +522,10 @@ export default class GameControl extends Laya.Script {
      * @param data 数据
      * @param opts 操作按钮的数据
      */
-    showHandle(data: any,opts:any) {
+    showHandle(data: any, opts: any) {
         this.players.forEach((itemJS: any) => {
             if (itemJS.userId == data.userId) {
-                console.log('opts=====玩家偷牌',opts)
+                console.log('玩家偷牌操作===:'+data.userId,opts);
                 itemJS.playerHandle(opts);
             }
         })
@@ -366,11 +535,11 @@ export default class GameControl extends Laya.Script {
      * 只显示扣按钮
      * @param data 数据
      */
-    onlyShowKouBtn(data: any){
+    onlyShowKouBtn(data: any) {
         this.players.forEach((itemJS: any) => {
             if (itemJS.userId == data.userId) {
                 // itemJS.playerHandle(show1, show2, data);
-                let opts:any=[{h:handleBtn.kou,o:1}]
+                let opts: any = [{ h: handleBtn.kou, o: 1 }]
                 itemJS.playerHandle(opts);
             }
         })
@@ -390,30 +559,33 @@ export default class GameControl extends Laya.Script {
 
 
     /**摸牌 */
-    feelPoker(data:any) {
+    feelPoker(data: any) {
         // FeelPoker.feel();
-        // this.players[1].userId=100011;this.players[2].userId=100012;
-        // let data={userId:100012,poker:51006}
+        // let data={userId:100018,poker:51006}
         this.players.forEach((itemJS: any) => {
-            if (itemJS.userId == data.userId){
+            if (itemJS.userId == data.userId) {
                 itemJS.playerFeel(data);
-                // setTimeout(()=>{
-                //     itemJS.playerHideFeel();
-                // },2000)
             }
         })
 
     }
 
-    /** 隐藏摸得牌*/
-
-    playerHideFeel(data:any){
+    /**
+     * 隐藏摸得牌
+     * @param data 数据
+     * @param isAll 是不是先全部清除
+     */
+    playerHideFeel(data: any,isAll:boolean=false) {
         this.players.forEach((itemJS: any) => {
-            if (itemJS.userId == data.userId){
+            if (itemJS.userId == data.userId&&!isAll) {
+                itemJS.playerHideFeel();
+            }else if(isAll){
                 itemJS.playerHideFeel();
             }
         })
     }
+
+
 
 
     //正式========游戏部分============================
@@ -486,9 +658,12 @@ export default class GameControl extends Laya.Script {
 
     //占位
     playerSeatAt(data: any): void {
-        // console.log(this.players)
+        // console.log('占位=====data.seatidx:',data.seatidx)
         this.players.forEach((JSitem: any) => {
-            if (JSitem.SeatId == data.seatidx) {
+            // if (JSitem.SeatId == data.seatidx) {
+            //     JSitem.playerSeatAtFn(data);
+            // }
+            if (JSitem.Index == data.seatidx) {
                 JSitem.playerSeatAtFn(data);
             }
         })
@@ -546,7 +721,10 @@ export default class GameControl extends Laya.Script {
      */
     playerSeatDown(data: any): void {
         this.players.forEach((JSitem: any) => {
-            if (JSitem.SeatId == data.seatidx) {
+            // if (JSitem.SeatId == data.seatidx) {
+            //     JSitem.playerSeatDownFn(data);
+            // }
+            if (JSitem.Index == data.seatidx) {
                 JSitem.playerSeatDownFn(data);
             }
         })
@@ -582,17 +760,116 @@ export default class GameControl extends Laya.Script {
 
     /**发牌 */
     dealPokerFn() {
-
+        // let data={
+        //     opt:1
+        // }
+        // this.players[0].showHandleAni(data);
+        // let data2={
+        //     opt:2
+        // }
+        // this.players[1].showHandleAni(data2);
+        // let data3={
+        //     opt:3
+        // }
+        // this.players[2].showHandleAni(data3);
         // this.showHandle({userId:100014},null,null);
+        console.log('进来了')
+        let data0: any = [
+            { uid: 100018, banker: false, pokers: null },
+            { uid: 100021, banker: false, pokers: null },
+            {
+                uid: 100014, banker: true, pokers: [11002, 31004, 51006, 61006, 61006, 71007, 91008, 101009, 111010, 111010, 121012, 162007,
+                    162007, 172008, 172008, 172008, 172008, 182008, 192009, 202010]
+            }
+        ]
+        this.players[1].userId=100018;
+        this.players[2].userId=100021;
+        MyCenter.keep('dealPCount',data0.length);
+        this.players.forEach((itemJS:any)=>{
+            data0.forEach((item:any)=>{
+                if(itemJS.userId==item.uid){
+                    itemJS.dealPoker(item);
+                }
+            })
+        })
+
+        
+
+        
+
+        // setTimeout(() => {
+        //     let data = {
+        //         uid: 100010,
+        //         pokers: [172008],
+        //         spitfires: [172008],
+        //         userId: 100010,
+        //         concatData: {},
+        //         removePokers: []
+        //     };
+
+        //     this.players.forEach((itemJS:any)=>{
+        //         if(itemJS.userId==data.userId){
+        //             itemJS.buPoker(data.pokers,()=>{
+        //                 console.log('补牌结束')
+        //         //     if (data.spitfires.length > 0) {
+        //         //     let arr: any = [];
+        //         //     let obj: any = {};
+        //         //     let arr2: any = [];
+        //         //     data.spitfires.forEach(((item: any) => {
+        //         //         arr.push({ type: 3, data_inner: [item, item, item] });
+        //         //         arr2.push(item, item, item, item, item);
+        //         //     }));
+        //         //     obj = {
+        //         //         userId: data.userId,
+        //         //         data: arr
+        //         //     }
+        //         //     data.concatData = obj;
+        //         //     data.removePokers = arr2;
+        //         //     this.players.forEach((item: any) => {
+        //         //         if (item.userId == data.userId)
+        //         //             item.showHandlePoker(data);
+        //         //     })
+        //         // }
+        //             })
+        //         }
+        //     })
+
+        //     // let that: any = this;
+        //     // DealOrPlayPoker.buPoker(data.pokers, () => {
+        //     //     console.log('补牌结束')
+        //     //     if (data.spitfires.length > 0) {
+        //     //         let arr: any = [];
+        //     //         let obj: any = {};
+        //     //         let arr2: any = [];
+        //     //         data.spitfires.forEach(((item: any) => {
+        //     //             arr.push({ type: 3, data_inner: [item, item, item] });
+        //     //             arr2.push(item, item, item, item, item);
+        //     //         }));
+        //     //         obj = {
+        //     //             userId: data.userId,
+        //     //             data: arr
+        //     //         }
+        //     //         data.concatData = obj;
+        //     //         data.removePokers = arr2;
+        //     //         this.players.forEach((item: any) => {
+        //     //             if (item.userId == data.userId)
+        //     //                 item.showHandlePoker(data);
+        //     //         })
+        //     //     }
+        //     // });
+        // }, 3000)
 
 
-//         let data={
-//             ttime: 10,
-// time: 5,
-// uid: 100010,
-// opts:  [4, 3]
-//         }
-//         this.setHandleData(data);
+
+
+
+        //         let data={
+        //             ttime: 10,
+        // time: 5,
+        // uid: 100010,
+        // opts:  [4, 3]
+        //         }
+        //         this.setHandleData(data);
         // let data={
         //     ttime: 18,
         //     time: 9,
@@ -617,15 +894,7 @@ export default class GameControl extends Laya.Script {
 
         // this.players[0].playerCountDown(false);
         // this.players[0].
-        // let data: any = [
-        //     { uid: 100018, banker: false, pokers: null },
-        //     { uid: 100021, banker: false, pokers: null },
-        //     {
-        //         uid: 100014, banker: true, pokers: [11002, 31004, 51006, 61006, 61006, 71007, 91008, 101009, 111010, 111010, 121012, 162007,
-        //             162007, 172008, 172008, 172008, 182008, 192009, 202010, 212011]
-        //     }
-        // ]
-        // DealOrPlayPoker.deal(data);
+
 
         // setTimeout(()=>{
         //     // data.forEach((item:any)=>{
@@ -780,7 +1049,43 @@ export default class GameControl extends Laya.Script {
     }
     /**操作的牌 */
     handlePoker() {
-        ShowHandlePoker.open();
+            this.players.forEach((itemJS:any)=>{
+                // if(itemJS.userId==100021)
+                    itemJS.showNoMePlayPoker(172008);
+            })
+
+            setTimeout(()=>{
+                this.players.forEach((itemJS:any)=>{
+                        itemJS.hideNoMePlayPoker();
+                })
+            },3000)
+        // ShowHandlePoker.open();
+        // let data = {
+        //     uid: 100010,
+        //     pokers: [172008],
+        //     spitfires: [172008],
+        //     userId: 100010,
+        //     concatData: {},
+        //     removePokers: []
+        // };
+        // if (data.spitfires.length > 0) {
+        //     let arr: any = [];
+        //     let obj: any = {};
+        //     let arr2: any = [];
+        //     data.spitfires.forEach(((item: any) => {
+        //         arr.push({ type: 3, data_inner: [item, item, item] });
+        //         arr2.push(item, item, item, item, item);
+        //     }));
+        //     obj = {
+        //         userId: data.userId,
+        //         data: arr
+        //     }
+        //     data.concatData = obj;
+        //     data.removePokers = arr2;
+        //     this.players[0].showHandlePoker(data);
+        // }
+
+        // this.players[1].showHandlePoker(data);
     }
     // /**摸牌 */
     // feelPoker() {

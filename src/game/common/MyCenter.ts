@@ -1,11 +1,17 @@
 /**中转站 */
 class MyCenter{
+    //第一个人出牌后的操作
+    isAction:false;
     //是否是打牌阶段
     play:boolean=false;
     //显示操作
     showHandle:boolean;
     //庄家id
     bankerUid:any;
+    //是不是该我打牌
+    isMePlay:false;
+    //玩家播放动画的位置
+    handleAniSeat:[];
     //保存数据
     keepList:any[];
     //gameUI对象
@@ -35,6 +41,7 @@ class MyCenter{
     }
     keep(key:string,bool:boolean){
         this[key]=bool;
+        // console.log(key,bool)
     }
     getKeep(key:string){
         return this[key]

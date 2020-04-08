@@ -3,12 +3,21 @@ import MyCenter from '../common/MyCenter';//中转站
 import ChangeSeat from '../Fuction/ChangeSeat';//切换位置
 import countDown from '../Fuction/play/CountDown';//倒计时
 import step_1_seatAtOrDown from '../Fuction/step_1_seatAtOrDown';//第一步
+import step_1_dealPoker from '../Fuction/play/step_1_dealPoker';//第一步(开始发牌)
 import step_2_startNewGame from '../Fuction/play/step_2_startNewGame';//第二步(开始一局新游戏)
 import step_x_playerHandle from '../Fuction/play/step_x_playerHandle';//第x步(玩家操作显示及操作)
 import step_x_playerFeelPoker from '../Fuction/play/step_x_playerFeelPoker';//第x步(玩家摸牌)
+import step_x_showHandlePoker from '../Fuction/play/step_x_showHandlePoker';//第x步(玩家操作的牌)
+import step_x_showHandleGIF from '../Fuction/play/step_x_showHandleGIF';//第x步(玩家操作动画)
+import showPlayTip from '../Fuction/play/showPlayTip/showPlayTip';//显示玩家的出牌提示
+import otherPlayerPlay from '../Fuction/play/playerPlay/otherPlay';//非自己玩家出牌
 import set_content_liuzuo from '../Fuction/set_content_liuzuo';//留坐
 import set_content_chat from '../Fuction/set_content_chat';//表情聊天
 export default class seat extends Laya.Script {
+    // //分好的牌
+    // meConcatPokerArr:any[]=[];
+    //操作的牌数据
+    handlePokerArr:any[]=[];
     //玩家位置动画的定时器id
     aniTimeID:number;
     //玩家Id
@@ -155,6 +164,31 @@ export default class seat extends Laya.Script {
         step_2_startNewGame.start(this,data);
     }
 
+    //发牌
+    dealPoker(data:any):void{
+        step_1_dealPoker.init(this,data);
+    }
+
+    //补牌
+    buPoker(data:any,fn?:Function){
+        step_1_dealPoker.buPoker(this,data,fn);
+    }
+
+    //删除牌的数据
+    removePoker(data:any){
+        step_1_dealPoker.removeMePoker(this,data);
+    }
+
+    //显示非自己玩家出的牌
+    showNoMePlayPoker(data:any){
+        otherPlayerPlay.play(this,data);
+    }
+
+    //显示非自己玩家出的牌
+    hideNoMePlayPoker(){
+        otherPlayerPlay.hidePlay(this);
+    }
+
     /**玩家操作 */
     // playerHandle(show1:boolean,show2:boolean,data?:any):void{
     //     // step_x_playerHandle.show(this,data,show1,show2);
@@ -162,6 +196,7 @@ export default class seat extends Laya.Script {
     //     step_x_playerHandle.show(this,data,show1,show2);
     // }
 
+    //玩家操作显示
     playerHandle(opt:any):void{
         // step_x_playerHandle.show(this,data,show1,show2);
 
@@ -182,6 +217,28 @@ export default class seat extends Laya.Script {
     playerHideFeel(){
         step_x_playerFeelPoker.hideFeelPoker(this);
     }
+
+    //玩家操作动画播放
+    showHandleAni(data:any):void{
+        step_x_showHandleGIF.show(this,data);
+    }
+
+    //显示玩家操作的牌
+    showHandlePoker(data:any):void{
+        step_x_showHandlePoker.show(this,data);
+    }
+
+    //清除玩家操作的牌
+    clearHandlePoker():void{
+        step_x_showHandlePoker.hide(this);
+    }
+
+    //显示玩家的出牌提示
+    showPlayTip(show:boolean):void{
+        showPlayTip.show(this,show);
+    }
+
+    
 
     //==============正式===============
     

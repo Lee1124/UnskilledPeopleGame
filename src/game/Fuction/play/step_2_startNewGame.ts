@@ -11,6 +11,12 @@ class step_2_startNewGame {
         banker.visible=data.bankerUid==JSthis.userId?true:false;
         MyCenter.keep('bankerUid',data.bankerUid);
         MyCenter.keep('showHandle',false);
+        MyCenter.keep('play',false);
+        MyCenter.keep('isAction',false);
+        //清除玩家显示的按钮
+        MyCenter.GameControlObj.showHandle({userId:Main.userInfo.userId},[]);
+        //清除玩家操作的牌的显示处
+        MyCenter.GameControlObj.clearHandlePoker();
     }
 }
 export default new step_2_startNewGame();

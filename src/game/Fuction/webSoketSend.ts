@@ -276,5 +276,41 @@ class websketSend {
             }
         })
     }
+
+    /**
+     * 开始打牌之后的操作
+     * @param opt 操作
+     * @param chiList 吃的数据
+     */
+    afterPlayHandle(opt:any,chiList:any):void{
+        this.onSend({
+            name: 'M.Games.YDR.C2G_ActionPoker',
+            data: {
+                roomid: this.conThis.roomId,
+                opt:opt,
+                selpokers:chiList,
+            },
+            success(res:any) {
+                this.conThis.dealSoketMessage('游戏开始之后,打牌之后的等操作：', res);
+            }
+        })
+    }
+
+    /**
+     * 玩家打牌
+     * @param poker 牌代表的数字
+     */
+    playPoker(poker:any){
+        this.onSend({
+            name: 'M.Games.YDR.C2S_PlayAPoker',
+            data: {
+                roomid: this.conThis.roomId,
+                poker:poker
+            },
+            success(res:any) {
+                this.conThis.dealSoketMessage('打的牌', res);
+            }
+        })
+    }
 }
 export default new websketSend();

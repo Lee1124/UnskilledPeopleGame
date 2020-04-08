@@ -15,4 +15,4 @@ loadLib("libs/laya-cc633919dd.physics.js")
 loadLib("libs/clipboard-af8ab36589.min.js")
 loadLib("libs/qrcode-517b55d368.min.js")
 //-----libs-end-------
-loadLib("js/bundle-1e61c81df0.js");
+loadLib("js/bundle-d919381881.js");

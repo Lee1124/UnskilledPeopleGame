@@ -30,6 +30,10 @@ class FeelPoker {
         this.moveFeelPoker(that, data);
     }
 
+    /**
+     * 隐藏翻的牌
+     * @param that 
+     */
     hideFeelPoker(that:any){
         this.initParam2(that);
         if(that.IsMe){

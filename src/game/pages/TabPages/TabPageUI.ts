@@ -19,7 +19,7 @@ export default class TabPageUI extends Laya.Scene {
         this.defaultPage = Main.pages.page3;
     }
     onOpened(options: any): void {
-        Main.$LOG('tab页面所收到的值：', options);
+        Main.$LOG('tab页面所收到的值：', this,options);
         this.pageData = options;
         this.selectedPage = options ? options.page ? options.page : this.defaultPage : this.defaultPage;
         this.openView(this.selectedPage, 0);
@@ -45,7 +45,7 @@ export default class TabPageUI extends Laya.Scene {
      * 切换页面时候先关闭所有页面
      */
     closeAllpages(): void {
-        let allPages = this['pages']._children;
+        let allPages = this['pages']._children; 
         allPages.forEach((item: any) => {
             item.visible = false;
         });

@@ -2,7 +2,9 @@
  * 初始化游戏数据
  */
 import Main from '../common/Main';
+import MyCenter from '../common/MyCenter';
 class InitGameData {
+    aniArr:any=[];
     /**初始化 */
     Init(seatObj: any, conObj: any) {
         seatObj.Index = conObj.Index;
@@ -10,9 +12,7 @@ class InitGameData {
         // seatObj.IsMe = conObj.Index==0?true:false;
         //玩家位置的初始位置
         let startSeat = seatObj.owner;
-        // setTimeout(()=>{
         conObj.owner.startSeatXY.push({ x: startSeat.x, y: startSeat.y });
-        // },1000)
         //摸牌的位置
         let feelSeat = seatObj.owner.getChildByName('feelView');
         conObj.owner.startFeelSeatXY.push({ x: feelSeat.x, y: feelSeat.y });
@@ -24,6 +24,11 @@ class InitGameData {
         let feelPokerSeat = conObj.owner.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
         let feelPokerSeatXY = feelPokerSeat.parent.localToGlobal(new Laya.Point(feelPokerSeat.x, feelPokerSeat.y));
         conObj.owner.feelPokerSeatXY = { x: feelPokerSeatXY.x, y: feelPokerSeatXY.y };
+
+        //播放玩家吃，碰，杠等动画
+        let handleAniSeat = seatObj.owner.getChildByName('handleAniBox');
+        this.aniArr.push({ x: handleAniSeat.x, y: handleAniSeat.y })
+        MyCenter.keep('handleAniSeat',this.aniArr);
         //发其他玩家牌效果接受牌的位置
         // let getPokerSeat = seatObj.owner.getChildByName('getOtherPokerSeat');
         // let getPokerSeatXY = getPokerSeat.parent.localToGlobal(new Laya.Point(getPokerSeat.x, getPokerSeat.y));

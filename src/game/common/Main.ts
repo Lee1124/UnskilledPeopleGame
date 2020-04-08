@@ -19,15 +19,15 @@ class Main {
     }
     //是否自动测试环境
     AUTO: boolean = false;
-    // // websoket请求地址
-    // websoketApi: string = '132.232.34.32:8092';
-    // // http请求的地址
-    // requestApi: string = 'http://132.232.34.32:8091';
-
     //websoket请求地址
-    websoketApi: string = '192.168.101.109:8082';
-    //http请求的地址
-    requestApi: string = 'http://192.168.101.109:8081';
+    websoketApi: string = '132.232.34.32:8092';
+    // http请求的地址
+    requestApi: string = 'http://132.232.34.32:8091';
+
+    // //websoket请求地址
+    // websoketApi: string = '192.168.101.109:8082';
+    // //http请求的地址
+    // requestApi: string = 'http://192.168.101.109:8081';
 
     //websoket请求地址
     //  websoketApi: string = '132.232.34.32:8082';
@@ -50,7 +50,7 @@ class Main {
     serviceUrl: string;
     //关于牌的参数
     pokerParam: any = {
-        // alpha: 0.7,
+        alpha: 0.7,
         // bgColor1: [
         //     0.6, 0.5, 0.5, 0.2, 0, //R
         //     0.6, 0.5, 0.5, 0.2, 0, //G
