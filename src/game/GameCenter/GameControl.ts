@@ -5,8 +5,6 @@ import MyCenter from '../common/MyCenter';
 import InitGameData from '../Fuction/InitGameData';
 import DealOrPlayPoker from '../Fuction/play/DealOrPlayPoker';
 import DiuPoker from '../Fuction/diuPoker';
-// import ShowHandlePoker from '../Fuction/play/step_x_showHandlePoker';
-// import FeelPoker from '../Fuction/FeelPoker';
 import Main from '../common/Main';
 
 import OpenDiaLog from '../Fuction/OpenDiaLog';
@@ -17,50 +15,9 @@ import step_0_initGameNews from '../Fuction/play/step_2_startNewGame';
 
 import set_content_chat from '../Fuction/set_content_chat';//聊天
 
-// //打牌之前的操作
-// enum playBeforeH {
-//     qi = 1,
-//     tou,
-//     kou,
-//     guo,
-//     frist
-// }
-
-// //打牌之后的操作 (1-吃  2-碰  3-杀/杠  4-吐火  5-偷  6-起牌 7-扣牌 8-过  9-胡牌)
-// enum playAfterH {
-//     none,
-//     da,
-//     chi,
-//     pen,
-//     sha,
-//     tu,
-//     kou,
-//     guo,
-//     hu,
-// }
-
-//   //无
-//   None = 0,
-//   //起牌
-//   Stand,1
-//   //偷牌
-//   Steal,2
-//   //扣牌
-//   Kou,3
-//   //过牌
-//   Guo,4
-//   //玩家出一张牌
-//   Play,5
-//   //吃牌
-//   Eat,6
-//   //碰牌
-//   Touch,7
-//   //杀/杠牌
-//   Kill,8
-//   //吐火
-//   SpitFire,9
-//   //胡牌
-//   Hu,10
+import time from "../Fuction/play/time/time";//倒计时
+import showHandleBtns from "../Fuction/play/showHandleBtns/showHandleBtns";//玩家显示按钮
+// import chipengangtuDealData from "../Fuction/play/chipengangtuDealData/chipengangtuDealData";
 
 //操作按钮的类型
 enum handleBtn {
@@ -75,6 +32,13 @@ enum handleBtn {
     sha,
     tu,
     hu
+}
+
+//打牌阶段（起牌,偷牌,打牌）
+enum playstage {
+    qi,
+    tou,
+    da
 }
 
 export default class GameControl extends Laya.Script {
@@ -241,9 +205,10 @@ export default class GameControl extends Laya.Script {
         }
 
         //====开始游戏部分====
-        if (resData._t == "G2C_StartNewWheel") {
+        if (resData._t == "G2C_StartNewWheel") {//开始新的一轮
             this.startNewGame(resData);
-        } else if (resData._t == "G2C_DealHand") {
+        } else if (resData._t == "G2C_DealHand") {//开始发牌
+            MyCenter.keep('playstage', playstage.qi);
             this.dealPlayerPoker(resData);
         } else if (resData._t == "G2C_StandPoker") {//玩家起牌  
             if (MyCenter.getKeep('showHandle'))
@@ -257,19 +222,27 @@ export default class GameControl extends Laya.Script {
         } else if (resData._t == "G2C_StandPokerOpt") {//起牌处操作结果
             this.player_standPokerOpt(resData);
         } else if (resData._t == "G2C_StealPokerOpts") {//偷牌
-            // MyCenter.req('allowTouHandle',(res:any)=>{
+            MyCenter.keep('playstage', playstage.tou);
+            if (MyCenter.getKeep('allowStealPoker')) {
                 this.player_stealPokerOpt(resData);
-            // })
+            } else {
+                MyCenter.req('allowStealPoker', () => {
+                    this.player_stealPokerOpt(resData);
+                })
+            }
         } else if (resData._t == "G2C_StealPokerResult") {//偷牌返回的结果
             this.player_stealPokerResult(resData);
-        }else if(resData._t=="G2C_NoticePlayAPoker"){//开始打牌
+        } else if (resData._t == "G2C_NoticePlayAPoker") {//开始打牌
+            MyCenter.keep('playstage', playstage.da);
             this.player_noticePlayAPoker(resData);
-        }else if(resData._t=="S2C_PlayAPoker"){//非自己玩家打牌之后
+        } else if (resData._t == "S2C_PlayAPoker") {//非自己玩家打牌之后
             this.palyer_playAPoker(resData);
-        }else if(resData._t=="G2C_ActionPokerOpts"){//玩家出牌后的操作
+        } else if (resData._t == "G2C_ActionPokerOpts") {//玩家出牌后的操作
             this.palyer_actionPokerOpts(resData);
-        }else if(resData._t=="G2C_FlopAPoker"){//玩家翻牌
+        } else if (resData._t == "G2C_FlopAPoker") {//玩家翻牌
             this.palyer_flopAPoker(resData);
+        } else if (resData._t == "G2C_ActionPokerResult") {//玩家操作返回结果
+            this.palyer_actionPokerResult(resData);
         }
 
         // } catch (error) {
@@ -299,10 +272,10 @@ export default class GameControl extends Laya.Script {
      * 发牌
      */
     dealPlayerPoker(data: any): void {
-        MyCenter.keep('dealPCount',data.players.length);
-        this.players.forEach((itemJS:any)=>{
-            data.players.forEach((item:any)=>{
-                if(itemJS.userId==item.uid){
+        MyCenter.keep('dealPCount', data.players.length);
+        this.players.forEach((itemJS: any) => {
+            data.players.forEach((item: any) => {
+                if (itemJS.userId == item.uid) {
                     itemJS.dealPoker(item);
                 }
             })
@@ -312,7 +285,7 @@ export default class GameControl extends Laya.Script {
     //玩家起牌
     player_standPoker(data: any): void {
         data.userId = data.uid;
-        this.showTime(data, true);
+        time.show(data);
         let opt: any = [];
         if (data.pokers.length == 0 && data.baozi) {//包子,只有扣
             opt = [{ h: handleBtn.kou, o: 1 }];
@@ -321,26 +294,27 @@ export default class GameControl extends Laya.Script {
         } else if (data.pokers.length >= 0) {//可以起牌
             opt = [{ h: handleBtn.qi, o: 1 }, { h: handleBtn.guo, o: 1 }];
         }
-        this.showHandle(data, opt);
+        showHandleBtns.show(data, opt);
     }
 
     //玩家补牌
     player_buPoker(data: any) {
-        MyCenter.keep('play',true);
+        MyCenter.keep('play', true);
         data.userId = data.uid;
         //玩家摸牌效果显示
         this.feelPoker(data);
         // DealOrPlayPoker.buPoker(buPokerArr);
         //庄家补牌
         this.bankerBuPoker(data);
-        this.onlyShowKouBtn(data);//补牌的时候就显示扣按钮
+        // this.onlyShowKouBtn(data);//补牌的时候就显示扣按钮
+        showHandleBtns.onlyKouBtn(data);
     }
 
     //庄家补牌
-    bankerBuPoker(data:any):void{
-        let buPokerArr: any[] = data.poker?[data.poker]:[];
-        this.players.forEach((itemJS:any)=>{
-            if(itemJS.userId==data.userId){
+    bankerBuPoker(data: any): void {
+        let buPokerArr: any[] = data.poker ? [data.poker] : [];
+        this.players.forEach((itemJS: any) => {
+            if (itemJS.userId == data.userId) {
                 itemJS.buPoker(buPokerArr);
             }
         })
@@ -349,21 +323,23 @@ export default class GameControl extends Laya.Script {
     //玩家起牌处返回的结果
     player_standPokerOpt(data: any) {
         data.userId = data.uid;
-        this.showTime(data, false);
-        this.showHandle(data, []);
+        time.hide(data);
+        showHandleBtns.hideAll(data);
     }
 
     //玩家偷牌
     player_stealPokerOpt(data: any) {
         data.userId = data.uid;
-        this.showTime(data, true);
+        // this.showTime(data, true);
+        time.show(data);
         let opts: any = this.setOptData(data.opts);
         // this.addKou(opts);
         let touArr: any = opts.filter((item: any) => item.h == handleBtn.tou);
         if (touArr.length == 0) {
             opts.push({ h: handleBtn.tou, o: 0.4 });
         }
-        this.showHandle(data, opts);
+        // this.showHandle(data, opts);
+        showHandleBtns.show(data, opts);
         // DealOrPlayPoker.buPoker(null);
         //使补牌标记去掉
         this.bankerBuPoker(data);
@@ -391,29 +367,31 @@ export default class GameControl extends Laya.Script {
 
     //偷牌返回的结果
     stealPokerResult(data: any): void {
-        this.onlyShowKouBtn(data);//补牌的时候就显示扣按钮
+        // this.onlyShowKouBtn(data);
+        showHandleBtns.onlyKouBtn(data);//补牌的时候就显示扣按钮
         this.players.forEach((item: any) => {
             if (data.userId == item.userId) {
                 let touPokers: any[] = data.pokers;
-                if (touPokers.length > 0&&item.IsMe)
-                    item.buPoker(touPokers,()=>{
-                            // MyCenter.keep('allowTouHandle',true);
-                            if (data.spitfires.length > 0) {//如果开始有吐火就吐火
-                                setTimeout(()=>{
-                                    this.stealPokerResultCoomon(item,data);
-                                },1000)
-                            }
-                        
+                if (touPokers.length > 0 && item.IsMe) {//只有自己进
+                    MyCenter.keep('allowStealPoker', false);
+                    item.buPoker(touPokers, () => {
+                        if (data.spitfires.length > 0) {//如果开始有吐火就吐火
+                            setTimeout(() => {
+                                MyCenter.send('allowStealPoker', true);
+                                MyCenter.keep('allowStealPoker', true);
+                                this.stealPokerResultCoomon(item, data);
+                            }, 1000)
+                        }
                     })
-                else if(data.spitfires.length>0&&!item.IsMe)
-                    this.stealPokerResultCoomon(item,data);
-
+                }
+                else if (data.spitfires.length > 0 && !item.IsMe)//非自己进
+                    this.stealPokerResultCoomon(item, data);
             }
         })
     }
 
     //接上，公用
-    stealPokerResultCoomon(item:any,data:any){
+    stealPokerResultCoomon(item: any, data: any) {
         let arr: any = [];
         let obj: any = {};
         let arr2: any = [];
@@ -425,8 +403,8 @@ export default class GameControl extends Laya.Script {
             userId: data.userId,
             data: arr
         }
-        item.showHandleAni({opt:3});
-        this.showHandlePokerDealData(item, data,obj,arr2);
+        item.showHandleAni({ opt: 3 });
+        this.showHandlePokerDealData(item, data, obj, arr2);
     }
 
     /**
@@ -434,29 +412,29 @@ export default class GameControl extends Laya.Script {
      * @param item 
      * @param data 
      */
-    showHandlePokerDealData(item: any, data: any,concatData:any,removePokers:any): void {
+    showHandlePokerDealData(item: any, data: any, concatData: any, removePokers: any): void {
         data.concatData = concatData;
         data.removePokers = removePokers;
         item.showHandlePoker(data);
     }
-    
 
-    /**
-     * 清除玩家操作的牌的显示处
-     */
-    clearHandlePoker():void{
-        this.players.forEach((itemJS: any) => {
-            itemJS.clearHandlePoker();
-        })
-    }
+
+    // /**
+    //  * 清除玩家操作的牌的显示处
+    //  */
+    // clearHandlePoker(): void {
+    //     this.players.forEach((itemJS: any) => {
+    //         itemJS.clearHandlePoker();
+    //     })
+    // }
 
     /**
      * 开始打牌
      * @param data 数据
      */
-    player_noticePlayAPoker(data:any){
-        data.userId=data.uid;
-        this.playerPlaySet(data,true);
+    player_noticePlayAPoker(data: any) {
+        data.userId = data.uid;
+        this.playerPlaySet(data, true);
     }
 
     /**
@@ -464,11 +442,16 @@ export default class GameControl extends Laya.Script {
      * @param data 数据
      * @param isMePlay 是否自己该打
      */
-    playerPlaySet(data:any,isMePlay:boolean):void{
-        this.showTime(data, isMePlay);
-        MyCenter.keep('isMePlay',isMePlay);
+    playerPlaySet(data: any, isMePlay: boolean): void {
+        // this.showTime(data, isMePlay);
+        if (isMePlay)
+            time.show(data);
+        else
+            time.hide(data);
+        time.hide(data);
+        MyCenter.keep('isMePlay', isMePlay);
         this.players.forEach((itemJS: any) => {
-            if(itemJS.userId==data.userId){
+            if (itemJS.userId == data.userId) {
                 itemJS.showPlayTip(isMePlay);
             }
         })
@@ -478,85 +461,50 @@ export default class GameControl extends Laya.Script {
      * 非自己玩家打了牌之后
      * @param data 数据
      */
-    palyer_playAPoker(data:any){
-        data.userId=data.uid;
-        this.showTime(data, false);
-        this.players.forEach((itemJS:any)=>{
-            if(itemJS.userId==data.userId)
+    palyer_playAPoker(data: any) {
+        data.userId = data.uid;
+        // this.showTime(data, false);
+        time.hide(data);
+        this.players.forEach((itemJS: any) => {
+            if (itemJS.userId == data.userId)
                 itemJS.showNoMePlayPoker(data.poker);
         })
     }
 
     /**
-     * 玩家出牌后该显示的操作
+     * 玩家(出牌后/摸牌后)该显示的操作
      * @param data 
      */
-    palyer_actionPokerOpts(data:any){
-        data.userId=data.uid;
-        this.showTime(data,true);
+    palyer_actionPokerOpts(data: any) {
+        data.userId = data.uid;
+        // this.showTime(data, true);
         this.dealWithOptData(data);
         let opts: any = this.setOptData(data.opts);
-        this.showHandle(data,opts);
-        MyCenter.keep('isAction',true);
+        // this.showHandle(data, opts);
+        showHandleBtns.show(data, opts);
+        // MyCenter.keep('isAction', true);
+        // this.aterFeelPokerShowTime(data);
+        time.shows(data);
     }
+
     /**
      * 玩家出牌后该显示的操作数据处理
      * @param data 
      */
-    dealWithOptData(data:any){
-        console.log('玩家出牌后该显示的操作数据处理:',data)
+    dealWithOptData(data: any) {
+        console.log('玩家出牌后该显示的操作数据处理:', data)
+
     }
 
     /**
      * 玩家翻牌
      * @param data 数据
      */
-    palyer_flopAPoker(data:any){
-        data.userId=data.uid;
-        this.playerHideFeel(data,true);
+    palyer_flopAPoker(data: any) {
+        data.userId = data.uid;
+        this.playerHideFeel(data, true);
         this.feelPoker(data);
     }
-
-    /**
-     * 显示玩家的操作按钮
-     * @param data 数据
-     * @param opts 操作按钮的数据
-     */
-    showHandle(data: any, opts: any) {
-        this.players.forEach((itemJS: any) => {
-            if (itemJS.userId == data.userId) {
-                console.log('玩家偷牌操作===:'+data.userId,opts);
-                itemJS.playerHandle(opts);
-            }
-        })
-    }
-
-    /**
-     * 只显示扣按钮
-     * @param data 数据
-     */
-    onlyShowKouBtn(data: any) {
-        this.players.forEach((itemJS: any) => {
-            if (itemJS.userId == data.userId) {
-                // itemJS.playerHandle(show1, show2, data);
-                let opts: any = [{ h: handleBtn.kou, o: 1 }]
-                itemJS.playerHandle(opts);
-            }
-        })
-    }
-
-    /**
-     * 显示玩家的倒计时
-     * @param data 数据
-     * @param show 是否显示时间
-     */
-    showTime(data: any, show: boolean) {
-        this.players.forEach((itemJS: any) => {
-            if (itemJS.userId == data.userId)
-                itemJS.playerCountDown(show, data);
-        })
-    }
-
 
     /**摸牌 */
     feelPoker(data: any) {
@@ -567,7 +515,6 @@ export default class GameControl extends Laya.Script {
                 itemJS.playerFeel(data);
             }
         })
-
     }
 
     /**
@@ -575,21 +522,27 @@ export default class GameControl extends Laya.Script {
      * @param data 数据
      * @param isAll 是不是先全部清除
      */
-    playerHideFeel(data: any,isAll:boolean=false) {
+    playerHideFeel(data: any, isAll: boolean = false) {
         this.players.forEach((itemJS: any) => {
-            if (itemJS.userId == data.userId&&!isAll) {
+            if (itemJS.userId == data.userId && !isAll) {
                 itemJS.playerHideFeel();
-            }else if(isAll){
+            } else if (isAll) {
                 itemJS.playerHideFeel();
             }
         })
     }
 
-
-
+    /**
+     * 玩家操作返回的结果
+     */
+    palyer_actionPokerResult(data: any) {
+        data.userId=data.uid;
+        showHandleBtns.daHandleShow(data,data.opt);
+        this.playerHideFeel(data,true);
+        
+    }
 
     //正式========游戏部分============================
-
     /**
      * 离开房间处理
      * @param data 数据
@@ -660,9 +613,6 @@ export default class GameControl extends Laya.Script {
     playerSeatAt(data: any): void {
         // console.log('占位=====data.seatidx:',data.seatidx)
         this.players.forEach((JSitem: any) => {
-            // if (JSitem.SeatId == data.seatidx) {
-            //     JSitem.playerSeatAtFn(data);
-            // }
             if (JSitem.Index == data.seatidx) {
                 JSitem.playerSeatAtFn(data);
             }
@@ -773,29 +723,45 @@ export default class GameControl extends Laya.Script {
         // }
         // this.players[2].showHandleAni(data3);
         // this.showHandle({userId:100014},null,null);
-        console.log('进来了')
-        let data0: any = [
-            { uid: 100018, banker: false, pokers: null },
-            { uid: 100021, banker: false, pokers: null },
-            {
-                uid: 100014, banker: true, pokers: [11002, 31004, 51006, 61006, 61006, 71007, 91008, 101009, 111010, 111010, 121012, 162007,
-                    162007, 172008, 172008, 172008, 172008, 182008, 192009, 202010]
+        this.players.forEach((item:any)=>{
+            if(item.userId==Main.userInfo.userId){
+                alert(item.SeatId)
             }
-        ]
-        this.players[1].userId=100018;
-        this.players[2].userId=100021;
-        MyCenter.keep('dealPCount',data0.length);
-        this.players.forEach((itemJS:any)=>{
-            data0.forEach((item:any)=>{
-                if(itemJS.userId==item.uid){
-                    itemJS.dealPoker(item);
-                }
-            })
         })
+        // console.log('进来了')
+        // let data0: any = [
+        //     { uid: 100006, banker: false, pokers: null },
+        //     { uid: 100008, banker: false, pokers: null },
+        //     {
+        //         uid: 100007, banker: true, pokers: [11002, 31004, 51006, 61006, 61006, 71007, 91008, 101009, 111010, 111010, 111010, 162007,
+        //             162007, 172008, 172008, 172008, 172008, 182008, 192009, 202010]
+        //     }
+        // ]
+        // this.players[1].userId = 100006;
+        // this.players[2].userId = 100008;
+        // MyCenter.keep('dealPCount', data0.length);
+        // this.players.forEach((itemJS: any) => {
+        //     data0.forEach((item: any) => {
+        //         if (itemJS.userId == item.uid) {
+        //             itemJS.dealPoker(item);
+        //         }
+        //     })
+        // })
 
-        
+        // // this.aterFeelPokerShowTime({uids:[100018,100021,100007],ttime:20,time:20})
 
-        
+        // let data2: any = {
+        //     ttime: 20,
+        //     time: 20,
+        //     uid: 100007,
+        //     uids: [100006, 100007, 100008],
+        //     poker: 172008,
+        //     opts: [6, 3, 4, 7],
+        //     optpokers: [202010, 31004],
+        //     userId: 100007
+        // }
+        // MyCenter.keep('playstage',2)
+        // this.palyer_actionPokerOpts(data2);
 
         // setTimeout(() => {
         //     let data = {
@@ -858,186 +824,6 @@ export default class GameControl extends Laya.Script {
         //     //     }
         //     // });
         // }, 3000)
-
-
-
-
-
-        //         let data={
-        //             ttime: 10,
-        // time: 5,
-        // uid: 100010,
-        // opts:  [4, 3]
-        //         }
-        //         this.setHandleData(data);
-        // let data={
-        //     ttime: 18,
-        //     time: 9,
-        //     uid: 100010,
-        //     pokers: [111010,111010,132004,132004],
-        //     baozi: false,
-        //     userId: 100010,
-        // }
-        // this.player_standPoker(data);
-
-        // setTimeout(()=>{
-        //     this.showHandle(data, false, false);
-        // },2000)
-        // 类型
-        // console.log('进来');
-        // let data:any={uid:Main.userInfo.userId,handle:[1,2,8,7]};
-        // this.players.forEach((item:any)=>{
-        //     if(data.uid==item.userId){
-        //         item.playerHandle(data);
-        //     }
-        // })  
-
-        // this.players[0].playerCountDown(false);
-        // this.players[0].
-
-
-        // setTimeout(()=>{
-        //     // data.forEach((item:any)=>{
-        //     //     if(item.uid==100014){
-        //     //         item.pokers.push(212011);
-        //     //     }
-        //     // })
-        //     let data={
-        //         poker:212011
-        //     }
-        //     DealOrPlayPoker.buPoker(data);
-        //     setTimeout(()=>{
-        //         DealOrPlayPoker.buPoker(null);
-        //     },2000)
-        // },2000)
-
-        // let data = [212011, 212011, 212011, 111010, 41005, 101009, 101009, 41005, 41005, 41005, 41005, 81007, 81007, 81007, 81007, 91008, 111010, 121012, 121012, 162007];
-        // //红色1 黑色2 
-        // //类型1-21
-        // //点数
-
-        // let newArr = [];
-        // data.forEach((item, index) => {
-        //     let Type = parseInt(item / 10000);
-        //     let Color = parseInt((item % 10000) / 1000);
-        //     let Point = item - Type * 10000 - Color * 1000;
-        //     let groupP = Point > 7 ? (14 - 7) : Point;
-        //     newArr.push({ type: Type, Color: Color, seatPoint: groupP, Point: Point, id: (index + 1) })
-        //     //     console.log(item,'牌名字type：'+Type,'牌颜色Color：'+Color,'牌点数Point：'+Point);
-        // })
-
-        // // console.log(newArr)
-
-        // //进行分组
-        // var map = {},
-        //     dest = [];
-        // for (var i = 0; i < newArr.length; i++) {
-        //     var ai = newArr[i];
-        //     if (!map[ai.seatPoint]) {
-        //         dest.push({
-        //             seatPoint: ai.seatPoint,
-        //             data: [ai]
-        //         });
-        //         map[ai.seatPoint] = ai;
-        //     } else {
-        //         for (var j = 0; j < dest.length; j++) {
-        //             var dj = dest[j];
-        //             if (dj.seatPoint == ai.seatPoint) {
-        //                 dj.data.push(ai);
-        //                 break;
-        //             }
-        //         }
-        //     }
-        // }
-
-        // //排序
-        // dest.sort((a, b) => {
-        //     return a.seatPoint - b.seatPoint;
-        // })
-
-        // //根据type排序
-        // dest.forEach(item => {
-        //     item.data.sort((a, b) => {
-        //         return a.type - b.type;
-        //     })
-        // })
-
-        // function getNewArr(item, filterArr) {
-        //     console.log('filterArr', filterArr)
-        //     let myIndexArr = [];
-        //     filterArr.forEach((item0, index0) => {
-        //         let falg = true;
-        //         item.data.forEach((item2, index2) => {
-        //             if ((item0.type == item2.type) && falg) {
-        //                 falg = false
-        //                 myIndexArr.push(index2);
-        //             }
-        //         })
-        //     })
-        //     myIndexArr.unshift(0);
-        //     myIndexArr.push(item.data.length);
-        //     console.log('myIndexArr', myIndexArr)
-        //     let newReturnArr = [];
-        //     for (let i = 0; i < myIndexArr.length; i++) {
-        //         if (myIndexArr[i + 1]) {
-        //             let myData = item.data.slice(myIndexArr[i], myIndexArr[i + 1]);
-        //             newReturnArr.push({ seatPoint: myData[0].seatPoint, data: myData })
-        //         }
-        //     }
-        //     return newReturnArr;
-        // }
-
-        // //每列超过6张 就另起一列 若前面有一样的牌一起跟着走
-        // let colNum = 6;//规定每列的数量
-        // let bigArr;
-        // console.log(dest)
-        // dest.forEach((item, index) => {
-        //     let filterArr = item.data.filter((item2, index2) => (index2 + 1) % colNum == 0);
-        //     if (filterArr.length > 0) {
-        //         console.log(index)
-        //         bigArr = getNewArr(item, filterArr);
-        //         for (let i = dest.length - 1; i >= 0; i--) {
-        //             if (index == i) {
-        //                 dest.splice(index, 1);
-        //             }
-        //         }
-        //         dest = dest.concat(bigArr)
-        //     }
-        // })
-        // console.log('====++', bigArr);
-
-        // //排序
-        // dest.sort((a, b) => {
-        //     return a.seatPoint - b.seatPoint;
-        // })
-        // console.log(dest);
-
-        // websoket.playerSeatUpSend();
-
-        // let seatIndexArr:number[] = [0, 1, 2];
-        // let NewSeatSeatArr = seatIndexArr.splice(2, seatIndexArr.length).concat(seatIndexArr.splice(0, 2 + 1));
-        // console.log(NewSeatSeatArr)
-
-
-        // let makeUpBOBO:any=this.owner['makeUpCoin'].getComponent(OpenDiaLog);
-        // let slideJS:any=this.owner['makeUpCoin'].getChildByName('sliderView').getComponent(SlideSeledct);
-        // makeUpBOBO.init(1,0,this,()=>{
-        //     console.log('打开了')
-        // },()=>{
-        //     console.log('关闭了')
-        // },()=>{
-        //     //滑动选择初始化
-        //     slideJS.init(100,2,6,this,(res:number)=>{
-        //         console.log(res)
-        //     });
-        //     //打开补充钵钵弹框
-        //     makeUpBOBO.open();
-        // });
-
-        // Main.showTip('游戏开始...');
-        // setTimeout(() => {
-        //     DealOrPlayPoker.deal();
-        // }, 1000)
     }
     /**丢的牌 */
     diuPoker() {
@@ -1049,43 +835,16 @@ export default class GameControl extends Laya.Script {
     }
     /**操作的牌 */
     handlePoker() {
-            this.players.forEach((itemJS:any)=>{
-                // if(itemJS.userId==100021)
-                    itemJS.showNoMePlayPoker(172008);
+        this.players.forEach((itemJS: any) => {
+            // if(itemJS.userId==100021)
+            itemJS.showNoMePlayPoker(172008);
+        })
+
+        setTimeout(() => {
+            this.players.forEach((itemJS: any) => {
+                itemJS.hideNoMePlayPoker();
             })
-
-            setTimeout(()=>{
-                this.players.forEach((itemJS:any)=>{
-                        itemJS.hideNoMePlayPoker();
-                })
-            },3000)
-        // ShowHandlePoker.open();
-        // let data = {
-        //     uid: 100010,
-        //     pokers: [172008],
-        //     spitfires: [172008],
-        //     userId: 100010,
-        //     concatData: {},
-        //     removePokers: []
-        // };
-        // if (data.spitfires.length > 0) {
-        //     let arr: any = [];
-        //     let obj: any = {};
-        //     let arr2: any = [];
-        //     data.spitfires.forEach(((item: any) => {
-        //         arr.push({ type: 3, data_inner: [item, item, item] });
-        //         arr2.push(item, item, item, item, item);
-        //     }));
-        //     obj = {
-        //         userId: data.userId,
-        //         data: arr
-        //     }
-        //     data.concatData = obj;
-        //     data.removePokers = arr2;
-        //     this.players[0].showHandlePoker(data);
-        // }
-
-        // this.players[1].showHandlePoker(data);
+        }, 3000)
     }
     // /**摸牌 */
     // feelPoker() {

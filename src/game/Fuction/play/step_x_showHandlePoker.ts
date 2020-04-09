@@ -11,7 +11,7 @@ enum showType {
     sha,
     tu
 }
-class ShowHanldePoker {
+class step_x_showHandlePoker {
     //玩家操作展示的牌每行的索引
     rowIndex: number;
     //玩家操作展示的牌每列的索引
@@ -38,6 +38,15 @@ class ShowHanldePoker {
         let handlePokerView = item.owner.getChildByName('show' + item.SeatId);
         handlePokerView.visible = false;
         handlePokerView._children=[];
+    }
+
+    /**
+     * 全部清除
+     */
+    hideAll(){
+        MyCenter.GameControlObj.players.forEach((itemJS: any) => {
+            itemJS.clearHandlePoker();
+        })
     }
 
     /**
@@ -137,4 +146,4 @@ class ShowHanldePoker {
         handlePokerView.addChild(rowBox);
     }
 }
-export default new ShowHanldePoker();
+export default new step_x_showHandlePoker();

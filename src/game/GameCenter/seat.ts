@@ -1,11 +1,11 @@
 /**位置脚本 */
 import MyCenter from '../common/MyCenter';//中转站
 import ChangeSeat from '../Fuction/ChangeSeat';//切换位置
-import countDown from '../Fuction/play/CountDown';//倒计时
+import time from '../Fuction/play/time/time';//倒计时
 import step_1_seatAtOrDown from '../Fuction/step_1_seatAtOrDown';//第一步
 import step_1_dealPoker from '../Fuction/play/step_1_dealPoker';//第一步(开始发牌)
 import step_2_startNewGame from '../Fuction/play/step_2_startNewGame';//第二步(开始一局新游戏)
-import step_x_playerHandle from '../Fuction/play/step_x_playerHandle';//第x步(玩家操作显示及操作)
+// import step_x_playerHandle from '../Fuction/play/step_x_playerHandle';//第x步(玩家操作显示及操作)
 import step_x_playerFeelPoker from '../Fuction/play/step_x_playerFeelPoker';//第x步(玩家摸牌)
 import step_x_showHandlePoker from '../Fuction/play/step_x_showHandlePoker';//第x步(玩家操作的牌)
 import step_x_showHandleGIF from '../Fuction/play/step_x_showHandleGIF';//第x步(玩家操作动画)
@@ -13,7 +13,10 @@ import showPlayTip from '../Fuction/play/showPlayTip/showPlayTip';//显示玩家
 import otherPlayerPlay from '../Fuction/play/playerPlay/otherPlay';//非自己玩家出牌
 import set_content_liuzuo from '../Fuction/set_content_liuzuo';//留坐
 import set_content_chat from '../Fuction/set_content_chat';//表情聊天
+import showHandleBtns  from "../Fuction/play/showHandleBtns/showHandleBtns";//玩家显示按钮
 export default class seat extends Laya.Script {
+    //是不是包子
+    isBaoZi:false;
     // //分好的牌
     // meConcatPokerArr:any[]=[];
     //操作的牌数据
@@ -151,13 +154,13 @@ export default class seat extends Laya.Script {
      */
     playerCountDown(isShow: boolean, data: any) {
         if (isShow)
-            countDown.open(this,data);
+            time.open(this,data);
         else
-            countDown.close(this);
+            time.close(this);
     }
     //接上
     seat_drawPie():void{
-        countDown.drawPie(this);
+        time.drawPie(this);
     }
 
     startNewGame(data:any):void{
@@ -197,10 +200,8 @@ export default class seat extends Laya.Script {
     // }
 
     //玩家操作显示
-    playerHandle(opt:any):void{
-        // step_x_playerHandle.show(this,data,show1,show2);
-
-        step_x_playerHandle.show(this,opt);
+    playerHandle(opt:any,data:any):void{
+        showHandleBtns.showBtns(this,opt,data);
     }
 
     /**

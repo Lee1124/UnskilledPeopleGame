@@ -34,7 +34,7 @@ class ChangeSeat {
                     // console.log(NewSeatIndexArr)
                     NewSeatIndexArr.forEach((item: number, index: number) => {
                         // that.playerSeatArr[index].IsMe = false;
-                        that.playerSeatArr[index].SeatId = item;
+                        that.playerSeatArr[item].SeatId = index;
                         Laya.Tween.to(that.playerSeatArr[item].owner, { x: that.playerSeatXYArr[index].x, y: that.playerSeatXYArr[index].y }, Main.Speed['changeSeat']);
                         that.changeSeatNodeParam(that.playerSeatArr[item].owner, index);
                     })

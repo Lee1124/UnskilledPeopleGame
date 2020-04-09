@@ -685,8 +685,8 @@
         InitGameData(thisObj) {
             this.GameControlObj = thisObj;
         }
-        keep(key, bool) {
-            this[key] = bool;
+        keep(key, val) {
+            this[key] = val;
         }
         getKeep(key) {
             return this[key];
@@ -2073,9 +2073,9 @@
                 }
             });
         }
-        beforePlayHandle(opt) {
+        beforePlayHandle(opt, name) {
             this.onSend({
-                name: 'M.Games.YDR.C2G_StandPokerOpt',
+                name: name,
                 data: {
                     roomid: this.conThis.roomId,
                     opt: opt
@@ -2976,6 +2976,115 @@
     }
     var set_content_chat = new setChat();
 
+    class time {
+        show(data) {
+            this.common(data, true);
+        }
+        hide(data) {
+            this.common(data, false);
+        }
+        common(data, show) {
+            let players = myCenter.GameControlObj.players;
+            players.forEach((itemJS) => {
+                if (itemJS.userId == data.userId)
+                    itemJS.playerCountDown(show, data);
+            });
+        }
+        shows(data) {
+            let players = myCenter.GameControlObj.players;
+            players.forEach((itemJS) => {
+                data.uids.forEach((item) => {
+                    if (itemJS.userId == item) {
+                        itemJS.playerCountDown(true, data);
+                    }
+                });
+            });
+        }
+        open(seatThis, data) {
+            seatThis.conutDownData = data;
+            let conutDown = seatThis.owner.getChildByName("conutDown");
+            seatThis._imgNode = conutDown.getChildByName('timeMask');
+            seatThis._imgNode.loadImage('res/img/common/progress1.png', Laya.Handler.create(this, () => {
+                Laya.timer.frameLoop(1, seatThis, seatThis.seat_drawPie);
+            }));
+            seatThis._allTime = data.ttime;
+            seatThis._startTime = new Date().getTime() / 1000;
+            seatThis._rotation = 360 * ((seatThis.conutDownData.ttime - seatThis.conutDownData.time) / seatThis._allTime) + 2;
+            seatThis.timeText = conutDown.getChildByName("timeText");
+            seatThis.timeText.text = `${seatThis._allTime}s`;
+            seatThis._timeOutFlag = true;
+            seatThis.seat_drawPie();
+            conutDown.visible = true;
+        }
+        drawPie(seatThis) {
+            let time = seatThis._allTime - parseInt(String(((new Date().getTime() / 1000 - seatThis._startTime)))) - (seatThis.conutDownData.ttime - seatThis.conutDownData.time);
+            seatThis.timeText.text = time + 's';
+            if (time == 5 && seatThis.IsMe && seatThis._timeOutFlag) {
+                seatThis._timeOutFlag = false;
+                seatThis._imgNode.loadImage('res/img/common/progress2.png');
+            }
+            let endS = ((new Date().getTime() / 1000 - seatThis._startTime)) + (seatThis.conutDownData.ttime - seatThis.conutDownData.time);
+            seatThis._rotation = 360 * (endS / seatThis._allTime);
+            if (seatThis._rotation >= 360) {
+                seatThis._rotation = 360;
+                Laya.timer.clear(seatThis, seatThis.seat_drawPie);
+                this.close(seatThis);
+            }
+            seatThis._mask.graphics.clear();
+            seatThis._mask.graphics.drawPie(83, 83, 83, seatThis._rotation, 360, '#000000');
+            seatThis._imgNode.mask = seatThis._mask;
+        }
+        close(seatThis) {
+            let countDownBox = seatThis.owner.getChildByName("conutDown");
+            countDownBox.visible = false;
+            Laya.timer.clear(seatThis, seatThis.seat_drawPie);
+        }
+    }
+    var time$1 = new time();
+
+    var showType;
+    (function (showType) {
+        showType[showType["chi"] = 0] = "chi";
+        showType[showType["pen"] = 1] = "pen";
+        showType[showType["sha"] = 2] = "sha";
+        showType[showType["tu"] = 3] = "tu";
+    })(showType || (showType = {}));
+    class chipengangtuDealData {
+        chi(data) {
+        }
+        pen(data) {
+            let type = showType.pen;
+            this.common0(data, type, [data.poker, data.poker, data.poker], [data.poker, data.poker]);
+        }
+        gang(data) {
+            let type = showType.sha;
+            this.common0(data, type, [data.poker, data.poker, data.poker, data.poker], [data.poker, data.poker, data.poker]);
+        }
+        tuhuo(data) {
+            let type = showType.tu;
+            this.common0(data, type, [data.poker, data.poker, data.poker, data.poker, data.poker], [data.poker, data.poker, data.poker, data.poker]);
+        }
+        common0(data, type, concatPokers, removePokers) {
+            let concatData = {
+                userId: data.userId,
+                data: [{ type: type, data_inner: concatPokers }]
+            };
+            removePokers = removePokers;
+            this.common(data, type, concatData, removePokers);
+        }
+        common(data, type, concatData, removePokers) {
+            let dataArr = myCenter.GameControlObj.players.filter((item) => item.userId == data.userId);
+            let itemJS = dataArr.length > 0 ? dataArr[0] : null;
+            if (itemJS) {
+                data.concatData = concatData;
+                data.removePokers = removePokers;
+                itemJS.showHandleAni({ opt: type });
+                itemJS.showHandlePoker(data);
+            }
+        }
+    }
+    var chipengangtuDealData$1 = new chipengangtuDealData();
+
     var handleBtn;
     (function (handleBtn) {
         handleBtn[handleBtn["none"] = 0] = "none";
@@ -2990,6 +3099,126 @@
         handleBtn[handleBtn["tu"] = 9] = "tu";
         handleBtn[handleBtn["hu"] = 10] = "hu";
     })(handleBtn || (handleBtn = {}));
+    var playstage;
+    (function (playstage) {
+        playstage[playstage["qi"] = 0] = "qi";
+        playstage[playstage["tou"] = 1] = "tou";
+        playstage[playstage["da"] = 2] = "da";
+    })(playstage || (playstage = {}));
+    class showHandleBtns {
+        show(data, opts) {
+            let players = myCenter.GameControlObj.players;
+            players.forEach((itemJS) => {
+                if (itemJS.userId == data.userId) {
+                    Main$1.$LOG('玩家' + data.userId + '操作列表Array：', opts);
+                    itemJS.playerHandle(opts, data);
+                }
+            });
+        }
+        hideAll(data) {
+            this.show(data, []);
+        }
+        onlyKouBtn(data) {
+            let opts = [{ h: handleBtn.kou, o: 1 }];
+            this.show(data, opts);
+        }
+        showBtns(that, opts, data) {
+            if (that.userId == Main$1.userInfo.userId) {
+                this.showMeHandleView(that, opts, data);
+            }
+        }
+        showMeHandleView(that, opt, data) {
+            let meHandleView = myCenter.GameUIObj.meHandleView;
+            meHandleView._children.forEach((item) => {
+                item.visible = false;
+                opt.forEach((item2) => {
+                    if (item.name == 'h_' + item2.h) {
+                        item.alpha = item2.o;
+                        item.visible = true;
+                        item.zOrder = 10;
+                        item.off(Laya.Event.CLICK);
+                        if (item2.o == 1)
+                            item.on(Laya.Event.CLICK, this, this.clickHandle, [item2.h, data]);
+                    }
+                });
+            });
+        }
+        clickHandle(handleId, data) {
+            let that = this;
+            console.log('操作id+data：', handleId, data, myCenter.getKeep('playstage'));
+            let nowPlaystage = myCenter.getKeep('playstage');
+            if (nowPlaystage == playstage.qi) {
+                let name;
+                switch (handleId) {
+                    case handleBtn.qi:
+                        name = 'M.Games.YDR.C2G_StandPokerOpt';
+                        break;
+                    case handleBtn.guo:
+                        name = 'M.Games.YDR.C2G_StandPokerOpt';
+                        break;
+                }
+                websoket.beforePlayHandle(handleId, name);
+            }
+            else if (nowPlaystage == playstage.tou) {
+                let name;
+                switch (handleId) {
+                    case handleBtn.tou:
+                        name = 'M.Games.YDR.C2G_StealPokerOpt';
+                        break;
+                    case handleBtn.guo:
+                        name = 'M.Games.YDR.C2G_StealPokerOpt';
+                        break;
+                }
+                websoket.beforePlayHandle(handleId, name);
+            }
+            if (nowPlaystage == playstage.da) {
+                websoket.afterPlayHandle(handleId, []);
+            }
+            time$1.hide({ userId: data.userId });
+            if (!myCenter.getKeep('play'))
+                this.hideAll({ userId: Main$1.userInfo.userId });
+            else
+                this.onlyKouBtn({ userId: Main$1.userInfo.userId });
+        }
+        daHandleShow(data, handleId) {
+            switch (handleId) {
+                case handleBtn.chi:
+                    chipengangtuDealData$1.chi(data);
+                    break;
+                case handleBtn.pen:
+                    chipengangtuDealData$1.pen(data);
+                    break;
+                case handleBtn.sha:
+                    chipengangtuDealData$1.gang(data);
+                    break;
+                case handleBtn.tu:
+                    chipengangtuDealData$1.tuhuo(data);
+                    break;
+            }
+        }
+    }
+    var showHandleBtns$1 = new showHandleBtns();
+
+    var handleBtn$1;
+    (function (handleBtn) {
+        handleBtn[handleBtn["none"] = 0] = "none";
+        handleBtn[handleBtn["qi"] = 1] = "qi";
+        handleBtn[handleBtn["tou"] = 2] = "tou";
+        handleBtn[handleBtn["kou"] = 3] = "kou";
+        handleBtn[handleBtn["guo"] = 4] = "guo";
+        handleBtn[handleBtn["play"] = 5] = "play";
+        handleBtn[handleBtn["chi"] = 6] = "chi";
+        handleBtn[handleBtn["pen"] = 7] = "pen";
+        handleBtn[handleBtn["sha"] = 8] = "sha";
+        handleBtn[handleBtn["tu"] = 9] = "tu";
+        handleBtn[handleBtn["hu"] = 10] = "hu";
+    })(handleBtn$1 || (handleBtn$1 = {}));
+    var playstage$1;
+    (function (playstage) {
+        playstage[playstage["qi"] = 0] = "qi";
+        playstage[playstage["tou"] = 1] = "tou";
+        playstage[playstage["da"] = 2] = "da";
+    })(playstage$1 || (playstage$1 = {}));
     class GameControl extends Laya.Script {
         constructor() {
             super(...arguments);
@@ -3124,6 +3353,7 @@
                 this.startNewGame(resData);
             }
             else if (resData._t == "G2C_DealHand") {
+                myCenter.keep('playstage', playstage$1.qi);
                 this.dealPlayerPoker(resData);
             }
             else if (resData._t == "G2C_StandPoker") {
@@ -3141,12 +3371,21 @@
                 this.player_standPokerOpt(resData);
             }
             else if (resData._t == "G2C_StealPokerOpts") {
-                this.player_stealPokerOpt(resData);
+                myCenter.keep('playstage', playstage$1.tou);
+                if (myCenter.getKeep('allowStealPoker')) {
+                    this.player_stealPokerOpt(resData);
+                }
+                else {
+                    myCenter.req('allowStealPoker', () => {
+                        this.player_stealPokerOpt(resData);
+                    });
+                }
             }
             else if (resData._t == "G2C_StealPokerResult") {
                 this.player_stealPokerResult(resData);
             }
             else if (resData._t == "G2C_NoticePlayAPoker") {
+                myCenter.keep('playstage', playstage$1.da);
                 this.player_noticePlayAPoker(resData);
             }
             else if (resData._t == "S2C_PlayAPoker") {
@@ -3157,6 +3396,9 @@
             }
             else if (resData._t == "G2C_FlopAPoker") {
                 this.palyer_flopAPoker(resData);
+            }
+            else if (resData._t == "G2C_ActionPokerResult") {
+                this.palyer_actionPokerResult(resData);
             }
         }
         startNewGame(data) {
@@ -3180,25 +3422,25 @@
         }
         player_standPoker(data) {
             data.userId = data.uid;
-            this.showTime(data, true);
+            time$1.show(data);
             let opt = [];
             if (data.pokers.length == 0 && data.baozi) {
-                opt = [{ h: handleBtn.kou, o: 1 }];
+                opt = [{ h: handleBtn$1.kou, o: 1 }];
             }
             else if (data.pokers.length == 0 && !data.baozi) {
-                opt = [{ h: handleBtn.kou, o: 1 }, { h: handleBtn.guo, o: 1 }];
+                opt = [{ h: handleBtn$1.kou, o: 1 }, { h: handleBtn$1.guo, o: 1 }];
             }
             else if (data.pokers.length >= 0) {
-                opt = [{ h: handleBtn.qi, o: 1 }, { h: handleBtn.guo, o: 1 }];
+                opt = [{ h: handleBtn$1.qi, o: 1 }, { h: handleBtn$1.guo, o: 1 }];
             }
-            this.showHandle(data, opt);
+            showHandleBtns$1.show(data, opt);
         }
         player_buPoker(data) {
             myCenter.keep('play', true);
             data.userId = data.uid;
             this.feelPoker(data);
             this.bankerBuPoker(data);
-            this.onlyShowKouBtn(data);
+            showHandleBtns$1.onlyKouBtn(data);
         }
         bankerBuPoker(data) {
             let buPokerArr = data.poker ? [data.poker] : [];
@@ -3210,18 +3452,18 @@
         }
         player_standPokerOpt(data) {
             data.userId = data.uid;
-            this.showTime(data, false);
-            this.showHandle(data, []);
+            time$1.hide(data);
+            showHandleBtns$1.hideAll(data);
         }
         player_stealPokerOpt(data) {
             data.userId = data.uid;
-            this.showTime(data, true);
+            time$1.show(data);
             let opts = this.setOptData(data.opts);
-            let touArr = opts.filter((item) => item.h == handleBtn.tou);
+            let touArr = opts.filter((item) => item.h == handleBtn$1.tou);
             if (touArr.length == 0) {
-                opts.push({ h: handleBtn.tou, o: 0.4 });
+                opts.push({ h: handleBtn$1.tou, o: 0.4 });
             }
-            this.showHandle(data, opts);
+            showHandleBtns$1.show(data, opts);
             this.bankerBuPoker(data);
             this.playerHideFeel(data);
         }
@@ -3233,25 +3475,29 @@
             return opts;
         }
         addKou(data) {
-            data.push({ h: handleBtn.kou, o: 1 });
+            data.push({ h: handleBtn$1.kou, o: 1 });
         }
         player_stealPokerResult(data) {
             data.userId = data.uid;
             this.stealPokerResult(data);
         }
         stealPokerResult(data) {
-            this.onlyShowKouBtn(data);
+            showHandleBtns$1.onlyKouBtn(data);
             this.players.forEach((item) => {
                 if (data.userId == item.userId) {
                     let touPokers = data.pokers;
-                    if (touPokers.length > 0 && item.IsMe)
+                    if (touPokers.length > 0 && item.IsMe) {
+                        myCenter.keep('allowStealPoker', false);
                         item.buPoker(touPokers, () => {
                             if (data.spitfires.length > 0) {
                                 setTimeout(() => {
+                                    myCenter.send('allowStealPoker', true);
+                                    myCenter.keep('allowStealPoker', true);
                                     this.stealPokerResultCoomon(item, data);
                                 }, 1000);
                             }
                         });
+                    }
                     else if (data.spitfires.length > 0 && !item.IsMe)
                         this.stealPokerResultCoomon(item, data);
                 }
@@ -3277,17 +3523,16 @@
             data.removePokers = removePokers;
             item.showHandlePoker(data);
         }
-        clearHandlePoker() {
-            this.players.forEach((itemJS) => {
-                itemJS.clearHandlePoker();
-            });
-        }
         player_noticePlayAPoker(data) {
             data.userId = data.uid;
             this.playerPlaySet(data, true);
         }
         playerPlaySet(data, isMePlay) {
-            this.showTime(data, isMePlay);
+            if (isMePlay)
+                time$1.show(data);
+            else
+                time$1.hide(data);
+            time$1.hide(data);
             myCenter.keep('isMePlay', isMePlay);
             this.players.forEach((itemJS) => {
                 if (itemJS.userId == data.userId) {
@@ -3297,7 +3542,7 @@
         }
         palyer_playAPoker(data) {
             data.userId = data.uid;
-            this.showTime(data, false);
+            time$1.hide(data);
             this.players.forEach((itemJS) => {
                 if (itemJS.userId == data.userId)
                     itemJS.showNoMePlayPoker(data.poker);
@@ -3305,11 +3550,10 @@
         }
         palyer_actionPokerOpts(data) {
             data.userId = data.uid;
-            this.showTime(data, true);
             this.dealWithOptData(data);
             let opts = this.setOptData(data.opts);
-            this.showHandle(data, opts);
-            myCenter.keep('isAction', true);
+            showHandleBtns$1.show(data, opts);
+            time$1.shows(data);
         }
         dealWithOptData(data) {
             console.log('玩家出牌后该显示的操作数据处理:', data);
@@ -3318,28 +3562,6 @@
             data.userId = data.uid;
             this.playerHideFeel(data, true);
             this.feelPoker(data);
-        }
-        showHandle(data, opts) {
-            this.players.forEach((itemJS) => {
-                if (itemJS.userId == data.userId) {
-                    console.log('玩家偷牌操作===:' + data.userId, opts);
-                    itemJS.playerHandle(opts);
-                }
-            });
-        }
-        onlyShowKouBtn(data) {
-            this.players.forEach((itemJS) => {
-                if (itemJS.userId == data.userId) {
-                    let opts = [{ h: handleBtn.kou, o: 1 }];
-                    itemJS.playerHandle(opts);
-                }
-            });
-        }
-        showTime(data, show) {
-            this.players.forEach((itemJS) => {
-                if (itemJS.userId == data.userId)
-                    itemJS.playerCountDown(show, data);
-            });
         }
         feelPoker(data) {
             this.players.forEach((itemJS) => {
@@ -3357,6 +3579,11 @@
                     itemJS.playerHideFeel();
                 }
             });
+        }
+        palyer_actionPokerResult(data) {
+            data.userId = data.uid;
+            showHandleBtns$1.daHandleShow(data, data.opt);
+            this.playerHideFeel(data, true);
         }
         leaveRoomDeal(data) {
             if (data.userid == Main$1.userInfo.userId) {
@@ -3467,24 +3694,10 @@
         leaveRoomOpenView() {
         }
         dealPokerFn() {
-            console.log('进来了');
-            let data0 = [
-                { uid: 100018, banker: false, pokers: null },
-                { uid: 100021, banker: false, pokers: null },
-                {
-                    uid: 100014, banker: true, pokers: [11002, 31004, 51006, 61006, 61006, 71007, 91008, 101009, 111010, 111010, 121012, 162007,
-                        162007, 172008, 172008, 172008, 172008, 182008, 192009, 202010]
+            this.players.forEach((item) => {
+                if (item.userId == Main$1.userInfo.userId) {
+                    alert(item.SeatId);
                 }
-            ];
-            this.players[1].userId = 100018;
-            this.players[2].userId = 100021;
-            myCenter.keep('dealPCount', data0.length);
-            this.players.forEach((itemJS) => {
-                data0.forEach((item) => {
-                    if (itemJS.userId == item.uid) {
-                        itemJS.dealPoker(item);
-                    }
-                });
             });
         }
         diuPoker() {
@@ -4015,7 +4228,7 @@
                     if (res.ret.type == 0) {
                         let NewSeatIndexArr = that.seatIndexArr.splice(that.selectSeatIndex, that.seatIndexArr.length).concat(that.seatIndexArr.splice(0, that.selectSeatIndex + 1));
                         NewSeatIndexArr.forEach((item, index) => {
-                            that.playerSeatArr[index].SeatId = item;
+                            that.playerSeatArr[item].SeatId = index;
                             Laya.Tween.to(that.playerSeatArr[item].owner, { x: that.playerSeatXYArr[index].x, y: that.playerSeatXYArr[index].y }, Main$1.Speed['changeSeat']);
                             that.changeSeatNodeParam(that.playerSeatArr[item].owner, index);
                         });
@@ -4034,49 +4247,6 @@
         }
     }
     var ChangeSeat$1 = new ChangeSeat();
-
-    class CountDown {
-        open(seatThis, data) {
-            seatThis.conutDownData = data;
-            let conutDown = seatThis.owner.getChildByName("conutDown");
-            seatThis._imgNode = conutDown.getChildByName('timeMask');
-            seatThis._imgNode.loadImage('res/img/common/progress1.png', Laya.Handler.create(this, () => {
-                Laya.timer.frameLoop(1, seatThis, seatThis.seat_drawPie);
-            }));
-            seatThis._allTime = data.ttime;
-            seatThis._startTime = new Date().getTime() / 1000;
-            seatThis._rotation = 360 * ((seatThis.conutDownData.ttime - seatThis.conutDownData.time) / seatThis._allTime) + 2;
-            seatThis.timeText = conutDown.getChildByName("timeText");
-            seatThis.timeText.text = `${seatThis._allTime}s`;
-            seatThis._timeOutFlag = true;
-            seatThis.seat_drawPie();
-            conutDown.visible = true;
-        }
-        drawPie(seatThis) {
-            let time = seatThis._allTime - parseInt(String(((new Date().getTime() / 1000 - seatThis._startTime)))) - (seatThis.conutDownData.ttime - seatThis.conutDownData.time);
-            seatThis.timeText.text = time + 's';
-            if (time == 5 && seatThis.IsMe && seatThis._timeOutFlag) {
-                seatThis._timeOutFlag = false;
-                seatThis._imgNode.loadImage('res/img/common/progress2.png');
-            }
-            let endS = ((new Date().getTime() / 1000 - seatThis._startTime)) + (seatThis.conutDownData.ttime - seatThis.conutDownData.time);
-            seatThis._rotation = 360 * (endS / seatThis._allTime);
-            if (seatThis._rotation >= 360) {
-                seatThis._rotation = 360;
-                Laya.timer.clear(seatThis, seatThis.seat_drawPie);
-                this.close(seatThis);
-            }
-            seatThis._mask.graphics.clear();
-            seatThis._mask.graphics.drawPie(83, 83, 83, seatThis._rotation, 360, '#000000');
-            seatThis._imgNode.mask = seatThis._mask;
-        }
-        close(seatThis) {
-            let countDownBox = seatThis.owner.getChildByName("conutDown");
-            countDownBox.visible = false;
-            Laya.timer.clear(seatThis, seatThis.seat_drawPie);
-        }
-    }
-    var countDown = new CountDown();
 
     var pokerColor$1;
     (function (pokerColor) {
@@ -4456,6 +4626,7 @@
             if (pokerObj.height > Main$1.pokerWidth) {
                 let isMePlay = myCenter.getKeep('isMePlay');
                 if (isMePlay) {
+                    myCenter.keep('isMePlay', false);
                     websoket.playPoker(pokerObj.name.oldName);
                     let meJS = this.players.filter((item) => item.IsMe)[0];
                     showPlayerPokerCount$1.show(meJS, true, meJS.pokerCount - 1);
@@ -4551,6 +4722,110 @@
     }
     var step_1_dealPoker = new DealPoker();
 
+    var showType$1;
+    (function (showType) {
+        showType[showType["chi"] = 0] = "chi";
+        showType[showType["pen"] = 1] = "pen";
+        showType[showType["sha"] = 2] = "sha";
+        showType[showType["tu"] = 3] = "tu";
+    })(showType$1 || (showType$1 = {}));
+    class step_x_showHandlePoker {
+        show(that, data) {
+            let showData = data.concatData;
+            if (that.IsMe)
+                that.removePoker(data.removePokers);
+            if (that.userId == showData.userId) {
+                this.showHandleView(that, showData);
+            }
+        }
+        hide(that) {
+            let item = that;
+            that.handlePokerArr = [];
+            let handlePokerView = item.owner.getChildByName('show' + item.SeatId);
+            handlePokerView.visible = false;
+            handlePokerView._children = [];
+        }
+        hideAll() {
+            myCenter.GameControlObj.players.forEach((itemJS) => {
+                itemJS.clearHandlePoker();
+            });
+        }
+        showPokerNum(that) {
+            let value = 20 - (that.handlePokerArr.length) * 3 + 1;
+            console.log('显示玩家剩余牌的数量:' + that.userId, value, that.handlePokerArr);
+            showPlayerPokerCount$1.show(that, true, value);
+        }
+        showHandleView(that, data) {
+            let item = that;
+            that.handlePokerArr = that.handlePokerArr.concat(data.data);
+            this.showPokerNum(that);
+            let handlePokerView = item.owner.getChildByName('show' + item.SeatId);
+            handlePokerView.visible = true;
+            that.handlePokerArr.forEach((item3, index3) => {
+                this.cellIndex = index3;
+                if (item.SeatId == 0 && index3 % 5 == 0) {
+                    this.createRowFn(item.SeatId, index3, handlePokerView);
+                }
+                else if (item.SeatId != 0 && index3 % 4 == 0) {
+                    this.createRowFn(item.SeatId, index3, handlePokerView);
+                }
+                let cellPokerBox = new Laya.Image();
+                cellPokerBox.name = item.SeatId == 0 ? 'cellBox' + parseInt(String(index3 / 5)) : 'cellBox' + parseInt(String(index3 / 4));
+                cellPokerBox.width = Main$1.pokerWidth;
+                let cellPokerBoxX = Main$1.pokerWidth * this.cellIndex;
+                if (item.SeatId == 0 && Main$1.pokerWidth * this.cellIndex >= 640) {
+                    cellPokerBoxX = Main$1.pokerWidth * this.cellIndex - 640;
+                }
+                else if (item.SeatId != 0 && Main$1.pokerWidth * this.cellIndex >= 512) {
+                    cellPokerBoxX = Main$1.pokerWidth * this.cellIndex - 512;
+                }
+                cellPokerBox.pos(cellPokerBoxX, 0);
+                let rowBoxName = item.SeatId == 0 ? 'row' + parseInt(String(index3 / 5)) : 'row' + parseInt(String(index3 / 4));
+                let rowBox = handlePokerView.getChildByName(rowBoxName);
+                rowBox.width = Main$1.pokerWidth + Main$1.pokerWidth * this.cellIndex;
+                if (item.SeatId != 0 && parseInt(String(index3 / 4)) > 0) {
+                    rowBox.width = Main$1.pokerWidth * 4;
+                }
+                rowBox.addChild(cellPokerBox);
+                item3.data_inner.forEach((item4, index4) => {
+                    let cellPoker = new Laya.Image();
+                    cellPoker.visible = index4 <= 2 ? true : false;
+                    let pokerName = parseInt(String(item4 / 10000));
+                    cellPoker.skin = 'res/img/poker/duan/' + pokerName + '.png';
+                    cellPoker.name = 'poker' + (index4 + 1);
+                    cellPoker.zOrder = index4;
+                    cellPoker.size(Main$1.pokerWidth, Main$1.pokerWidth);
+                    cellPoker.pos(0, Main$1.pokerWidth * index4 - 45 * index4);
+                    cellPokerBox.addChild(cellPoker);
+                });
+                if (item3.type == showType$1.sha || item3.type == showType$1.tu) {
+                    let signImg = new Laya.Image();
+                    signImg.skin = 'res/img/game/h_' + item3.type + '.jpg';
+                    signImg.size(cellPokerBox.width, 300);
+                    signImg.zOrder = 99;
+                    signImg.pos(0, 0);
+                    signImg.alpha = 0.8;
+                    cellPokerBox.addChild(signImg);
+                }
+            });
+        }
+        createRowFn(SeatId, index3, handlePokerView) {
+            this.cellIndex = 0;
+            let rowBox = new Laya.Image();
+            rowBox.name = SeatId == 0 ? 'row' + parseInt(String(index3 / 5)) : 'row' + parseInt(String(index3 / 4));
+            let posY = SeatId == 0 ? 310 * parseInt(String(index3 / 5)) : 310 * parseInt(String(index3 / 4));
+            rowBox.pos(0, posY);
+            if (SeatId == 1) {
+                rowBox.centerX = -10;
+            }
+            else if (SeatId == 2) {
+                rowBox.centerX = 10;
+            }
+            handlePokerView.addChild(rowBox);
+        }
+    }
+    var step_x_showHandlePoker$1 = new step_x_showHandlePoker();
+
     class step_2_startNewGame {
         start(JSthis, data) {
             let meDealView = JSthis.owner.getChildByName('mePokerView');
@@ -4560,55 +4835,15 @@
             myCenter.keep('bankerUid', data.bankerUid);
             myCenter.keep('showHandle', false);
             myCenter.keep('play', false);
-            myCenter.keep('isAction', false);
-            myCenter.GameControlObj.showHandle({ userId: Main$1.userInfo.userId }, []);
-            myCenter.GameControlObj.clearHandlePoker();
+            myCenter.keep('playstage', null);
+            myCenter.keep('isMePlay', false);
+            myCenter.send('allowStealPoker', true);
+            myCenter.keep('allowStealPoker', true);
+            showHandleBtns$1.hideAll({ userId: Main$1.userInfo.userId });
+            step_x_showHandlePoker$1.hideAll();
         }
     }
     var step_2_startNewGame$1 = new step_2_startNewGame();
-
-    class step_x_playerHandle {
-        show(that, opts) {
-            this.data = opts;
-            if (that.userId == Main$1.userInfo.userId) {
-                this.showMeHandleView(that, opts);
-            }
-        }
-        showMeHandleView(that, opt) {
-            let meHandleView = myCenter.GameUIObj.meHandleView;
-            meHandleView._children.forEach((item) => {
-                item.visible = false;
-                opt.forEach((item2) => {
-                    if (item.name == 'h_' + item2.h) {
-                        item.alpha = item2.o;
-                        item.visible = true;
-                        item.zOrder = 10;
-                        item.off(Laya.Event.CLICK);
-                        if (item2.o == 1)
-                            item.on(Laya.Event.CLICK, this, this.clickHandle, [item2.h]);
-                    }
-                });
-            });
-        }
-        clickHandle(handleId) {
-            console.log('操作id：', handleId);
-            console.log('play:', myCenter.getKeep('play'));
-            console.log('isAction:', myCenter.getKeep('isAction'));
-            if (myCenter.getKeep('isAction')) {
-                let chiList = [];
-                websoket.afterPlayHandle(handleId, chiList);
-            }
-            else {
-                websoket.beforePlayHandle(handleId);
-            }
-            myCenter.GameControlObj.showTime({ userId: Main$1.userInfo.userId }, false);
-            if (!myCenter.getKeep('play'))
-                myCenter.GameControlObj.showHandle({ userId: Main$1.userInfo.userId }, []);
-            else
-                myCenter.GameControlObj.onlyShowKouBtn({ userId: Main$1.userInfo.userId });
-        }
-    }
-    var step_x_playerHandle$1 = new step_x_playerHandle();
 
     class FeelPoker {
         feel(that, data) {
@@ -4670,119 +4905,31 @@
     }
     var step_x_playerFeelPoker = new FeelPoker();
 
-    var showType;
+    var showType$2;
     (function (showType) {
         showType[showType["chi"] = 0] = "chi";
         showType[showType["pen"] = 1] = "pen";
         showType[showType["sha"] = 2] = "sha";
         showType[showType["tu"] = 3] = "tu";
-    })(showType || (showType = {}));
-    class ShowHanldePoker {
-        show(that, data) {
-            let showData = data.concatData;
-            if (that.IsMe)
-                that.removePoker(data.removePokers);
-            if (that.userId == showData.userId) {
-                this.showHandleView(that, showData);
-            }
-        }
-        hide(that) {
-            let item = that;
-            that.handlePokerArr = [];
-            let handlePokerView = item.owner.getChildByName('show' + item.SeatId);
-            handlePokerView.visible = false;
-            handlePokerView._children = [];
-        }
-        showPokerNum(that) {
-            let value = 20 - (that.handlePokerArr.length) * 3 + 1;
-            console.log('显示玩家剩余牌的数量:' + that.userId, value, that.handlePokerArr);
-            showPlayerPokerCount$1.show(that, true, value);
-        }
-        showHandleView(that, data) {
-            let item = that;
-            that.handlePokerArr = that.handlePokerArr.concat(data.data);
-            this.showPokerNum(that);
-            let handlePokerView = item.owner.getChildByName('show' + item.SeatId);
-            handlePokerView.visible = true;
-            that.handlePokerArr.forEach((item3, index3) => {
-                this.cellIndex = index3;
-                if (item.SeatId == 0 && index3 % 5 == 0) {
-                    this.createRowFn(item.SeatId, index3, handlePokerView);
-                }
-                else if (item.SeatId != 0 && index3 % 4 == 0) {
-                    this.createRowFn(item.SeatId, index3, handlePokerView);
-                }
-                let cellPokerBox = new Laya.Image();
-                cellPokerBox.name = item.SeatId == 0 ? 'cellBox' + parseInt(String(index3 / 5)) : 'cellBox' + parseInt(String(index3 / 4));
-                cellPokerBox.width = Main$1.pokerWidth;
-                let cellPokerBoxX = Main$1.pokerWidth * this.cellIndex;
-                if (item.SeatId == 0 && Main$1.pokerWidth * this.cellIndex >= 640) {
-                    cellPokerBoxX = Main$1.pokerWidth * this.cellIndex - 640;
-                }
-                else if (item.SeatId != 0 && Main$1.pokerWidth * this.cellIndex >= 512) {
-                    cellPokerBoxX = Main$1.pokerWidth * this.cellIndex - 512;
-                }
-                cellPokerBox.pos(cellPokerBoxX, 0);
-                let rowBoxName = item.SeatId == 0 ? 'row' + parseInt(String(index3 / 5)) : 'row' + parseInt(String(index3 / 4));
-                let rowBox = handlePokerView.getChildByName(rowBoxName);
-                rowBox.width = Main$1.pokerWidth + Main$1.pokerWidth * this.cellIndex;
-                if (item.SeatId != 0 && parseInt(String(index3 / 4)) > 0) {
-                    rowBox.width = Main$1.pokerWidth * 4;
-                }
-                rowBox.addChild(cellPokerBox);
-                item3.data_inner.forEach((item4, index4) => {
-                    let cellPoker = new Laya.Image();
-                    cellPoker.visible = index4 <= 2 ? true : false;
-                    let pokerName = parseInt(String(item4 / 10000));
-                    cellPoker.skin = 'res/img/poker/duan/' + pokerName + '.png';
-                    cellPoker.name = 'poker' + (index4 + 1);
-                    cellPoker.zOrder = index4;
-                    cellPoker.size(Main$1.pokerWidth, Main$1.pokerWidth);
-                    cellPoker.pos(0, Main$1.pokerWidth * index4 - 45 * index4);
-                    cellPokerBox.addChild(cellPoker);
-                });
-                if (item3.type == showType.sha || item3.type == showType.tu) {
-                    let signImg = new Laya.Image();
-                    signImg.skin = 'res/img/game/h_' + item3.type + '.jpg';
-                    signImg.size(cellPokerBox.width, 300);
-                    signImg.zOrder = 99;
-                    signImg.pos(0, 0);
-                    signImg.alpha = 0.8;
-                    cellPokerBox.addChild(signImg);
-                }
-            });
-        }
-        createRowFn(SeatId, index3, handlePokerView) {
-            this.cellIndex = 0;
-            let rowBox = new Laya.Image();
-            rowBox.name = SeatId == 0 ? 'row' + parseInt(String(index3 / 5)) : 'row' + parseInt(String(index3 / 4));
-            let posY = SeatId == 0 ? 310 * parseInt(String(index3 / 5)) : 310 * parseInt(String(index3 / 4));
-            rowBox.pos(0, posY);
-            if (SeatId == 1) {
-                rowBox.centerX = -10;
-            }
-            else if (SeatId == 2) {
-                rowBox.centerX = 10;
-            }
-            handlePokerView.addChild(rowBox);
-        }
-    }
-    var step_x_showHandlePoker = new ShowHanldePoker();
-
+        showType[showType["hu"] = 4] = "hu";
+    })(showType$2 || (showType$2 = {}));
     class step_x_showHandleGIF {
         show(that, data) {
             let aniName = null;
             switch (data.opt) {
-                case 1:
+                case showType$2.chi:
                     aniName = 'chi.ani';
                     break;
-                case 2:
+                case showType$2.pen:
                     aniName = 'pen.ani';
                     break;
-                case 3:
+                case showType$2.tu:
                     aniName = 'tu.ani';
                     break;
-                case 4:
+                case showType$2.sha:
+                    aniName = 'sha.ani';
+                    break;
+                case showType$2.hu:
                     aniName = 'hu.ani';
                     break;
             }
@@ -4910,12 +5057,12 @@
         }
         playerCountDown(isShow, data) {
             if (isShow)
-                countDown.open(this, data);
+                time$1.open(this, data);
             else
-                countDown.close(this);
+                time$1.close(this);
         }
         seat_drawPie() {
-            countDown.drawPie(this);
+            time$1.drawPie(this);
         }
         startNewGame(data) {
             step_2_startNewGame$1.start(this, data);
@@ -4935,8 +5082,8 @@
         hideNoMePlayPoker() {
             otherPlayerPlay.hidePlay(this);
         }
-        playerHandle(opt) {
-            step_x_playerHandle$1.show(this, opt);
+        playerHandle(opt, data) {
+            showHandleBtns$1.showBtns(this, opt, data);
         }
         playerFeel(data) {
             step_x_playerFeelPoker.feel(this, data);
@@ -4948,10 +5095,10 @@
             step_x_showHandleGIF$1.show(this, data);
         }
         showHandlePoker(data) {
-            step_x_showHandlePoker.show(this, data);
+            step_x_showHandlePoker$1.show(this, data);
         }
         clearHandlePoker() {
-            step_x_showHandlePoker.hide(this);
+            step_x_showHandlePoker$1.hide(this);
         }
         showPlayTip(show) {
             showPlayTip$1.show(this, show);
@@ -6361,10 +6508,10 @@
                     c4.text = '申请中';
                     break;
                 case 1:
-                    c4.text = '审核中';
+                    c4.text = '已提现';
                     break;
                 case 2:
-                    c4.text = '已提现';
+                    c4.text = '拒绝';
                     break;
             }
         }

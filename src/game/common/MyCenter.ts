@@ -1,7 +1,11 @@
 /**中转站 */
 class MyCenter{
+    //打牌的进行到的阶段（起牌,偷牌,打牌）
+    playstage:number;
+    //是否允许玩家进行偷牌操作
+    allowStealPoker:true;
     //第一个人出牌后的操作
-    isAction:false;
+    // isAction:false;
     //是否是打牌阶段
     play:boolean=false;
     //显示操作
@@ -39,8 +43,8 @@ class MyCenter{
     InitGameData(thisObj:any){
         this.GameControlObj=thisObj;
     }
-    keep(key:string,bool:boolean){
-        this[key]=bool;
+    keep(key:string,val:any){
+        this[key]=val;
         // console.log(key,bool)
     }
     getKeep(key:string){

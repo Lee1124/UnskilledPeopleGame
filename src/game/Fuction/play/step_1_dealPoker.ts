@@ -308,6 +308,7 @@ class DealPoker {
         if (pokerObj.height > Main.pokerWidth) {
             let isMePlay: boolean = MyCenter.getKeep('isMePlay');
             if (isMePlay) {
+                MyCenter.keep('isMePlay', false);
                 //出牌请求
                 websoket.playPoker(pokerObj.name.oldName);
                 let meJS: any = this.players.filter((item: any) => item.IsMe)[0];

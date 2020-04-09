@@ -3,24 +3,34 @@
 /**
  * 玩家操作动画显示
  */
+enum showType {
+   chi,
+   pen,
+   sha,
+   tu,
+   hu
+}
 class step_x_showHandleGIF {
    show(that: any, data: any): void {
       let aniName: any = null;
       switch (data.opt) {
-         case 1:
+         case showType.chi:
             aniName = 'chi.ani'
             break;
-         case 2:
+         case showType.pen:
             aniName = 'pen.ani'
             break;
-         case 3:
+         case showType.tu:
             aniName = 'tu.ani'
             break;
-         case 4:
+         case showType.sha:
+            aniName = 'sha.ani'
+            break;
+         case showType.hu:
             aniName = 'hu.ani'
             break;
       }
-      console.log('播放动画',"animation/handleAni/" + aniName)
+      console.log('播放动画', "animation/handleAni/" + aniName)
       let aniBox: any = that.owner.getChildByName('handleAniBox');
       aniBox.visible = true;
       Laya.loader.load("res/atlas/images/game.atlas", Laya.Handler.create(this, onMyLoaded));

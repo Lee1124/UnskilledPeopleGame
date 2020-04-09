@@ -264,9 +264,9 @@ class websketSend {
     /**
      * 起牌 1,偷牌 2，扣牌 3，过牌 4，庄家打了一张牌 5
      */
-    beforePlayHandle(opt:any):void{
+    beforePlayHandle(opt:any,name?:string):void{
         this.onSend({
-            name: 'M.Games.YDR.C2G_StandPokerOpt',
+            name: name,//'M.Games.YDR.C2G_StandPokerOpt',
             data: {
                 roomid: this.conThis.roomId,
                 opt:opt

@@ -261,10 +261,10 @@ export default class Wallet extends Laya.Script {
                 c4.text = '申请中';
                 break;
             case 1:
-                c4.text = '审核中';
+                c4.text = '已提现';
                 break;
             case 2:
-                c4.text = '已提现';
+                c4.text = '拒绝';
                 break;
         }
 
