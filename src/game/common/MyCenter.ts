@@ -4,6 +4,8 @@ class MyCenter{
     playstage:number;
     //是否允许玩家进行偷牌操作
     allowStealPoker:true;
+    //是否允许开始提示玩家打牌
+    allowNoticePlayPoker:true;
     //第一个人出牌后的操作
     // isAction:false;
     //是否是打牌阶段

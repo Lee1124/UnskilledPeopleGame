@@ -3,10 +3,10 @@ import MyCenter from '../common/MyCenter';//中转站
 import ChangeSeat from '../Fuction/ChangeSeat';//切换位置
 import time from '../Fuction/play/time/time';//倒计时
 import step_1_seatAtOrDown from '../Fuction/step_1_seatAtOrDown';//第一步
-import step_1_dealPoker from '../Fuction/play/step_1_dealPoker';//第一步(开始发牌)
+import step_1_dealPoker from '../Fuction/play/dealPoker/step_1_dealPoker';//第一步(开始发牌)
 import step_2_startNewGame from '../Fuction/play/step_2_startNewGame';//第二步(开始一局新游戏)
 // import step_x_playerHandle from '../Fuction/play/step_x_playerHandle';//第x步(玩家操作显示及操作)
-import step_x_playerFeelPoker from '../Fuction/play/step_x_playerFeelPoker';//第x步(玩家摸牌)
+import step_x_playerFeelPoker from '../Fuction/play/feelPoker/step_x_playerFeelPoker';//第x步(玩家摸牌)
 import step_x_showHandlePoker from '../Fuction/play/step_x_showHandlePoker';//第x步(玩家操作的牌)
 import step_x_showHandleGIF from '../Fuction/play/step_x_showHandleGIF';//第x步(玩家操作动画)
 import showPlayTip from '../Fuction/play/showPlayTip/showPlayTip';//显示玩家的出牌提示
@@ -14,7 +14,10 @@ import otherPlayerPlay from '../Fuction/play/playerPlay/otherPlay';//非自己�
 import set_content_liuzuo from '../Fuction/set_content_liuzuo';//留坐
 import set_content_chat from '../Fuction/set_content_chat';//表情聊天
 import showHandleBtns  from "../Fuction/play/showHandleBtns/showHandleBtns";//玩家显示按钮
+import DiuPoker from '../Fuction/play/diuPoker/diuPoker';
 export default class seat extends Laya.Script {
+    //丢的牌
+    diuPokers:any[]=[];
     //是不是包子
     isBaoZi:false;
     // //分好的牌
@@ -177,6 +180,11 @@ export default class seat extends Laya.Script {
         step_1_dealPoker.buPoker(this,data,fn);
     }
 
+    //清除补牌的标记
+    clearBuPokerSign(){
+        step_1_dealPoker.clearBuPokerSign(this);
+    }
+
     //删除牌的数据
     removePoker(data:any){
         step_1_dealPoker.removeMePoker(this,data);
@@ -236,7 +244,12 @@ export default class seat extends Laya.Script {
 
     //显示玩家的出牌提示
     showPlayTip(show:boolean):void{
-        showPlayTip.show(this,show);
+        showPlayTip.showOrHide(this,show);
+    }
+
+    //显示玩家不要的牌
+    showPlayerDiuPoker(data:any){
+        DiuPoker.open(this,data);
     }
 
     

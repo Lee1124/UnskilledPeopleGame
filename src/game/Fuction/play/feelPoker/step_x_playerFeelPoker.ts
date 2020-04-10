@@ -1,8 +1,8 @@
 /**
- * 摸牌功能
+ * 玩家摸牌功能
  */
-import MyCenter from '../../common/MyCenter';
-import Main from '../../common/Main';
+import MyCenter from '../../../common/MyCenter';
+import Main from '../../../common/Main';
 class FeelPoker {
     //玩家
     players: any;
@@ -18,11 +18,42 @@ class FeelPoker {
     /**===测试=== */
 
     /**
+     * 玩家翻牌的显示
+     * @param data 
+     */
+    show(data: any) {
+        let players: any = MyCenter.GameControlObj.players;
+        players.forEach((itemJS: any) => {
+            if (itemJS.userId == data.userId)
+                itemJS.playerFeel(data);
+        });
+    }
+    /**
+     * 玩家翻牌的隐藏
+     * @param data 数据（主要包含userId）
+     * @param isAll 是否全部隐藏
+     */
+    hide(data: any, isAll: boolean = false) {
+        let players: any = MyCenter.GameControlObj.players;
+        Main.$LOG('翻牌隐藏：',data)
+        players.forEach((itemJS: any) => {
+            // if(itemJS.userId==data.userId)
+            //     itemJS.playerHideFeel(data);
+            if (itemJS.userId == data.userId && !isAll) {
+                Main.$LOG('翻牌隐藏2：',data.userId)
+                itemJS.playerHideFeel();
+            } else if (isAll) {
+                itemJS.playerHideFeel();
+            }
+        });
+    }
+
+    /**
      * 玩家摸牌
      * @param that 执行域
      * @param data 数据
      */
-    feel(that:any,data:any): void {
+    feel(that: any, data: any): void {
         this.players = MyCenter.GameControlObj.players;
         this.feelStartSeatXY = MyCenter.GameUIObj.feelPokerSeatXY;
         this.feelObj = MyCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
@@ -34,9 +65,9 @@ class FeelPoker {
      * 隐藏翻的牌
      * @param that 
      */
-    hideFeelPoker(that:any){
+    hideFeelPoker(that: any) {
         this.initParam2(that);
-        if(that.IsMe){
+        if (that.IsMe) {
             let changeArr = [{ nodeName: that.owner, val: 0 }];
             Main.changeNodeZOrder(changeArr);
         }
@@ -54,12 +85,12 @@ class FeelPoker {
         let moveY = (feelSeatXY.y - this.feelStartSeatXY.y) + feelSeat.height / 2;
         // let alpha=item.IsMe?0:1;
         let alpha = 1;
-        if(seatItem.IsMe){
+        if (seatItem.IsMe) {
             let changeArr = [{ nodeName: seatItem.owner, val: 2 }];
             Main.changeNodeZOrder(changeArr);
         }
         Laya.Tween.to(this.feelObj, { x: moveX, y: moveY, alpha: alpha }, Main.Speed['feelPoker'], null, Laya.Handler.create(this, () => {
-            let pokerName:any=parseInt(String(data.poker/10000));
+            let pokerName: any = parseInt(String(data.folpPoker / 10000));
             if (seatItem.IsMe) {
                 Laya.Tween.to(this.feelObj, { scaleX: 0 }, Main.Speed['feelFan'], null, Laya.Handler.create(this, () => {
                     // let pokerName:any=parseInt(String(data.poker/10000));
@@ -92,25 +123,6 @@ class FeelPoker {
                 }));
             }
         }));
-    }
-
-
-    /**
-     * 清除摸到的牌(隐藏归原位)
-     */
-    clearFeelPoker() {
-        // let ID:number=num==0?0:parseInt(String(Math.random()*2))+1;
-        // let userid=userId?userId:`12345${ID}`;
-        // let data={
-        //     userId:userid
-        // }
-        // this.players.forEach((item:any) => {
-        //     // if (item.userId == data.userId) {
-        //     //    this.initParam2(item);
-        //     //    console.log(item)
-        //     // }
-           
-        // });
     }
 
     /**

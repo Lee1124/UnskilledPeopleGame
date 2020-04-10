@@ -79,13 +79,14 @@ class ChangeSeat {
      * 修改位置下的参数
      */
     changeSeatNodeParam(seatObj: any, index: number) {
+        console.log('进来===========================修改位置下的参数')
         //重置摸牌的位置
         let feelPokerNode = seatObj.getChildByName('feelView');
         feelPokerNode.pos(this.playerFeelSeatXYArr[index].x, this.playerFeelSeatXYArr[index].y);
         //玩家播放动画的位置
-        let handleAniSeat = seatObj.getChildByName('handleAniBox');
-        let handleAniSeatXY=MyCenter.getKeep('handleAniSeat');
-        handleAniSeat.pos(handleAniSeatXY[index].x, handleAniSeatXY[index].y);
+        // let handleAniSeat = seatObj.getChildByName('handleAniBox');
+        // let handleAniSeatXY=MyCenter.getKeep('handleAniSeat');
+        // handleAniSeat.pos(handleAniSeatXY[index].x, handleAniSeatXY[index].y);
     }
 }
 export default new ChangeSeat();

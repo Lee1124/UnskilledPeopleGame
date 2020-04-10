@@ -21,15 +21,15 @@ class Main {
     AUTO: boolean = false;
     // //websoket请求地址 
 
-    // //websoket请求地址
-    // websoketApi: string = '192.168.101.109:8082';
-    // //http请求的地址
-    // requestApi: string = 'http://192.168.101.109:8081';
-
     //websoket请求地址
-     websoketApi: string = '132.232.34.32:8092';
-     //http请求的地址
-     requestApi: string = 'http://132.232.34.32:8091';
+    websoketApi: string = '192.168.101.109:8082';
+    //http请求的地址
+    requestApi: string = 'http://192.168.101.109:8081';
+
+    // //websoket请求地址
+    //  websoketApi: string = '132.232.34.32:8092';
+    //  //http请求的地址
+    //  requestApi: string = 'http://132.232.34.32:8091';
 
     //资源获取地址
     // resourseHttp:string='http://132.232.34.32/ydr/'

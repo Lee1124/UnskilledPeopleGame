@@ -2,11 +2,11 @@
     "x":0,
     "type":"Scene",
     "selectedBox":11,
-    "selecteID":481,
+    "selecteID":623,
     "searchKey":"Scene",
     "props":{"width":1242,"sceneColor":"#000000","runtime":"game/GameCenter/GameUI.ts","height":2208},
     "nodeParent":-1,
-    "maxID":588,
+    "maxID":627,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -284,13 +284,14 @@
                             "props":{"width":167,"skin":"images/game/zuoweiBg.png","pivotY":84,"pivotX":84,"name":"empty_seat1","height":167,"centerX":0,"bottom":0},
                             "nodeParent":7,
                             "label":"empty_seat1",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":9,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Script",
                                     "switchAble":true,
                                     "source":"src/game/GameCenter/seat.ts",
@@ -307,6 +308,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,score",
                                     "props":{"wordWrap":true,"width":165,"visible":false,"valign":"middle","top":167,"text":"0","padding":"8,6,6,6","name":"score","fontSize":36,"color":"#FFFFFF","centerX":0,"bgColor":"#232323","align":"center"},
@@ -320,6 +322,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,name",
                                     "props":{"x":0,"wordWrap":false,"width":210,"visible":false,"valign":"middle","padding":"6,6,6,6","overflow":"hidden","name":"name","height":46,"fontSize":34,"color":"#FFFFFF","centerX":0,"bottom":167,"align":"center"},
@@ -333,6 +336,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,head",
                                     "props":{"width":170,"visible":false,"name":"head","height":170,"centerY":0,"centerX":0},
@@ -372,6 +376,7 @@
                                         }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu0",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":240,"name":"diu0","height":0},
@@ -386,6 +391,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu1",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"name":"diu1","left":240,"height":0},
@@ -401,6 +407,7 @@
                                     "$HIDDEN":false
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu2",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":240,"name":"diu2","height":0},
@@ -416,6 +423,7 @@
                                     "$HIDDEN":true
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show0",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"name":"show0","left":240,"height":300},
@@ -430,6 +438,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show1",
                                     "props":{"y":0,"x":0,"width":512,"visible":false,"top":300,"scaleY":0.6,"scaleX":0.6,"name":"show1","height":300,"centerX":-10},
@@ -444,6 +453,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show2",
                                     "props":{"y":0,"x":0,"width":512,"visible":false,"top":300,"scaleY":0.6,"scaleX":0.6,"name":"show2","height":300,"centerX":10},
@@ -458,6 +468,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,getDealPokerSeat",
                                     "props":{"width":128,"scaleY":0.3,"scaleX":0.3,"name":"getDealPokerSeat","height":450,"centerX":0,"bottom":-220},
@@ -471,6 +482,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,mePokerView",
                                     "props":{"y":-93,"x":26,"width":128,"visible":false,"scaleY":0.9,"scaleX":0.9,"pivotY":450,"name":"mePokerView","height":450,"centerX":0,"bottom":260},
@@ -486,6 +498,7 @@
                                     "$HIDDEN":false
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,feelView",
                                     "props":{"width":115,"visible":true,"pivotY":203,"pivotX":58,"name":"feelView","height":405,"centerX":0,"bottom":700},
@@ -512,6 +525,7 @@
                                         }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,conutDown",
                                     "props":{"y":8,"x":8,"width":160,"visible":false,"name":"conutDown","height":160,"centerY":0,"centerX":0},
@@ -554,6 +568,7 @@
                                     "$HIDDEN":true
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,liuzuo",
                                     "props":{"visible":false,"top":0,"right":0,"name":"liuzuo","left":0,"bottom":0},
@@ -593,6 +608,7 @@
                                         }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,banker",
                                     "props":{"zOrder":-1,"visible":false,"skin":"images/common/banker.png","name":"banker","left":-15,"bottom":0},
@@ -606,6 +622,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,gifBox",
                                     "props":{"visible":false,"top":0,"right":0,"name":"gifBox","left":0,"bottom":0},
@@ -619,20 +636,7 @@
                                         ]
                                 },
                                 {
-                                    "type":"Image",
-                                    "searchKey":"Image,handleAniBox",
-                                    "props":{"width":400,"visible":false,"pivotY":100,"pivotX":200,"name":"handleAniBox","height":200,"centerX":0,"bottom":300},
-                                    "nodeParent":9,
-                                    "label":"handleAniBox",
-                                    "isOpen":true,
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":572,
-                                    "child":[
-                                        ]
-                                },
-                                {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,pokerCount",
                                     "props":{"zOrder":-1,"y":122,"width":60,"visible":false,"name":"pokerCount","left":166,"height":50},
@@ -657,6 +661,65 @@
                                             "child":[
                                                 ]
                                         }]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Image",
+                                    "searchKey":"Image,handleAniBox",
+                                    "props":{"width":600,"name":"handleAniBox","height":500,"centerX":0,"bottom":0},
+                                    "nodeParent":9,
+                                    "label":"handleAniBox",
+                                    "isOpen":true,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":596,
+                                    "child":[
+                                        {
+                                            "x":75,
+                                            "type":"Image",
+                                            "searchKey":"Image,show0",
+                                            "props":{"y":75,"x":300,"width":150,"visible":false,"top":0,"pivotY":75,"pivotX":75,"name":"show0","height":150,"centerX":0},
+                                            "nodeParent":596,
+                                            "label":"show0",
+                                            "isOpen":true,
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":572,
+                                            "child":[
+                                                ]
+                                        },
+                                        {
+                                            "x":75,
+                                            "type":"Image",
+                                            "searchKey":"Image,show1",
+                                            "props":{"y":425,"width":150,"visible":false,"right":0,"pivotY":75,"pivotX":75,"name":"show1","height":150,"bottom":0},
+                                            "nodeParent":596,
+                                            "label":"show1",
+                                            "isOpen":true,
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":597,
+                                            "child":[
+                                                ]
+                                        },
+                                        {
+                                            "x":75,
+                                            "type":"Image",
+                                            "searchKey":"Image,show2",
+                                            "props":{"y":425,"width":150,"visible":false,"pivotY":75,"pivotX":75,"name":"show2","left":0,"height":150,"bottom":0},
+                                            "nodeParent":596,
+                                            "label":"show2",
+                                            "isOpen":true,
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":600,
+                                            "child":[
+                                                ]
+                                        }]
                                 }]
                         },
                         {
@@ -666,13 +729,14 @@
                             "props":{"width":167,"top":0,"skin":"images/game/zuoweiBg.png","pivotY":84,"pivotX":84,"name":"empty_seat2","left":100,"height":167},
                             "nodeParent":7,
                             "label":"empty_seat2",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":10,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Script",
                                     "switchAble":true,
                                     "source":"src/game/GameCenter/seat.ts",
@@ -689,6 +753,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,score",
                                     "props":{"y":0,"x":0,"wordWrap":true,"width":165,"visible":false,"valign":"middle","top":167,"text":"0","padding":"6,6,6,6","name":"score","fontSize":36,"color":"#FFFFFF","centerX":0,"bgColor":"#232323","align":"center"},
@@ -702,6 +767,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,name",
                                     "props":{"y":0,"x":0,"wordWrap":false,"width":210,"visible":false,"valign":"middle","padding":"6,6,6,6","overflow":"hidden","name":"name","height":46,"fontSize":34,"color":"#FFFFFF","centerX":0,"bottom":167,"align":"center"},
@@ -715,6 +781,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,head",
                                     "props":{"y":-1,"x":-1,"width":170,"visible":false,"name":"head","height":170,"centerY":0,"centerX":0},
@@ -754,6 +821,7 @@
                                         }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu0",
                                     "props":{"x":-130,"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":220,"name":"diu0","height":0},
@@ -768,6 +836,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu1",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"name":"diu1","left":240,"height":0},
@@ -782,6 +851,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,diu2",
                                     "props":{"width":128,"visible":false,"top":-80,"scaleY":0.6,"scaleX":0.6,"right":240,"name":"diu2","height":0},
@@ -796,6 +866,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show0",
                                     "props":{"width":128,"visible":false,"top":-20,"scaleY":0.6,"scaleX":0.6,"name":"show0","left":240,"height":300},
@@ -810,6 +881,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show1",
                                     "props":{"width":512,"visible":false,"top":300,"scaleY":0.6,"scaleX":0.6,"name":"show1","height":300,"centerX":-10},
@@ -824,6 +896,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,show2",
                                     "props":{"y":0,"x":0,"width":512,"visible":false,"top":300,"scaleY":0.6,"scaleX":0.6,"name":"show2","height":300,"centerX":10},
@@ -838,6 +911,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,getDealPokerSeat",
                                     "props":{"x":64,"width":128,"scaleY":0.3,"scaleX":0.3,"name":"getDealPokerSeat","height":450,"centerX":0,"bottom":-220},
@@ -851,6 +925,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,mePokerView",
                                     "props":{"y":26,"x":150,"width":128,"visible":false,"scaleY":0.9,"scaleX":0.9,"pivotY":450,"name":"mePokerView","height":450,"centerX":0,"bottom":260},
@@ -866,12 +941,13 @@
                                     "$HIDDEN":false
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,feelView",
                                     "props":{"width":115,"visible":true,"pivotY":203,"pivotX":58,"name":"feelView","left":150,"height":405,"centerY":0},
                                     "nodeParent":10,
                                     "label":"feelView",
-                                    "isOpen":true,
+                                    "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
@@ -892,6 +968,7 @@
                                         }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,conutDown",
                                     "props":{"y":8,"x":8,"width":160,"visible":false,"name":"conutDown","height":160,"centerY":0,"centerX":0},
@@ -934,6 +1011,7 @@
                                     "$HIDDEN":true
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,liuzuo",
                                     "props":{"y":0,"x":0,"visible":false,"top":0,"right":0,"name":"liuzuo","left":0,"bottom":0},
@@ -973,6 +1051,7 @@
                                         }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,banker",
                                     "props":{"zOrder":-1,"y":0,"visible":false,"skin":"images/common/banker.png","name":"banker","left":-15,"bottom":0},
@@ -986,6 +1065,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,gifBox",
                                     "props":{"y":0,"x":0,"visible":false,"top":0,"right":0,"name":"gifBox","left":0,"bottom":0},
@@ -999,20 +1079,7 @@
                                         ]
                                 },
                                 {
-                                    "type":"Image",
-                                    "searchKey":"Image,handleAniBox",
-                                    "props":{"width":400,"visible":false,"pivotY":100,"pivotX":200,"name":"handleAniBox","left":150,"height":200,"centerY":0},
-                                    "nodeParent":10,
-                                    "label":"handleAniBox",
-                                    "isOpen":true,
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":573,
-                                    "child":[
-                                        ]
-                                },
-                                {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,pokerCount",
                                     "props":{"zOrder":-1,"y":122,"x":0,"width":60,"visible":false,"name":"pokerCount","left":166,"height":50},
@@ -1034,6 +1101,65 @@
                                             "isAniNode":true,
                                             "hasChild":false,
                                             "compId":582,
+                                            "child":[
+                                                ]
+                                        }]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Image",
+                                    "searchKey":"Image,handleAniBox",
+                                    "props":{"y":0,"x":0,"width":600,"name":"handleAniBox","height":500,"centerX":0,"bottom":0},
+                                    "nodeParent":10,
+                                    "label":"handleAniBox",
+                                    "isOpen":true,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":619,
+                                    "child":[
+                                        {
+                                            "x":75,
+                                            "type":"Image",
+                                            "searchKey":"Image,show0",
+                                            "props":{"y":75,"x":300,"width":150,"visible":false,"top":0,"pivotY":75,"pivotX":75,"name":"show0","height":150,"centerX":0},
+                                            "nodeParent":619,
+                                            "label":"show0",
+                                            "isOpen":true,
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":620,
+                                            "child":[
+                                                ]
+                                        },
+                                        {
+                                            "x":75,
+                                            "type":"Image",
+                                            "searchKey":"Image,show1",
+                                            "props":{"y":425,"width":150,"visible":false,"right":0,"pivotY":75,"pivotX":75,"name":"show1","height":150,"bottom":0},
+                                            "nodeParent":619,
+                                            "label":"show1",
+                                            "isOpen":true,
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":621,
+                                            "child":[
+                                                ]
+                                        },
+                                        {
+                                            "x":75,
+                                            "type":"Image",
+                                            "searchKey":"Image,show2",
+                                            "props":{"y":425,"width":150,"visible":false,"pivotY":75,"pivotX":75,"name":"show2","left":0,"height":150,"bottom":0},
+                                            "nodeParent":619,
+                                            "label":"show2",
+                                            "isOpen":true,
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":622,
                                             "child":[
                                                 ]
                                         }]
@@ -1334,14 +1460,13 @@
                                     "props":{"y":0,"visible":false,"top":0,"right":1,"name":"liuzuo","left":1,"bottom":0},
                                     "nodeParent":11,
                                     "label":"liuzuo",
-                                    "isOpen":true,
+                                    "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
                                     "compId":475,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,sign",
                                             "props":{"width":150,"skin":"images/liuzuo/l_sign.png","name":"sign","height":90,"centerY":0,"centerX":0},
@@ -1355,7 +1480,6 @@
                                                 ]
                                         },
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,returnSeatBtn",
                                             "props":{"y":-37.5,"x":140,"skin":"images/liuzuo/l_return.png","name":"returnSeatBtn"},
@@ -1400,21 +1524,6 @@
                                 {
                                     "x":60,
                                     "type":"Image",
-                                    "searchKey":"Image,handleAniBox",
-                                    "props":{"y":0,"width":400,"visible":false,"right":150,"pivotY":100,"pivotX":200,"name":"handleAniBox","height":200,"centerY":0},
-                                    "nodeParent":11,
-                                    "label":"handleAniBox",
-                                    "isOpen":true,
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":574,
-                                    "child":[
-                                        ]
-                                },
-                                {
-                                    "x":60,
-                                    "type":"Image",
                                     "searchKey":"Image,pokerCount",
                                     "props":{"zOrder":-1,"y":122,"x":0,"width":60,"visible":false,"name":"pokerCount","left":166,"height":50},
                                     "nodeParent":11,
@@ -1436,6 +1545,65 @@
                                             "isAniNode":true,
                                             "hasChild":false,
                                             "compId":584,
+                                            "child":[
+                                                ]
+                                        }]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Image",
+                                    "searchKey":"Image,handleAniBox",
+                                    "props":{"y":0,"x":0,"width":600,"name":"handleAniBox","height":500,"centerX":0,"bottom":0},
+                                    "nodeParent":11,
+                                    "label":"handleAniBox",
+                                    "isOpen":false,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":623,
+                                    "child":[
+                                        {
+                                            "x":75,
+                                            "type":"Image",
+                                            "searchKey":"Image,show0",
+                                            "props":{"y":75,"x":300,"width":150,"visible":false,"top":0,"pivotY":75,"pivotX":75,"name":"show0","height":150,"centerX":0},
+                                            "nodeParent":623,
+                                            "label":"show0",
+                                            "isOpen":true,
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":624,
+                                            "child":[
+                                                ]
+                                        },
+                                        {
+                                            "x":75,
+                                            "type":"Image",
+                                            "searchKey":"Image,show1",
+                                            "props":{"y":425,"width":150,"visible":false,"right":0,"pivotY":75,"pivotX":75,"name":"show1","height":150,"bottom":0},
+                                            "nodeParent":623,
+                                            "label":"show1",
+                                            "isOpen":true,
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":625,
+                                            "child":[
+                                                ]
+                                        },
+                                        {
+                                            "x":75,
+                                            "type":"Image",
+                                            "searchKey":"Image,show2",
+                                            "props":{"y":425,"width":150,"visible":false,"pivotY":75,"pivotX":75,"name":"show2","left":0,"height":150,"bottom":0},
+                                            "nodeParent":623,
+                                            "label":"show2",
+                                            "isOpen":true,
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":626,
                                             "child":[
                                                 ]
                                         }]

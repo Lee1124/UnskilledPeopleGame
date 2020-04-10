@@ -120,8 +120,8 @@
                 deviceNews: '',
             };
             this.AUTO = false;
-            this.websoketApi = '132.232.34.32:8092';
-            this.requestApi = 'http://132.232.34.32:8091';
+            this.websoketApi = '192.168.101.109:8082';
+            this.requestApi = 'http://192.168.101.109:8081';
             this.userInfo = null;
             this.debug = true;
             this.pokerWidth = 128;
@@ -2130,499 +2130,51 @@
             let feelPokerSeat = conObj.owner.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
             let feelPokerSeatXY = feelPokerSeat.parent.localToGlobal(new Laya.Point(feelPokerSeat.x, feelPokerSeat.y));
             conObj.owner.feelPokerSeatXY = { x: feelPokerSeatXY.x, y: feelPokerSeatXY.y };
-            let handleAniSeat = seatObj.owner.getChildByName('handleAniBox');
-            this.aniArr.push({ x: handleAniSeat.x, y: handleAniSeat.y });
-            myCenter.keep('handleAniSeat', this.aniArr);
         }
     }
     var InitGameData$1 = new InitGameData();
 
-    var pokerColor;
-    (function (pokerColor) {
-        pokerColor[pokerColor["none"] = 0] = "none";
-        pokerColor[pokerColor["ban"] = 1] = "ban";
-        pokerColor[pokerColor["bu"] = 2] = "bu";
-        pokerColor[pokerColor["da"] = 3] = "da";
-    })(pokerColor || (pokerColor = {}));
-    class DealMePoker {
-        constructor() {
-            this.others = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
-            this.maxColPokerNum = 7;
-            this.pokerNum = 0;
-            this.timerNum = 0;
-            this.newReturnArr = [];
-        }
-        composeMeData(data, buDataArr) {
-            let buPoker;
-            this.newReturnArr = [];
-            let newArr = [];
-            let f = false;
-            data.forEach((item, index) => {
-                let Type = parseInt(String(item / 10000));
-                let Color = parseInt(String((item % 10000) / 1000));
-                let Point = item - Type * 10000 - Color * 1000;
-                let groupP = Point > 7 ? (14 - 7) : Point;
-                newArr.push({ type: Type, Color: Color, seatPoint: groupP, Point: Point, isGrey: pokerColor.none, id: (index + 1) });
-            });
-            let myTypeDest = (this.group(newArr, 'type')).filter((item) => item.data.length >= 3);
-            newArr.forEach((item2, index2) => {
-                item2.isGrey = pokerColor.none;
-                myTypeDest.forEach((item) => {
-                    if (item.type == item2.type)
-                        item2.isGrey = pokerColor.ban;
-                });
-            });
-            if (buDataArr)
-                buDataArr.forEach((item) => {
-                    f = true;
-                    newArr.forEach((item2) => {
-                        if (item2.type == parseInt(String(item / 10000)) && f) {
-                            f = false;
-                            item2.isGrey = pokerColor.bu;
-                        }
-                    });
-                });
-            let myDest = this.group(newArr, 'seatPoint');
-            this.sortData(myDest);
-            let bigArr;
-            myDest.forEach((item, index) => {
-                let filterArr = item.data.filter((item2, index2) => (index2 > 0) && (index2 % (this.maxColPokerNum) == 0));
-                if (filterArr.length > 0) {
-                    bigArr = this.getNewArr(item, filterArr);
-                    myDest = myDest.concat(bigArr);
-                }
-            });
-            for (let i = myDest.length - 1; i >= 0; i--) {
-                if (myDest[i].data.length > this.maxColPokerNum) {
-                    myDest.splice(i, 1);
-                }
-            }
-            myDest.forEach((item, index) => {
-                item.name = 'p' + (index + 1);
-            });
-            this.sortData(myDest);
-            return (this.beforeGroupData.map((item) => {
-                if (item.uid == Main$1.userInfo.userId) {
-                    return { uid: item.uid, banker: item.banker, pokers: myDest };
-                }
-                else {
-                    return item;
-                }
-            }));
-        }
-        getNewArr(item, filterArr) {
-            let myIndexArr = [];
-            filterArr.forEach((item0, index0) => {
-                let falg = true;
-                item.data.forEach((item2, index2) => {
-                    if ((item0.type == item2.type) && falg) {
-                        falg = false;
-                        myIndexArr.push(index2);
-                    }
-                });
-            });
-            myIndexArr.unshift(0);
-            myIndexArr.push(item.data.length);
-            for (let i = 0; i < myIndexArr.length; i++) {
-                if (myIndexArr[i + 1]) {
-                    let myData = item.data.slice(myIndexArr[i], myIndexArr[i + 1]);
-                    this.newReturnArr.push({ seatPoint: myData[0].seatPoint, data: myData });
-                }
-            }
-            let filterArr_inner = [];
-            let f = false;
-            let aa;
-            for (let i = 0; i < this.newReturnArr.length; i++) {
-                if (this.newReturnArr[i].data.length > (this.maxColPokerNum)) {
-                    filterArr_inner = this.newReturnArr[i].data.filter((item2, index2) => (index2 > 0) && ((index2) % (this.maxColPokerNum) == 0));
-                    aa = this.newReturnArr[i];
-                    break;
-                }
-            }
-            filterArr.forEach((item1) => {
-                filterArr_inner.forEach((item2) => {
-                    if (item1.type != item2.type) {
-                        f = true;
-                    }
-                });
-            });
-            if (filterArr_inner.length > 0 && f) {
-                return this.getNewArr(aa, filterArr_inner);
-            }
-            else if (!f) {
-                return this.newReturnArr;
-            }
-        }
-        sortData(arr) {
-            arr.forEach((item) => {
-                item.data.sort((a, b) => {
-                    return a.type - b.type;
-                });
-            });
-        }
-        group(arr, key) {
-            let map = {}, dest = [];
-            for (var i = 0; i < arr.length; i++) {
-                var ai = arr[i];
-                if (!map[ai[key]]) {
-                    dest.push({
-                        [key]: ai[key],
-                        data: [ai]
-                    });
-                    map[ai[key]] = ai;
-                }
-                else {
-                    for (var j = 0; j < dest.length; j++) {
-                        var dj = dest[j];
-                        if (dj[key] == ai[key]) {
-                            dj.data.push(ai);
-                            break;
-                        }
-                    }
-                }
-            }
-            return dest;
-        }
-        deal(data) {
-            let mePokerArr = [];
-            this.userIndex = 0;
-            this.pokerIndex = 0;
-            this.timerNum = 0;
-            this.players = myCenter.GameControlObj.players;
-            this.init();
-            this.beforeGroupData = data;
-            this.beforeGroupData.forEach((item) => {
-                item.userId = item.uid;
-                item.pokers = item.pokers ? item.pokers : this.others;
-            });
-            let meData = data.filter((item) => item.uid === Main$1.userInfo.userId);
-            if (meData.length > 0) {
-                this.groupedData = this.composeMeData(meData[0].pokers, null);
-            }
-            this.MovePoker();
-        }
-        removeMePoker(data) {
-            let mePokerArr = this.beforeGroupData.filter((item) => item.userId == Main$1.userInfo.userId)[0];
-            data.forEach((item) => {
-                for (let i = mePokerArr.pokers.length - 1; i >= 0; i--) {
-                    if (item == mePokerArr.pokers[i]) {
-                        mePokerArr.pokers.splice(i, 1);
-                        break;
-                    }
-                }
-            });
-            this.reloadPokerCoomon(null);
-        }
-        buPoker(data, callBack) {
-            let bankerUid = myCenter.getKeep('bankerUid') ? myCenter.getKeep('bankerUid') : 100010;
-            if (data && data.length > 0)
-                this.beforeGroupData.forEach((item) => {
-                    if (item.uid == bankerUid) {
-                        item.pokers = item.pokers.concat(data);
-                    }
-                });
-            console.log(this.beforeGroupData);
-            this.reloadPokerCoomon(data);
-            if (callBack)
-                callBack();
-        }
-        reloadPokerCoomon(data) {
-            let meData = this.beforeGroupData.filter((item) => item.uid === Main$1.userInfo.userId);
-            if (meData.length > 0) {
-                this.groupedData = this.composeMeData(meData[0].pokers, data);
-            }
-            this.showMePokerView();
-        }
-        init() {
-            if (this.meDealView)
-                this.meDealView.removeChildren();
-            myCenter.GameUIObj.dealSeat.zOrder = 0;
-            this.players.forEach((item) => {
-                let getDealPokerSeat = item.owner.getChildByName('getDealPokerSeat');
-                getDealPokerSeat.bottom = item.IsMe ? Main$1.deal['meBottom'] : Main$1.deal['otherBottom'];
-                item.owner.zOrder = item.IsMe ? 1 : 0;
-            });
-        }
-        MovePoker() {
-            let dealPlayerData = this.beforeGroupData[this.userIndex];
-            let dealSeat = myCenter.GameUIObj.dealSeat;
-            let dealPoker = Laya.Pool.getItemByCreateFun("dealPoker", myCenter.GameControlObj.dealPoker.create, myCenter.GameControlObj.dealPoker);
-            dealPoker.name = String(this.timerNum);
-            dealPoker.alpha = 0;
-            dealPoker.pos(0, 0);
-            dealSeat.addChild(dealPoker);
-            this.players.forEach((item, index) => {
-                if (item.userId == dealPlayerData.userId) {
-                    let getDealPokerSeat = item.owner.getChildByName('getDealPokerSeat');
-                    let getDealPokerSeatXY = getDealPokerSeat.parent.localToGlobal(new Laya.Point(getDealPokerSeat.x, getDealPokerSeat.y));
-                    let x = getDealPokerSeatXY.x - myCenter.GameUIObj.dealPokerSeatXY.x;
-                    let y = getDealPokerSeatXY.y - myCenter.GameUIObj.dealPokerSeatXY.y;
-                    let moveObj = dealSeat.getChildByName(String(this.timerNum));
-                    Laya.Tween.to(moveObj, { alpha: 0.8, x: x, y: y }, Main$1.Speed['dealPoker'] * 0.8, null, Laya.Handler.create(this, () => {
-                        if (item.IsMe) {
-                            this.meDealView = item.owner.getChildByName('mePokerView');
-                            this.meDealView.visible = true;
-                            if ((this.pokerIndex) % 5 == 0) {
-                                this.meCellIndex = 0;
-                                let pokerCellView = new Laya.Image();
-                                pokerCellView.name = 'cellBox' + parseInt(String(this.pokerIndex / 5));
-                                pokerCellView.size(Main$1.pokerWidth, 450);
-                                pokerCellView.bottom = 0;
-                                pokerCellView.x = Main$1.pokerWidth * parseInt(String((this.pokerIndex / 5)));
-                                this.meDealView.width = Main$1.pokerWidth * (parseInt(String((this.pokerIndex / 5))) + 1);
-                                let hh = this.meDealView.addChild(pokerCellView);
-                            }
-                            let mePokerObj = new Laya.Image();
-                            let pokerTypeName = parseInt(String((dealPlayerData.pokers[this.pokerIndex]) / 10000));
-                            if (this.meCellIndex == 0) {
-                                mePokerObj.size(Main$1.pokerWidth, 450);
-                                mePokerObj.loadImage('res/img/poker/chang/' + pokerTypeName + '.png');
-                            }
-                            else {
-                                mePokerObj.size(Main$1.pokerWidth, Main$1.pokerWidth);
-                                mePokerObj.loadImage('res/img/poker/duan/' + pokerTypeName + '.png');
-                            }
-                            let childName = 'cellBox' + parseInt(String(this.pokerIndex / 5));
-                            let pokerCellViewObj = this.meDealView.getChildByName(childName);
-                            if (pokerCellViewObj && pokerCellViewObj.name == childName) {
-                                pokerCellViewObj.addChild(mePokerObj);
-                                if (this.meCellIndex == 0) {
-                                    mePokerObj.bottom = 0;
-                                }
-                                else {
-                                    mePokerObj.bottom = (450 + Main$1.pokerWidth * (this.meCellIndex - 1)) - 45 * (this.meCellIndex);
-                                    Main$1.pokerWidth * this.meCellIndex;
-                                }
-                                mePokerObj.zOrder = 4 - this.meCellIndex;
-                            }
-                            this.meCellIndex++;
-                        }
-                        Laya.Tween.to(moveObj, { alpha: 0 }, Main$1.Speed['dealPoker'] * 0.8, null, Laya.Handler.create(this, () => {
-                            moveObj.removeSelf();
-                        }));
-                        this.timerNum++;
-                        this.userIndex++;
-                        if (this.userIndex % 3 == 0) {
-                            this.userIndex = 0;
-                            this.pokerIndex++;
-                        }
-                        if (this.timerNum >= 20 * 3) {
-                            Laya.timer.clear(this, this.MovePoker);
-                            myCenter.GameUIObj.dealSeat.zOrder = 2;
-                            this.dealPokerEnd();
-                        }
-                        else {
-                            this.MovePoker();
-                        }
-                    }));
-                }
-            });
-        }
-        dealPokerEnd() {
-            let numChildren = this.meDealView.numChildren;
-            let cellMoveX = (this.meDealView.width / 2) - (Main$1.pokerWidth / 2);
-            for (let i = 0; i < numChildren; i++) {
-                let childNode = this.meDealView.getChildAt(i);
-                Laya.Tween.to(childNode, { x: cellMoveX }, Main$1.Speed['dealPoker2'], null, Laya.Handler.create(this, () => {
-                    if (i >= numChildren - 1) {
-                        this.showMePokerView(true);
-                    }
-                }));
-            }
-        }
-        showMePokerView(isFrist) {
-            this.meDealView.removeChildren();
-            this.meDealView.width = Main$1.pokerWidth;
-            let mePokerData = [];
-            this.groupedData.forEach((item, index) => {
-                if (item.uid == Main$1.userInfo.userId) {
-                    mePokerData = item.pokers;
-                }
-            });
-            let playerMe = this.players.filter((item) => item.IsMe);
-            if (playerMe.length > 0) {
-                this.meDealView.width = Main$1.pokerWidth * mePokerData.length;
-                mePokerData.forEach((item, index) => {
-                    let cellObj = new Laya.Image();
-                    cellObj.name = item.name;
-                    cellObj.size(Main$1.pokerWidth, 0);
-                    cellObj.x = Main$1.pokerWidth * index;
-                    cellObj.bottom = 0;
-                    item.data.forEach((item_inner, index_inner) => {
-                        let pokerObj = new Laya.Image('res/img/poker/duan/' + item_inner.type + '.png');
-                        if (item_inner.isGrey == pokerColor.ban) {
-                            this.changePokerColor(pokerObj, Main$1.pokerParam['color' + pokerColor.ban], 'noHanldePoker');
-                        }
-                        else if (item_inner.isGrey == pokerColor.bu) {
-                            this.changePokerColor(pokerObj, Main$1.pokerParam['color' + pokerColor.bu], 'noHanldePoker');
-                        }
-                        pokerObj.name = item_inner;
-                        pokerObj.sizeGrid = "85,0,10,0";
-                        pokerObj.off(Laya.Event.CLICK, this, this.ClickPoker);
-                        pokerObj.on(Laya.Event.CLICK, this, this.ClickPoker, [pokerObj]);
-                        pokerObj.size(Main$1.pokerWidth, Main$1.pokerWidth);
-                        pokerObj.x = 0;
-                        pokerObj.zOrder = item.data.length - index_inner;
-                        if (index_inner == 0)
-                            pokerObj.bottom = Main$1.pokerWidth * index_inner;
-                        else if (index_inner >= 1)
-                            pokerObj.bottom = Main$1.pokerWidth * index_inner - (45 * index_inner);
-                        cellObj.addChild(pokerObj);
-                    });
-                    this.meDealView.addChild(cellObj);
-                });
-            }
-            if (isFrist) {
-                myCenter.send('qiPoker', true);
-                myCenter.keep('showHandle', true);
-            }
-        }
-        ClickPoker(pokerObj, e) {
-            e.stopPropagation();
-            if (pokerObj.height > Main$1.pokerWidth) {
-                this.mePlayPoker(pokerObj);
-                pokerObj.removeSelf();
-                let mePutViewChildren = this.meDealView._children;
-                mePutViewChildren.forEach((item, index) => {
-                    let innerChildren = item._children;
-                    if (innerChildren.length == 0) {
-                        item.removeSelf();
-                        this.meDealView.width -= Main$1.pokerWidth;
-                    }
-                    this.mePutViewReloadSeat();
-                });
-            }
-            else {
-                let noClick = pokerObj.getChildByName('noHanldePoker');
-                if (!noClick) {
-                    this.mePutViewReloadSeat();
-                    this.changePokerColor(pokerObj, Main$1.pokerParam['color2'], 'clickColorImg');
-                    let pokerObjH = pokerObj.height + 50;
-                    Laya.Tween.to(pokerObj, { height: pokerObjH }, Main$1.Speed['pokerHeight'], Laya.Ease.backOut, Laya.Handler.create(this, () => {
-                        this.adjustCellPokerSeat(pokerObj);
-                    }));
-                }
-            }
-        }
-        changePokerColor(pokerObj, colorImgUrl, name) {
-            let colorImg = new Laya.Image(colorImgUrl);
-            colorImg.name = name;
-            colorImg.left = 0;
-            colorImg.right = 0;
-            colorImg.bottom = 0;
-            colorImg.top = 0;
-            pokerObj.addChild(colorImg);
-        }
-        mePlayPoker(pokerObj) {
-            let pokerObjSeatXY = pokerObj.parent.localToGlobal(new Laya.Point(pokerObj.x, pokerObj.y));
-            let showMePlayPoker = myCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
-            let showMePlayPokerXY = showMePlayPoker.parent.localToGlobal(new Laya.Point(showMePlayPoker.x, showMePlayPoker.y));
-            let startX = pokerObjSeatXY.x - showMePlayPokerXY.x + showMePlayPoker.width;
-            let startY = pokerObjSeatXY.y - showMePlayPokerXY.y + showMePlayPoker.height / 2;
-            showMePlayPoker.pos(startX, startY);
-            showMePlayPoker.skin = 'res/img/poker/chang/' + pokerObj.name + '.png';
-            Laya.Tween.to(showMePlayPoker, { alpha: 1, x: showMePlayPoker.width / 2, y: showMePlayPoker.height / 2 }, Main$1.Speed['mePlay']);
-        }
-        otherPlay(num) {
-            let playData = {
-                userId: `12345${num}`,
-                data: parseInt(String(Math.random() * 21)) + 1
-            };
-            this.players.forEach(item => {
-                if (item.userId == playData.userId) {
-                    let playPokerSeatFeelView = item.owner.getChildByName('feelView');
-                    let playPokerSeat = playPokerSeatFeelView.getChildByName('feelPoker');
-                    let playPokerSeatXY = playPokerSeat.parent.localToGlobal(new Laya.Point(playPokerSeat.x, playPokerSeat.y));
-                    let playerSeat = item.owner;
-                    let playerSeatXY = playerSeat.parent.localToGlobal(new Laya.Point(playerSeat.x, playerSeat.y));
-                    let startX = playerSeatXY.x - playPokerSeatXY.x;
-                    let startY = playerSeatXY.y - playPokerSeatXY.y;
-                    this.initOtherPlay(true, startX, startY, 1, 1, 1, playPokerSeatFeelView, playPokerSeat);
-                    Laya.Tween.to(playPokerSeat, { centerX: 0, centerY: 0, alpha: Main$1.pokerParam['alpha'] }, Main$1.Speed['otherPlay'], null, Laya.Handler.create(this, () => {
-                        Laya.Tween.to(playPokerSeat, { scaleX: 0 }, Main$1.Speed['otherPlay'] / 2, null, Laya.Handler.create(this, () => {
-                            playPokerSeat.skin = 'res/img/poker/chang/' + playData.data + '.png';
-                            Laya.Tween.to(playPokerSeat, { scaleX: 1 }, Main$1.Speed['otherPlay'] / 2);
-                        }));
-                    }));
-                }
-            });
-        }
-        initOtherPlay(isShow, centerX, centerY, scaleX, scaleY, alpha, playPokerParent, playPoker) {
-            playPokerParent.visible = isShow;
-            playPoker.centerX = centerX;
-            playPoker.centerY = centerY;
-            playPoker.scale(scaleX, scaleY);
-            playPoker.alpha = alpha;
-            playPoker.skin = 'res/img/poker/chang/-1.png';
-        }
-        adjustCellPokerSeat(pokerObj) {
-            let pokerObjParent = pokerObj.parent;
-            let pokerObjParentChilds = pokerObjParent._children;
-            let clickIndex = 0;
-            pokerObjParentChilds.forEach((item, index) => {
-                if (item.height > Main$1.pokerWidth) {
-                    clickIndex = index;
-                }
-            });
-            pokerObjParentChilds.forEach((item, index) => {
-                if (index < clickIndex) {
-                    item.bottom += 50;
-                }
-            });
-        }
-        mePutViewReloadSeat() {
-            let mePutViewChildren = this.meDealView._children;
-            mePutViewChildren.forEach((item, index) => {
-                let innerChildren = item._children;
-                item.x = Main$1.pokerWidth * index;
-                innerChildren.forEach((item2, index2) => {
-                    let clickColorImg = item2.getChildByName('clickColorImg');
-                    if (clickColorImg)
-                        clickColorImg.removeSelf();
-                    item2.height = Main$1.pokerWidth;
-                    if (index2 == innerChildren.length - 1) {
-                        item2.bottom = 0;
-                    }
-                    else {
-                        item2.bottom = Main$1.pokerWidth * ((innerChildren.length - 1) - index2) - 45 * ((innerChildren.length - 1) - index2);
-                    }
-                });
-            });
-        }
-    }
-    var DealOrPlayPoker = new DealMePoker();
-
     class DiuPoker {
-        open(data) {
-            this.players = myCenter.GameControlObj.players;
-            let diuPokerData = data;
-            this.players.forEach((item, index) => {
-                let diuView = item.owner.getChildByName('diu' + item.SeatId);
-                diuView.visible = true;
-                diuPokerData.forEach((item2, index2) => {
-                    if (item.userId == item2.userId) {
-                        item2.data.forEach((item3, index3) => {
-                            if (item.SeatId != 0 && index3 % 7 == 0) {
-                                this.createDiuCell(index3, diuView, 7, item.SeatId);
-                            }
-                            else if ((item.SeatId == 0 && index3 % 8 == 0)) {
-                                this.createDiuCell(index3, diuView, 8, item.SeatId);
-                            }
-                            let pokerObj = new Laya.Image();
-                            pokerObj.skin = 'res/img/poker/duan/' + item3 + '.png';
-                            if (item.SeatId != 0 && ((index3 + 1) % 7 == 0 || index3 == item2.data.length - 1))
-                                pokerObj.skin = 'res/img/poker/chang/' + item3 + '.png';
-                            pokerObj.top = Main$1.pokerWidth * this.diuCellIndex - (45 * this.diuCellIndex);
-                            pokerObj.zOrder = this.diuCellIndex;
-                            pokerObj.name = 'poker' + (index3 + 1);
-                            let chidName = item.SeatId == 0 ? 'cellBox' + parseInt(String(index3 / 8)) : 'cellBox' + parseInt(String(index3 / 7));
-                            let pokerCellViewObj = diuView.getChildByName(chidName);
-                            if (pokerCellViewObj.name == chidName) {
-                                pokerCellViewObj.addChild(pokerObj);
-                            }
-                            this.diuCellIndex++;
-                        });
+        show(data) {
+            let players = myCenter.GameControlObj.players;
+            players.forEach((itemJS) => {
+                if (itemJS.userId == data.userId)
+                    itemJS.showPlayerDiuPoker(data);
+            });
+        }
+        hide() {
+            let players = myCenter.GameControlObj.players;
+            players.forEach((itemJS) => {
+            });
+        }
+        open(that, data) {
+            let diuView = that.owner.getChildByName('diu' + that.SeatId);
+            diuView.visible = true;
+            that.diuPokers = that.diuPokers.concat([data.poker]);
+            let diuPokers = [{ data: that.diuPokers }];
+            let item = that;
+            diuPokers.forEach((item2) => {
+                item2.data.forEach((item3, index3) => {
+                    if (item.SeatId != 0 && index3 % 7 == 0) {
+                        this.createDiuCell(index3, diuView, 7, item.SeatId);
                     }
+                    else if ((item.SeatId == 0 && index3 % 8 == 0)) {
+                        this.createDiuCell(index3, diuView, 8, item.SeatId);
+                    }
+                    let pokerObj = new Laya.Image();
+                    let pokerName = parseInt(String(item3 / 10000));
+                    pokerObj.skin = 'res/img/poker/duan/' + pokerName + '.png';
+                    if (item.SeatId != 0 && ((index3 + 1) % 7 == 0 || index3 == item2.data.length - 1))
+                        pokerObj.skin = 'res/img/poker/chang/' + pokerName + '.png';
+                    pokerObj.top = Main$1.pokerWidth * this.diuCellIndex - (45 * this.diuCellIndex);
+                    pokerObj.zOrder = this.diuCellIndex;
+                    pokerObj.name = 'poker' + (index3 + 1);
+                    let chidName = item.SeatId == 0 ? 'cellBox' + parseInt(String(index3 / 8)) : 'cellBox' + parseInt(String(index3 / 7));
+                    let pokerCellViewObj = diuView.getChildByName(chidName);
+                    if (pokerCellViewObj.name == chidName) {
+                        pokerCellViewObj.addChild(pokerObj);
+                    }
+                    this.diuCellIndex++;
                 });
             });
         }
@@ -2976,6 +2528,116 @@
     }
     var set_content_chat = new setChat();
 
+    class showPlayerPokerCount {
+        show(that, show, value) {
+            let pokerCount = that.owner.getChildByName('pokerCount');
+            pokerCount.visible = show;
+            let val = pokerCount.getChildByName('val');
+            val.text = show ? value : 0;
+            that.pokerCount = value;
+        }
+    }
+    var showPlayerPokerCount$1 = new showPlayerPokerCount();
+
+    class otherPlay {
+        show(data) {
+            let players = myCenter.GameControlObj.players;
+            players.forEach((itemJS) => {
+                if (itemJS.userId == data.userId)
+                    itemJS.showNoMePlayPoker(data.poker);
+            });
+        }
+        play(that, pokerNum) {
+            let item = that;
+            showPlayerPokerCount$1.show(item, true, that.pokerCount - 1);
+            let poker = parseInt(String(pokerNum / 10000));
+            let playPokerSeatFeelView = item.owner.getChildByName('feelView');
+            let playPokerSeat = playPokerSeatFeelView.getChildByName('feelPoker');
+            let playPokerSeatXY = playPokerSeat.parent.localToGlobal(new Laya.Point(playPokerSeat.x, playPokerSeat.y));
+            let playerSeat = item.owner;
+            let playerSeatXY = playerSeat.parent.localToGlobal(new Laya.Point(playerSeat.x, playerSeat.y));
+            this.startX = playerSeatXY.x - playPokerSeatXY.x;
+            this.startY = playerSeatXY.y - playPokerSeatXY.y;
+            this.initOtherPlay(true, this.startX, this.startY, 1, 1, 1, playPokerSeatFeelView, playPokerSeat);
+            Laya.Tween.to(playPokerSeat, { centerX: 0, centerY: 0, alpha: Main$1.pokerParam['alpha'] }, Main$1.Speed['otherPlay'], null, Laya.Handler.create(this, () => {
+                Laya.Tween.to(playPokerSeat, { scaleX: 0 }, Main$1.Speed['otherPlay'] / 2, null, Laya.Handler.create(this, () => {
+                    playPokerSeat.skin = 'res/img/poker/chang/' + poker + '.png';
+                    Laya.Tween.to(playPokerSeat, { scaleX: 1 }, Main$1.Speed['otherPlay'] / 2);
+                }));
+            }));
+        }
+        hidePlay(that) {
+            let playPokerSeatFeelView = that.owner.getChildByName('feelView');
+            let playPokerSeat = playPokerSeatFeelView.getChildByName('feelPoker');
+            this.initOtherPlay(true, 0, 0, 0, 0, 0, playPokerSeatFeelView, playPokerSeat);
+        }
+        initOtherPlay(isShow, centerX, centerY, scaleX, scaleY, alpha, playPokerParent, playPoker) {
+            playPokerParent.visible = isShow;
+            playPoker.centerX = centerX;
+            playPoker.centerY = centerY;
+            playPoker.scale(scaleX, scaleY);
+            playPoker.alpha = alpha;
+            playPoker.skin = 'res/img/poker/chang/-1.png';
+        }
+    }
+    var otherPlayerPlay = new otherPlay();
+
+    class mePlay {
+        play(pokerObj) {
+            let pokerObjSeatXY = pokerObj.parent.localToGlobal(new Laya.Point(pokerObj.x, pokerObj.y));
+            let showMePlayPoker = myCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
+            let showMePlayPokerXY = showMePlayPoker.parent.localToGlobal(new Laya.Point(showMePlayPoker.x, showMePlayPoker.y));
+            let startX = pokerObjSeatXY.x - showMePlayPokerXY.x + showMePlayPoker.width;
+            let startY = pokerObjSeatXY.y - showMePlayPokerXY.y + showMePlayPoker.height / 2;
+            showMePlayPoker.pos(startX, startY);
+            showMePlayPoker.skin = 'res/img/poker/chang/' + pokerObj.name.type + '.png';
+            Laya.Tween.to(showMePlayPoker, { alpha: 1, x: showMePlayPoker.width / 2, y: showMePlayPoker.height / 2 }, Main$1.Speed['mePlay']);
+        }
+        autoPlay(data) {
+            let players = myCenter.GameControlObj.players;
+            players.forEach((itemJS) => {
+                if (itemJS.IsMe && data.userId == itemJS.userId) {
+                    let mePokerView = itemJS.owner.getChildByName('mePokerView');
+                    console.log(mePokerView, mePokerView._children);
+                    mePokerView._children.forEach((item1) => {
+                        let item1Childs = item1._children;
+                        for (let i = item1Childs.length - 1; i >= 0; i--) {
+                            if (item1Childs[i].name.oldName == data.poker) {
+                                let pokerObj = item1Childs[i];
+                                this.play(pokerObj);
+                                itemJS.removePoker([data.poker]);
+                                break;
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    }
+    var mePlay$1 = new mePlay();
+
+    class showPlayTip {
+        show(data, isShow = true) {
+            let players = myCenter.GameControlObj.players;
+            players.forEach((itemJS) => {
+                if (itemJS.userId == data.userId) {
+                    itemJS.showPlayTip(isShow);
+                }
+            });
+        }
+        hide(data) {
+            this.show(data, false);
+        }
+        showOrHide(that, show) {
+            if (that.IsMe) {
+                let tip = myCenter.GameUIObj.mePlayTip;
+                tip.zOrder = 99;
+                tip.visible = show;
+            }
+        }
+    }
+    var showPlayTip$1 = new showPlayTip();
+
     class time {
         show(data) {
             this.common(data, true);
@@ -3041,6 +2703,104 @@
         }
     }
     var time$1 = new time();
+
+    class buPoker {
+        show(data, fn) {
+            let players = myCenter.GameControlObj.players;
+            let buPokerArr = data.buPokers;
+            players.forEach((itemJS) => {
+                if (itemJS.userId == data.userId) {
+                    itemJS.buPoker(buPokerArr, fn);
+                }
+            });
+        }
+        clearSign() {
+            let players = myCenter.GameControlObj.players;
+            players.forEach((itemJS) => {
+                if (itemJS.IsMe)
+                    itemJS.clearBuPokerSign();
+            });
+        }
+    }
+    var buPoker$1 = new buPoker();
+
+    class FeelPoker {
+        show(data) {
+            let players = myCenter.GameControlObj.players;
+            players.forEach((itemJS) => {
+                if (itemJS.userId == data.userId)
+                    itemJS.playerFeel(data);
+            });
+        }
+        hide(data, isAll = false) {
+            let players = myCenter.GameControlObj.players;
+            Main$1.$LOG('翻牌隐藏：', data);
+            players.forEach((itemJS) => {
+                if (itemJS.userId == data.userId && !isAll) {
+                    Main$1.$LOG('翻牌隐藏2：', data.userId);
+                    itemJS.playerHideFeel();
+                }
+                else if (isAll) {
+                    itemJS.playerHideFeel();
+                }
+            });
+        }
+        feel(that, data) {
+            this.players = myCenter.GameControlObj.players;
+            this.feelStartSeatXY = myCenter.GameUIObj.feelPokerSeatXY;
+            this.feelObj = myCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
+            this.initParam(true);
+            this.moveFeelPoker(that, data);
+        }
+        hideFeelPoker(that) {
+            this.initParam2(that);
+            if (that.IsMe) {
+                let changeArr = [{ nodeName: that.owner, val: 0 }];
+                Main$1.changeNodeZOrder(changeArr);
+            }
+        }
+        moveFeelPoker(seatItem, data) {
+            this.initParam2(seatItem);
+            let feelSeat = seatItem.owner.getChildByName('feelView');
+            let feelSeatXY = feelSeat.parent.localToGlobal(new Laya.Point(feelSeat.x, feelSeat.y));
+            let moveX = (feelSeatXY.x - this.feelStartSeatXY.x) + feelSeat.width / 2;
+            let moveY = (feelSeatXY.y - this.feelStartSeatXY.y) + feelSeat.height / 2;
+            let alpha = 1;
+            if (seatItem.IsMe) {
+                let changeArr = [{ nodeName: seatItem.owner, val: 2 }];
+                Main$1.changeNodeZOrder(changeArr);
+            }
+            Laya.Tween.to(this.feelObj, { x: moveX, y: moveY, alpha: alpha }, Main$1.Speed['feelPoker'], null, Laya.Handler.create(this, () => {
+                let pokerName = parseInt(String(data.folpPoker / 10000));
+                if (seatItem.IsMe) {
+                    Laya.Tween.to(this.feelObj, { scaleX: 0 }, Main$1.Speed['feelFan'], null, Laya.Handler.create(this, () => {
+                        this.feelPoker.skin = 'res/img/poker/chang/' + pokerName + '.png';
+                        this.initParam(false);
+                        Laya.Tween.to(this.feelPoker, { scaleX: 1, alpha: 0.7 }, Main$1.Speed['feelFan']);
+                    }));
+                }
+                else {
+                    Laya.Tween.to(this.feelObj, { scaleX: 0 }, Main$1.Speed['feelFan'], null, Laya.Handler.create(this, () => {
+                        this.feelPoker.skin = 'res/img/poker/chang/' + pokerName + '.png';
+                        this.initParam(false);
+                        Laya.Tween.to(this.feelPoker, { scaleX: 1, alpha: 0.7 }, Main$1.Speed['feelFan']);
+                    }));
+                }
+            }));
+        }
+        initParam(isShow = true) {
+            this.feelObj.alpha = 0;
+            this.feelObj.scale(1, 1);
+            this.feelObj.pos(this.feelObj.width / 2, this.feelObj.height / 2);
+        }
+        initParam2(item) {
+            let dealSeat_feelPoker = myCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
+            this.feelPoker = item.owner.getChildByName('feelView').getChildByName('feelPoker');
+            this.feelPoker.alpha = 0;
+            this.feelPoker.skin = 'res/img/poker/chang/-1.png';
+        }
+    }
+    var step_x_playerFeelPoker = new FeelPoker();
 
     var showType;
     (function (showType) {
@@ -3385,8 +3145,17 @@
                 this.player_stealPokerResult(resData);
             }
             else if (resData._t == "G2C_NoticePlayAPoker") {
+                buPoker$1.clearSign();
                 myCenter.keep('playstage', playstage$1.da);
-                this.player_noticePlayAPoker(resData);
+                Main$1.$LOG('G2C_NoticePlayAPoker:', myCenter.getKeep('allowNoticePlayPoker'));
+                if (myCenter.getKeep('allowNoticePlayPoker')) {
+                    this.player_noticePlayAPoker(resData);
+                }
+                else {
+                    myCenter.req('allowNoticePlayPoker', () => {
+                        this.player_noticePlayAPoker(resData);
+                    });
+                }
             }
             else if (resData._t == "S2C_PlayAPoker") {
                 this.palyer_playAPoker(resData);
@@ -3396,6 +3165,9 @@
             }
             else if (resData._t == "G2C_FlopAPoker") {
                 this.palyer_flopAPoker(resData);
+            }
+            else if (resData._t == "S2C_ActionedPoker") {
+                this.palyer_actionedPoker(resData);
             }
             else if (resData._t == "G2C_ActionPokerResult") {
                 this.palyer_actionPokerResult(resData);
@@ -3438,17 +3210,11 @@
         player_buPoker(data) {
             myCenter.keep('play', true);
             data.userId = data.uid;
-            this.feelPoker(data);
-            this.bankerBuPoker(data);
+            data.buPokers = [data.poker];
+            data.folpPoker = data.poker;
+            step_x_playerFeelPoker.show(data);
+            buPoker$1.show(data);
             showHandleBtns$1.onlyKouBtn(data);
-        }
-        bankerBuPoker(data) {
-            let buPokerArr = data.poker ? [data.poker] : [];
-            this.players.forEach((itemJS) => {
-                if (itemJS.userId == data.userId) {
-                    itemJS.buPoker(buPokerArr);
-                }
-            });
         }
         player_standPokerOpt(data) {
             data.userId = data.uid;
@@ -3464,8 +3230,8 @@
                 opts.push({ h: handleBtn$1.tou, o: 0.4 });
             }
             showHandleBtns$1.show(data, opts);
-            this.bankerBuPoker(data);
-            this.playerHideFeel(data);
+            buPoker$1.clearSign();
+            step_x_playerFeelPoker.hide(data);
         }
         setOptData(data) {
             let opts = [];
@@ -3525,28 +3291,19 @@
         }
         player_noticePlayAPoker(data) {
             data.userId = data.uid;
-            this.playerPlaySet(data, true);
-        }
-        playerPlaySet(data, isMePlay) {
-            if (isMePlay)
-                time$1.show(data);
-            else
-                time$1.hide(data);
-            time$1.hide(data);
-            myCenter.keep('isMePlay', isMePlay);
-            this.players.forEach((itemJS) => {
-                if (itemJS.userId == data.userId) {
-                    itemJS.showPlayTip(isMePlay);
-                }
-            });
+            time$1.show(data);
+            showPlayTip$1.show(data);
+            step_x_playerFeelPoker.hide(data);
+            myCenter.keep('isMePlay', true);
         }
         palyer_playAPoker(data) {
             data.userId = data.uid;
             time$1.hide(data);
-            this.players.forEach((itemJS) => {
-                if (itemJS.userId == data.userId)
-                    itemJS.showNoMePlayPoker(data.poker);
-            });
+            showPlayTip$1.hide(data);
+            if (data.userId != Main$1.userInfo.userId)
+                otherPlayerPlay.show(data);
+            else
+                mePlay$1.autoPlay(data);
         }
         palyer_actionPokerOpts(data) {
             data.userId = data.uid;
@@ -3560,30 +3317,34 @@
         }
         palyer_flopAPoker(data) {
             data.userId = data.uid;
-            this.playerHideFeel(data, true);
-            this.feelPoker(data);
+            step_x_playerFeelPoker.hide(data, true);
+            data.folpPoker = data.poker;
+            step_x_playerFeelPoker.show(data);
         }
-        feelPoker(data) {
-            this.players.forEach((itemJS) => {
-                if (itemJS.userId == data.userId) {
-                    itemJS.playerFeel(data);
-                }
-            });
-        }
-        playerHideFeel(data, isAll = false) {
-            this.players.forEach((itemJS) => {
-                if (itemJS.userId == data.userId && !isAll) {
-                    itemJS.playerHideFeel();
-                }
-                else if (isAll) {
-                    itemJS.playerHideFeel();
-                }
-            });
+        palyer_actionedPoker(data) {
+            data.userId = data.uid;
+            time$1.hide(data);
         }
         palyer_actionPokerResult(data) {
             data.userId = data.uid;
             showHandleBtns$1.daHandleShow(data, data.opt);
-            this.playerHideFeel(data, true);
+            step_x_playerFeelPoker.hide(data, true);
+            if (data.givepoker > 0) {
+                data.folpPoker = data.givepoker;
+                step_x_playerFeelPoker.show(data);
+                data.buPokers = [data.givepoker];
+                myCenter.keep('allowNoticePlayPoker', false);
+                buPoker$1.show(data, () => {
+                    console.log('杀============补牌结束');
+                    setTimeout(() => {
+                        myCenter.send('allowNoticePlayPoker', true);
+                        myCenter.keep('allowNoticePlayPoker', true);
+                    }, 1000);
+                });
+            }
+            if (data.opt == handleBtn$1.guo) {
+                DiuPoker$1.show(data);
+            }
         }
         leaveRoomDeal(data) {
             if (data.userid == Main$1.userInfo.userId) {
@@ -3694,18 +3455,36 @@
         leaveRoomOpenView() {
         }
         dealPokerFn() {
-            this.players.forEach((item) => {
-                if (item.userId == Main$1.userInfo.userId) {
-                    alert(item.SeatId);
+            console.log('进来了');
+            let data0 = [
+                { uid: 100006, banker: false, pokers: null },
+                { uid: 100008, banker: false, pokers: null },
+                {
+                    uid: 100007, banker: true, pokers: [11002, 31004, 51006, 61006, 61006, 71007, 91008, 101009, 111010, 111010, 111010, 162007,
+                        162007, 172008, 172008, 172008, 172008, 182008, 192009, 202010]
                 }
+            ];
+            this.players[1].userId = 100006;
+            this.players[2].userId = 100008;
+            myCenter.keep('dealPCount', data0.length);
+            myCenter.keep('isMePlay', true);
+            this.players.forEach((itemJS) => {
+                data0.forEach((item) => {
+                    if (itemJS.userId == item.uid) {
+                        itemJS.dealPoker(item);
+                    }
+                });
             });
+            let data = {
+                userId: 100006,
+                opt: 4,
+                poker: 51006
+            };
+            if (data.opt == handleBtn$1.guo) {
+                DiuPoker$1.show(data);
+            }
         }
         diuPoker() {
-            let num = parseInt(String(Math.random() * 21)) + 1;
-            this.data1[0].data.push(num);
-            this.data1[1].data.push(num);
-            this.data1[2].data.push(num);
-            DiuPoker$1.open(this.data1);
         }
         handlePoker() {
             this.players.forEach((itemJS) => {
@@ -3719,7 +3498,6 @@
         }
         otherPlay() {
             this.num2++;
-            DealOrPlayPoker.otherPlay(this.num2);
         }
         countDown() {
             this.players[0].playerCountDown(true, {
@@ -4239,22 +4017,20 @@
         setSeatContent(seatObj) {
         }
         changeSeatNodeParam(seatObj, index) {
+            console.log('进来===========================修改位置下的参数');
             let feelPokerNode = seatObj.getChildByName('feelView');
             feelPokerNode.pos(this.playerFeelSeatXYArr[index].x, this.playerFeelSeatXYArr[index].y);
-            let handleAniSeat = seatObj.getChildByName('handleAniBox');
-            let handleAniSeatXY = myCenter.getKeep('handleAniSeat');
-            handleAniSeat.pos(handleAniSeatXY[index].x, handleAniSeatXY[index].y);
         }
     }
     var ChangeSeat$1 = new ChangeSeat();
 
-    var pokerColor$1;
+    var pokerColor;
     (function (pokerColor) {
         pokerColor[pokerColor["none"] = 0] = "none";
         pokerColor[pokerColor["ban"] = 1] = "ban";
         pokerColor[pokerColor["bu"] = 2] = "bu";
         pokerColor[pokerColor["da"] = 3] = "da";
-    })(pokerColor$1 || (pokerColor$1 = {}));
+    })(pokerColor || (pokerColor = {}));
     class mePokerGroup {
         constructor() {
             this.maxColPokerNum = 7;
@@ -4268,15 +4044,15 @@
                 let Type = parseInt(String(item / 10000));
                 let Color = parseInt(String((item % 10000) / 1000));
                 let Point = item - Type * 10000 - Color * 1000;
-                let groupP = Point > 7 ? (14 - 7) : Point;
-                newArr.push({ type: Type, Color: Color, seatPoint: groupP, Point: Point, isGrey: pokerColor$1.none, oldName: item });
+                let groupP = Point > 7 ? (14 - Point) : Point;
+                newArr.push({ type: Type, Color: Color, seatPoint: groupP, Point: Point, isGrey: pokerColor.none, oldName: item });
             });
             let myTypeDest = (this.group(newArr, 'type')).filter((item) => item.data.length >= 3);
             newArr.forEach((item2, index2) => {
-                item2.isGrey = pokerColor$1.none;
+                item2.isGrey = pokerColor.none;
                 myTypeDest.forEach((item) => {
                     if (item.type == item2.type)
-                        item2.isGrey = pokerColor$1.ban;
+                        item2.isGrey = pokerColor.ban;
                 });
             });
             if (buDataArr)
@@ -4285,12 +4061,12 @@
                     newArr.forEach((item2) => {
                         if (item2.type == parseInt(String(item / 10000)) && f) {
                             f = false;
-                            item2.isGrey = pokerColor$1.bu;
+                            item2.isGrey = pokerColor.bu;
                         }
                     });
                 });
             let myDest = this.group(newArr, 'seatPoint');
-            this.sortData(myDest);
+            this.sortData(myDest, 'type');
             let bigArr;
             myDest.forEach((item, index) => {
                 let filterArr = item.data.filter((item2, index2) => (index2 > 0) && (index2 % (this.maxColPokerNum) == 0));
@@ -4304,12 +4080,12 @@
                     myDest.splice(i, 1);
                 }
             }
+            this.sortData(myDest, 'type');
+            this.sortData2(myDest, 'seatPoint');
             myDest.forEach((item, index) => {
                 item.name = 'p' + (index + 1);
             });
-            this.sortData(myDest);
             return myDest;
-            console.log('groupedData:', myDest);
         }
         getNewArr(item, filterArr) {
             let myIndexArr = [];
@@ -4377,34 +4153,28 @@
             }
             return dest;
         }
-        sortData(arr) {
+        sortData(arr, key) {
             arr.forEach((item) => {
                 item.data.sort((a, b) => {
-                    return a.type - b.type;
+                    return a[key] - b[key];
                 });
+            });
+        }
+        sortData2(arr, key) {
+            arr.sort((a, b) => {
+                return a[key] - b[key];
             });
         }
     }
     var mePokerGroup$1 = new mePokerGroup();
 
-    class showPlayerPokerCount {
-        show(that, show, value) {
-            let pokerCount = that.owner.getChildByName('pokerCount');
-            pokerCount.visible = show;
-            let val = pokerCount.getChildByName('val');
-            val.text = show ? value : 0;
-            that.pokerCount = value;
-        }
-    }
-    var showPlayerPokerCount$1 = new showPlayerPokerCount();
-
-    var pokerColor$2;
+    var pokerColor$1;
     (function (pokerColor) {
         pokerColor[pokerColor["none"] = 0] = "none";
         pokerColor[pokerColor["ban"] = 1] = "ban";
         pokerColor[pokerColor["bu"] = 2] = "bu";
         pokerColor[pokerColor["da"] = 3] = "da";
-    })(pokerColor$2 || (pokerColor$2 = {}));
+    })(pokerColor$1 || (pokerColor$1 = {}));
     class DealPoker {
         constructor() {
             this.others = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
@@ -4453,7 +4223,7 @@
             });
         }
         removeMePoker(that, data) {
-            console.log('进来', data, this.beforeGroupData);
+            Main$1.$LOG('删除得数据：', data);
             let mePokerArr = this.beforeGroupData.filter((item) => item.userId == that.userId)[0];
             data.forEach((item) => {
                 for (let i = mePokerArr.pokers.length - 1; i >= 0; i--) {
@@ -4463,27 +4233,32 @@
                     }
                 }
             });
+            Main$1.$LOG('删除后我得数据：', this.beforeGroupData);
             this.reloadPokerCoomon(mePokerArr.pokers, null);
         }
         buPoker(that, data, callBack) {
             let buPokerArr = data;
             showPlayerPokerCount$1.show(that, true, that.pokerCount + buPokerArr.length);
+            console.log('补牌=====里面：', buPokerArr);
             if (data && data.length > 0) {
                 this.beforeGroupData.forEach((item) => {
                     if (item.uid == that.userId) {
                         if (that.IsMe) {
                             item.pokers = item.pokers.concat(data);
-                            that.pokers = that.pokers.concat(data);
-                            this.reloadPokerCoomon(that.pokers, buPokerArr);
-                        }
-                        else {
-                            that.pokers = that.pokers.concat(data);
+                            console.log('补牌=====里面2：', buPokerArr);
+                            this.reloadPokerCoomon(item.pokers, buPokerArr);
                         }
                     }
                 });
             }
             if (callBack)
                 callBack();
+        }
+        clearBuPokerSign(that) {
+            this.beforeGroupData.forEach((item) => {
+                if (item.uid == that.userId)
+                    this.reloadPokerCoomon(item.pokers, []);
+            });
         }
         reloadPokerCoomon(mePokers, buPokerArr) {
             this.groupedData = mePokerGroup$1.composeMeData(mePokers, buPokerArr);
@@ -4591,11 +4366,11 @@
                     cellObj.bottom = 0;
                     item.data.forEach((item_inner, index_inner) => {
                         let pokerObj = new Laya.Image('res/img/poker/duan/' + item_inner.type + '.png');
-                        if (item_inner.isGrey == pokerColor$2.ban) {
-                            this.changePokerColor(pokerObj, Main$1.pokerParam['color' + pokerColor$2.ban], 'noHanldePoker');
+                        if (item_inner.isGrey == pokerColor$1.ban) {
+                            this.changePokerColor(pokerObj, Main$1.pokerParam['color' + pokerColor$1.ban], 'noHanldePoker');
                         }
-                        else if (item_inner.isGrey == pokerColor$2.bu) {
-                            this.changePokerColor(pokerObj, Main$1.pokerParam['color' + pokerColor$2.bu], 'noHanldePoker');
+                        else if (item_inner.isGrey == pokerColor$1.bu) {
+                            this.changePokerColor(pokerObj, Main$1.pokerParam['color' + pokerColor$1.bu], 'noHanldePoker');
                         }
                         pokerObj.name = item_inner;
                         pokerObj.sizeGrid = "85,0,10,0";
@@ -4623,25 +4398,18 @@
         }
         ClickPoker(pokerObj, e) {
             e.stopPropagation();
+            Main$1.$LOG('点击牌：', myCenter.getKeep('isMePlay'));
             if (pokerObj.height > Main$1.pokerWidth) {
                 let isMePlay = myCenter.getKeep('isMePlay');
                 if (isMePlay) {
-                    myCenter.keep('isMePlay', false);
                     websoket.playPoker(pokerObj.name.oldName);
                     let meJS = this.players.filter((item) => item.IsMe)[0];
                     showPlayerPokerCount$1.show(meJS, true, meJS.pokerCount - 1);
-                    myCenter.GameControlObj.playerPlaySet({ userId: meJS.userId }, false);
-                    this.mePlayPoker(pokerObj);
-                    pokerObj.removeSelf();
-                    let mePutViewChildren = this.meDealView._children;
-                    mePutViewChildren.forEach((item, index) => {
-                        let innerChildren = item._children;
-                        if (innerChildren.length == 0) {
-                            item.removeSelf();
-                            this.meDealView.width -= Main$1.pokerWidth;
-                        }
-                        this.mePutViewReloadSeat();
-                    });
+                    showPlayTip$1.hide({ userId: Main$1.userInfo.userId });
+                    time$1.hide({ userId: Main$1.userInfo.userId });
+                    myCenter.keep('isMePlay', false);
+                    mePlay$1.play(pokerObj);
+                    this.removeMePoker(meJS, [pokerObj.name.oldName]);
                 }
                 else {
                     this.mePutViewReloadSeat();
@@ -4675,14 +4443,6 @@
             });
         }
         mePlayPoker(pokerObj) {
-            let pokerObjSeatXY = pokerObj.parent.localToGlobal(new Laya.Point(pokerObj.x, pokerObj.y));
-            let showMePlayPoker = myCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
-            let showMePlayPokerXY = showMePlayPoker.parent.localToGlobal(new Laya.Point(showMePlayPoker.x, showMePlayPoker.y));
-            let startX = pokerObjSeatXY.x - showMePlayPokerXY.x + showMePlayPoker.width;
-            let startY = pokerObjSeatXY.y - showMePlayPokerXY.y + showMePlayPoker.height / 2;
-            showMePlayPoker.pos(startX, startY);
-            showMePlayPoker.skin = 'res/img/poker/chang/' + pokerObj.name.type + '.png';
-            Laya.Tween.to(showMePlayPoker, { alpha: 1, x: showMePlayPoker.width / 2, y: showMePlayPoker.height / 2 }, Main$1.Speed['mePlay']);
         }
         changePokerColor(pokerObj, colorImgUrl, name) {
             if (colorImgUrl) {
@@ -4732,8 +4492,10 @@
     class step_x_showHandlePoker {
         show(that, data) {
             let showData = data.concatData;
-            if (that.IsMe)
+            if (that.IsMe) {
+                Main$1.$LOG('删除指定自己显示牌的数据：', data.removePokers);
                 that.removePoker(data.removePokers);
+            }
             if (that.userId == showData.userId) {
                 this.showHandleView(that, showData);
             }
@@ -4839,71 +4601,12 @@
             myCenter.keep('isMePlay', false);
             myCenter.send('allowStealPoker', true);
             myCenter.keep('allowStealPoker', true);
+            myCenter.keep('allowNoticePlayPoker', true);
             showHandleBtns$1.hideAll({ userId: Main$1.userInfo.userId });
             step_x_showHandlePoker$1.hideAll();
         }
     }
     var step_2_startNewGame$1 = new step_2_startNewGame();
-
-    class FeelPoker {
-        feel(that, data) {
-            this.players = myCenter.GameControlObj.players;
-            this.feelStartSeatXY = myCenter.GameUIObj.feelPokerSeatXY;
-            this.feelObj = myCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
-            this.initParam(true);
-            this.moveFeelPoker(that, data);
-        }
-        hideFeelPoker(that) {
-            this.initParam2(that);
-            if (that.IsMe) {
-                let changeArr = [{ nodeName: that.owner, val: 0 }];
-                Main$1.changeNodeZOrder(changeArr);
-            }
-        }
-        moveFeelPoker(seatItem, data) {
-            this.initParam2(seatItem);
-            let feelSeat = seatItem.owner.getChildByName('feelView');
-            let feelSeatXY = feelSeat.parent.localToGlobal(new Laya.Point(feelSeat.x, feelSeat.y));
-            let moveX = (feelSeatXY.x - this.feelStartSeatXY.x) + feelSeat.width / 2;
-            let moveY = (feelSeatXY.y - this.feelStartSeatXY.y) + feelSeat.height / 2;
-            let alpha = 1;
-            if (seatItem.IsMe) {
-                let changeArr = [{ nodeName: seatItem.owner, val: 2 }];
-                Main$1.changeNodeZOrder(changeArr);
-            }
-            Laya.Tween.to(this.feelObj, { x: moveX, y: moveY, alpha: alpha }, Main$1.Speed['feelPoker'], null, Laya.Handler.create(this, () => {
-                let pokerName = parseInt(String(data.poker / 10000));
-                if (seatItem.IsMe) {
-                    Laya.Tween.to(this.feelObj, { scaleX: 0 }, Main$1.Speed['feelFan'], null, Laya.Handler.create(this, () => {
-                        this.feelPoker.skin = 'res/img/poker/chang/' + pokerName + '.png';
-                        this.initParam(false);
-                        Laya.Tween.to(this.feelPoker, { scaleX: 1, alpha: 0.7 }, Main$1.Speed['feelFan']);
-                    }));
-                }
-                else {
-                    Laya.Tween.to(this.feelObj, { scaleX: 0 }, Main$1.Speed['feelFan'], null, Laya.Handler.create(this, () => {
-                        this.feelPoker.skin = 'res/img/poker/chang/' + pokerName + '.png';
-                        this.initParam(false);
-                        Laya.Tween.to(this.feelPoker, { scaleX: 1, alpha: 0.7 }, Main$1.Speed['feelFan']);
-                    }));
-                }
-            }));
-        }
-        clearFeelPoker() {
-        }
-        initParam(isShow = true) {
-            this.feelObj.alpha = 0;
-            this.feelObj.scale(1, 1);
-            this.feelObj.pos(this.feelObj.width / 2, this.feelObj.height / 2);
-        }
-        initParam2(item) {
-            let dealSeat_feelPoker = myCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
-            this.feelPoker = item.owner.getChildByName('feelView').getChildByName('feelPoker');
-            this.feelPoker.alpha = 0;
-            this.feelPoker.skin = 'res/img/poker/chang/-1.png';
-        }
-    }
-    var step_x_playerFeelPoker = new FeelPoker();
 
     var showType$2;
     (function (showType) {
@@ -4933,8 +4636,7 @@
                     aniName = 'hu.ani';
                     break;
             }
-            console.log('播放动画', "animation/handleAni/" + aniName);
-            let aniBox = that.owner.getChildByName('handleAniBox');
+            let aniBox = that.owner.getChildByName('handleAniBox').getChildByName('show' + that.SeatId);
             aniBox.visible = true;
             Laya.loader.load("res/atlas/images/game.atlas", Laya.Handler.create(this, onMyLoaded));
             function onMyLoaded() {
@@ -4946,63 +4648,16 @@
                 ani.on(Laya.Event.COMPLETE, this, () => {
                     ani.stop();
                     ani.destroy();
-                    aniBox.visible = false;
                 });
             }
         }
     }
     var step_x_showHandleGIF$1 = new step_x_showHandleGIF();
 
-    class showPlayTip {
-        show(that, show) {
-            if (that.IsMe) {
-                let tip = myCenter.GameUIObj.mePlayTip;
-                tip.zOrder = 99;
-                tip.visible = show;
-            }
-        }
-    }
-    var showPlayTip$1 = new showPlayTip();
-
-    class otherPlay {
-        play(that, pokerNum) {
-            let item = that;
-            showPlayerPokerCount$1.show(item, true, that.pokerCount - 1);
-            let poker = parseInt(String(pokerNum / 10000));
-            let playPokerSeatFeelView = item.owner.getChildByName('feelView');
-            let playPokerSeat = playPokerSeatFeelView.getChildByName('feelPoker');
-            let playPokerSeatXY = playPokerSeat.parent.localToGlobal(new Laya.Point(playPokerSeat.x, playPokerSeat.y));
-            let playerSeat = item.owner;
-            let playerSeatXY = playerSeat.parent.localToGlobal(new Laya.Point(playerSeat.x, playerSeat.y));
-            this.startX = playerSeatXY.x - playPokerSeatXY.x;
-            this.startY = playerSeatXY.y - playPokerSeatXY.y;
-            this.initOtherPlay(true, this.startX, this.startY, 1, 1, 1, playPokerSeatFeelView, playPokerSeat);
-            Laya.Tween.to(playPokerSeat, { centerX: 0, centerY: 0, alpha: Main$1.pokerParam['alpha'] }, Main$1.Speed['otherPlay'], null, Laya.Handler.create(this, () => {
-                Laya.Tween.to(playPokerSeat, { scaleX: 0 }, Main$1.Speed['otherPlay'] / 2, null, Laya.Handler.create(this, () => {
-                    playPokerSeat.skin = 'res/img/poker/chang/' + poker + '.png';
-                    Laya.Tween.to(playPokerSeat, { scaleX: 1 }, Main$1.Speed['otherPlay'] / 2);
-                }));
-            }));
-        }
-        hidePlay(that) {
-            let playPokerSeatFeelView = that.owner.getChildByName('feelView');
-            let playPokerSeat = playPokerSeatFeelView.getChildByName('feelPoker');
-            this.initOtherPlay(true, 0, 0, 0, 0, 0, playPokerSeatFeelView, playPokerSeat);
-        }
-        initOtherPlay(isShow, centerX, centerY, scaleX, scaleY, alpha, playPokerParent, playPoker) {
-            playPokerParent.visible = isShow;
-            playPoker.centerX = centerX;
-            playPoker.centerY = centerY;
-            playPoker.scale(scaleX, scaleY);
-            playPoker.alpha = alpha;
-            playPoker.skin = 'res/img/poker/chang/-1.png';
-        }
-    }
-    var otherPlayerPlay = new otherPlay();
-
     class seat extends Laya.Script {
         constructor() {
             super();
+            this.diuPokers = [];
             this.handlePokerArr = [];
             this.IsMe = false;
             this._mask = new Laya.Sprite();
@@ -5073,6 +4728,9 @@
         buPoker(data, fn) {
             step_1_dealPoker.buPoker(this, data, fn);
         }
+        clearBuPokerSign() {
+            step_1_dealPoker.clearBuPokerSign(this);
+        }
         removePoker(data) {
             step_1_dealPoker.removeMePoker(this, data);
         }
@@ -5101,7 +4759,10 @@
             step_x_showHandlePoker$1.hide(this);
         }
         showPlayTip(show) {
-            showPlayTip$1.show(this, show);
+            showPlayTip$1.showOrHide(this, show);
+        }
+        showPlayerDiuPoker(data) {
+            DiuPoker$1.open(this, data);
         }
     }
 

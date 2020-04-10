@@ -28,7 +28,7 @@ class mePokerGroup{
             let Type = parseInt(String(item / 10000));//类型（牌的名字）
             let Color = parseInt(String((item % 10000) / 1000));//颜色（1 红色  2黑色）
             let Point = item - Type * 10000 - Color * 1000;//点数
-            let groupP = Point > 7 ? (14 - 7) : Point;//分在位置的点数（1-7点位置）
+            let groupP = Point > 7 ? (14 - Point) : Point;//分在位置的点数（1-7点位置）
             newArr.push({ type: Type, Color: Color, seatPoint: groupP, Point: Point, isGrey: pokerColor.none, oldName: item })
             //     console.log(item,'牌名字type：'+Type,'牌颜色Color：'+Color,'牌点数Point：'+Point);
         })
@@ -55,7 +55,7 @@ class mePokerGroup{
         //分组
         let myDest: any = this.group(newArr, 'seatPoint');
         //排序
-        this.sortData(myDest);
+        this.sortData(myDest,'type');
         let bigArr: any;
         myDest.forEach((item: any, index: number) => {
             let filterArr = item.data.filter((item2: any, index2: number) => (index2 > 0) && (index2 % (this.maxColPokerNum) == 0));
@@ -69,21 +69,13 @@ class mePokerGroup{
                 myDest.splice(i, 1);
             }
         }
+        this.sortData(myDest,'type');
+        this.sortData2(myDest,'seatPoint');
         myDest.forEach((item: any, index: number) => {
             item.name = 'p' + (index + 1);
         });
-        this.sortData(myDest);
-
-        // return (this.beforeGroupData.map((item: any) => {
-        //     if (item.uid == Main.userInfo.userId) {
-        //         return { uid: item.uid, banker: item.banker, pokers: myDest };
-        //     } else {
-        //         return item;
-        //     }
-        // }));
-
+        // console.log('groupedData====myDest:',myDest)//this.beforeGroupData
         return myDest;
-        console.log('groupedData:',myDest)//this.beforeGroupData
     }
 
     getNewArr(item: any, filterArr: any) {
@@ -165,11 +157,21 @@ class mePokerGroup{
      * 将json数据根据某字段进行排序（数字类型）
      * @param arr 
      */
-    sortData(arr: any) {
+    sortData(arr: any,key:string) {
         arr.forEach((item: any) => {
             item.data.sort((a: any, b: any) => {
-                return a.type - b.type;
+                return a[key] - b[key];
             })
+        })
+    }
+
+    /**
+     * 将json数据根据某字段进行排序（数字类型）
+     * @param arr 
+     */
+    sortData2(arr: any,key:string) {
+        arr.sort((a: any, b: any) => {
+            return a[key] - b[key];
         })
     }
 }

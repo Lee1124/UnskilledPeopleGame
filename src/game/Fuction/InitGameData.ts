@@ -26,9 +26,9 @@ class InitGameData {
         conObj.owner.feelPokerSeatXY = { x: feelPokerSeatXY.x, y: feelPokerSeatXY.y };
 
         //播放玩家吃，碰，杠等动画
-        let handleAniSeat = seatObj.owner.getChildByName('handleAniBox');
-        this.aniArr.push({ x: handleAniSeat.x, y: handleAniSeat.y })
-        MyCenter.keep('handleAniSeat',this.aniArr);
+        // let handleAniSeat = seatObj.owner.getChildByName('handleAniBox');
+        // this.aniArr.push({ x: handleAniSeat.x, y: handleAniSeat.y })
+        // MyCenter.keep('handleAniSeat',this.aniArr);
         //发其他玩家牌效果接受牌的位置
         // let getPokerSeat = seatObj.owner.getChildByName('getOtherPokerSeat');
         // let getPokerSeatXY = getPokerSeat.parent.localToGlobal(new Laya.Point(getPokerSeat.x, getPokerSeat.y));

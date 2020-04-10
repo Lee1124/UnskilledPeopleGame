@@ -1,11 +1,24 @@
 /**
  * 非自己玩家的出牌
  */
+import MyCenter from '../../../common/MyCenter';
 import Main from '../../../common/Main';
 import showPlayerPokerCount from '../../play/changePlayerNum/showPlayerPokerCount';//实时显示玩家牌的数量
 class otherPlay {
     startX:number;
     startY:number;
+
+    /**
+     * 其他玩家打牌
+     * @param data 数据{userId:xxxxxx}
+     */
+    show(data:any){
+        let players:any=MyCenter.GameControlObj.players;
+        players.forEach((itemJS: any) => {
+            if (itemJS.userId == data.userId)
+                itemJS.showNoMePlayPoker(data.poker);
+        })
+    }
    /**
     * 其他玩家出牌的效果
     * @param that 玩家脚本对象

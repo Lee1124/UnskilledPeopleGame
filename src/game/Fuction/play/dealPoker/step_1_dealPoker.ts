@@ -1,11 +1,14 @@
 /**
  * 发牌功能
  */
-import MyCenter from '../../common/MyCenter';
-import Main from '../../common/Main';
-import mePokerGroup from './dealPoker/mePokerGroup';
-import showPlayerPokerCount from '../play/changePlayerNum/showPlayerPokerCount';//实时显示玩家牌的数量
-import websoket from '../../Fuction/webSoketSend';
+import MyCenter from '../../../common/MyCenter';
+import Main from '../../../common/Main';
+import mePokerGroup from './mePokerGroup';
+import showPlayerPokerCount from '../changePlayerNum/showPlayerPokerCount';//实时显示玩家牌的数量
+import mePlay from '../playerPlay/mePlay';//我出牌
+import time from "../time/time";//倒计时
+import mePlayTip from '../showPlayTip/showPlayTip';//该我打牌得标志
+import websoket from '../../webSoketSend';
 //牌的颜色
 enum pokerColor {
     none,
@@ -91,10 +94,11 @@ class DealPoker {
 
     /**
     * 删除牌的数据
+    * @param that 
     * @param data 
     */
     removeMePoker(that: any, data: any) {
-        console.log('进来', data, this.beforeGroupData)
+        Main.$LOG('删除得数据：', data);
         let mePokerArr: any = this.beforeGroupData.filter((item) => item.userId == that.userId)[0];
         data.forEach((item: any) => {
             for (let i = mePokerArr.pokers.length - 1; i >= 0; i--) {
@@ -104,6 +108,7 @@ class DealPoker {
                 }
             }
         });
+        Main.$LOG('删除后我得数据：', this.beforeGroupData)
         this.reloadPokerCoomon(mePokerArr.pokers, null);
     }
 
@@ -115,16 +120,19 @@ class DealPoker {
         // let bankerUid=MyCenter.getKeep('bankerUid')?MyCenter.getKeep('bankerUid'):100010;
         let buPokerArr: any = data;
         showPlayerPokerCount.show(that, true, that.pokerCount + buPokerArr.length);
+        console.log('补牌=====里面：',buPokerArr);
         if (data && data.length > 0) {
             this.beforeGroupData.forEach((item: any) => {
                 if (item.uid == that.userId) {
                     if (that.IsMe) {
                         item.pokers = item.pokers.concat(data);
-                        that.pokers = that.pokers.concat(data);
-                        this.reloadPokerCoomon(that.pokers, buPokerArr);
-                    } else {
-                        that.pokers = that.pokers.concat(data);
-                    }
+                        // that.pokers = that.pokers.concat(data);
+                        console.log('补牌=====里面2：',buPokerArr);
+                        this.reloadPokerCoomon(item.pokers, buPokerArr);
+                    } 
+                    // else {
+                    //     that.pokers = that.pokers.concat(data);
+                    // }
                 }
             })
         }
@@ -134,12 +142,23 @@ class DealPoker {
     }
 
     /**
+     * 清除补牌的标记
+     */
+    clearBuPokerSign(that:any):void{
+        this.beforeGroupData.forEach((item: any) => {
+            if (item.uid == that.userId)
+                this.reloadPokerCoomon(item.pokers,[]);
+        })
+    }
+
+    /**
   * 重新更新数据
-  * @param data null--直接更新  不为空--补牌
+  * @param mePokers 我的牌的数据
+  * @param buPokerArr 补牌数据
   */
     reloadPokerCoomon(mePokers: any, buPokerArr: any) {
         this.groupedData = mePokerGroup.composeMeData(mePokers, buPokerArr);
-        // console.log('补牌:',this.groupedData)
+        // Main.$LOG('重新更新数据',this.groupedData)
         this.showMePokerView();
     }
 
@@ -252,6 +271,7 @@ class DealPoker {
         this.meDealView.removeChildren();
         this.meDealView.width = Main.pokerWidth;
         let mePokerData: any[] = this.groupedData;
+        // Main.$LOG('showMePokerView:',this.groupedData);
         let playerMe: any = this.players.filter((item: any) => item.IsMe);
         if (playerMe.length > 0) {
             //摆牌容器
@@ -305,27 +325,32 @@ class DealPoker {
      *  */
     ClickPoker(pokerObj: any, e: any) {
         e.stopPropagation();
+        Main.$LOG('点击牌：',MyCenter.getKeep('isMePlay'))
         if (pokerObj.height > Main.pokerWidth) {
             let isMePlay: boolean = MyCenter.getKeep('isMePlay');
             if (isMePlay) {
-                MyCenter.keep('isMePlay', false);
                 //出牌请求
                 websoket.playPoker(pokerObj.name.oldName);
                 let meJS: any = this.players.filter((item: any) => item.IsMe)[0];
                 showPlayerPokerCount.show(meJS, true, meJS.pokerCount - 1);
-                MyCenter.GameControlObj.playerPlaySet({ userId: meJS.userId }, false);
-                this.mePlayPoker(pokerObj);
-                pokerObj.removeSelf();
+                // MyCenter.GameControlObj.playerPlaySet({ userId: meJS.userId }, false);
+                mePlayTip.hide({userId:Main.userInfo.userId});
+                time.hide({userId:Main.userInfo.userId});
+                MyCenter.keep('isMePlay', false);
+                mePlay.play(pokerObj);
+                // this.mePlayPoker(pokerObj);
+                // pokerObj.removeSelf();
                 //检测牌并重新排位置
-                let mePutViewChildren = this.meDealView._children;
-                mePutViewChildren.forEach((item: any, index: number) => {
-                    let innerChildren = item._children;
-                    if (innerChildren.length == 0) {//某列全部移除时
-                        item.removeSelf();
-                        this.meDealView.width -= Main.pokerWidth;
-                    }
-                    this.mePutViewReloadSeat();
-                })
+                // let mePutViewChildren = this.meDealView._children;
+                // mePutViewChildren.forEach((item: any, index: number) => {
+                //     let innerChildren = item._children;
+                //     if (innerChildren.length == 0) {//某列全部移除时
+                //         item.removeSelf();
+                //         this.meDealView.width -= Main.pokerWidth;
+                //     }
+                //     this.mePutViewReloadSeat();
+                // })
+                this.removeMePoker(meJS,[pokerObj.name.oldName]);
             }
             else {
                 this.mePutViewReloadSeat();
@@ -366,14 +391,14 @@ class DealPoker {
     * 玩家自己出牌的效果
     */
     mePlayPoker(pokerObj: any): void {
-        let pokerObjSeatXY = pokerObj.parent.localToGlobal(new Laya.Point(pokerObj.x, pokerObj.y));
-        let showMePlayPoker = MyCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
-        let showMePlayPokerXY = showMePlayPoker.parent.localToGlobal(new Laya.Point(showMePlayPoker.x, showMePlayPoker.y));
-        let startX = pokerObjSeatXY.x - showMePlayPokerXY.x + showMePlayPoker.width;
-        let startY = pokerObjSeatXY.y - showMePlayPokerXY.y + showMePlayPoker.height / 2;
-        showMePlayPoker.pos(startX, startY);
-        showMePlayPoker.skin = 'res/img/poker/chang/' + pokerObj.name.type + '.png';
-        Laya.Tween.to(showMePlayPoker, { alpha: 1, x: showMePlayPoker.width / 2, y: showMePlayPoker.height / 2 }, Main.Speed['mePlay']);
+        // let pokerObjSeatXY = pokerObj.parent.localToGlobal(new Laya.Point(pokerObj.x, pokerObj.y));
+        // let showMePlayPoker = MyCenter.GameUIObj.dealSeat.getChildByName('showPlayCards').getChildByName('feelPoker');
+        // let showMePlayPokerXY = showMePlayPoker.parent.localToGlobal(new Laya.Point(showMePlayPoker.x, showMePlayPoker.y));
+        // let startX = pokerObjSeatXY.x - showMePlayPokerXY.x + showMePlayPoker.width;
+        // let startY = pokerObjSeatXY.y - showMePlayPokerXY.y + showMePlayPoker.height / 2;
+        // showMePlayPoker.pos(startX, startY);
+        // showMePlayPoker.skin = 'res/img/poker/chang/' + pokerObj.name.type + '.png';
+        // Laya.Tween.to(showMePlayPoker, { alpha: 1, x: showMePlayPoker.width / 2, y: showMePlayPoker.height / 2 }, Main.Speed['mePlay']);
         // console.log(showMePlayPoker)
     }
 

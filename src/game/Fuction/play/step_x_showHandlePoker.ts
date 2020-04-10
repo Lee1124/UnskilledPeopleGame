@@ -19,9 +19,10 @@ class step_x_showHandlePoker {
     show(that: any, data: any): void {
         let showData: any = data.concatData;
         //更新自己显示牌的数据
-        if (that.IsMe)
-            // DealOrPlayPoker.removeMePoker(data.removePokers);
+        if (that.IsMe){
+            Main.$LOG('删除指定自己显示牌的数据：',data.removePokers)
             that.removePoker(data.removePokers);
+        }
         //开始显示操作后的牌
         if (that.userId == showData.userId) {
             this.showHandleView(that, showData);

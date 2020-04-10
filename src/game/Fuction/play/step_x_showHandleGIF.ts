@@ -1,5 +1,5 @@
 // import Main from "../../common/Main";
-// import myCenter from '../../common/MyCenter';
+import MyCenter from '../../common/MyCenter';
 /**
  * 玩家操作动画显示
  */
@@ -30,9 +30,9 @@ class step_x_showHandleGIF {
             aniName = 'hu.ani'
             break;
       }
-      console.log('播放动画', "animation/handleAni/" + aniName)
-      let aniBox: any = that.owner.getChildByName('handleAniBox');
+      let aniBox: any = that.owner.getChildByName('handleAniBox').getChildByName('show'+that.SeatId);
       aniBox.visible = true;
+      // console.log('播放动画',that.SeatId,aniBox)
       Laya.loader.load("res/atlas/images/game.atlas", Laya.Handler.create(this, onMyLoaded));
       function onMyLoaded() {
          let ani = new Laya.Animation();
@@ -45,10 +45,9 @@ class step_x_showHandleGIF {
          ani.on(Laya.Event.COMPLETE, this, () => {
             ani.stop();
             ani.destroy();
-            aniBox.visible = false;
+            // aniBox.visible = false;
          });
       }
    }
-
 }
 export default new step_x_showHandleGIF();

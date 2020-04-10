@@ -19,6 +19,7 @@ class step_2_startNewGame {
         MyCenter.keep('isMePlay',false);
         MyCenter.send('allowStealPoker',true);
         MyCenter.keep('allowStealPoker',true);
+        MyCenter.keep('allowNoticePlayPoker',true);
         //清除玩家显示的按钮
         showHandleBtns.hideAll({userId:Main.userInfo.userId});
         //清除玩家操作的牌的显示处
